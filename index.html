@@ -404,7 +404,7 @@ const ZONES={
 };
 
 const NPC={
- ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',long:1},badge:['도착하다','궤도'],
+ ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'},badge:['도착하다','궤도'],
   after:'창밖을 봐요. 우리가 궤도를 돌고 있어요!',
   talk:()=>[
    {say:'일어나요! 드디어 왔어요!'},
@@ -414,7 +414,7 @@ const NPC={
    {say:'이제 배는 곤디아 주위를 빙글빙글 돌아요.'},
    Q.ellie[1],
    {say:'궤도에 도착했으니까 할 일이 많아요. {함교|함교}에 가서 선장님한테 인사해요.',award:['도착하다','궤도']}]},
- dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',long:1,arm:'#B87333'},badge:['선장','우주선'],
+ dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333'},badge:['선장','우주선'],
   after:'선장은 배를 지켜요. 그게 제 일이에요.',
   script:()=>{
    if(f().fixed&&!f().done&&state.badges.includes('선장'))return [
@@ -450,7 +450,7 @@ const NPC={
    {say:'그리고 채소는 우리 밥이에요.'},
    Q.or[1],
    {say:'식량은 충분해요. 이 지구 씨앗 상자 가져가요. 지구 물건은 여기서 아주 귀해요. 하이 로사에서 바꿀 수 있어요.',give:'지구 씨앗 상자',award:['산소','식량']}]},
- andy:{name:'옥테인 기관장',zone:'ship',x:7,y:12,dir:'left',look:{hair:'#9A9AA0',skin:'#B98462',shirt:'#B7652F',pants:'#4A3A2E',belt:'#2B2B30',cap:'#E8962A'},badge:['수리하다'],
+ andy:{name:'옥테인 기관장',zone:'ship',x:7,y:12,dir:'left',look:{hair:'#9A9AA0',skin:'#B98462',shirt:'#B7652F',pants:'#4A3A2E',belt:'#2B2B30',style:'bald',coat:1},badge:['수리하다'],
   status:()=>{
    if(!state.badges.includes('수리하다'))return f().metOwner?'todo':null;
    if(!f().fixed)return hasItem('부품')&&hasItem('연료통')?'todo':'wait';
@@ -485,7 +485,7 @@ const NPC={
    Q.customs[1],
    {say:'좋아요. 도장을 찍어 줄게요. 쾅!',give:'세관 도장'},
    {say:'가라테 {도장|도장} 말고요. 이 도장이에요. 들어가세요.',award:['위험'],set:()=>{f().customs=1}}]},
- gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E'},badge:['연료','출발하다'],
+ gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E',coat:1},badge:['연료','출발하다'],
   status:()=>{
    if(!state.badges.includes('연료'))return 'todo';
    if(!state.badges.includes('출발하다'))return hasItem('지구 씨앗 상자')?'todo':'wait';
@@ -508,7 +508,7 @@ const NPC={
    {say:'저는 기보이. 트래블러예요. 뭐든지 팔아요.'},
    Q.gyvoy[0],
    {say:'연료통이 필요해요? 공짜는 없어요. 지구 물건하고 바꿔요!',award:['연료']}]},
- lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',long:1},badge:['관측하다','행성'],
+ lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1},badge:['관측하다','행성'],
   after:'오늘은 관측하기 좋은 날이에요.',
   talk:()=>[
    {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
@@ -518,7 +518,7 @@ const NPC={
    {say:'저기 엘리베이터를 타면 곤디아까지 내려가요. {궤도 엘리베이터|궤도 엘리베이터}예요.',award:['관측하다','행성']}]},
  trader:{name:'광부',zone:'dock',x:16,y:12,dir:'left',look:{hair:'#3A2A22',skin:'#C48E66',shirt:'#7C6A4A',pants:'#3A3530',cap:'#B5653A'},
   talk:()=>[{say:'저는 아누샤 광산에서 왔어요. 중력이 세서 몸이 늘 무거워요.'},{say:'곤디아는 초록색이죠? 부러워요.'}]},
- terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40'},badge:['발견하다'],
+ terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40',coat:1},badge:['발견하다'],
   after:'도둑은 아직 못 찾았어요. 찾으면 연락할게요.',
   talk:()=>[
    {say:'흠. 성실호 사람이죠? 저는 테렌스 형사예요.'},
@@ -526,7 +526,7 @@ const NPC={
    Q.terence[0],
    Q.terence[1],
    {say:'이 부품, 성실호 거예요? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
- josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433'},badge:['지도','탐험'],
+ josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',coat:1},badge:['지도','탐험'],
   after:'엘리요? 제 손녀의 손녀의… 아주 먼 가족이에요. 잘 부탁해요.',
   talk:()=>[
    {say:'오, 성실호 승무원이죠? 저는 조사이어스예요. 옛날에 그 배 주인이었어요.'},
@@ -683,26 +683,77 @@ const TILES={
 };
 function tile(x,y,X,Y,t){const c=at(x,y);const L=c!=null&&Z.legend[c];const fn=L&&TILES[L.tile];if(fn)fn(X,Y,x,y,t);else r(X,Y,16,16,Z.outdoor?'#2F8466':'#1A1F24')}
 
-function drawChar(L,X,Y,dir,step){
- const ol='#1B1E2B';
- g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+3,Y+14,10,2);
- const lg=step?1:0;
- r(X+5,Y+11,6,4,ol);r(X+6,Y+11,2,3+(step===1?0:lg),L.pants);r(X+9,Y+11,2,3+(step===2?0:lg),L.pants);
- r(X+3,Y+7,10,6,ol);r(X+4,Y+8,8,4,L.shirt);
- if(L.arm){if(dir==='down')r(X+12,Y+8,1,4,L.arm);else if(dir==='up')r(X+3,Y+8,1,4,L.arm);else if(dir==='left')r(X+7,Y+8,2,4,L.arm)}
- if(L.belt)r(X+4,Y+11,8,1,L.belt);
- r(X+3,Y+1,10,8,ol);r(X+4,Y+2,8,6,L.skin);
- const hair=L.hair;
- if(dir==='up'){r(X+4,Y+2,8,6,hair)}
- else{
-  r(X+4,Y+1,8,3,hair);
-  if(dir==='left'){r(X+10,Y+2,2,4,hair);r(X+5,Y+5,1,1,ol)}
-  else if(dir==='right'){r(X+4,Y+2,2,4,hair);r(X+10,Y+5,1,1,ol)}
-  else{r(X+6,Y+5,1,1,ol);r(X+9,Y+5,1,1,ol);r(X+7,Y+7,2,1,'#C98D78')}
-  if(L.long){r(X+3,Y+3,1,6,hair);r(X+12,Y+3,1,6,hair)}
-  if(L.beard){if(dir==='down')r(X+4,Y+6,8,3,L.beard);else if(dir==='left')r(X+4,Y+6,5,3,L.beard);else r(X+7,Y+6,5,3,L.beard)}
+/* ---------- sprites: pixel-art grids ----------
+   A sprite is an array of equal-length strings; each char is a palette key ('.' = transparent).
+   drawArt draws it with its feet on the tile's bottom edge, so tall sprites (16×24, 16×32) grow upward. */
+function shade(hex,k){const n=parseInt(hex.slice(1),16);const f=c=>Math.max(0,Math.min(255,Math.round(c*k)));return '#'+[(n>>16)&255,(n>>8)&255,n&255].map(c=>f(c).toString(16).padStart(2,'0')).join('')}
+function drawArt(rows,pal,X,Y,flip){
+ const h=rows.length,w=rows[0].length,top=Y+16-h;
+ for(let y=0;y<h;y++){const row=rows[y];for(let x=0;x<w;x++){const c=row[flip?w-1-x:x];if(c==='.')continue;const col=pal[c];if(col){g.fillStyle=col;g.fillRect(X+x,top+y,1,1)}}}
+}
+function shadow(X,Y,w){g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+4,Y+14,w||8,2);g.fillRect(X+3,Y+15,(w||8)+2,1)}
+const HEAD={ // rows 0–7 by style and view (left view is flipped for right)
+ short:{down:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ long:{down:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','..OHHSSSSSSHHO..','..OHSSESSESSHO..','..OHSSSSSSSSHO..','..OHHSSMMSSHHO..'],
+        up:  ['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','..OHHhHHHHhHHO..','..OHHHHHHHHHHO..','..OHHHHHHHHHHO..'],
+        left:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHHO..','...OSSSSHHHHHO..','....OMSSSOHHHO..']},
+ bald:{down:['................','.....OOOOOO.....','....OSSSSSSO....','...OSSWSSSSSO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['................','.....OOOOOO.....','....OSSSSSSO....','...OSSWSSSSSO...','...OHSSSSSSHO...','...OHHSSSSHHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['................','.....OOOOOO.....','....OSSSSSSO....','...OSSSSSWSSO...','...OSSSSSSHHO...','..OSESSSSHHHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ bun:{down:['......OHHO......','.....OOhhOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['......OHHO......','.....OHhhHO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['.........OHO....','.....OOOOHHO....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ spiky:{down:['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['.....O..O..O....','....OHOOHOOHO...','....OHHHHHHHO...','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+};
+const CAP={down:['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYyyYYYO...','...OVVVVVVVVO...'],
+           up:  ['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYyyYYYO...','...OYYYYYYYYO...'],
+           left:['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYYYyYYO...','..OVVVSYYYYYO...']};
+const BODY={
+ down:[['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OPPO..OPPO...','...OKKO..OKKO...'],
+       ['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OPPO..OKKO...','...OKKO.........'],
+       ['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OKKO..OPPO...','.........OKKO...']],
+ left:[['.....OOCCCO.....','....OCCCCCCO....','....OCCCSCCO....','....OCBBSBCO....','....OPPPPPPO....','....OPPOOPPO....','....OPPOOPPO....','....OKKOOKKO....'],
+       ['.....OOCCCO.....','....OCCCCCCO....','....OCCSCCCO....','....OCBSBBCO....','....OPPPPPPO....','....OPPOPPO.....','...OPPO.OPPO....','...OKKO.OKKO....'],
+       ['.....OOCCCO.....','....OCCCCCCO....','....OCCCCSCO....','....OCBBBSCO....','....OPPPPPPO....','....OPPOOPPO....','....OPPOOPPO....','....OKKOOKKO....']]};
+function humanArt(L,dir,step){
+ const view=dir==='right'?'left':dir;
+ const style=L.style||(L.long?'long':'short');
+ let head=HEAD[style][view].slice();
+ if(L.cap){const cp=CAP[view];head=head.map((row,i)=>i<cp.length?cp[i]:row)}
+ let body=(BODY[view==='up'?'down':view][step||0]).slice();
+ const set=(rows,y,x,ch)=>{rows[y]=rows[y].slice(0,x)+ch+rows[y].slice(x+1)};
+ if(L.coat){for(const y of [4,5])body[y]=body[y].replace(/P/g,'C').replace(/p/g,'c')}
+ if(!L.belt)body=body.map(rw=>rw.replace(/B/g,'C'));
+ if(style==='long'&&view!=='left'){for(const y of [0,1]){set(body,y,3,'H');set(body,y,12,'H')}if(view==='up')for(let x=4;x<12;x++){set(body,0,x,'H');set(body,1,x,'H')}}
+ if(style==='long'&&view==='left'){set(body,0,10,'H');set(body,1,10,'H')}
+ if(L.beard){if(view==='down'){head[6]='...OSDDDDDDSO...';head[7]='....ODDDDDDO....';body[0]='...OODDDDDDOO...'}else if(view==='left'){head[6]='...ODDDDSHHHO...';head[7]='....ODDDDSO.....'}}
+ if(L.arm){ // mechanical arm on the character's left side
+  if(view==='down'&&dir==='down'){set(body,1,12,'A');set(body,2,12,'A');set(body,3,12,'A')}
+  if(view==='up'){set(body,1,3,'A');set(body,2,3,'A');set(body,3,3,'A')}
+  if(dir==='left'){body=body.map(rw=>rw.replace(/S/g,'A'));set(body,1,7,'A')}
  }
- if(L.cap){r(X+3,Y+0,10,3,ol);r(X+4,Y+1,8,2,L.cap);const v='#1B1E2B';if(dir==='down')r(X+4,Y+3,8,1,v);if(dir==='left')r(X+2,Y+3,4,1,v);if(dir==='right')r(X+10,Y+3,4,1,v)}
+ return head.concat(body);
+}
+function humanPal(L){
+ const o='#1B1E2B';
+ return {O:o,E:o,H:L.hair,h:shade(L.hair,.78),S:L.skin,s:shade(L.skin,.85),M:shade(L.skin,.72),W:shade(L.skin,1.12),C:L.shirt,c:shade(L.shirt,.8),
+  P:L.pants,p:shade(L.pants,.8),K:L.shoes||'#2A2A33',B:L.belt||L.shirt,D:L.beard||L.hair,A:L.arm||L.skin,Y:L.cap||L.hair,y:shade(L.cap||L.hair,.8),V:shade(L.cap||'#333333',.55)};
+}
+const palCache=new WeakMap();
+function drawChar(L,X,Y,dir,step){
+ if(L.art){drawCustom(L,X,Y,dir,step);return}
+ let pal=palCache.get(L);if(!pal){pal=humanPal(L);palCache.set(L,pal)}
+ shadow(X,Y);drawArt(humanArt(L,dir,step),pal,X,Y,dir==='right');
+}
+/* custom sprites: look.art = {pal:{key:color}, down:[rows], up:[rows], left:[rows], walk?:{down:[[rows],[rows]],…}} — any height ≤ 32 */
+function drawCustom(L,X,Y,dir,step){
+ const A=L.art,view=dir==='right'?'left':dir;
+ const rows=(step&&A.walk&&A.walk[view]&&A.walk[view][step-1])||A[view]||A.down;
+ shadow(X,Y,rows[0].length>16?12:8);drawArt(rows,A.pal,X+Math.floor((16-rows[0].length)/2),Y,dir==='right');
 }
 function drawAndy(L,X,Y,dir,step,t){
  const ol='#1B1E2B';

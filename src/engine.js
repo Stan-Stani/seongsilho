@@ -119,26 +119,77 @@ const TILES={
 };
 function tile(x,y,X,Y,t){const c=at(x,y);const L=c!=null&&Z.legend[c];const fn=L&&TILES[L.tile];if(fn)fn(X,Y,x,y,t);else r(X,Y,16,16,Z.outdoor?'#2F8466':'#1A1F24')}
 
-function drawChar(L,X,Y,dir,step){
- const ol='#1B1E2B';
- g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+3,Y+14,10,2);
- const lg=step?1:0;
- r(X+5,Y+11,6,4,ol);r(X+6,Y+11,2,3+(step===1?0:lg),L.pants);r(X+9,Y+11,2,3+(step===2?0:lg),L.pants);
- r(X+3,Y+7,10,6,ol);r(X+4,Y+8,8,4,L.shirt);
- if(L.arm){if(dir==='down')r(X+12,Y+8,1,4,L.arm);else if(dir==='up')r(X+3,Y+8,1,4,L.arm);else if(dir==='left')r(X+7,Y+8,2,4,L.arm)}
- if(L.belt)r(X+4,Y+11,8,1,L.belt);
- r(X+3,Y+1,10,8,ol);r(X+4,Y+2,8,6,L.skin);
- const hair=L.hair;
- if(dir==='up'){r(X+4,Y+2,8,6,hair)}
- else{
-  r(X+4,Y+1,8,3,hair);
-  if(dir==='left'){r(X+10,Y+2,2,4,hair);r(X+5,Y+5,1,1,ol)}
-  else if(dir==='right'){r(X+4,Y+2,2,4,hair);r(X+10,Y+5,1,1,ol)}
-  else{r(X+6,Y+5,1,1,ol);r(X+9,Y+5,1,1,ol);r(X+7,Y+7,2,1,'#C98D78')}
-  if(L.long){r(X+3,Y+3,1,6,hair);r(X+12,Y+3,1,6,hair)}
-  if(L.beard){if(dir==='down')r(X+4,Y+6,8,3,L.beard);else if(dir==='left')r(X+4,Y+6,5,3,L.beard);else r(X+7,Y+6,5,3,L.beard)}
+/* ---------- sprites: pixel-art grids ----------
+   A sprite is an array of equal-length strings; each char is a palette key ('.' = transparent).
+   drawArt draws it with its feet on the tile's bottom edge, so tall sprites (16×24, 16×32) grow upward. */
+function shade(hex,k){const n=parseInt(hex.slice(1),16);const f=c=>Math.max(0,Math.min(255,Math.round(c*k)));return '#'+[(n>>16)&255,(n>>8)&255,n&255].map(c=>f(c).toString(16).padStart(2,'0')).join('')}
+function drawArt(rows,pal,X,Y,flip){
+ const h=rows.length,w=rows[0].length,top=Y+16-h;
+ for(let y=0;y<h;y++){const row=rows[y];for(let x=0;x<w;x++){const c=row[flip?w-1-x:x];if(c==='.')continue;const col=pal[c];if(col){g.fillStyle=col;g.fillRect(X+x,top+y,1,1)}}}
+}
+function shadow(X,Y,w){g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+4,Y+14,w||8,2);g.fillRect(X+3,Y+15,(w||8)+2,1)}
+const HEAD={ // rows 0–7 by style and view (left view is flipped for right)
+ short:{down:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ long:{down:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','..OHHSSSSSSHHO..','..OHSSESSESSHO..','..OHSSSSSSSSHO..','..OHHSSMMSSHHO..'],
+        up:  ['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','..OHHhHHHHhHHO..','..OHHHHHHHHHHO..','..OHHHHHHHHHHO..'],
+        left:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHHO..','...OSSSSHHHHHO..','....OMSSSOHHHO..']},
+ bald:{down:['................','.....OOOOOO.....','....OSSSSSSO....','...OSSWSSSSSO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['................','.....OOOOOO.....','....OSSSSSSO....','...OSSWSSSSSO...','...OHSSSSSSHO...','...OHHSSSSHHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['................','.....OOOOOO.....','....OSSSSSSO....','...OSSSSSWSSO...','...OSSSSSSHHO...','..OSESSSSHHHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ bun:{down:['......OHHO......','.....OOhhOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['......OHHO......','.....OHhhHO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['.........OHO....','.....OOOOHHO....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ spiky:{down:['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
+        up:  ['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
+        left:['.....O..O..O....','....OHOOHOOHO...','....OHHHHHHHO...','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+};
+const CAP={down:['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYyyYYYO...','...OVVVVVVVVO...'],
+           up:  ['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYyyYYYO...','...OYYYYYYYYO...'],
+           left:['................','.....OOOOOO.....','....OYYYYYYO....','...OYYYYYyYYO...','..OVVVSYYYYYO...']};
+const BODY={
+ down:[['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OPPO..OPPO...','...OKKO..OKKO...'],
+       ['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OPPO..OKKO...','...OKKO.........'],
+       ['...OOCCCCCCOO...','..OCCCCCCCCCCO..','..OCcCCCCCCcCO..','..OSOBBBBBBOSO..','...OPPPPPPPPO...','...OPPPOOPPPO...','...OKKO..OPPO...','.........OKKO...']],
+ left:[['.....OOCCCO.....','....OCCCCCCO....','....OCCCSCCO....','....OCBBSBCO....','....OPPPPPPO....','....OPPOOPPO....','....OPPOOPPO....','....OKKOOKKO....'],
+       ['.....OOCCCO.....','....OCCCCCCO....','....OCCSCCCO....','....OCBSBBCO....','....OPPPPPPO....','....OPPOPPO.....','...OPPO.OPPO....','...OKKO.OKKO....'],
+       ['.....OOCCCO.....','....OCCCCCCO....','....OCCCCSCO....','....OCBBBSCO....','....OPPPPPPO....','....OPPOOPPO....','....OPPOOPPO....','....OKKOOKKO....']]};
+function humanArt(L,dir,step){
+ const view=dir==='right'?'left':dir;
+ const style=L.style||(L.long?'long':'short');
+ let head=HEAD[style][view].slice();
+ if(L.cap){const cp=CAP[view];head=head.map((row,i)=>i<cp.length?cp[i]:row)}
+ let body=(BODY[view==='up'?'down':view][step||0]).slice();
+ const set=(rows,y,x,ch)=>{rows[y]=rows[y].slice(0,x)+ch+rows[y].slice(x+1)};
+ if(L.coat){for(const y of [4,5])body[y]=body[y].replace(/P/g,'C').replace(/p/g,'c')}
+ if(!L.belt)body=body.map(rw=>rw.replace(/B/g,'C'));
+ if(style==='long'&&view!=='left'){for(const y of [0,1]){set(body,y,3,'H');set(body,y,12,'H')}if(view==='up')for(let x=4;x<12;x++){set(body,0,x,'H');set(body,1,x,'H')}}
+ if(style==='long'&&view==='left'){set(body,0,10,'H');set(body,1,10,'H')}
+ if(L.beard){if(view==='down'){head[6]='...OSDDDDDDSO...';head[7]='....ODDDDDDO....';body[0]='...OODDDDDDOO...'}else if(view==='left'){head[6]='...ODDDDSHHHO...';head[7]='....ODDDDSO.....'}}
+ if(L.arm){ // mechanical arm on the character's left side
+  if(view==='down'&&dir==='down'){set(body,1,12,'A');set(body,2,12,'A');set(body,3,12,'A')}
+  if(view==='up'){set(body,1,3,'A');set(body,2,3,'A');set(body,3,3,'A')}
+  if(dir==='left'){body=body.map(rw=>rw.replace(/S/g,'A'));set(body,1,7,'A')}
  }
- if(L.cap){r(X+3,Y+0,10,3,ol);r(X+4,Y+1,8,2,L.cap);const v='#1B1E2B';if(dir==='down')r(X+4,Y+3,8,1,v);if(dir==='left')r(X+2,Y+3,4,1,v);if(dir==='right')r(X+10,Y+3,4,1,v)}
+ return head.concat(body);
+}
+function humanPal(L){
+ const o='#1B1E2B';
+ return {O:o,E:o,H:L.hair,h:shade(L.hair,.78),S:L.skin,s:shade(L.skin,.85),M:shade(L.skin,.72),W:shade(L.skin,1.12),C:L.shirt,c:shade(L.shirt,.8),
+  P:L.pants,p:shade(L.pants,.8),K:L.shoes||'#2A2A33',B:L.belt||L.shirt,D:L.beard||L.hair,A:L.arm||L.skin,Y:L.cap||L.hair,y:shade(L.cap||L.hair,.8),V:shade(L.cap||'#333333',.55)};
+}
+const palCache=new WeakMap();
+function drawChar(L,X,Y,dir,step){
+ if(L.art){drawCustom(L,X,Y,dir,step);return}
+ let pal=palCache.get(L);if(!pal){pal=humanPal(L);palCache.set(L,pal)}
+ shadow(X,Y);drawArt(humanArt(L,dir,step),pal,X,Y,dir==='right');
+}
+/* custom sprites: look.art = {pal:{key:color}, down:[rows], up:[rows], left:[rows], walk?:{down:[[rows],[rows]],…}} — any height ≤ 32 */
+function drawCustom(L,X,Y,dir,step){
+ const A=L.art,view=dir==='right'?'left':dir;
+ const rows=(step&&A.walk&&A.walk[view]&&A.walk[view][step-1])||A[view]||A.down;
+ shadow(X,Y,rows[0].length>16?12:8);drawArt(rows,A.pal,X+Math.floor((16-rows[0].length)/2),Y,dir==='right');
 }
 function drawAndy(L,X,Y,dir,step,t){
  const ol='#1B1E2B';

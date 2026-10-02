@@ -201,7 +201,7 @@ const ZONES={
 };
 
 const NPC={
- ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',long:1},badge:['도착하다','궤도'],
+ ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'},badge:['도착하다','궤도'],
   after:'창밖을 봐요. 우리가 궤도를 돌고 있어요!',
   talk:()=>[
    {say:'일어나요! 드디어 왔어요!'},
@@ -211,7 +211,7 @@ const NPC={
    {say:'이제 배는 곤디아 주위를 빙글빙글 돌아요.'},
    Q.ellie[1],
    {say:'궤도에 도착했으니까 할 일이 많아요. {함교|함교}에 가서 선장님한테 인사해요.',award:['도착하다','궤도']}]},
- dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',long:1,arm:'#B87333'},badge:['선장','우주선'],
+ dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333'},badge:['선장','우주선'],
   after:'선장은 배를 지켜요. 그게 제 일이에요.',
   script:()=>{
    if(f().fixed&&!f().done&&state.badges.includes('선장'))return [
@@ -247,7 +247,7 @@ const NPC={
    {say:'그리고 채소는 우리 밥이에요.'},
    Q.or[1],
    {say:'식량은 충분해요. 이 지구 씨앗 상자 가져가요. 지구 물건은 여기서 아주 귀해요. 하이 로사에서 바꿀 수 있어요.',give:'지구 씨앗 상자',award:['산소','식량']}]},
- andy:{name:'옥테인 기관장',zone:'ship',x:7,y:12,dir:'left',look:{hair:'#9A9AA0',skin:'#B98462',shirt:'#B7652F',pants:'#4A3A2E',belt:'#2B2B30',cap:'#E8962A'},badge:['수리하다'],
+ andy:{name:'옥테인 기관장',zone:'ship',x:7,y:12,dir:'left',look:{hair:'#9A9AA0',skin:'#B98462',shirt:'#B7652F',pants:'#4A3A2E',belt:'#2B2B30',style:'bald',coat:1},badge:['수리하다'],
   status:()=>{
    if(!state.badges.includes('수리하다'))return f().metOwner?'todo':null;
    if(!f().fixed)return hasItem('부품')&&hasItem('연료통')?'todo':'wait';
@@ -282,7 +282,7 @@ const NPC={
    Q.customs[1],
    {say:'좋아요. 도장을 찍어 줄게요. 쾅!',give:'세관 도장'},
    {say:'가라테 {도장|도장} 말고요. 이 도장이에요. 들어가세요.',award:['위험'],set:()=>{f().customs=1}}]},
- gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E'},badge:['연료','출발하다'],
+ gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E',coat:1},badge:['연료','출발하다'],
   status:()=>{
    if(!state.badges.includes('연료'))return 'todo';
    if(!state.badges.includes('출발하다'))return hasItem('지구 씨앗 상자')?'todo':'wait';
@@ -305,7 +305,7 @@ const NPC={
    {say:'저는 기보이. 트래블러예요. 뭐든지 팔아요.'},
    Q.gyvoy[0],
    {say:'연료통이 필요해요? 공짜는 없어요. 지구 물건하고 바꿔요!',award:['연료']}]},
- lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',long:1},badge:['관측하다','행성'],
+ lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1},badge:['관측하다','행성'],
   after:'오늘은 관측하기 좋은 날이에요.',
   talk:()=>[
    {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
@@ -315,7 +315,7 @@ const NPC={
    {say:'저기 엘리베이터를 타면 곤디아까지 내려가요. {궤도 엘리베이터|궤도 엘리베이터}예요.',award:['관측하다','행성']}]},
  trader:{name:'광부',zone:'dock',x:16,y:12,dir:'left',look:{hair:'#3A2A22',skin:'#C48E66',shirt:'#7C6A4A',pants:'#3A3530',cap:'#B5653A'},
   talk:()=>[{say:'저는 아누샤 광산에서 왔어요. 중력이 세서 몸이 늘 무거워요.'},{say:'곤디아는 초록색이죠? 부러워요.'}]},
- terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40'},badge:['발견하다'],
+ terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40',coat:1},badge:['발견하다'],
   after:'도둑은 아직 못 찾았어요. 찾으면 연락할게요.',
   talk:()=>[
    {say:'흠. 성실호 사람이죠? 저는 테렌스 형사예요.'},
@@ -323,7 +323,7 @@ const NPC={
    Q.terence[0],
    Q.terence[1],
    {say:'이 부품, 성실호 거예요? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
- josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433'},badge:['지도','탐험'],
+ josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',coat:1},badge:['지도','탐험'],
   after:'엘리요? 제 손녀의 손녀의… 아주 먼 가족이에요. 잘 부탁해요.',
   talk:()=>[
    {say:'오, 성실호 승무원이죠? 저는 조사이어스예요. 옛날에 그 배 주인이었어요.'},

@@ -3,7 +3,9 @@ import {spawn} from 'node:child_process';import fs from 'node:fs';import path fr
 const ch=process.argv[2]||'ch1';const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const out=path.join(root,'tests/shots',ch);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
 const tmp=fs.mkdtempSync('/tmp/play-');
-const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+import {execFileSync} from 'node:child_process';
+execFileSync('python3',[path.join(root,'build.py'),'--out',path.join(tmp,'built.html')]); // own build: safe when several chapters are tested at once
+const html=fs.readFileSync(path.join(tmp,'built.html'),'utf8');
 const driver=fs.readFileSync(path.join(root,'tests/driver.js'),'utf8');
 const walk=fs.readFileSync(path.join(root,'tests/walk',(process.argv[3]||ch)+'.js'),'utf8');
 fs.writeFileSync(path.join(tmp,'play.html'),html.replace('</body></html>',`<script>${driver}\ntry{localStorage.clear()}catch(e){}\nsetTimeout(()=>__play(${walk}),900);</script>\n</body></html>`));

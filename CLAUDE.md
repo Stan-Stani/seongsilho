@@ -16,7 +16,8 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
    (ownership, who is where, who knows whom, who is alive, titles).
 3. **Audit before every commit/publish.** An agent that has the whole book in context checks every lore claim in the content script
    and returns mismatches with chapter citations. Fix all of them, then publish. Don't patch only the corrections you happen to notice.
-4. Keep it all-ages: the book has graphic violence (see canon "Content warnings").
+4. Tone matches the book (user's choice, 2026-10-01): violence and deaths are shown/described plainly as in the novel, not beyond it;
+   sex stays off-screen. canon "Content warnings" lists where these events are.
 
 ## Checks before publishing
 - `python3 build.py && node tests/validate.mjs` (maps, warps, NPCs, words, questions, glosses, no word taught twice).
