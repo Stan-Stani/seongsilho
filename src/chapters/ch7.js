@@ -301,9 +301,18 @@ const T7={
 };
 
 /* ---------- sprites ---------- */
-const GATH=['......OO','.....OHH','....OHHh','....OHHH','....OSSS','....OSES','....OSSS','.....OSs','......OS','...OOOCC','..OCCCCC','.OCCcCCC','.OCCcCCC','.OSOCCCC','.OSOCCCC','.OSOCcCC','.OSOCCCC','.OSOBBBB','.OSSOCCC','..OOOPPP','....OPPP','....OPPp','....OPPp','....OPPO','....OPPO','....OPPO','....OPPO','....OKKO','...OKKKO','...OOOOO'];
-const gathArt=(shirt,dark)=>({pal:{O:OL,E:OL,H:'#6E3A28',h:'#552B1E',S:'#D99A78',s:'#B97B5C',C:shirt,c:dark,B:'#3A3530',P:'#4A4F5E',p:'#3A3E4A',K:'#2E2A26'},
- down:M(GATH),up:M(GATH.map((s,i)=>i>=4&&i<=7?s.replace(/[SEs]/g,'H'):s))});
+/* 3 m Gath — same sprite as 3장 (pale-rust skin, heavy jaw, flattened nose, robes) */
+function gath(robe,robeS,robeD,hair){ // a 3 m Gath, 16×28: pale-rust skin, heavy jaw, flattened nose, robes
+ return {pal:{O:'#1B1E2B',E:'#1B1E2B',S:'#C98A66',s:'#A86B4E',N:'#94573E',M:'#7E4A36',H:hair,h:'#3A2418',R:robe,r:robeS,d:robeD,B:'#6E5A3A',K:'#4A3A2E'},
+ down:['.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OsESSSSEsO...','...OSSNNNNSSO...','...OSSSSSSSSO...','...OsSMMMMSsO...','....OssssssO....','.....OSSSSO.....',
+  '..OORRRRRRRROO..','.ORRRRRRRRRRRRO.','ORRrRRRRRRRRrRRO','ORRrRRRddRRRrRRO','ORrrRRRddRRRrrRO','ORrORRRddRRROrRO','ORrOBBBBBBBBOrRO','ORrORRRddRRROrRO','ORrORRRddRRROrRO','OSsORRRddRRROsSO',
+  '.OOORRRddRRROOO.','...ORRRddRRRO...','...ORRrddrRRO...','...ORrrddrrRO...','...ORrrOOrrRO...','...OrrO..OrrO...','...OKKO..OKKO...','...OOOO..OOOO...'],
+ up:['.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHHHHHHHHO...','...OHHhhhhHHO...','...OHHHHHHHHO...','...OsHHHHHHsO...','....OssssssO....','.....OSSSSO.....',
+  '..OORRRRRRRROO..','.ORRRRRRRRRRRRO.','ORRrRRRRRRRRrRRO','ORRrRRRRRRRRrRRO','ORrrRRRRRRRRrrRO','ORrORRRRRRRROrRO','ORrOBBBBBBBBOrRO','ORrORRRRRRRROrRO','ORrORRRRRRRROrRO','OSsORRRRRRRROsSO',
+  '.OOORRRRRRRROOO.','...ORRRRRRRRO...','...ORRrRRrRRO...','...ORrrRRrrRO...','...ORrrOOrrRO...','...OrrO..OrrO...','...OKKO..OKKO...','...OOOO..OOOO...'],
+ left:['.....OOOOOO.....','....OHHHHHHO....','...OHHHHHHHHO...','..OSSSHHHHHHO...','..OSESSSSHHHO...','.ONNSSSSSsHHO...','..OSSSSSSsHO....','..OMMSSSSsO.....','...OssssssO.....','.....OSSSO......',
+  '....OORRRRRO....','...ORRRRRRRRO...','...ORRRRRRRRO...','...ORRrRRRRRO...','...ORrrrRRRRO...','...ORrrrRRRRO...','...OBrrrBBBBO...','...ORrrrRRRRO...','...ORrrrRRRRO...','...ORSSrRRRRO...',
+  '...ORSSRRRRRO...','...ORRRRRRRRO...','...ORRRRRRRrO...','...ORRRRRRrrO...','...ORRrRRRrrO...','....OrrOOrrO....','...OKKKOKKKO....','...OOOOOOOOO....']}}
 const DAVE=['......OO','....OOQQ','...OQQQQ','...OQqMM','...OQMEM','...OQMMM','...OQqMm','....OQQm','.....OQQ','..OOOQQQ','.OQQMMQM','.OQMMmQM','OQMOQMMQ','OQMOQMMm','OQMOQmMM','OQGOQMMQ','.OOOQQQQ','...OQMMQ','...OQMmO','...OQMMO','...OQmMO','...OQMQO','...OKKKO','...OOOOO'];
 const daveArt=(q,qd,glow)=>({pal:{O:OL,E:OL,Q:q,q:qd,M:'#C9665A',m:'#9A4840',G:glow,K:'#7C8E96'},down:M(DAVE),up:M(DAVE.map(s=>s.replace('E','M')))});
 /* the 막간 prism: a projector disc that shows the interlude's main character as a hologram */
@@ -316,9 +325,9 @@ const HOLO_TE={pal:{a:'#BFF5EA',b:'#69CFD8',c:'#2E8F98',l:'#E8FFFB',y:'#1E5A5E',
 const FINN={hair:'#E0C070',skin:'#F0C9A4',shirt:'#2F8F8A',pants:'#2E3548'};
 const FINN_DOWN={art:{pal:{O:OL,H:'#E0C070',S:'#F0C9A4',E:'#9A6A4A',C:'#2F8F8A',c:'#25726E',P:'#2E3548',K:'#2A2A33'},
  down:['..OOOO..........','.OHHHHOOOOOOOOO.','OHSSSOCCCcCCPPKO','OHSESOCCCcCCPPKO','OHSSSOCCCcCCPPKO','.OOOOOOOOOOOOOO.']}};
-const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'};
-const DEJEAN={hair:'#A8A8AE',skin:'#C99470',shirt:'#40407A',pants:'#40407A',belt:'#7A3E8A',arm:'#B87333'};
-const ZELINDA={hair:'#A89070',skin:'#EDC3A0',shirt:'#2E4A6A',pants:'#26303E',style:'bun',coat:1,belt:'#C9A64A'};
+const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'};
+const DEJEAN={hair:'#8A8A90',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333',lashes:1,lips:'#A8645E'};
+const ZELINDA={hair:'#A89070',skin:'#EDC3A0',shirt:'#2E4A6A',pants:'#26303E',style:'bun',coat:1,belt:'#C9A64A',lashes:1,lips:'#B06A70'};
 const GYVOY={hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E',coat:1};
 const BENSATH={hair:'#3A2A22',skin:'#C48E66',shirt:'#4E5A3A',pants:'#3A4030',belt:'#2B2B30',cap:'#4E5A3A'};
 const DAVE1=daveArt('#D8EEF4','#A9CBD6','#F2B98E'),DAVE2=daveArt('#F3DCCB','#D8B4A0','#FFD27A');
@@ -439,24 +448,25 @@ const JUMP=()=>[
 
 const NPC={
  /* ===== 성실호 · act 1 ===== */
- otylia:{name:'오틸리아',zone:'ship',x:3,y:3,dir:'down',look:{hair:'#C8C0B0',skin:'#EDC3A0',shirt:'#8C4A62',pants:'#3D3550',style:'long',coat:1},badge:['돌아가시다','믿다'],
+ otylia:{name:'오틸리아',zone:'ship',x:3,y:3,dir:'down',look:{hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'},badge:['돌아가시다','믿다'],
   after:'엄마는 끝까지 우리를 지켰어요. 저는 그걸 믿어요.',
   talk:()=>[
    {say:'와 줘서 고마워요. 저는 오틸리아예요. 핀의 쌍둥이예요.'},
-   {say:'핀, 넌 아직 젊구나.'},
+   {say:'핀, 넌 아직 젊구나. 나는 이렇게 늙었는데.'},
    {who:'핀',say:'이제 나한테 누나가 둘이네.'},
-   {say:'핀… 할 말이 있어요. 제 기억을 보여 줄게요.'},
-   {who:'기억',say:'하프니르. {고스트|고스트}들이 저를 잡으러 와요.'},
+   {say:'핀… 할 말이 있어. 내 기억을 보여 줄게.'},
+   {who:'기억',say:'하프니르. {고스트|고스트}들이 오틸리아를 잡으러 와요.'},
    {who:'기억',say:'누가 고스트들을 쏴요. 그때 하늘에서 미사일이 떨어져요.'},
    {who:'기억',say:'쾅! 엄마, 아빠, 버라이카 {새언니|새언니}가 거기 있었어요.'},
+   {say:'핀, 엄마하고 아빠가…'},
    Q.otylia[0],
    {who:'핀',say:'아니야… 그럴 리가 없어.'},
    Q.otylia[1],
    {who:'핀',say:'다 살아 계신 줄 알았어. 집에 가면 만날 줄 알았어.'},
    {say:'젤린다 언니하고 에버렛 오빠도 여기 있어요. 같이 얘기해요.',award:['돌아가시다','믿다'],set:()=>{f().met=1}}]},
- gath:{name:'개스 승무원',zone:'ship',x:2,y:3,dir:'right',look:{art:gathArt('#5C6E86','#465670')},
-  talk:()=>[{say:'{성녀|성녀} 오틸리아님이 오셨어요!'},{say:'오틸리아님은 곤디아에서 우리 개스를 지켜 줬어요.'},{say:'이제 우리가 오틸리아님을 지켜요.'}]},
- laurella:{name:'로렐라',zone:'ship',x:10,y:2,dir:'down',look:{hair:'#4A3426',skin:'#EBC09C',shirt:'#5A7A9A',pants:'#3A3A48',style:'long'},
+ gath:{name:'레나타',zone:'ship',x:2,y:3,dir:'right',look:{art:gath('#E6E1D4','#C9C2B0','#D2533F','#7A4A32')},
+  talk:()=>[{say:'{성녀|성녀} 오틸리아님이 오셨어요!'},{say:'레나타는 간호사예요. 오틸리아님이 너무 말랐어요.'},{say:'오틸리아님은 곤디아에서 개스를 지켜 줬어요. 이제 우리가 지켜요.'}]},
+ laurella:{name:'로렐라',zone:'ship',x:10,y:2,dir:'down',look:{hair:'#4A3426',skin:'#EBC09C',shirt:'#5A7A9A',pants:'#3A3A48',style:'long',lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'저는 오틸리아 딸 로렐라예요.'},{say:'할머니, 할아버지 장례식도 못 했어요.'},{say:'곤디아는 점령당했어요. 이제 집에 못 가요.'}]},
  zelinda:{name:'젤린다',zone:'ship',x:8,y:3,dir:'down',look:ZELINDA,badge:['의무'],hide:()=>!!f().jump,
   status:()=>!f().met?null:undefined,
@@ -517,12 +527,13 @@ const NPC={
    {who:'오틸리아',say:'핀, 우리는 너를 믿어.'},
    {say:'이 레콜 병은 버려 주세요. 다시는 안 먹어요.',give:'빈 레콜 병'},
    {say:'이제 진실을 알아요. 선장님한테 가요. 도망쳐야 돼요.',award:['진실','잊다','조종당하다'],set:()=>{f().truth=1}}]},
- pablo:{name:'파블로',zone:'ship',x:23,y:3,dir:'down',look:{art:gathArt('#B5653A','#8E4E2C')},badge:['목격자'],
+ pablo:{name:'파블로',zone:'ship',x:23,y:3,dir:'down',look:{art:gath('#CDB894','#B09C74','#8A7A58','#5A3A2A')},badge:['목격자'],
   status:()=>!f().woke?null:undefined,
-  script:()=>!f().woke?[{say:'파블로는 필터를 고쳐요. 일이 많아요.'},{say:'파블로는… 할 말이 있어요. 그런데 무서워요. 나중에요.'}]:null,
+  script:()=>!f().woke?[{say:'파블로는 필터를 고쳐요. 성 오틸리아님이 오셨어요.'},{say:'파블로는… 당신네한테 할 말이 있어요. 그런데 무서워요. 나중에요.'}]:null,
   after:'파블로는 봤어요. 파블로는 거짓말 안 해요.',
   talk:()=>[
-   {say:'파블로는 그날 밤 여기 있었어요. 필터를 고쳤어요.'},
+   {say:'당신네 돌아왔어요! 파블로는 그날 밤 여기 있었어요.'},
+   {say:'파블로는 필터를 고치고 있었어요.'},
    {say:'기보이 씨가 주인 숙소에 들어갔어요.'},
    {say:'그다음에 엘리 씨 비명을 들었어요.'},
    Q.pablo[0],
@@ -675,9 +686,8 @@ const NPC={
 };
 const FOLLOW=null;
 
-const INTRO=[{who:'성실호',say:'삐— 관문 통과. 고향 별이에요.'},{who:'성실호',say:'떠난 지 삼십일 년 팔 개월이 지났어요.'},
- {who:'폴카다브 통신',say:'핀… 나야, 오틸리아.'},{who:'폴카다브 통신',say:'핀, 다 엉망이 됐어.'},
- {who:'성실호',say:'폴카다브 도킹 완료. 손님들이 주인 숙소로 와요.'}];
+const INTRO=[{who:'오틸리아 (통신)',say:'핀, 도와줘. 제발.'},{who:'성실호',say:'폴카다브 도킹 완료.'},
+ {who:'성실호',say:'떠난 지 31년 8개월. 고향은 많이 변했어요.'},{who:'성실호',say:'손님들이 주인 숙소로 와요.'}];
 const DONE=['7장 끝! 성실호는 카포 프로이스 관문 앞에 있어요.','기보이는 반물질 폭탄을 싣고 같은 곳으로 와요.','이야기는 계속돼요. 일지에서 단어를 복습해요.'];
 
 function questText(){

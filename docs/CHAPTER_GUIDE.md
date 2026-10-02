@@ -81,7 +81,7 @@ Maps are arrays of equal-length strings, at least 11×10 (the view), typically 2
 terminal pipes engine airlock ring plate planetWin crate stall lift tree lawn stone dome cable police cafe flowers pond bench.
 Put one `terminal` (spaced-review console) in the chapter's hub zone. `rooms:[[x0,y0,x1,y1,'label']]` names areas in the corner tag.
 `warps:{'x,y':{to,x,y,dir,lock?:()=>false|'Korean reason'}}` — land on a walkable non-warp tile. `spots:{'x,y':'text'}` — inspectable NON-walkable
-tiles, reachable from a walkable neighbour that no NPC stands on. `dark:()=>[x0,y0,x1,y1]|null` = lights-out room with a torch circle.
+tiles, reachable from a walkable neighbour that no NPC stands on. `dark:()=>[x0,y0,x1,y1]|null` = lights-out room with a torch circle. `slow:1.6` on a zone = the player walks slower (high gravity).
 
 ### Tile drawing
 `(X,Y,x,y,t)` → draw a 16×16 tile at screen X,Y for map cell x,y at time t (ms). Helpers: `r(x,y,w,h,color)`, `hash(x,y)` (0–99 stable noise),

@@ -7,7 +7,7 @@ CHAPTERS.push({id:'ch4',n:'4장',title:'카이발',place:'성실호 · 나트 ·
    Hoa Quinzu. Aboard: Finn, Ellie, "Gyvoy" (mission leader; nobody suspects him), Dejean, astrogator Uemi-Jubalee, Pablo,
    the Daves, the merc squads (Sgt Bensath — secretly Gyvoy's, nobody knows; Fomki's and Pandiana's teams; Edusal), ~9,000 Gath.
    The Ratarajan ship Woiykan warns of a Mara Yama fleet refuelling at de Verya (only mentioned). Dejean sets a 5-week limit.
-   Kajval: a billion Celestials killed by the Crystal Gun 6,000 years ago; the air froze into dust that fills the old ocean
+   Kajval: a billion Celestials killed by the Crystal Gun 6,000 years ago; the air was turned into crystal powder that fills the old ocean
    basins; vacuum; lava rivers; dead herds and birds. The Natt is a human crawling town. Elsbeth McQuillan "just takes you there".
    Raid on compound BK37: saberstone moat — Edusal and all of Fomki's team die, locksmith Mique Odox is shot through the helmet,
    Bensath's men are hit; Ellie (ordered by Gyvoy to stay in the tank) plans it, Elsbeth fires missiles at two hoodoos → causeway; Elsbeth's
@@ -521,7 +521,7 @@ const ZONES={
   spots:{'12,5':'새가 하늘에서 떨어진 그대로 있어요. 깃털에 수정이 된 공기가 반짝여요.','1,15':'작은 새. 육천 년 동안 여기 누워 있었어요.',
    '17,7':'들소예요. 쓰러진 그대로 죽었어요. 털에 하얀 수정이 반짝여요.','16,8':'들소 떼예요. 모두 같은 쪽을 보고 있어요.','17,9':'들소예요. 만지면 가루가 떨어져요.',
    '4,5':'죽은 숲이 끝없이 이어져요. 후두 정원은 80킬로미터예요.','4,11':'검은 나무. 손을 대면 부서져서 조각이 돼요.','5,12':'죽은 숲이에요. 잎이 하나도 없어요.',
-   get '7,4'(){return f().causeway?'엘리의 미사일로 무너진 후두. 밑동만 남았어요.':'후두. 1킬로미터 높이의 돌기둥이에요. 꼭대기가 안 보여요.'},
+   get '7,4'(){return f().causeway?'엘리의 작전으로 무너진 후두. 밑동만 남았어요. 밑동만 남았어요.':'후두. 1킬로미터 높이의 돌기둥이에요. 꼭대기가 안 보여요.'},
    get '20,4'(){return f().causeway?'무너진 후두. 돌 조각이 담 너머까지 날아갔어요.':'후두. 아주 높아요. 밑이 조금 부서져 있어요.'},
    '20,10':'죽은 나무들이에요. 여기는 용암이 없어요. 화산은 멀리 있어요.','8,6':'검은 바위예요. 화산에서 날아온 돌이에요.',
    get '11,11'(){return f().causeway?'빈 미사일 거치대예요. 탱크는 해자 쪽으로 갔어요.':'엘스베스의 탱크. 엘리가 안에 있어요.'},'9,14':'다른 탱크예요. 뒷문으로 나트에 돌아갈 수 있어요.'},
@@ -570,7 +570,7 @@ const ZONES={
 "#.DDD.DDD..DDD.DDD.#",
 "#.DDD.DDD..DDD.DDD.#",
 "#.............m....#",
-"#..m.............m.#",
+"#..m......m......m.#",
 "#########.##########",
 "######ssssssss######",
 "######ssssssss######",
@@ -855,7 +855,7 @@ const NPC={
    return [
     {say:'빨리! 위로 올라와요!'},
     {say:'계단에 {지뢰|지뢰}를 깔아요!'},
-    {who:'핀',say:'지뢰 떨어뜨렸어요! 30초 후에 터져요!'},
+    {who:'핀',say:'지뢰 떨어뜨렸어요! 30초 후에 켜져요!'},
     {who:'…',say:'번쩍! 계단 아래가 보라색으로 빛나요.',set:()=>{f().mined=1;f().boomAt=Date.now()}},
     {who:'…',say:'고스트 열두 대가 쓰러져요. 미사일이 계단 하나를 부숴요.'},
     {who:'…',say:'틈을 뛰어넘던 대원 한 명이 총에 맞았어요.'},
@@ -875,7 +875,7 @@ const NPC={
     {who:'엘스베스',say:'그러니까 저도 성실호에 타요. 보물은 똑같이 나눠요.'},
     {who:'기보이',say:'좋아요. 거래예요.',set:()=>{f().done=1}},
     {who:'…',say:'드롭십이 불을 뿜어요. 바닥이 녹아요. 천장을 긁으면서 아치 밖으로 날아가요.'},
-    {who:'기보이',say:'태워요! 출발!',finale:1}]},
+    {who:'기보이',say:'핀, 최대 출력! 출발!',finale:1}]},
   after:'그 사람들의 희생을 기억해요.',
   talk:()=>[
    {say:'왔어요? 여기 봐요. 모두 다섯 명이에요.'},
