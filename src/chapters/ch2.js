@@ -25,7 +25,7 @@ const DICT={
  '추격하다':{k:'뒤에서 계속 쫓아가요.',e:'to chase, to pursue',ex:'적의 배가 레스타리를 추격해요.',hj:'追擊 · 擊 = 공격의 격'},
  '공격하다':{k:'먼저 싸움을 걸고 쏘거나 때려요. 반대는 방어.',e:'to attack',ex:'고스트들이 부두를 공격했어요.',hj:'攻擊 · 擊 = 추격의 격'},
  '죽이다':{k:'다른 사람이나 동물을 죽게 해요. 죽다 ≠ 죽이다.',e:'to kill',ex:'고스트가 이치카를 죽였어요.',hj:'고유어 · 죽다 + -이- = 죽게 하다'},
- '시체':{k:'죽은 사람이나 동물의 몸.',e:'corpse, dead body',ex:'베이질이 시체를 은색 천으로 덮었어요.',hj:'屍體 · 體 = 몸 · 체육의 체'},
+ '시체':{k:'죽은 사람이나 동물의 몸.',e:'corpse, dead body',ex:'경찰이 강에서 시체를 발견했어요.',hj:'屍體 · 體 = 몸 · 체육의 체'},
  '범인':{k:'나쁜 일, 범죄를 한 사람.',e:'culprit, criminal',ex:'그르시아는 범인을 찾고 싶어요.',hj:'犯人 · 人 = 사람 · 외국인의 인'},
  '거짓말하다':{k:'사실이 아닌 말을 해요.',e:'to lie',ex:'아이가 엄마한테 거짓말했어요.',hj:'고유어 · 거짓 + 말 · 반대: 참말'},
  /* glosses for words that appear in lines but are not badges */
@@ -46,8 +46,8 @@ const DICT={
  '수류탄':{k:'던지면 터지는 작은 폭탄.',e:'grenade'},
  '네트워크 노드':{k:'잔해 안의 옛날 기계 두뇌. 여기서 다른 기계를 움직일 수 있어요.',e:'network node'},
  '전자빔 절단기':{k:'크레인 레일에 달린, 금속을 자르는 강한 빛 기계.',e:'electron-beam cutter'},
- '콘클루더':{k:'렘넌트 시대의 아주 강한 저격총.',e:'concluder (Remnant sniper rifle)'},
- '렘넌트':{k:'아주 옛날, 큰 전쟁 뒤의 시대.',e:'Remnant (era)'},
+ '컨클루더':{k:'렘넌트 시대의 아주 강한 저격총.',e:'concluder (Remnant sniper rifle)'},
+ '렘넌트':{k:'아주 옛날, 큰 전쟁이 계속되던 시대.',e:'Remnant (era)'},
  'ZPZ 발생기':{k:'관문을 지나게 해 주는 아주 귀한 엘로힘 기계.',e:'ZPZ generator'},
  '피투성이':{k:'몸이 피로 가득해요.',e:'covered in blood'},
  '복수하다':{k:'나한테 나쁜 일을 한 사람한테 똑같이 갚아요.',e:'to take revenge'},
@@ -99,11 +99,11 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  miteris:[
   {w:'위성',ask:'파이브는 행성 주위를 도는 작은 달이에요. ___이에요.',opts:[['위성',1],['행성',0,'행성은 별 주위를 돌아요. 행성 주위를 도는 달은 "위성".'],['위험',0,'소리가 조금 비슷해요! 위험은 다칠 수 있는 거예요. 달은 "위성".']]},
-  {w:'얼음',ask:'저 행성은 아주 추워요. 땅의 3분의 2가 ___이에요.',opts:[['얼음',1],['얼굴',0,'얼굴은 눈, 코, 입이 있는 곳이에요! 언 물은 "얼음".'],['소금',0,'소금도 하얗지만 짜요. 추워서 언 물은 "얼음".']]},
+  {w:'얼음',ask:'저 행성은 아주 추워요. 행성의 3분의 2가 ___이에요.',opts:[['얼음',1],['얼굴',0,'얼굴은 눈, 코, 입이 있는 곳이에요! 언 물은 "얼음".'],['소금',0,'소금도 하얗지만 짜요. 추워서 언 물은 "얼음".']]},
  ],
  tabia:[
   {w:'계약',ask:'돈, 일, 날짜를 정하고 둘이 사인해요. 그게 ___이에요.',opts:[['계약',1],['경기',0,'경기는 시합이에요. 사인하는 약속은 "계약".'],['규칙',0,'규칙은 모두 지키는 법이에요. 둘이 사인하는 약속은 "계약".']]},
-  {w:'계약',ask:'일을 시작하기 전에 꼭 계약서에 사인___.',opts:[['해야 돼요',1],['할 수 있어요',0,'틀린 말은 아니에요. 그런데 "꼭"이 있어요 → "해야 돼요".']]},
+  {w:'계약',ask:'일을 시작하기 전에 꼭 계약서에 사인___.',opts:[['해야 돼요',1],['해서 돼요',0,'"돼요" 앞에는 "-아/어야"가 와요 → "해야 돼요".']]},
  ],
  davrux:[
   {w:'파다',ask:'삽으로 땅을 ___.',opts:[['파요',1],['팔아요',0,'팔다는 돈을 받고 주는 거예요! 땅에 구멍을 만들면 "파요".'],['타요',0,'타다는 차나 배에 올라가는 거예요. 구멍을 만들면 "파요".']]},
@@ -118,7 +118,7 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'경호원',ask:'우리는 고스트하고 싸울 수 있어요. 우리를 ___으로 써요.',opts:[['경호원',1],['범인',0,'범인은 나쁜 일을 한 사람이에요! 지키는 사람은 "경호원".']]},
  ],
  tose:[
-  {w:'거짓말하다',ask:'우리는 봤어요. 토셰는 지금 ___ 있어요.',opts:[['거짓말하고',1],['설명하고',0,'설명처럼 들려요. 그런데 사실이 아니에요 → "거짓말하고 있어요".'],['기억하고',0,'토셰는 다 기억해요. 사실이 아닌 말은 "거짓말하고 있어요".']]},
+  {w:'거짓말하다',ask:'타비아는 수류탄 때문에 죽지 않았어요. 토셰는 지금 ___ 있어요.',opts:[['거짓말하고',1],['설명하고',0,'설명처럼 들려요. 그런데 사실이 아니에요 → "거짓말하고 있어요".'],['기억하고',0,'토셰는 다 기억해요. 사실이 아닌 말은 "거짓말하고 있어요".']]},
  ],
  grssia:[
   {w:'죽이다',ask:'고스트가 이치카를 ___.',opts:[['죽였어요',1],['죽었어요',0,'죽다는 자기가 죽는 거예요. 고스트가 한 일 → "죽였어요".'],['지켰어요',0,'지켰으면 이치카가 살았어요… 고스트가 이치카를 "죽였어요".']]},
@@ -126,7 +126,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  basylB:[
   {w:'시체',ask:'죽은 사람의 몸을 ___라고 해요.',opts:[['시체',1],['시계',0,'시계는 시간을 봐요. 죽은 사람의 몸은 "시체".'],['상태',0,'상태는 건강이나 기분이에요. 죽은 몸은 "시체".']]},
-  {w:'시체',ask:'시체를 여기 두면 안 돼요. 레스타리로 ___ 돼요.',opts:[['보내야',1],['보내서',0,'"돼요" 앞에는 "-아/어야"가 와요 → "보내야 돼요".']]},
+  {w:'시체',ask:'타비아의 헬멧을 여기 두면 안 돼요. 레스타리로 ___ 돼요.',opts:[['보내야',1],['보내서',0,'"돼요" 앞에는 "-아/어야"가 와요 → "보내야 돼요".']]},
  ],
  cafe:[ // 1장 words, no badges
   {ask:'우주비행기가 브레이커빌에 ___. 방금 왔어요.',opts:[['도착했어요',1],['출발했어요',0,'출발은 떠나는 거예요. 방금 왔어요 → "도착했어요".']]},
@@ -371,8 +371,8 @@ const ghostDown=["................","....OOOOOOOO....","...OLLLLLLLLO...","...OV
 const GHOST={pal:{O:OL,L:'#6E7480',D:'#3E434D',d:'#2A2E36',V:'#B48CFF',W:'#9AA0AA'},down:ghostDown,up:ghostDown,left:ghostDown};
 const GHOSTWRECK={pal:{O:OL,L:'#6E7480',D:'#3E434D',V:'#5A4A7A',W:'#9AA0AA'},down:["................","..OOO.....OOO...",".OLDDO...ODDLO..",".ODVDO.OOODVO...","..OOO.OWWO.OOO..","....OOODDOO.OLO.","...OLDDDDDLO.OO.","....OOOOOOO....."]};
 const ghostLook={get art(){return f().attack===1?GHOST:GHOSTWRECK}};
-const BODY={pal:{O:OL,H:'#E9ECEF',W:'#C9CED3',w:'#9AA1A8',K:'#2A2A33',R:'#7A1E1E',r:'#5A1616'},down:["................","...OOOO.........","..OHHHHO.OOOOOO.",".OHHWWWOOHHHWWWO",".OWWWWWWWWWWWWKO","OWWWwWWWWWwWWWKO","OwwwwwwwwwwwwwKO",".OOOOOOOOOOOOOO.","RRrRR...........",".RRR............"]};
-const BODY_FALLEN={pal:{O:OL,S:'#EAC4A0',H:'#1E1E24',C:'#2E3B48',c:'#232D38',P:'#26303C',K:'#2A2A33',R:'#7A1E1E',r:'#5A1616'},down:["................","..OOOO..........",".OHHHSO.OOOOOOO.","OHHHSSOOCCCPPPKO","OHHHHSOCCcCPPPKO",".OOOOOOCCCCPPPKO","......OOOOOOOOO.","..RRrRRRr.......","...RRRrRR.......","....RRR........."]};
+const SCORCH={pal:{O:'#1E1E22',D:'#2E2C2A',d:'#3E3A36',E:'#B8703A',G:'#5A4A7A'},down:["................","................","....dddd.dd.....","..ddDDDDddDDd...",".dDDOOODDDOODd..","..dDDOOOOODDdd..","...ddDDEDDdd.G..","....d.dddd......"]};
+const HELMET={pal:{O:OL,H:'#E9ECEF',W:'#C9CED3',w:'#9AA1A8'},down:["................","................","......OOOO......","....OOHHHHOO....","...OHHWWWWWWO...","..OWWWWWWWWWWO..","..OwWWWwWWWWwO..","..OwwwwwwwwwwO..","...OOOOOOOOOO..."]};
 const POD={pal:{O:OL,F:'#5F6E7A',f:'#46525C',C:'#D9D2BE',c:'#B9B19B',get G(){return Math.floor(performance.now()/500)%2?'#9FD7E8':'#5FA7C0'}},
  down:["................","................","..OOOOOOOOOOOO..",".OFFFFFFFFFFFFO.",".OFGGGGGGGGGGFO.",".OFCCCCCCCCCCFO.",".OFCcCCCCCCcCFO.",".OFCCCCCCCCCCFO.",".OFCCCCCCCCCCFO.",".OFCcCCCCCCcCFO.",".OFCCCCCCCCCCFO.",".OFCCCCCCCCCCFO.",".OFFFFFFFFFFFFO.",".OffffffffffffO.","..OOOOOOOOOOOO..","................"]};
 
@@ -462,7 +462,7 @@ const ZONES={
   rooms:[[1,7,25,8,'포츠헤드 · 부두'],[13,5,13,6,'포츠헤드 · 다리'],[1,11,9,15,'브레이커빌 · 로지'],[18,9,25,11,'브레이커빌 · 감정사 오두막'],[20,12,25,16,'브레이커빌 · 비행장']],
   warps:{'13,4':{to:'wreck',x:11,y:13,dir:'up',lock:()=>!f().daves?'플렉살 팀만 들어가요. 계약이 먼저예요.':(f().mapped&&!f().attack)&&'밤이에요. 잔해 문이 닫혔어요.'},
    '23,15':{to:'bubbletown',x:23,y:5,dir:'down',lock:()=>f().attack===1&&'지금은 못 떠나요! 공격 중이에요!'}},
-  spots:{'1,6':'초록색 조류가 바다를 덮었어요. 2미터 두께. 빠지면 못 나와요.','2,6':'크레인 레일 기둥. 녹이 많이 슬었어요.','12,5':'열린 버블. 은색 천이 바다 위에 떠 있어요.',
+  spots:{'1,6':'초록색 조류가 바다를 덮었어요. 2미터 두께. 빠지면 못 나와요.','2,6':'크레인 레일 기둥. 녹이 많이 슬었어요.','12,5':'열린 버블. 잘라 낸 은색 조각들이 바다 위에 떠 있어요.',
    '4,9':'은색 버블 조각으로 만든 집이에요.','7,11':'로지예요. 안에서 수프 냄새가 나요.','20,10':'감정사의 오두막. 옛날 물건이 가득해요.','11,8':'아크 등이에요. 밤에도 부두가 밝아요.',
    '14,12':'녹슨 기계 조각. 소금이 하얗게 붙었어요.','22,14':'미테리스의 우주비행기예요.',get '14,5'(){return f().attack===2?'크레인 레일이 무너져서 바다에 빠졌어요.':'잔해 옆 다리예요. 아래는 조류 바다예요.'}},
   npcs:['tabia','davrux','guard','dave','dave2','grssia','ichika','ichikaBody','tabiaBody','tose','basylB','keeper','finnB','miterisB','ghost1','ghost2','ghost3']},
@@ -494,7 +494,7 @@ const ZONES={
 
 const NPC={
  /* ---------------- Lestari ---------------- */
- uzoma:{name:'우조마 선장',zone:'lestari',x:5,y:4,dir:'down',look:{hair:'#3A3436',skin:'#8A5A3C',shirt:'#1E1E22',pants:'#3A3A44',belt:'#6B5A3A',style:'short'},
+ uzoma:{name:'우조마 선장',zone:'lestari',x:5,y:4,dir:'down',look:{hair:'#3A3436',skin:'#8A5A3C',shirt:'#1E1E22',pants:'#3A3A44',belt:'#6B5A3A',style:'bun',lashes:1,lips:'#9A5A5A'},
   status:()=>{const F=f();if(!F.captain)return 'todo';if(!F.gift)return hasItem('피의 병')?'todo':'wait';return null},
   script:()=>{const F=f();
    if(!F.captain)return null;
@@ -508,7 +508,7 @@ const NPC={
      {who:'핀',say:'(통신) 그런데 가끔 꿈을 꿔요. {프레임 꿈|프레임 꿈}이에요.'},
      {say:'모두 구명 침대에 누워요. 엘리, 끝나면 센서를 봐요.',set:()=>{f().gift=1}}]}
    if(!F.ambush)return [{say:'{프레임|프레임}이 끝나면 엘리가 센서를 볼 거예요.'}];
-   if(!F.beam)return [{say:'미사일이에요! 레스타리에는 무기가 없어요!'},{say:'핀 씨는 엔진실에 있어요. 빨리!'}];
+   if(!F.beam)return [{say:'미사일이에요! 우리 방어 포드로는 부족해요!'},{say:'핀 씨는 엔진실에 있어요. 빨리!'}];
    return [{say:'이 배를 오래 탔는데… 엔진이 무기였어요? 처음 알았어요.'},{say:'잘 다녀와요. 엔포 가문은 계약을 꼭 지켜요.'}]},
   talk:()=>[
    {say:'왔어요? 저는 우조마, 레스타리의 선장이에요.'},
@@ -530,14 +530,14 @@ const NPC={
    Q.ellie[0],
    {who:'레스타리',say:'경고! 미사일 아홉 개 접근!'},
    Q.ellie[1],
-   {say:'레스타리에는 무기가 없어요! 핀은 엔진실에 있어요. 가요!',award:['추격하다','공격하다'],set:()=>{f().ambush=1}}]},
+   {say:'우리 무기로는 못 막아요! 핀은 엔진실에 있어요. 가요!',award:['추격하다','공격하다'],set:()=>{f().ambush=1}}]},
  basyl:{name:'베이질 목사',zone:'lestari',x:17,y:2,dir:'down',look:{hair:'#ECECEC',skin:'#D9A88A',shirt:'#5A3A5E',pants:'#3A2E3A',style:'bald',coat:1},badge:['거짓말하다'],
   status:()=>f().captain?undefined:null,
   script:()=>f().captain?null:[{say:'(꿀꺽) 오, 새 얼굴. 선장님 먼저 만나요. 큐폴라에 있어요.'}],
   after:'관문 앞에서는 기도도 많이, 술도 조금. 하하.',
   talk:()=>[
    {say:'오, 새 얼굴. 저는 베이질. 목사이고, 옛날 물건 {감정사|감정사}예요.'},
-   {say:'손가락 줘요. 따끔! 피 한 방울.'},
+   {say:'타비아 부선장님이 벌써 손가락을 찔렀죠? 그 피 한 방울.'},
    {say:'피를 뜨겁게 해서 가루로 만들어요. 그리고 이 유리병에 넣어요.'},
    {say:'관문은 정직한 피만 받아요. 피는 거짓말 안 해요.'},
    Q.basyl[0],
@@ -547,9 +547,9 @@ const NPC={
  tose1:{name:'토셰',zone:'lestari',x:21,y:5,dir:'left',look:{art:TOSE},
   script:()=>f().ambush&&!f().beam?[{say:'내 뒤에 있어요.'}]:null,
   talk:()=>[{say:'…토셰. 경비예요.'},{say:'기보이 씨가 저를 보냈어요. 핀 씨를 지키라고요.'},{say:'제 눈이요? 이 눈은 날 수 있어요. 드론이에요.'},{who:'…',say:'토셰의 툭 튀어나온 눈이 빠져서 윙— 날아가요.'}]},
- grssia1:{name:'그르시아',zone:'lestari',x:13,y:2,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E'},
+ grssia1:{name:'그르시아',zone:'lestari',x:13,y:2,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E',lashes:1,lips:'#B8606A'},
   talk:()=>[{say:'저는 그르시아. 엔포 가문 {경비|경비}예요.'},{say:'이치카하고 저는 오래 같이 일했어요. 토셰는 새 사람이에요.'}]},
- ichika1:{name:'이치카',zone:'lestari',x:13,y:4,dir:'right',look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long'},
+ ichika1:{name:'이치카',zone:'lestari',x:13,y:4,dir:'right',look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long',lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'이치카예요. 관문을 지날 때는 꼭 누워요.'},{say:'처음에는 머리가 빙글빙글해요. 하하.'}]},
  finn:{name:'핀',zone:'lestari',x:5,y:10,dir:'left',look:FINN,badge:['가속'],
   hide:()=>!!f().bubble,
@@ -557,7 +557,7 @@ const NPC={
   script:()=>f().ambush?null:[{say:'이 엔진 소리 들려요? 셀레스철 엔진이에요.'},{say:'이상해요. 힘을 아주 조금만 써요. 왜일까요?'}],
   after:'엔진하고 이야기했어요. 엔진이 기뻐하는 것 같았어요.',
   talk:()=>[
-   {say:'미사일? 레스타리에는 무기가 없어요. 그런데…'},
+   {say:'미사일? 우리 방어 포드로는 부족해요. 그런데…'},
    {say:'이 엔진은 셀레스철 엔진이에요. 힘을 아주 조금만 쓰고 있어요.'},
    {say:'저는 {우라닉|우라닉}이라서 셀레스철 기계하고 이야기할 수 있어요.'},
    Q.finn[0],
@@ -581,7 +581,7 @@ const NPC={
     {who:'막간',say:'초록 곰팡이로 덮인 소행성. 배 한 척이 들어가요.'},
     {who:'안디노 선장',say:'다 왔어요. 돈은 약속대로 줘요.'},
     {who:'마르첼루',say:'여기가… 사디아 님의 배예요?'},
-    {who:'사디아',say:'(목소리만) 성실호라는 배가 곤디아에 왔어요.'},
+    {who:'사디아',say:'(목소리만) 방주 한 척이 켈로완에 왔어요.'},
     {who:'사디아',say:'그 배가 {ZPZ 발생기|ZPZ 발생기}를 가지면 안 돼요. 막아요.'},
     {who:'마르첼루',say:'알겠어요. 어디든지 추격할 거예요.'},
     {who:'막간',say:'꿈이 끝나요. 몸이 차가워요.',set:()=>{f().dream=1}}]}},
@@ -593,8 +593,8 @@ const NPC={
    if(!hasItem('도시락'))return [{say:'배고파요… 일이 안 돼요.'},{say:'오키미살은 버블타운에 있어요. 저는 말 안 할 거예요. 흥.'}];
    return [
     {say:'이거… 오키미살이 만들었어요? 흥. …고마워요.',take:['도시락']},
-    {say:'좋아요, 힘이 나요! 마지막 패치!'},
-    {who:'…',say:'치익— 용접 불꽃이 튀어요. 버블이 다 감겼어요.'},
+    {say:'좋아요, 힘이 나요! 마지막 용접 확인!'},
+    {who:'…',say:'용접기 다섯 대가 멈춰요. …좋아요. 버블이 다 감겼어요.'},
     {say:'버블 완성! 이제 잔해가 {대기권|대기권}으로 내려갈 수 있어요.',set:()=>{f().bubble=1}},
     {say:'미테리스한테 가요. 우주비행기로 먼저 내려가요.'}]},
   after:'오키미살한테 말해요. 도시락 맛있었다고. …아니, 말하지 마요.',
@@ -608,7 +608,7 @@ const NPC={
    Q.yoru[2],
    {say:'근데… 배고파요. 남편하고 싸워서 도시락이 없어요.'},
    {say:'오키미살은 버블타운에 있어요. 저는 말 안 할 거예요. 흥.',award:['잔해','인양하다']}]},
- miteris:{name:'미테리스',zone:'bubbletown',x:21,y:4,dir:'left',look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'long',coat:1},badge:['위성','얼음'],
+ miteris:{name:'미테리스',zone:'bubbletown',x:21,y:4,dir:'left',look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'short',coat:1},badge:['위성','얼음'],
   get after(){return f().bubble?'꽉 잡아요. 대기권은 좀 흔들려요.':'버블이 끝나면 내려가요. 요루가 힘내야 돼요.'},
   talk:()=>[
    {say:'저는 미테리스. 우주비행기 조종사예요.'},
@@ -619,7 +619,7 @@ const NPC={
    {say:'버블이 끝나면 브레이커빌로 내려가요. 비행기 문은 열어 둘게요.',award:['위성','얼음']}]},
  okimi:{name:'오키미살',zone:'bubbletown',x:7,y:11,dir:'down',look:{hair:'#2A2020',skin:'#8A5A3C',shirt:'#B7652F',pants:'#3A3530',belt:'#2B2B30',style:'short'},
   status:()=>b('잔해')&&!f().bubble&&!hasItem('도시락')?'todo':null,
-  script:()=>{const F=f(),s=[{say:'저는 오키미살. 레스타리 핵융합 기술자예요.'},{say:'우조마 선장님 아들이에요. 그래서 일이 두 배예요. 하하.'},{say:'핀 씨가 제 엔진으로 무기를 만들었어요! 아직도 놀라워요.'}];
+  script:()=>{const F=f(),s=[{say:'저는 오키미살. 레스타리 핵융합 기술자예요.'},{say:'우조마 선장님이 우리 엄마예요. 그래서 일이 두 배예요. 하하.'},{say:'핀 씨가 제 엔진으로 무기를 만들었어요! 아직도 놀라워요.'}];
    if(b('잔해')&&!F.bubble&&!hasItem('도시락'))return [...s,{say:'요루가 배고프대요? …우리 아침에 싸웠어요.'},{say:'그래도 이거 갖다줘요. 제가 만들었다고 말하지 마요!',give:'도시락'}];
    if(!b('잔해'))return [...s,{say:'요루는 부두 원반에서 일해요. 우리 남편이에요.'}];
    return [{say:F.bubble?'요루가 도시락 먹었어요? …다행이에요.':'빨리 갖다줘요. 식으면 맛없어요.'}]},
@@ -632,8 +632,8 @@ const NPC={
   status:()=>{const F=f();if(!b('계약'))return undefined;if(!F.contract)return hasItem('계약서')?'todo':'wait';if(!F.daves)return hasItem('은행 기록')?'todo':'wait';return null},
   script:()=>{const F=f();if(!b('계약'))return null;
    if(!F.contract){if(!hasItem('계약서'))return [{say:'다브룩스는 다리 앞에 있어요. 계약서를 받아 와요.'}];
-    return [{say:'계약서… 어디 봐요. 뭐라고요? 30%?',take:['계약서']},{say:'30%면 우리가 망해요! 다시 써요.'},{who:'…',say:'타비아가 통신기로 한참 이야기해요. 숫자가 바뀌어요.'},
-     {say:'좋아요, 사인! 계약 끝.',set:()=>{f().contract=1}},{say:'이제 경비가 더 필요해요. 그르시아, 이치카, 토셰로는 부족해요.'},{say:'저기 이상한 두 사람이 일을 찾아요. 데이브와 데이브예요.'}]}
+    return [{say:'계약서… 어디 봐요. 뭐라고요? 30%?',take:['계약서']},{say:'30%? 흥, 우리를 망하게 하려고요?'},
+     {say:'…좋아요, 30%. 선장님이 벌써 동의했어요. 사인!',set:()=>{f().contract=1}},{say:'이제 경비가 더 필요해요. 그르시아, 이치카, 토셰로는 부족해요.'},{say:'저기 이상한 두 사람이 일을 찾아요. 데이브와 데이브예요.'}]}
    if(!F.daves){if(!hasItem('은행 기록'))return [{say:'데이브와 데이브요? 오른쪽 끝에 있어요. 말은 적어요.'}];
     return [{say:'곤잘레스 은행 {장부|장부}요? 볼게요.',take:['은행 기록']},{say:'음… 진짜예요. 두 사람 이야기가 다 맞아요.'},
      {say:'좋아요. 데이브와 데이브를 고용해요. 잔해 주변을 지켜요.',set:()=>{f().daves=1}},{say:'다브룩스 팀은 벌써 잔해 안에 있어요. 다리를 건너가 봐요.'}]}
@@ -684,7 +684,7 @@ const NPC={
  dave2:{name:'데이브',zone:'breakerville',x:25,y:9,dir:'left',look:{art:DAVE},
   pos:()=>f().attack===2?[25,7]:[25,9],
   talk:()=>{const F=f();return F.attack===2&&!F.dug?[{say:'(풍덩! 바다에 뛰어들어요. 김이 확 올라와요.)'},{say:'…시원해요.'}]:F.dug?[{say:'데이브는 말이 많아요.'}]:[{say:'…나도 데이브.'},{say:'데이브는 말이 많아요.'}]}},
- grssia:{name:'그르시아',zone:'breakerville',x:9,y:10,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E'},badge:['죽이다','범인'],
+ grssia:{name:'그르시아',zone:'breakerville',x:9,y:10,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E',lashes:1,lips:'#B8606A'},badge:['죽이다','범인'],
   pos:()=>f().attack?[14,9]:[9,10],
   status:()=>f().lie?undefined:null,
   script:()=>{const F=f();
@@ -700,23 +700,23 @@ const NPC={
    {say:'고스트를 누가 보냈어요? 그 사람이 진짜 범인이에요.'},
    Q.grssia[1],
    {say:'엔포 가문은 잊지 않아요. 범인한테 꼭 {복수할|복수하다} 거예요.',award:['죽이다','범인']}]},
- ichika:{name:'이치카',zone:'breakerville',x:16,y:7,dir:'up',look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long'},
+ ichika:{name:'이치카',zone:'breakerville',x:16,y:7,dir:'up',look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long',lashes:1,lips:'#C8646E'},
   hide:()=>!!f().attack,
   talk:()=>[{say:'추워요. 여기 {진눈깨비|진눈깨비}는 옆으로 와요.'},{say:'그르시아하고 저는 밤에 부두를 돌아요.'}]},
  ichikaBody:{name:'…',zone:'breakerville',x:15,y:9,dir:'down',still:1,
-  look:{get art(){return f().lie?BODY:BODY_FALLEN}},
+  look:{art:SCORCH},
   hide:()=>!f().attack,
-  talk:()=>f().lie?[{say:'이치카의 시체예요. 은색 천으로 덮여 있어요.'}]:[{say:'이치카가 쓰러져 있어요. 움직이지 않아요.'}]},
- tabiaBody:{name:'…',zone:'breakerville',x:16,y:9,dir:'down',still:1,look:{art:BODY},
+  talk:()=>[{say:'이치카가 서 있던 자리예요. 아무것도 안 남았어요. 탄 자국만 있어요.'}]},
+ tabiaBody:{name:'…',zone:'breakerville',x:16,y:9,dir:'down',still:1,look:{art:HELMET},
   hide:()=>!f().lie,
-  talk:()=>[{say:'타비아의 시체예요. 헬멧이 없어요.'}]},
+  talk:()=>[{say:'타비아의 헬멧이에요. 은색 천으로 덮여 있어요.'}]},
  tose:{name:'토셰',zone:'breakerville',x:14,y:7,dir:'down',look:{art:TOSE},
   hide:()=>f().attack===1,
   status:()=>f().attack===2&&!f().lie?'todo':null,
   script:()=>{const F=f();
    if(F.attack===2&&!F.lie)return [
     {who:'…',say:'조금 전. 잔해 안 어두운 방.'},
-    {who:'타비아',say:'토셰? 그 총… {콘클루더|콘클루더}예요? 그게 왜 여기 있어요?'},
+    {who:'타비아',say:'토셰? 그 총… {컨클루더|컨클루더}예요? 그게 왜 여기 있어요?'},
     {who:'토셰',say:'보면 안 되는 걸 봤어요.'},
     {who:'…',say:'탕! 아주 가까이에서 쐈어요. 타비아는 바로 죽었어요.'},
     {who:'…',say:'지금. 토셰가 잔해에서 나와요. 온몸이 {피투성이|피투성이}예요.'},
@@ -737,8 +737,8 @@ const NPC={
    return null},
   after:'아스테리아 여신님, 두 사람을 기억해 주세요.',
   talk:()=>[
-   {say:'두 사람이에요. 이치카, 그리고 타비아.'},
-   {say:'은색 천으로 덮었어요. 바람이 차요.'},
+   {say:'이치카는 아무것도 안 남았어요. 타비아는… 헬멧 하나뿐이에요.'},
+   {say:'헬멧을 은색 천으로 덮었어요. 바람이 차요.'},
    Q.basylB[0],
    {say:'오늘은 술도 안 마셔요. 정말이에요.'},
    Q.basylB[1],
@@ -760,8 +760,8 @@ const NPC={
     {who:'…',say:'펑! 보라색 플라스마가 날아와요.'},
     {say:'잔해 안 {네트워크 노드|네트워크 노드}로 가야 돼요! 거기서 기계를 움직일 수 있어요!',set:()=>{f().attack=1}}]},
   talk:()=>[]},
- miterisB:{name:'미테리스',zone:'breakerville',x:21,y:15,dir:'left',look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'long',coat:1},
-  script:()=>{const F=f();if(F.attack===1)return [{say:'비행기에 숨어요! 고스트예요!'}];if(F.dug)return [{say:'화물기 준비 끝! 언제든지 올려요.'}];return [{say:'파이브로 돌아가고 싶으면 비행기에 타요.'},{say:'여기 날씨는 매일 진눈깨비예요.'}]},
+ miterisB:{name:'미테리스',zone:'breakerville',x:21,y:15,dir:'left',hide:()=>!f().dug,look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'short',coat:1},
+  script:()=>[{say:'궤도에서 다시 내려왔어요. 끝나면 같이 올라가요.'},{say:'파이브로 돌아가고 싶으면 비행기에 타요.'}],
   talk:()=>[]},
  ghost1:{name:'고스트',zone:'breakerville',x:6,y:7,dir:'down',look:ghostLook,hide:()=>!f().attack,
   talk:()=>f().attack===1?[{who:'…',say:'머리 없는 기계예요. 팔 넷, 다리 넷. 플라스마를 쏴요!'}]:[{who:'…',say:'데이브들이 찢은 고스트예요. 이제 안 움직여요.'}]},
@@ -780,7 +780,7 @@ const NPC={
     {who:'…',say:'그 시간, 잔해 깊은 곳.'},
     {who:'토셰',say:'(작은 지도를 보면서) 보스 말이 맞아요. 여기예요.'},
     {who:'…',say:'토셰가 벽의 숨은 문을 열어요. 안에 아주 긴 총이 있어요.'},
-    {who:'…',say:'콘클루더 저격총이에요. 토셰가 총을 몰래 가져가요.'},
+    {who:'…',say:'컨클루더 저격총이에요. 토셰가 총을 몰래 가져가요.'},
     {who:'토셰',say:'아무도 몰라야 돼요.'},
     {who:'…',say:'그리고 밤이 와요.',set:()=>{f().mapped=1}}];
    if(!F.attack)return [{say:'밤에는 일 안 해요. 로지에 가서 쉬어요.'}];
@@ -812,12 +812,12 @@ const NPC={
    if(!F.done)return [
     {say:'이게 {ZPZ 발생기|ZPZ 발생기}예요. 공 네 개, 빨간 가시.'},
     {who:'…',say:'10미터짜리 공 네 개. 보라색 불꽃이 탁탁 튀어요.'},
-    {who:'미테리스',say:'(통신) 화물기 준비됐어요. 크레인으로 올려요!'},
+    {who:'미테리스',say:'(통신) 화물기가 준비됐대요. 크레인으로 올려요!'},
     {who:'…',say:'발생기가 천천히 올라가서 화물기에 실려요.'},
     {who:'데이브',say:'우리도 데려가요.'},
     {who:'데이브',say:'경호원. 계속.'},
     {say:'좋아요, 같이 가요. 성실호에는 경호원이 필요해요.',set:()=>{f().done=1}},
-    {who:'엘리',say:'이제 집에 가요. 곤디아는 벌써 8년이 지났을 거예요.',finale:1}];
+    {who:'엘리',say:'이제 집에 가요. 곤디아에 도착하면 8년이 지났을 거예요.',finale:1}];
    return [{say:'성실호가 기다려요. 이제 관문을 지날 수 있어요.'}]},
   talk:()=>[]},
 };
@@ -829,7 +829,7 @@ const FOLLOW={name:'엘리',look:ELLIE,when:()=>!!f().ambush,talk:()=>{const F=f
  return [{say:s}]}};
 
 const INTRO=[{who:'레스타리',say:'하늘의 관문까지 한 시간.'},{who:'레스타리',say:'모든 승객은 큐폴라로 오세요.'}];
-const DONE=['2장 끝! ZPZ 발생기가 화물기에 실렸어요.','데이브와 데이브가 성실호의 경호원이 돼요.','멀리 위성 파이브에서, 기계 몸이 된 마르첼루가 맹세해요.','"끝까지 추격할 거예요."','토셰의 비밀은 아직 아무도 몰라요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['2장 끝! ZPZ 발생기가 화물기에 실렸어요.','데이브와 데이브가 성실호의 경호원이 돼요.','멀리 어딘가에서, 기계 몸이 된 마르첼루가 맹세해요.','"끝까지 추격할 거예요."','토셰의 비밀은 아직 아무도 몰라요.','일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f();

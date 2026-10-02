@@ -49,7 +49,7 @@ CHAPTERS.push({id:'ch2',n:'2장',title:'잔해',place:'레스타리 · 버블타
   const FOLLOW=null | {name,look,when:()=>bool,talk:()=>[…]};
   const INTRO=[{who,say}…]; const DONE=['…','…'];
   function questText(){ … return 'place · task'; }
-  const PLAYER=undefined; // optional look for the player sprite (default: a Diligent crew member)
+  const PLAYER=undefined; // optional player look (default: a Diligent crew member); or a function ()=>look to change it mid-chapter, e.g. a disguise
   return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES,PLAYER};
  }});
 ```

@@ -296,7 +296,8 @@ function render(t){
   const qx=player.moving?pet.fx+(pet.x-pet.fx)*player.t:pet.x,qy=player.moving?pet.fy+(pet.y-pet.fy)*player.t:pet.y;
   ents.push({y:qy-.01,f:()=>drawChar(C.FOLLOW.look,Math.round(qx*TS-cx),Math.round(qy*TS-cy-2),pet.dir,walk?3-walk:0)});
  }else pet.on=false;
- ents.push({y:py,f:()=>drawChar(player.look,Math.round(px*TS-cx),Math.round(py*TS-cy-2),player.dir,walk)});
+ const plook=typeof C.PLAYER==='function'?(C.PLAYER()||CREW_LOOK):player.look; // PLAYER may be a function → the look can change mid-chapter (disguises)
+ ents.push({y:py,f:()=>drawChar(plook,Math.round(px*TS-cx),Math.round(py*TS-cy-2),player.dir,walk)});
  ents.sort((a,b)=>a.y-b.y).forEach(e=>e.f());
  /* lights out in a broken room: everything goes dark except a small circle around the player */
  const dk=Z.dark&&Z.dark();
@@ -599,7 +600,7 @@ function boot(id){
  CH=CHAPTERS.find(c=>c.id===id)||CHAPTERS[0];
  C=CH.make();
  Object.keys(TILES).forEach(k=>{if(!(k in BASE_TILES))delete TILES[k]});Object.assign(TILES,C.TILES||{});
- player.look=C.PLAYER||CREW_LOOK; // a chapter may put the player in someone else's shoes (5장: Terence)
+ player.look=(typeof C.PLAYER==='function'?null:C.PLAYER)||CREW_LOOK; // a chapter may put the player in someone else's shoes (5장: Terence)
  if(dlg){dlg=null;clearInterval(typing?.id);$('dlg').hidden=true}
  pending=null;held=null;warping=false;$('panel').hidden=true;$('chPanel').hidden=true;$('toast').hidden=true;logSel=null;
  store.set('seongsilho-chapter',CH.id);
