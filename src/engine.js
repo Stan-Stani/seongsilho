@@ -343,9 +343,27 @@ function prepListen(s){
  const out={...s,ask:'잘 들어 보세요. 무슨 단어예요?',w,opts:[[w,1],...pool.map(p=>[p,0,`"${w}"였어요. 다시 들어 보세요.`])],listenOnly:1};
  dlg.cur=out;return out;
 }
+/* Every Korean word in a line is tappable: marked glosses ({shown|key}) open the chapter DICT entry,
+   all other words open the game's dictionary (LEX, built from the dialogue by lexicon/extract.py). */
 function glossHTML(t){
  const esc=x=>x.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
- return esc(t).replace(/\{([^|}]+)\|([^}]+)\}/g,(m,a,k)=>`<span class="gl" data-k="${k}">${a}</span>`);
+ const words=x=>esc(x).replace(/[가-힣]+/g,w=>`<span class="w">${w}</span>`);
+ let out='',last=0;const re=/\{([^|}]+)\|([^}]+)\}/g;let m;
+ while((m=re.exec(t))){out+=words(t.slice(last,m.index))+`<span class="gl" data-k="${esc(m[2])}">${esc(m[1])}</span>`;last=re.lastIndex}
+ return out+words(t.slice(last));
+}
+function lexLookup(w){ // word as written → [[lemma,{k,e}],…]; falls back to the longest known prefix (우주선이 → 우주선)
+ const L=window.LEX||{map:{},defs:{}},hit=l=>C.DICT[l]?[l,C.DICT[l]]:L.defs[l]?[l,L.defs[l]]:null;
+ let ls=L.map[w];
+ if(!ls)for(let n=w.length;n>0&&!ls;n--){const pre=w.slice(0,n);if(L.map[pre])ls=L.map[pre];else if(hit(pre))ls=[pre]}
+ return (ls||[]).map(hit).filter(Boolean);
+}
+function popGloss(rows){ // rows: [[headword,{k,e}],…] — Korean first; English only behind the ? button
+ if(!rows.length){toast('사전에 없는 말이에요.');return}
+ const el=$('gloss');
+ el.innerHTML=rows.map(([h,d])=>`<div class="gr"><b>${h}</b>${d.k}<span class="en" hidden>${d.e||''}</span></div>`).join('')+'<button class="q" type="button" aria-label="영어로 보기">?</button>';
+ el.hidden=false;el.querySelector('.q').addEventListener('click',e=>{e.stopPropagation();el.querySelectorAll('.en').forEach(x=>x.hidden=!x.hidden);clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,8000)});
+ clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,6000);
 }
 function typeText(text,done){
  clearInterval(typing?.id);const el=$('txt');const p=plain(text);el.textContent='';let i=0;
@@ -356,11 +374,8 @@ function typeText(text,done){
  if(reduce)return fin();
  typing.id=setInterval(()=>{i++;el.textContent=p.slice(0,i);if(i>=p.length)fin()},26);
 }
-function showGloss(k){
- const d=C.DICT[k];if(!d)return;
- const el=$('gloss');el.innerHTML=`<b>${k}</b>${d.k}<span class="en">${d.e}</span>`;el.hidden=false;
- clearTimeout(showGloss.t);showGloss.t=setTimeout(hideGloss,4000);
-}
+function showGloss(k){const d=C.DICT[k];if(d)popGloss([[k,d]])}
+function showWord(w){popGloss(lexLookup(w))}
 function hideGloss(){$('gloss').hidden=true}
 
 const choiceBtns=()=>[...document.querySelectorAll('#choices .choice')];
@@ -533,7 +548,7 @@ function openPanel(){
   $('card').innerHTML=`<div class="top"><span class="big">${logSel}</span><button class="spk${canSpeak()?'':' '}" id="cardSpk" aria-label="듣기" ${canSpeak()?'':'hidden'}>${$('spk').innerHTML}</button></div>
    <span class="def">${d.k}</span><span class="ex">예: ${d.ex}</span>${d.hj?`<span class="hj">${d.hj}</span>`:''}
    <span class="hj">기억 레벨 ${L.b}/5 · ${isDue(logSel)?'지금 복습할 수 있어요':'다음 복습: '+fmtWait(L.due-now())+' 후'}</span>
-   ${showEn?`<span class="en">${d.e}</span>`:'<button class="enb" id="enBtn">영어 보기</button>'}`;
+   ${showEn?`<span class="en">${d.e}</span>`:'<button class="enb" id="enBtn" aria-label="영어로 보기">?</button>'}`;
   $('cardSpk')?.addEventListener('click',()=>speak(logSel+'. '+d.ex));
   $('enBtn')?.addEventListener('click',()=>{showEn=true;openPanel()});
  }else $('card').innerHTML='<span class="def">아직 단어가 없어요.</span><span class="ex">사람들한테 말을 걸면 일지에 단어가 생겨요.</span>';
@@ -564,9 +579,9 @@ document.querySelectorAll('.dpad button').forEach(b=>{
 });
 $('btnA').addEventListener('pointerdown',e=>{e.preventDefault();interact()});
 $('btnB').addEventListener('pointerdown',e=>{e.preventDefault();cancel()});
-$('dlg').addEventListener('click',e=>{const gl=e.target.closest('.gl');if(gl){e.stopPropagation();showGloss(gl.dataset.k);return}if(e.target.closest('#spk'))return;advance()});
+$('dlg').addEventListener('click',e=>{const gl=e.target.closest('.gl');if(gl){e.stopPropagation();showGloss(gl.dataset.k);return}const w=e.target.closest('.txt .w');if(w){e.stopPropagation();showWord(w.textContent);return}if(e.target.closest('#spk'))return;advance()});
 $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.listen||dlg.cur.say||dlg.cur.ask||'')});
-$('gloss').addEventListener('click',hideGloss);
+$('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
 $('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});

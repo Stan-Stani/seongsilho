@@ -74,7 +74,13 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 
 .gloss{position:absolute;left:12px;right:12px;top:10px;line-height:1.45;background:var(--amber-soft);color:var(--amber-ink);border-radius:6px;padding:8px 11px;font-size:.9rem;z-index:2;box-shadow:0 4px 0 rgba(0,0,0,.25)}
 .gloss b{font-family:var(--display);font-weight:400;font-size:1.05rem;margin-right:6px}
-.gloss .en{font-family:var(--mono);font-size:.72rem;opacity:.75;display:block;margin-top:2px}
+.gloss{display:flex;flex-direction:column;gap:5px;padding-right:44px}
+.gloss .gr{line-height:1.45}
+.gloss .en{font-family:var(--mono);font-size:.72rem;opacity:.75;display:block;margin-top:1px}
+.gloss .q{position:absolute;right:8px;top:8px;width:28px;height:28px;border-radius:50%;border:2px solid var(--amber-ink);background:transparent;color:var(--amber-ink);font-family:var(--mono);font-weight:500;cursor:pointer;line-height:1}
+.txt .w{cursor:pointer;border-radius:3px}
+.txt .w:active{background:rgba(232,166,74,.25)}
+.card .enb{width:26px;height:26px;padding:0;border-radius:50%;text-align:center}
 .toast{position:absolute;left:50%;top:34px;transform:translateX(-50%);line-height:1.3;background:var(--amber);color:var(--amber-ink);font-family:var(--body);font-weight:600;font-size:.95rem;padding:6px 14px;border-radius:5px;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;z-index:3;box-shadow:0 3px 0 #9A5E14}
 
 .pad{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:6px;touch-action:none}

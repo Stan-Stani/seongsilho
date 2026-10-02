@@ -64,6 +64,10 @@ window.__play=async function(steps){
     log('  > built: '+s.build.join(' '));continue;
    }
    if(opts.shotSay&&txt.includes(opts.shotSay.text)){await shot(opts.shotSay.name);opts.shotSay=null}
+   if(opts.shotTap&&$('txt').querySelector('.w')){ // tap a word → Korean definition, then ? → English
+    const w=[...$('txt').querySelectorAll('.w')].sort((a,b)=>b.textContent.length-a.textContent.length)[0];w.click();await wait(150);
+    check(!$('gloss').hidden,'tapping a word should open the dictionary');log('  tap '+w.textContent+' → '+$('gloss').textContent.slice(0,60));
+    await shot(opts.shotTap+'-ko');$('gloss').querySelector('.q')?.click();await wait(100);await shot(opts.shotTap+'-en');$('gloss').click();opts.shotTap=null;continue}
    await key('z');
   }
   check(guard<300,'dialog did not end');

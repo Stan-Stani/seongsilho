@@ -4,7 +4,7 @@
  {bump:['ship','D']},
  {talk:'andy'},
  {talk:'ellie',wrong:true,shotChoice:'02-ellie-question'},
- {talk:'dejean',shotBefore:'03-bridge'},
+ {talk:'dejean',shotBefore:'03-bridge',shotTap:'03b-tap-word'},
  {talk:'finn',wrong:true},
  {check:()=>petOn()&&!npcAt(14,4),msg:'Finn follows and leaves the bridge'},
  {talk:'or'},
