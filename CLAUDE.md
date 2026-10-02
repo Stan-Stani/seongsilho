@@ -1,6 +1,8 @@
 # 성실호 — Exodus Korean walk-around game
 
-Single-file game: `index.html` (first `<script>` = chapter content, second = engine). Published as a claude.ai artifact; republish from the same file path.
+Source lives in `src/` (`shell.html`, `chapters/chN.js`, `engine.js`); `python3 build.py` assembles the single-file `index.html`,
+which is published as a claude.ai artifact (republish from the same path). Never edit `index.html` by hand.
+Each chapter is a cartridge with its own save key; never change an existing chapter's save key or break its saves (add `migrate`).
 `reference/단어 마을.html` is the earlier game this grew from — never edit it.
 
 ## Learner
@@ -17,8 +19,9 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
 4. Keep it all-ages: the book has graphic violence (see canon "Content warnings").
 
 ## Checks before publishing
-- `node --check` both scripts; validate maps (row widths, legend chars), NPC/warp positions walkable, every word has questions + DICT entry.
-- `tests/playtest.sh` must pass (plays the whole chapter; update the driver when content changes).
-- One headless Chrome screenshot (flatpak `com.google.Chrome --headless=new --screenshot`) and console log check.
+- `python3 build.py && node tests/validate.mjs` (maps, warps, NPCs, words, questions, glosses, no word taught twice).
+- `node tests/play.mjs chN` plays the chapter with real key presses in headless Chrome (400px phone viewport),
+  following `tests/walk/chN.js`; saves screenshots + log to `tests/shots/chN/`. Must end with `ERRORS: none`.
+- `python3 tests/sheet.py chN` → contact sheets; LOOK at every sheet (layout, overlaps, readability, markers, lighting).
 
 The epub and `claude-export/` are gitignored (copyright / personal data).

@@ -26,11 +26,11 @@ button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
 .wrap{max-width:480px;margin:0 auto;padding:0 16px;padding-block:12px 20px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box}
 
 header{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
-.id{display:flex;flex-direction:column;gap:2px;min-width:0}
+.id{display:flex;flex-direction:column;gap:2px;min-width:0;flex:1 1 0}
 .id .reg{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 h1{margin:0;font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1;letter-spacing:.02em;white-space:nowrap}
 h1 .lamp{display:inline-block;width:.42em;height:.42em;border-radius:50%;background:var(--amber);margin-left:.35em;vertical-align:.18em;box-shadow:0 0 0 2px var(--hull),0 0 10px var(--amber)}
-.hbtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.hbtns{display:flex;gap:5px;align-items:center;justify-content:flex-end;flex:none}
 .pill{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;background:var(--hull);color:var(--ink);border:2px solid var(--seam);border-radius:6px;padding:6px 9px;cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:inset 0 -2px 0 var(--hull-2)}
 .pill[aria-pressed="true"]{background:var(--ink);color:var(--amber-soft);border-color:var(--ink)}
 .pill.log{background:var(--amber);border-color:#B8701A;color:var(--amber-ink)}
@@ -124,14 +124,23 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .btn.primary{background:var(--ink);color:var(--amber-soft)}
 .btn.warn{border-color:var(--red);color:var(--red)}
 .btn.warn.armed{background:var(--red);color:#fff}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.chap{display:flex;gap:12px;align-items:center;text-align:left;background:var(--hull);color:var(--ink);border:2px solid var(--seam);border-radius:8px;padding:8px 10px;cursor:pointer;min-width:0}
+.chap.cur{border-color:var(--ink)}
+.chap .cn{flex:none;width:44px;height:44px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-family:var(--display);font-size:1rem;color:#fff;box-shadow:inset 0 -6px 0 rgba(0,0,0,.2)}
+.chap .ci{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.chap .ci b{font-family:var(--display);font-weight:400;font-size:1.1rem}
+.chap .ci small{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.chap .cp{font-family:var(--mono);font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--muted)}
 @media (max-width:370px){.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}.ab button{width:56px;height:56px}.wlist{grid-template-columns:repeat(3,1fr)}h1{font-size:1.35rem}}
 @media (prefers-reduced-motion: reduce){.more{animation:none}.fade{transition:none}.tile.bad{animation:none}}
 </style>
 </head><body>
 <div class="wrap">
   <header>
-    <div class="id"><span class="reg" id="reg">ARK DILIGENT · 1장 도착</span><h1>성실호<span class="lamp"></span></h1></div>
+    <div class="id"><span class="reg" id="reg">ARK DILIGENT</span><h1>성실호<span class="lamp"></span></h1></div>
     <div class="hbtns">
+      <button class="pill" id="chBtn" aria-label="장 고르기">1장</button>
       <button class="pill" id="readBtn" aria-pressed="false">읽기</button>
       <button class="pill" id="sndBtn" aria-pressed="true">소리</button>
       <button class="pill log" id="logBtn">일지 0/16</button>
@@ -167,6 +176,12 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
     </div>
   </div>
 </div>
+<div class="panel" id="chPanel" hidden>
+  <div class="sheet" role="dialog" aria-label="장 고르기">
+    <h2>항해 기록 <button class="btn" id="chClose">닫기</button></h2>
+    <div class="chlist" id="chList"></div>
+  </div>
+</div>
 <div class="panel" id="panel" hidden>
   <div class="sheet" role="dialog" aria-label="항해 일지">
     <h2>항해 일지 <small id="logCount"></small></h2>
@@ -182,6 +197,15 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 </div>
 
 <script>
+/* Chapters register themselves here; each keeps its own save. */
+const CHAPTERS=[];
+</script>
+<script>
+CHAPTERS.push({id:'ch1',n:'1장',title:'도착',place:'성실호 · 하이 로사 · 산타 로사',words:16,save:'seongsilho-ch1',color:'#E8962A',start:{zone:'ship',x:2,y:3,dir:'down'},introWho:'성실호',
+ migrate:s=>{ /* saves from version 1 (Josias owned the ship; tomatoes; space map) */
+  if(s.f.metJosias){s.f.metOwner=1;s.f.finn=1;delete s.f.metJosias}
+  s.items=s.items.map(i=>({'토마토 상자':'지구 씨앗 상자','우주 지도':'성실호 항해 지도'})[i]||i)},
+ make:()=>{
 /* =====================================================================
    1장 · 도착 — content. The engine below draws, moves and runs dialogue.
    Book pin: end of c009 → start of c012 (Diligent docked at High Rosa, Finn now owner, Octain still chief, no ZPZ generator yet).
@@ -301,7 +325,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
 };
 
-const ITEMS={'지구 씨앗 상자':'지구에서 가져온 씨앗이에요. 여기서는 아주 귀해요.','연료통':'헬륨3 연료가 들어 있어요.','부품':'엔진에 들어가는 은색 부품.','성실호 항해 지도':'요시아스가 준 지도. 지구에서 여기까지 온 길이 그려져 있어요.','세관 도장':'하이 로사 세관 도장. 쾅!'};
+const ITEMS={'지구 씨앗 상자':'지구에서 가져온 씨앗이에요. 여기서는 아주 귀해요.','연료통':'헬륨3 연료가 들어 있어요.','부품':'엔진에 들어가는 은색 부품.','성실호 항해 지도':'조사이어스가 준 지도. 지구에서 여기까지 온 길이 그려져 있어요.','세관 도장':'하이 로사 세관 도장. 쾅!'};
 
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
@@ -349,7 +373,7 @@ const ZONES={
 "#......................#",
 "#......................#",
 "#AA#####################"],
-  planet:{cx:12*16,cy:-70,r:150},
+  planet:{cx:12*16,cy:-70,r:150},base:'plate',
   warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
   spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아누샤 광산"이라고 써 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
   npcs:['customs','gyvoy','lina','trader']},
@@ -502,10 +526,10 @@ const NPC={
    Q.terence[0],
    Q.terence[1],
    {say:'이 부품, 성실호 거예요? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
- josias:{name:'요시아스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433'},badge:['지도','탐험'],
+ josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433'},badge:['지도','탐험'],
   after:'엘리요? 제 손녀의 손녀의… 아주 먼 가족이에요. 잘 부탁해요.',
   talk:()=>[
-   {say:'오, 성실호 승무원이죠? 저는 요시아스예요. 옛날에 그 배 주인이었어요.'},
+   {say:'오, 성실호 승무원이죠? 저는 조사이어스예요. 옛날에 그 배 주인이었어요.'},
    {say:'이제 성실호는 핀 거예요. 저는 곤디아에 남아요. 하프니르에 우리 사람들 집을 지어야 돼요.'},
    Q.explore[0],
    Q.explore[1],
@@ -534,14 +558,15 @@ function questText(){
  if(hasItem('부품')&&hasItem('연료통'))return '엔진실 · 기관장님한테 가져가요';
  return `하이 로사 · 부품 ${p} · 연료통 ${fu}`;
 }
+return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText};
+}});
 </script>
-
 <script>
 /* =====================================================================
    Engine: tiles, movement, zones, dialogue, spaced review, speech, saving.
    ===================================================================== */
 const $=id=>document.getElementById(id);
-const SAVE='seongsilho-ch1';
+let C=null,CH=null; // current chapter content (C) and its registry entry (CH)
 let state=null,Z=null,ZID='ship',MAP=[],MW=0,MH=0,NPCS=[];
 const has=w=>!!state&&state.badges.includes(w);
 const now=()=>Date.now();
@@ -555,8 +580,8 @@ function grade(w,ok){
  L.b=ok?Math.min(5,L.b+1):0;L.due=now()+GAP[L.b];
  state.lv[w]=L;save();return L.b;
 }
-const dueWords=()=>WORDS.filter(isDue);
-function nextDue(){const t=WORDS.filter(has).map(w=>lv(w).due).filter(d=>d>now());return t.length?Math.min(...t):null}
+const dueWords=()=>C.WORDS.filter(isDue);
+function nextDue(){const t=C.WORDS.filter(has).map(w=>lv(w).due).filter(d=>d>now());return t.length?Math.min(...t):null}
 function fmtWait(ms){const m=Math.ceil(ms/60e3);return m<60?`${m}분`:m<1440?`${Math.round(m/60)}시간`:`${Math.round(m/1440)}일`}
 
 /* ---------- settings ---------- */
@@ -617,7 +642,7 @@ const TILES={
  console:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+1,Y+3,14,11,'#2B3238');r(X+1,Y+3,14,2,'#3C454C');screenGlow(X+3,Y+6,t,x%2?'#69CFD8':'#E8962A',x);r(X+10,Y+7,3,1,'#5F6B72');r(X+10,Y+9,3,1,'#5F6B72')},
  hydro:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+1,Y+5,14,9,'#5E655F');r(X+2,Y+6,12,2,'#3A6E8A');const h=hash(x,y);for(let i=0;i<3;i++){const px=X+3+i*4,ph=4+((h+i)%3);r(px,Y+6-ph+2,2,ph,'#3F8F4A');r(px-1,Y+6-ph+2,4,2,'#5DB866');if((h+i)%4===0)r(px,Y+6-ph+1,2,2,'#D9544B')}r(X+1,Y,14,1,'#C77DDB')},
  bunk:(X,Y,x,y)=>{deck(X,Y,x,y);r(X+1,Y+1,14,14,'#5E655F');r(X+2,Y+2,12,4,'#ECEDE6');r(X+2,Y+6,12,8,'#C9873A');r(X+2,Y+6,12,1,'#E3A65A')},
- terminal:(X,Y,x,y,t)=>{(Z===ZONES.dock?plate:deck)(X,Y,x,y);r(X+3,Y+1,10,14,'#2B3238');r(X+4,Y+2,8,6,'#0F141A');const due=state&&dueWords().length>0;
+ terminal:(X,Y,x,y,t)=>{(Z.base==='plate'?plate:deck)(X,Y,x,y);r(X+3,Y+1,10,14,'#2B3238');r(X+4,Y+2,8,6,'#0F141A');const due=state&&dueWords().length>0;
   if(due){const on=Math.floor(t/350)%2;r(X+5,Y+3,6,4,on?'#69CFD8':'#2C5D63')}else{r(X+5,Y+4,4,1,'#3C6E6E');r(X+5,Y+6,6,1,'#3C6E6E')}r(X+5,Y+10,6,1,'#5F6B72');r(X+5,Y+12,6,1,'#5F6B72')},
  pipes:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+2,Y,4,16,'#6E7570');r(X+9,Y,4,16,'#6E7570');r(X+2,Y,1,16,'#899089');r(X+9,Y,1,16,'#899089');r(X+1,Y+6,6,3,'#4F5652');r(X+8,Y+10,6,3,'#4F5652');r(X+3,Y+7,2,1,'#D2533F')},
  engine:(X,Y,x,y,t)=>{deck(X,Y,x,y);const ox=x-3,oy=y-11; // 4x2 block, drawn piece by piece
@@ -689,7 +714,7 @@ function drawAndy(L,X,Y,dir,step,t){
  r(X+7,Y-2,2,2,ol);r(X+7,Y-3,2,1,Math.floor(t/500)%2?L.visor:'#5F6B72');
 }
 const pet={x:0,y:0,fx:0,fy:0,dir:'down',on:false};
-const petOn=()=>FOLLOW.when();
+const petOn=()=>!!(C.FOLLOW&&C.FOLLOW.when());
 function petReset(){pet.x=pet.fx=player.x;pet.y=pet.fy=player.y;pet.dir=player.dir}
 
 function marker(X,Y,t,st){
@@ -719,7 +744,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden;
+const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -741,12 +766,12 @@ function goZone(id,x,y,dir){
  setTimeout(()=>{loadZone(id,x,y,dir);save();$('fade').classList.remove('on');setTimeout(()=>{warping=false;tryMove()},120)},230);
 }
 function loadZone(id,x,y,dir){
- ZID=id;Z=ZONES[id];state.zone=id;
+ ZID=id;Z=C.ZONES[id];state.zone=id;
  MAP=Z.map.map(row=>row.split(''));MW=MAP[0].length;MH=MAP.length;
- NPCS=Z.npcs.map(k=>NPC[k]);NPCS.forEach(n=>{n.home=n.home||n.dir;n.turnAt=performance.now()+2000+Math.random()*3000});
+ NPCS=Z.npcs.map(k=>C.NPC[k]);NPCS.forEach(n=>{n.home=n.home||n.dir;n.turnAt=performance.now()+2000+Math.random()*3000});
  Object.assign(player,{x,y,dir,moving:false,t:0});state.x=x;state.y=y;state.dir=dir;
  petReset();pet.on=false;
- $('reg').textContent=Z.reg+' · 1장 도착';showRoom(true);
+ $('reg').textContent=`${Z.reg} · ${CH.n} ${CH.title}`;showRoom(true);
 }
 let roomName='';
 function showRoom(force){
@@ -773,7 +798,7 @@ function render(t){
  if(petOn()){
   if(!pet.on){petReset();pet.on=true}
   const qx=player.moving?pet.fx+(pet.x-pet.fx)*player.t:pet.x,qy=player.moving?pet.fy+(pet.y-pet.fy)*player.t:pet.y;
-  ents.push({y:qy-.01,f:()=>drawChar(FOLLOW.look,Math.round(qx*TS-cx),Math.round(qy*TS-cy-2),pet.dir,walk?3-walk:0)});
+  ents.push({y:qy-.01,f:()=>drawChar(C.FOLLOW.look,Math.round(qx*TS-cx),Math.round(qy*TS-cy-2),pet.dir,walk?3-walk:0)});
  }else pet.on=false;
  ents.push({y:py,f:()=>drawChar(player.look,Math.round(px*TS-cx),Math.round(py*TS-cy-2),player.dir,walk)});
  ents.sort((a,b)=>a.y-b.y).forEach(e=>e.f());
@@ -816,8 +841,8 @@ function show(s){
  updateQuest();
 }
 function prepListen(s){
- const w=s.listen;const pool=(CONFUSE[w]||[]).slice(0,2);
- while(pool.length<2){const o=WORDS[Math.random()*WORDS.length|0];if(o!==w&&!pool.includes(o))pool.push(o)}
+ const w=s.listen;const pool=(C.CONFUSE[w]||[]).slice(0,2);
+ while(pool.length<2){const o=C.WORDS[Math.random()*C.WORDS.length|0];if(o!==w&&!pool.includes(o))pool.push(o)}
  const out={...s,ask:'잘 들어 보세요. 무슨 단어예요?',w,opts:[[w,1],...pool.map(p=>[p,0,`"${w}"였어요. 다시 들어 보세요.`])],listenOnly:1};
  dlg.cur=out;return out;
 }
@@ -835,7 +860,7 @@ function typeText(text,done){
  typing.id=setInterval(()=>{i++;el.textContent=p.slice(0,i);if(i>=p.length)fin()},26);
 }
 function showGloss(k){
- const d=DICT[k];if(!d)return;
+ const d=C.DICT[k];if(!d)return;
  const el=$('gloss');el.innerHTML=`<b>${k}</b>${d.k}<span class="en">${d.e}</span>`;el.hidden=false;
  clearTimeout(showGloss.t);showGloss.t=setTimeout(hideGloss,4000);
 }
@@ -915,7 +940,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
- if(panelOpen()){$('panel').hidden=true;return}
+ if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
  if(!$('gloss').hidden){hideGloss();return}
  if(choosing()||building()){speak(dlg.cur.listen||dlg.cur.ask||'');return} // B never throws away a question; it replays it
  if(dlg)closeDialog();
@@ -923,7 +948,7 @@ function cancel(){
 const says=a=>(Array.isArray(a)?a:[a]).map(t=>({say:t}));
 
 function allQuestions(){
- const out=[...BANK];Object.keys(Q).forEach(k=>{if(k!=='cafe')out.push(...Q[k])});return out;
+ const out=[...(C.BANK||[])];Object.keys(C.Q).forEach(k=>{if(k!=='cafe')out.push(...C.Q[k])});return out;
 }
 function reviewFor(words){ // pick a question for the weakest of these words
  const ws=[...words].sort((a,b)=>(isDue(b)-isDue(a))||(lv(a).b-lv(b).b));
@@ -970,7 +995,7 @@ function interact(){
   }
   openDialog(n.name,steps,{npc:n,review:isReview});return;
  }
- if(F.pet){openDialog(FOLLOW.name,FOLLOW.talk());return}
+ if(F.pet){openDialog(C.FOLLOW.name,C.FOLLOW.talk());return}
  if(F.term){openDialog('신호 단말기',terminal(),{review:true});return}
  if(F.spot){openDialog('…',says(F.spot))}
 }
@@ -986,28 +1011,28 @@ function award(words){
   ?{who:'항해 일지',say:`한 번도 안 틀렸어요! "${nw.join('", "')}" 기억 레벨 2/5.`}
   :{who:'항해 일지',say:`일지에 적었어요. 틀린 단어는 곧 다시 나와요. 머리 위 ? 를 찾아요.`};
  dlg.steps.splice(dlg.i+1,0,note);
- if(state.badges.length>=WORDS.length&&!state.f.allWords){state.f.allWords=1;save();pending=says(['단어 열여섯 개를 다 모았어요!','이제 신호 단말기에서 복습하면 ★가 생겨요.'])}
+ if(state.badges.length>=C.WORDS.length&&!state.f.allWords){state.f.allWords=1;save();pending=says([`단어 ${C.WORDS.length}개를 다 모았어요!`,'이제 신호 단말기에서 복습하면 ★가 생겨요.'])}
 }
 function finish(){
  $('fade').classList.add('on');sfx('star');
- setTimeout(()=>{$('fade').classList.remove('on');openDialog('항해 일지',says(DONE))},900);
+ setTimeout(()=>{$('fade').classList.remove('on');openDialog('항해 일지',says(C.DONE))},900);
 }
 let toastT;function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2400)}
 
 /* ---------- HUD + log ---------- */
-function updateHud(){const n=state.badges.length,st=WORDS.filter(w=>has(w)&&lv(w).b>=3).length;$('logBtn').textContent=`일지 ${n}/${WORDS.length}`+(st?` ★${st}`:'')}
-function updateQuest(){$('questTxt').textContent=questText()}
+function updateHud(){const n=state.badges.length,st=C.WORDS.filter(w=>has(w)&&lv(w).b>=3).length;$('logBtn').textContent=`일지 ${n}/${C.WORDS.length}`+(st?` ★${st}`:'')}
+function updateQuest(){$('questTxt').textContent=C.questText()}
 function updateRead(){$('readBtn').setAttribute('aria-pressed',readOn&&canSpeak()?'true':'false');$('spk').hidden=!canSpeak()}
 function updateSound(){$('sndBtn').setAttribute('aria-pressed',soundOn?'true':'false')}
 let logSel=null,showEn=false;
 function pips(w){const L=lv(w);return `<span class="pips${isDue(w)?' due':''}">${[1,2,3,4,5].map(i=>`<i class="${L.b>=i?'on':''}"></i>`).join('')}</span>`}
 function openPanel(){
- const got=WORDS.filter(has);
- $('logCount').textContent=`${got.length}/${WORDS.length} · 복습 ${dueWords().length}`;
+ const got=C.WORDS.filter(has);
+ $('logCount').textContent=`${got.length}/${C.WORDS.length} · 복습 ${dueWords().length}`;
  if(!logSel||!has(logSel))logSel=got[got.length-1]||null;
- $('wlist').innerHTML=WORDS.map(w=>has(w)?`<button class="wd${w===logSel?' sel':''}" data-w="${w}"><span class="w">${w}</span>${pips(w)}</button>`:`<div class="wd off"><span class="w">？</span></div>`).join('');
+ $('wlist').innerHTML=C.WORDS.map(w=>has(w)?`<button class="wd${w===logSel?' sel':''}" data-w="${w}"><span class="w">${w}</span>${pips(w)}</button>`:`<div class="wd off"><span class="w">？</span></div>`).join('');
  $('wlist').querySelectorAll('button.wd').forEach(b=>b.addEventListener('click',()=>{logSel=b.dataset.w;showEn=false;openPanel();speak(logSel)}));
- if(logSel){const d=DICT[logSel],L=lv(logSel);
+ if(logSel){const d=C.DICT[logSel],L=lv(logSel);
   $('card').innerHTML=`<div class="top"><span class="big">${logSel}</span><button class="spk${canSpeak()?'':' '}" id="cardSpk" aria-label="듣기" ${canSpeak()?'':'hidden'}>${$('spk').innerHTML}</button></div>
    <span class="def">${d.k}</span><span class="ex">예: ${d.ex}</span><span class="hj">${d.hj}</span>
    <span class="hj">기억 레벨 ${L.b}/5 · ${isDue(logSel)?'지금 복습할 수 있어요':'다음 복습: '+fmtWait(L.due-now())+' 후'}</span>
@@ -1015,20 +1040,18 @@ function openPanel(){
   $('cardSpk')?.addEventListener('click',()=>speak(logSel+'. '+d.ex));
   $('enBtn')?.addEventListener('click',()=>{showEn=true;openPanel()});
  }else $('card').innerHTML='<span class="def">아직 단어가 없어요.</span><span class="ex">사람들한테 말을 걸면 일지에 단어가 생겨요.</span>';
- $('items').innerHTML=state.items.length?state.items.map(i=>`<li title="${ITEMS[i]||''}">${i}</li>`).join(''):'<li class="none">비어 있어요.</li>';
+ $('items').innerHTML=state.items.length?state.items.map(i=>`<li title="${C.ITEMS[i]||''}">${i}</li>`).join(''):'<li class="none">비어 있어요.</li>';
  $('panel').hidden=false;
 }
 
 /* ---------- saving ---------- */
-function fresh(){return {v:1,zone:'ship',x:2,y:3,dir:'down',badges:[],lv:{},items:[],f:{},seenIntro:false}}
-function save(){store.set(SAVE,JSON.stringify(state))}
+function fresh(){const st=CH.start;return {v:1,zone:st.zone,x:st.x,y:st.y,dir:st.dir,badges:[],lv:{},items:[],f:{},seenIntro:false}}
+function save(){store.set(CH.save,JSON.stringify(state))}
 function loadState(){
  state=fresh();
- try{const s=JSON.parse(store.get(SAVE)||'null');if(s)Object.assign(state,s)}catch(e){}
- if(!ZONES[state.zone])state.zone='ship';
- /* saves from version 1 (Josias owned the ship; tomatoes; space map) */
- if(state.f.metJosias){state.f.metOwner=1;state.f.finn=1;delete state.f.metJosias}
- state.items=state.items.map(i=>({'토마토 상자':'지구 씨앗 상자','우주 지도':'성실호 항해 지도'})[i]||i);
+ try{const s=JSON.parse(store.get(CH.save)||'null');if(s)Object.assign(state,s)}catch(e){}
+ if(!C.ZONES[state.zone]){const st=CH.start;Object.assign(state,{zone:st.zone,x:st.x,y:st.y,dir:st.dir})}
+ if(CH.migrate)CH.migrate(state);
 }
 
 /* ---------- input ---------- */
@@ -1074,15 +1097,41 @@ addEventListener('keydown',e=>{
 });
 addEventListener('keyup',e=>{if(KEYS[e.key]===held)held=null});
 
+/* ---------- chapters (each keeps its own save; old chapters are never overwritten) ---------- */
+const BASE_TILES={...TILES};
+function boot(id){
+ CH=CHAPTERS.find(c=>c.id===id)||CHAPTERS[0];
+ C=CH.make();
+ Object.keys(TILES).forEach(k=>{if(!(k in BASE_TILES))delete TILES[k]});Object.assign(TILES,C.TILES||{});
+ if(dlg){dlg=null;clearInterval(typing?.id);$('dlg').hidden=true}
+ pending=null;held=null;warping=false;$('panel').hidden=true;$('chPanel').hidden=true;$('toast').hidden=true;logSel=null;
+ store.set('seongsilho-chapter',CH.id);
+ loadState();
+ loadZone(state.zone,state.x,state.y,state.dir);
+ $('chBtn').textContent=CH.n;
+ updateHud();updateQuest();
+ if(!state.seenIntro){state.seenIntro=true;save();setTimeout(()=>openDialog(CH.introWho||'성실호',C.INTRO),300)}
+}
+function chapterProgress(c){try{const s=JSON.parse(store.get(c.save)||'null');return s?{got:(s.badges||[]).length,done:!!(s.f&&s.f.done)}:{got:0,done:false}}catch(e){return {got:0,done:false}}}
+function openChapters(){
+ $('chList').innerHTML=CHAPTERS.map(c=>{const p=chapterProgress(c);
+  return `<button class="chap${c===CH?' cur':''}" data-id="${c.id}"><span class="cn" style="background:${c.color}">${c.n}</span><span class="ci"><b>${c.title}</b><small>${c.place||''}</small></span><span class="cp">${p.done?'끝':p.got+'/'+c.words}</span></button>`}).join('');
+ $('chList').querySelectorAll('.chap').forEach(b=>b.addEventListener('click',()=>{const id=b.dataset.id;$('chPanel').hidden=true;if(id!==CH.id){boot(id);sfx('door')}}));
+ $('chPanel').hidden=false;$('chList').querySelector('.cur')?.focus();
+}
+$('chBtn').addEventListener('click',openChapters);
+$('chPanel').addEventListener('click',e=>{if(e.target.id==='chPanel')$('chPanel').hidden=true});
+$('chClose').addEventListener('click',()=>$('chPanel').hidden=true);
+
 /* ---------- start ---------- */
 function start(){
  if(TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
- loadState();
- loadZone(state.zone,state.x,state.y,state.dir);
- updateSound();updateRead();updateHud();updateQuest();
- if(!state.seenIntro){state.seenIntro=true;save();setTimeout(()=>openDialog('성실호',INTRO),300)}
+ updateSound();updateRead();
+ const want=new URLSearchParams(location.search).get('ch')||store.get('seongsilho-chapter');
+ boot(CHAPTERS.some(c=>c.id===want)?want:CHAPTERS[CHAPTERS.length-1].id);
  requestAnimationFrame(loop);
 }
 window.claude?.hot?.ready?window.claude.hot.ready(start):start();
 </script>
 </body></html>
+
