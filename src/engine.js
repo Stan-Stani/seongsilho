@@ -141,6 +141,9 @@ const HEAD={ // rows 0–7 by style and view (left view is flipped for right)
  bun:{down:['......OHHO......','.....OOhhOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
         up:  ['......OHHO......','.....OHhhHO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
         left:['.........OHO....','.....OOOOHHO....','....OHHHHHHO....','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
+ bob:{down:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','..OHSSESSESSHO..','..OHSSSSSSSSHO..','..OHHSSMMSSHHO..'],
+        up:  ['................','.....OOOOOO.....','....OHHHHHHO....','...OHHhHHhHHO...','...OHHHHHHHHO...','..OHHhHHHHhHHO..','..OHHHHHHHHHHO..','..OHHHHHHHHHHO..'],
+        left:['................','.....OOOOOO.....','....OHHHHHHO....','...OHHHHHHHHO...','...OHHHHHhHHO...','..OSESSHHHhHHO..','...OSSSSHHHHHO..','....OMSSSOHHHO..']},
  spiky:{down:['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHSSSSSSHO...','...OSSESSESSO...','...OSSSSSSSSO...','....OSSMMSSO....'],
         up:  ['....O..O..O.....','...OHOOHOOHO....','...OHHHHHHHHO...','...OHHhHHhHHO...','...OHHHHHHHHO...','...OHhHHHHhHO...','...OHHHHHHHHO...','....OSSSSSSO....'],
         left:['.....O..O..O....','....OHOOHOOHO...','....OHHHHHHHO...','...OHHHHHhHHO...','...OSSHHHHHHO...','..OSESSSHHhHO...','...OSSSSSHHHO...','....OMSSSSSO....']},
@@ -164,8 +167,11 @@ function humanArt(L,dir,step){
  const set=(rows,y,x,ch)=>{rows[y]=rows[y].slice(0,x)+ch+rows[y].slice(x+1)};
  if(L.coat){for(const y of [4,5])body[y]=body[y].replace(/P/g,'C').replace(/p/g,'c')}
  if(!L.belt)body=body.map(rw=>rw.replace(/B/g,'C'));
+ if(style==='bob'&&view!=='left'){set(body,0,3,'H');set(body,0,12,'H');if(view==='up')for(let x=4;x<12;x++)set(body,0,x,'H')}
  if(style==='long'&&view!=='left'){for(const y of [0,1]){set(body,y,3,'H');set(body,y,12,'H')}if(view==='up')for(let x=4;x<12;x++){set(body,0,x,'H');set(body,1,x,'H')}}
  if(style==='long'&&view==='left'){set(body,0,10,'H');set(body,1,10,'H')}
+ if(L.lashes&&view==='down')head=head.map(rw=>rw.replace(/SESSES/,'EESSEE'));
+ if(L.lips)head=head.map(rw=>rw.replace(/M/g,'L'));
  if(L.beard){if(view==='down'){head[6]='...OSDDDDDDSO...';head[7]='....ODDDDDDO....';body[0]='...OODDDDDDOO...'}else if(view==='left'){head[6]='...ODDDDSHHHO...';head[7]='....ODDDDSO.....'}}
  if(L.arm){ // mechanical arm on the character's left side
   if(view==='down'&&dir==='down'){set(body,1,12,'A');set(body,2,12,'A');set(body,3,12,'A')}
@@ -177,7 +183,7 @@ function humanArt(L,dir,step){
 function humanPal(L){
  const o='#1B1E2B';
  return {O:o,E:o,H:L.hair,h:shade(L.hair,.78),S:L.skin,s:shade(L.skin,.85),M:shade(L.skin,.72),W:shade(L.skin,1.12),C:L.shirt,c:shade(L.shirt,.8),
-  P:L.pants,p:shade(L.pants,.8),K:L.shoes||'#2A2A33',B:L.belt||L.shirt,D:L.beard||L.hair,A:L.arm||L.skin,Y:L.cap||L.hair,y:shade(L.cap||L.hair,.8),V:shade(L.cap||'#333333',.55)};
+  P:L.pants,p:shade(L.pants,.8),K:L.shoes||'#2A2A33',B:L.belt||L.shirt,D:L.beard||L.hair,L:L.lips||shade(L.skin,.72),A:L.arm||L.skin,Y:L.cap||L.hair,y:shade(L.cap||L.hair,.8),V:shade(L.cap||'#333333',.55)};
 }
 const palCache=new WeakMap();
 function drawChar(L,X,Y,dir,step){

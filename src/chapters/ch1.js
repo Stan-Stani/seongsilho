@@ -201,7 +201,7 @@ const ZONES={
 };
 
 const NPC={
- ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'},badge:['도착하다','궤도'],
+ ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'},badge:['도착하다','궤도'],
   after:'창밖을 봐요. 우리가 궤도를 돌고 있어요!',
   talk:()=>[
    {say:'일어나요! 드디어 왔어요!'},
@@ -211,7 +211,7 @@ const NPC={
    {say:'이제 배는 곤디아 주위를 빙글빙글 돌아요.'},
    Q.ellie[1],
    {say:'궤도에 도착했으니까 할 일이 많아요. {함교|함교}에 가서 선장님한테 인사해요.',award:['도착하다','궤도']}]},
- dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333'},badge:['선장','우주선'],
+ dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333',lashes:1,lips:'#B5565E'},badge:['선장','우주선'],
   after:'선장은 배를 지켜요. 그게 제 일이에요.',
   script:()=>{
    if(f().fixed&&!f().done&&state.badges.includes('선장'))return [
@@ -305,7 +305,7 @@ const NPC={
    {say:'저는 기보이. 트래블러예요. 뭐든지 팔아요.'},
    Q.gyvoy[0],
    {say:'연료통이 필요해요? 공짜는 없어요. 지구 물건하고 바꿔요!',award:['연료']}]},
- lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1},badge:['관측하다','행성'],
+ lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1,lashes:1,lips:'#C46A70'},badge:['관측하다','행성'],
   after:'오늘은 관측하기 좋은 날이에요.',
   talk:()=>[
    {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
@@ -332,7 +332,7 @@ const NPC={
    Q.explore[1],
    {w:'탐험',build:['핀이','성실호로','탐험을','떠나요']},
    {say:'이 항해 지도, 저는 이제 필요 없어요. 핀한테 가져가요.',give:'성실호 항해 지도',award:['지도','탐험']}]},
- otylia:{name:'오틸리아',zone:'city',x:21,y:12,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1},
+ otylia:{name:'오틸리아',zone:'city',x:21,y:12,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1,lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'안녕하세요. 저는 오틸리아예요. 핀의 {쌍둥이|쌍둥이}예요.'},{say:'핀이 땅을 주고 낡은 우주선을 받았어요. 정말 핀다워요.'},{say:'핀은 항상 탐험 얘기만 해요. 잘 부탁해요.'}]},
  cafe:{name:'카페 사장님',zone:'city',x:19,y:7,dir:'down',look:{hair:'#A0A0A0',skin:'#E8B892',shirt:'#5A3A2A',pants:'#2E2A28'},
   script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 오세요! 커피 한 잔 하면서 옛날 단어 연습해요.'},{...q,old:1},{say:'또 오세요. 커피는 공짜예요.'}]},

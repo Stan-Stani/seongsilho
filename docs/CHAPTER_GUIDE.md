@@ -63,7 +63,8 @@ Every `ask` and `build` needs `w` (the word it practises). Review reuses all `Q`
 
 ### NPCs and sprites
 People use the humanoid generator: `look:{hair,skin,shirt,pants,belt?,shoes?,style?,cap?,coat?,beard?,arm?}` (hex colors except flags).
-`style`: 'short' | 'long' | 'bald' (grey/colored sides = hair) | 'bun' | 'spiky'. `coat:1` = long coat over the legs. `cap:color`. `beard:color`.
+`style`: 'short' | 'long' | 'bob' (fringe, chin-length) | 'bald' (grey/colored sides = hair) | 'bun' | 'spiky'.
+`lashes:1` (bigger lashed eyes) and `lips:'#hex'` read as feminine — use them for women (Ellie, Dejean, Otylia, Lina…). `coat:1` = long coat over the legs. `cap:color`. `beard:color`.
 `arm:color` = mechanical left arm. Follow the book's physical descriptions (outline section C).
 Anything that is not a regular human (Gath 3 m tall, the Daves' glowing quartz skin, Knights, Celestials, Ovar beetles, Icarians, saberstones,
 drones…) gets a custom pixel-art sprite: `look:{art:{pal:{key:'#hex',…}, down:[rows], up:[rows], left:[rows], walk?:{down:[[rows],[rows]],left:[…]}}}`.
