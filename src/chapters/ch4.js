@@ -53,7 +53,7 @@ const DICT={
  '세이버스톤':{k:'달걀 같은 하얀 돌 기계. 별 모양 입으로 물어요.',e:'saberstones'},
  '무전':{k:'멀리 있는 사람하고 하는 전화 같은 것.',e:'radio'},
  '후두':{k:'아주 높은 돌기둥. 카이발에는 1킬로미터짜리도 있어요.',e:'hoodoo (rock pillar)'},
- '고스트':{k:'머리 없는 셀레스철 전투 기계.',e:'Ghost (combat machine)'},
+ '고스트':{k:'셀레스철이 만든 전투 로봇. 종류가 아주 많아요.',e:'Ghost (combat machine)'},
  '지뢰':{k:'땅에 숨겨 놓고, 밟으면 터지는 폭탄.',e:'mine'},
  '미라':{k:'아주 오래돼서 마른 시체.',e:'mummy'},
  '빚':{k:'갚아야 하는 돈이나 물건.',e:'debt'},
@@ -74,7 +74,7 @@ const BANK=[
  {w:'침입하다',ask:'누가 회사 컴퓨터에 ___했어요. 해커예요!',opts:[['침입',1],['입학',0,'입학은 학교에 들어가는 거예요. 몰래 들어가요 → "침입".']]},
  {w:'발자국',ask:'눈 위에 강아지 ___이 있어요.',opts:[['발자국',1],['발가락',0,'발가락은 발 끝의 다섯 개예요. 땅에 남은 모양은 "발자국".']]},
  {w:'구르다',ask:'공이 언덕 아래로 데굴데굴 ___.',opts:[['굴러가요',1],['구러가요',0,'"구르다"는 르 불규칙이에요. 구르 + 어 → "굴러". 그래서 "굴러가요".'],['골라가요',0,'고르다는 선택하는 거예요. 데굴데굴 → "굴러가요".']]},
- {w:'무너지다',ask:'지진 때문에 오래된 건물이 ___.',opts:[['무너졌어요',1],['넘어졌어요',0,'넘어지다는 사람이 걷다가 쓰러질 때예요. 건물은 "무너졌어요".']]},
+ {w:'무너지다',ask:'지진 때문에 오래된 건물이 ___.',opts:[['무너졌어요',1],['무너뜨렸어요',0,'무너뜨리다는 누가 부수는 거예요. 건물이 스스로 → "무너졌어요".']]},
  {w:'계단',ask:'엘리베이터가 고장 나서 ___으로 올라갔어요.',opts:[['계단',1],['계산',0,'계산은 숫자나 돈이에요. 올라가는 길은 "계단".']]},
  {w:'먼지',ask:'오래 청소를 안 해서 ___가 많아요.',opts:[['먼지',1],['먼저',0,'먼저는 "제일 처음에"예요. 작은 가루는 "먼지".']]},
  {w:'질식하다',ask:'연기가 많으면 ___할 수 있어요. 빨리 나가요!',opts:[['질식',1],['질문',0,'질문은 물어보는 거예요. 숨을 못 쉬어요 → "질식".']]},
@@ -96,7 +96,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  els:[
   {w:'우주복',ask:'밖은 진공이에요. 그래서 ___을 꼭 입어야 돼요.',opts:[['우주복',1],['우주선',0,'우주선은 타는 거예요. 입는 옷은 "우주복". 服 = 옷!'],['운동복',0,'운동복으로는 숨을 못 쉬어요! 진공에서는 "우주복".']]},
   {w:'질식하다',ask:'산소가 없으면 숨을 못 쉬어요. 사람이 ___.',opts:[['질식해요',1],['질문해요',0,'질문은 물어보는 거예요. 숨을 못 쉬어요 → "질식해요".'],['식사해요',0,'식사는 밥 먹는 거예요. 숨을 못 쉬어요 → "질식해요".']]},
-  {w:'질식하다',ask:'밖에서 헬멧을 절대 ___. 질식해요.',opts:[['벗지 마세요',1],['벗으세요',0,'벗으면 질식해요! 하지 말라고 할 때는 "-지 마세요" → "벗지 마세요".'],['벗지 않아요',0,'"벗지 않아요"는 그냥 설명이에요. 부탁할 때는 "벗지 마세요".']]},
+  {w:'질식하다',ask:'밖에서 헬멧을 절대 ___. 질식해요.',opts:[['벗지 마세요',1],['벗으세요',0,'벗으면 질식해요! 하지 말라고 할 때는 "-지 마세요" → "벗지 마세요".'],['벗고 마세요',0,'"-고 마세요"는 없어요. 하지 말라고 할 때는 "-지 마세요" → "벗지 마세요".']]},
  ],
  mique:[
   {w:'담',ask:'집이나 땅 주위를 막는 벽은 ___이에요.',opts:[['담',1],['답',0,'답은 질문에 하는 말이에요. 막는 벽은 "담".'],['땀',0,'땀은 더울 때 몸에서 나는 물이에요. 벽은 "담".']]},
@@ -107,15 +107,15 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'침입하다',ask:'폭약이 터진 ___ 담 안으로 침입해요.',opts:[['후에',1],['전에',0,'터지기 전에 들어가면 아주 위험해요! 터지고 나서 → "터진 후에".']]},
  ],
  miqueB:[
-  {w:'발자국',ask:'제 ___만 밟고 따라와요.',opts:[['발자국',1],['발가락',0,'발가락은 발 끝의 다섯 개예요. 땅에 남은 발 모양은 "발자국".'],['손자국',0,'손자국은 손 모양이에요. 걸어간 모양은 "발자국".']]},
+  {w:'발자국',ask:'제 ___만 밟고 따라와요.',opts:[['발자국',1],['발가락',0,'발가락은 발 끝의 다섯 개예요. 땅에 남은 발 모양은 "발자국".']]},
   {w:'발자국',ask:'초록 그물은 절대 ___.',opts:[['밟지 마세요',1],['밟으세요',0,'밟으면 함정이 터져요! 하지 말라고 할 때 → "밟지 마세요".']]},
  ],
  bensath:[
   {w:'구르다',ask:'하얀 돌들이 공처럼 빙글빙글 ___!',opts:[['굴러와요',1],['골라와요',0,'고르다는 선택하는 거예요. 빙글빙글 → 구르다 → "굴러와요".'],['그려와요',0,'그리다는 그림이에요. 빙글빙글 → "굴러와요".']]},
-  {w:'전멸',ask:'폼키 팀은 한 명도 안 남았어요. 팀이 ___했어요.',opts:[['전멸',1],['전부',0,'전부는 "모두"라는 뜻이에요. 모두 죽었어요 → "전멸".'],['실망',0,'실망은 기분이에요. 모두 죽었어요 → "전멸".']]},
+  {w:'전멸',ask:'폼키 팀은 한 명도 안 남았어요. 팀이 ___했어요.',opts:[['전멸',1],['전부',0,'전부는 "모두"라는 뜻이에요. 모두 죽었어요 → "전멸".'],['절반',0,'절반은 반이에요. "절반했어요"는 없어요. 한 명도 안 남았어요 → "전멸".']]},
  ],
  ellie:[
-  {w:'무너지다',ask:'미사일로 밑을 쏘면 후두가 ___.',opts:[['무너져요',1],['넘어져요',0,'넘어지다는 사람이 걷다가 쓰러질 때예요. 큰 돌기둥은 "무너져요".'],['무서워요',0,'무서운 건 우리예요! 돌기둥은 "무너져요".']]},
+  {w:'무너지다',ask:'미사일로 밑을 쏘면 후두가 ___.',opts:[['무너져요',1],['무너뜨려요',0,'무너뜨리다는 누가 무엇을 부수는 거예요. 후두가 스스로 → "무너져요".'],['무서워요',0,'무서운 건 우리예요! 돌기둥은 "무너져요".']]},
   {w:'무너지다',ask:'세이버스톤이 더 오기 ___ 빨리 해요!',opts:[['전에',1],['후에',0,'더 온 후에는 늦어요! 오기 전 → "오기 전에".']]},
  ],
  elsB:[
@@ -154,19 +154,19 @@ const tuned=(L,fn,extra)=>{let A=null;const o={...L};Object.defineProperty(o,'ar
 const same=r=>r;
 /* helmet: hair → shell, face → visor (Kajval has no air) */
 const helmRows=(rows,view)=>rows.map((row,i)=>{if(i>7)return row.replace(/H/g,'C');if(i===0)return row;
- let s=row.replace(/[Hh]/g,'Y');s=view==='up'?s.replace(/[SsWMED]/g,'Y'):s.replace(/[SsWMED]/g,'V');
+ let s=row.replace(/[Hh]/g,'Y');s=view==='up'?s.replace(/[SsWMEDL]/g,'Y'):s.replace(/[SsWMEDL]/g,'V');
  if(i===4&&view!=='up')s=s.slice(0,view==='left'?4:5)+'G'+s.slice(view==='left'?5:6);return s});
 const helm=(L,shell)=>{let A=null;const o={...L};Object.defineProperty(o,'art',{get(){if(!A){const pal=Object.assign(humanPal(L),{Y:shell,y:shade(shell,.8),V:'#26384A',G:'#BFE6FF'});
  const mk=(d,s)=>helmRows(humanArt(L,d,s).slice(),d);A={pal,down:mk('down',0),up:mk('up',0),left:mk('left',0),walk:{down:[mk('down',1),mk('down',2)],up:[mk('up',1),mk('up',2)],left:[mk('left',1),mk('left',2)]}}}return A}});return o};
 
 const FINN={hair:'#E0C070',skin:'#F0C9A4',shirt:'#2F8F8A',pants:'#2E3548'};
-const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'};
+const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'};
 const GYVOY={hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E',coat:1};
-const ELS={hair:'#B88A5A',skin:'#E3B48C',shirt:'#2A3A66',pants:'#2A3A66',belt:'#5A6A96',style:'bun'};
+const ELS={hair:'#B88A5A',skin:'#E3B48C',shirt:'#2A3A66',pants:'#2A3A66',belt:'#5A6A96',style:'bun',lashes:1,lips:'#B8606A'};
 const MIQ={hair:'#3A2A22',skin:'#A87454',shirt:'#5A5A62',pants:'#3A3A40',belt:'#C9A23A'};
 const BEN={hair:'#2A2420',skin:'#8E5E40',shirt:'#4A5A3A',pants:'#3A4430',belt:'#2A2A30',style:'bald'};
 const FOM={hair:'#6A3A2A',skin:'#E0AE86',shirt:'#5E4A36',pants:'#3A3430',belt:'#2A2A30',style:'spiky'};
-const EDU={hair:'#1E1A1A',skin:'#D7A77E',shirt:'#5E4A36',pants:'#3A3430',belt:'#2A2A30',style:'long'};
+const EDU={hair:'#1E1A1A',skin:'#D7A77E',shirt:'#5E4A36',pants:'#3A3430',belt:'#2A2A30',style:'long',lashes:1,lips:'#B8606A'};
 const PAN={hair:'#4A2A1A',skin:'#B07850',shirt:'#5A3A3A',pants:'#3A3030',belt:'#2A2A30',style:'bun'};
 const CREW={hair:'#2A2F4A',skin:'#F1C9A5',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A'};
 const ELS_N=tuned(ELS,same,{E:'#AEB9C4'}); // grey mechanical eyes
@@ -610,7 +610,7 @@ const ghostPos=(delay,home,wreck)=>()=>{if(f().mined)return wreck;track();const 
 
 const NPC={
  /* ---- ship ---- */
- dejean:{name:'드장 선장',zone:'ship',x:6,y:2,dir:'down',look:{hair:'#A8A8AE',skin:'#C99470',shirt:'#3B3F8A',pants:'#4A3A7A',belt:'#5BE08A',arm:'#B87333'},
+ dejean:{name:'드장 선장',zone:'ship',x:6,y:2,dir:'down',look:{hair:'#A8A8AE',skin:'#C99470',shirt:'#3B3F8A',pants:'#4A3A7A',belt:'#5BE08A',arm:'#B87333',style:'bob',lashes:1,lips:'#A85A5A'},
   status:()=>f().metDejean?null:'todo',
   script:()=>{
    if(!f().metDejean)return [
@@ -621,7 +621,7 @@ const NPC={
    if(!f().warned)return [{say:'홀로그램 앞으로 가요. 누가 우리한테 할 말이 있어요.'}];
    if(!f().orbit)return [{say:'5주예요. 핀 씨가 카이발 이야기를 할 거예요.'}];
    return [{say:'격납고는 저 문 너머예요. 5주 안에 꼭 돌아와요.'}]}},
- uemi:{name:'우에미주발리',zone:'ship',x:3,y:4,dir:'up',look:{hair:'#1E1E24',skin:'#C68E64',shirt:'#3E6E8E',pants:'#2E3B55',style:'bun'},
+ uemi:{name:'우에미주발리',zone:'ship',x:3,y:4,dir:'up',look:{hair:'#1E1E24',skin:'#C68E64',shirt:'#3E6E8E',pants:'#2E3B55',style:'bun',lashes:1,lips:'#B0605E'},
   talk:()=>[{say:'저는 {항법사|항법사} 우에미주발리예요.'},{say:'관문을 나오니까 호아 퀸주 성계예요. 카이발은 바로 저 앞이에요.'},{say:'점프할 때 시간이 멈춘 것 같았어요. 정말 이상해요.'}]},
  pablo:{name:'파블로',zone:'ship',x:13,y:5,dir:'left',look:PABLO,
   pos:()=>f().orbit?[12,7]:[13,5],
@@ -660,7 +660,7 @@ const NPC={
    {say:'{격납고|격납고}로 가요. 파블로한테 문을 열라고 했어요.',award:['멸망하다','진공'],set:()=>{f().orbit=1}}]},
  ellieS:{name:'엘리',zone:'ship',x:20,y:3,dir:'left',look:ELLIE,
   hide:()=>!!f().boarded&&ZID!=='ship',
-  talk:()=>[{say:'헤즈업 준비 끝! 진주 같은 배죠?'},{say:'먼저 {나트|나트}로 내려가요. 바퀴로 움직이는 마을이에요.'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
+  talk:()=>[{say:'헤즈업 준비 끝! 엔포 가문의 강하선이에요. 진주 같죠?'},{say:'먼저 {나트|나트}로 내려가요. 바퀴로 움직이는 마을이에요.'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
  /* ---- the Natt ---- */
  binopal:{name:'비노팔',zone:'natt',x:12,y:4,dir:'down',look:BINO,badge:['화산','용암'],
   after:'나트는 느려요. 그래도 용암보다는 빨라요. 하하.',
@@ -817,7 +817,7 @@ const NPC={
    {who:'데이브 (2)',say:'데이브.'},
    {say:'격납고. 위에. 천 미터.'},
    Q.dave[0],
-   {who:'…',say:'아래에서 쇠 발소리가 들려요. 머리 없는 {고스트|고스트}예요!'},
+   {who:'…',say:'아래에서 쇠 발소리가 들려요. 원숭이 같은 {고스트|고스트}예요!'},
    Q.dave[1],
    {say:'고스트. 쉬워요. 그래도 뛰어요.',award:['계단'],set:()=>{f().chase=1}}]},
  dave2:{name:'데이브 (2)',zone:'tower',x:12,y:20,dir:'left',look:DAVE,
@@ -825,7 +825,7 @@ const NPC={
  ghost1:{name:'고스트',zone:'tower',x:5,y:21,dir:'up',look:{get art(){return (f().mined?GHOST_DEAD:GHOST).art}},
   pos:ghostPos(2,[5,21],[13,12]),hide:()=>!f().chase,
   talk:()=>f().mined?[{who:'…',say:'부서진 고스트예요. 지뢰가 다리를 날려 버렸어요.'}]
-   :[{who:'…',say:'머리 없는 고스트! 꼬리 두 개가 흔들려요.'},{who:'데이브',say:'뛰어요!'},{who:'…',say:'데이브가 고스트를 밀어내요. 빨리 올라가요!'}]},
+   :[{who:'…',say:'원숭이처럼 빠른 고스트! 꼬리 두 개가 흔들려요.'},{who:'데이브',say:'뛰어요!'},{who:'…',say:'데이브가 고스트를 밀어내요. 빨리 올라가요!'}]},
  ghost2:{name:'고스트',zone:'tower',x:14,y:21,dir:'up',look:{get art(){return (f().mined?GHOST_DEAD:GHOST).art}},
   pos:ghostPos(4,[14,21],[12,15]),hide:()=>!f().chase,
   talk:()=>f().mined?[{who:'…',say:'고스트 조각이에요. 아직 조금 뜨거워요.'}]:[{who:'…',say:'고스트가 팔을 휘둘러요! 위로, 위로!'}]},
