@@ -240,7 +240,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden;
+const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -332,6 +332,7 @@ function show(s){
  $('who').textContent=s.who||dlg.name;
  $('choices').hidden=true;$('choices').innerHTML='';$('build').hidden=true;$('more').hidden=true;
  const text=s.say||s.ask||(s.build?'단어를 순서대로 골라요.':'');
+ if(!s.build)logTalk(s.who||dlg.name,text);
  typeText(text,()=>{if(s.ask)renderChoices(s);else if(s.build)renderBuild(s);else $('more').hidden=false});
  if(readOn&&!s.listenOnly)speak(s.listen?'':text);
  if(s.listen)setTimeout(()=>speak(s.listen),readOn?1200:150);
@@ -379,6 +380,23 @@ function typeText(text,done){
 function showGloss(k){const d=C.DICT[k];if(d)popGloss([[k,d]])}
 function showWord(w){popGloss(lexLookup(w))}
 function hideGloss(){$('gloss').hidden=true}
+/* ---------- conversation log: every line shown, scrollable, words tappable like in the dialogue box ---------- */
+let talk=[];
+const talkKey=()=>CH.save+'-talk';
+function loadTalk(){talk=[];try{talk=JSON.parse(localStorage.getItem(talkKey())||'[]')}catch(e){}}
+function logTalk(who,text){
+ if(!text)return;const last=talk[talk.length-1];if(last&&last[0]===who&&last[1]===text)return;
+ talk.push([who,text]);if(talk.length>150)talk=talk.slice(-150);
+ try{localStorage.setItem(talkKey(),JSON.stringify(talk))}catch(e){}
+}
+function openTalk(){
+ const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ $('talkList').innerHTML=talk.length?talk.map(([w,t])=>`<div class="tl"><span class="tw">${esc(w)}</span><span class="tt txt">${glossHTML(t)}</span></div>`).join('')
+  :'<p class="tl-empty">아직 대화가 없어요.</p>';
+ $('talkPanel').hidden=false;document.body.classList.add('talkopen');
+ const L=$('talkList');L.scrollTop=L.scrollHeight;
+}
+function closeTalk(){$('talkPanel').hidden=true;document.body.classList.remove('talkopen');hideGloss()}
 
 const choiceBtns=()=>[...document.querySelectorAll('#choices .choice')];
 const tileBtns=()=>[...document.querySelectorAll('#tiles .tile:not(.used)')];
@@ -458,6 +476,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
+ if(!$('talkPanel').hidden){if(!$('gloss').hidden)hideGloss();else closeTalk();return}
  if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
  if(!$('gloss').hidden){hideGloss();return}
  if(choosing()||building()){speak(dlg.cur.listen||dlg.cur.ask||'');return} // B never throws away a question; it replays it
@@ -590,6 +609,8 @@ $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.l
 $('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
+$('talkBtn').addEventListener('click',openTalk);$('talkClose').addEventListener('click',closeTalk);
+$('talkPanel').addEventListener('click',e=>{if(e.target.id==='talkPanel'){closeTalk();return}const gl=e.target.closest('.gl');if(gl){showGloss(gl.dataset.k);return}const w=e.target.closest('.w');if(w)showWord(w.textContent)});
 $('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});
 $('readBtn').addEventListener('click',()=>{
  if(!canSpeak()){toast('이 기기에는 한국어 음성이 없어요.');return}
@@ -625,7 +646,7 @@ function boot(id){
  if(dlg){dlg=null;clearInterval(typing?.id);$('dlg').hidden=true}
  pending=null;held=null;warping=false;$('panel').hidden=true;$('chPanel').hidden=true;$('toast').hidden=true;logSel=null;
  store.set('seongsilho-chapter',CH.id);
- loadState();
+ loadState();loadTalk();
  loadZone(state.zone,state.x,state.y,state.dir);
  $('chBtn').textContent=CH.n;
  updateHud();updateQuest();

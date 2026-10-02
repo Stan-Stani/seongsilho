@@ -28,6 +28,7 @@
  {check:()=>state.f.done,msg:'chapter done'},
  {clock:26*3600e3},
  {inspect:['ship',1,4]},
+ {talklog:1,shot:'10a-talk-log'},
  {panel:1,shot:'10-log'},
  {chapters:1,shot:'11-chapters'},
 ]

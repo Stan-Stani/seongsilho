@@ -114,6 +114,9 @@ window.__play=async function(steps){
    else if(s.check){check(s.check(),s.msg)}
    else if(s.log){log(s.log())}
    else if(s.panel){$('logBtn').click();await wait(200);if(s.shot)await shot(s.shot);check(!$('panel').hidden,'log panel opens');await key('x')}
+   else if(s.talklog){$('talkBtn').click();await wait(250);const n=$('talkList').querySelectorAll('.tl').length;check(!$('talkPanel').hidden&&n>5,'conversation log lists '+n+' lines');
+     if(s.shot)await shot(s.shot);const w=[...$('talkList').querySelectorAll('.w')].sort((a,b)=>b.textContent.length-a.textContent.length)[0];w.click();await wait(150);
+     check(!$('gloss').hidden,'tapping a word in the log opens the dictionary: '+w.textContent);if(s.shot)await shot(s.shot+'-tap');await key('x');await key('x');check($('talkPanel').hidden,'B closes the log')}
    else if(s.chapters){$('chBtn').click();await wait(200);if(s.shot)await shot(s.shot);await key('x')}
    else if(s.shot)await shot(s.shot);
   }catch(e){ERR.push('driver: '+e.message)}

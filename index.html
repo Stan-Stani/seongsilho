@@ -138,6 +138,15 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .chap .ci b{font-family:var(--display);font-weight:400;font-size:1.1rem}
 .chap .ci small{font-family:var(--mono);font-size:.7rem;letter-spacing:.08em;color:var(--muted);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .chap .cp{font-family:var(--mono);font-size:.8rem;font-variant-numeric:tabular-nums;color:var(--muted)}
+.quest span{flex:1;min-width:0}
+.talkbtn{flex:none;margin-left:auto;font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;background:transparent;color:var(--ink);border:2px solid var(--seam);border-radius:6px;padding:3px 8px;cursor:pointer}
+.talksheet{height:min(78vh,640px)}
+.talklog{flex:1;overflow:auto;display:flex;flex-direction:column;gap:10px;background:var(--glass);color:var(--glass-ink);border-radius:8px;padding:12px;line-height:1.5}
+.tl{display:flex;flex-direction:column;gap:1px}
+.tl .tw{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--amber)}
+.tl .tt{font-weight:600;font-size:1rem;word-break:keep-all}
+.tl-empty{color:var(--glass-muted);margin:0}
+body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 32px));z-index:20;box-sizing:border-box}
 @media (max-width:370px){.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}.ab button{width:56px;height:56px}.wlist{grid-template-columns:repeat(3,1fr)}h1{font-size:1.35rem}}
 @media (prefers-reduced-motion: reduce){.more{animation:none}.fade{transition:none}.tile.bad{animation:none}}
 </style>
@@ -152,7 +161,7 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
       <button class="pill log" id="logBtn">일지 0/16</button>
     </div>
   </header>
-  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span></div>
+  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span><button class="talkbtn" id="talkBtn" aria-label="대화 기록">대화</button></div>
   <div class="screen" id="screen">
     <canvas id="cv" width="176" height="160"></canvas>
     <div class="zone" id="zone"></div>
@@ -186,6 +195,12 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
   <div class="sheet" role="dialog" aria-label="장 고르기">
     <h2>항해 기록 <button class="btn" id="chClose">닫기</button></h2>
     <div class="chlist" id="chList"></div>
+  </div>
+</div>
+<div class="panel" id="talkPanel" hidden>
+  <div class="sheet talksheet" role="dialog" aria-label="대화 기록">
+    <h2>대화 기록 <button class="btn" id="talkClose">닫기</button></h2>
+    <div class="talklog" id="talkList"></div>
   </div>
 </div>
 <div class="panel" id="panel" hidden>
@@ -6141,7 +6156,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden;
+const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -6233,6 +6248,7 @@ function show(s){
  $('who').textContent=s.who||dlg.name;
  $('choices').hidden=true;$('choices').innerHTML='';$('build').hidden=true;$('more').hidden=true;
  const text=s.say||s.ask||(s.build?'단어를 순서대로 골라요.':'');
+ if(!s.build)logTalk(s.who||dlg.name,text);
  typeText(text,()=>{if(s.ask)renderChoices(s);else if(s.build)renderBuild(s);else $('more').hidden=false});
  if(readOn&&!s.listenOnly)speak(s.listen?'':text);
  if(s.listen)setTimeout(()=>speak(s.listen),readOn?1200:150);
@@ -6280,6 +6296,23 @@ function typeText(text,done){
 function showGloss(k){const d=C.DICT[k];if(d)popGloss([[k,d]])}
 function showWord(w){popGloss(lexLookup(w))}
 function hideGloss(){$('gloss').hidden=true}
+/* ---------- conversation log: every line shown, scrollable, words tappable like in the dialogue box ---------- */
+let talk=[];
+const talkKey=()=>CH.save+'-talk';
+function loadTalk(){talk=[];try{talk=JSON.parse(localStorage.getItem(talkKey())||'[]')}catch(e){}}
+function logTalk(who,text){
+ if(!text)return;const last=talk[talk.length-1];if(last&&last[0]===who&&last[1]===text)return;
+ talk.push([who,text]);if(talk.length>150)talk=talk.slice(-150);
+ try{localStorage.setItem(talkKey(),JSON.stringify(talk))}catch(e){}
+}
+function openTalk(){
+ const esc=x=>String(x).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ $('talkList').innerHTML=talk.length?talk.map(([w,t])=>`<div class="tl"><span class="tw">${esc(w)}</span><span class="tt txt">${glossHTML(t)}</span></div>`).join('')
+  :'<p class="tl-empty">아직 대화가 없어요.</p>';
+ $('talkPanel').hidden=false;document.body.classList.add('talkopen');
+ const L=$('talkList');L.scrollTop=L.scrollHeight;
+}
+function closeTalk(){$('talkPanel').hidden=true;document.body.classList.remove('talkopen');hideGloss()}
 
 const choiceBtns=()=>[...document.querySelectorAll('#choices .choice')];
 const tileBtns=()=>[...document.querySelectorAll('#tiles .tile:not(.used)')];
@@ -6359,6 +6392,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
+ if(!$('talkPanel').hidden){if(!$('gloss').hidden)hideGloss();else closeTalk();return}
  if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
  if(!$('gloss').hidden){hideGloss();return}
  if(choosing()||building()){speak(dlg.cur.listen||dlg.cur.ask||'');return} // B never throws away a question; it replays it
@@ -6491,6 +6525,8 @@ $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.l
 $('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
+$('talkBtn').addEventListener('click',openTalk);$('talkClose').addEventListener('click',closeTalk);
+$('talkPanel').addEventListener('click',e=>{if(e.target.id==='talkPanel'){closeTalk();return}const gl=e.target.closest('.gl');if(gl){showGloss(gl.dataset.k);return}const w=e.target.closest('.w');if(w)showWord(w.textContent)});
 $('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});
 $('readBtn').addEventListener('click',()=>{
  if(!canSpeak()){toast('이 기기에는 한국어 음성이 없어요.');return}
@@ -6526,7 +6562,7 @@ function boot(id){
  if(dlg){dlg=null;clearInterval(typing?.id);$('dlg').hidden=true}
  pending=null;held=null;warping=false;$('panel').hidden=true;$('chPanel').hidden=true;$('toast').hidden=true;logSel=null;
  store.set('seongsilho-chapter',CH.id);
- loadState();
+ loadState();loadTalk();
  loadZone(state.zone,state.x,state.y,state.dir);
  $('chBtn').textContent=CH.n;
  updateHud();updateQuest();
