@@ -1026,6 +1026,9 @@ function loadState(){
  state=fresh();
  try{const s=JSON.parse(store.get(SAVE)||'null');if(s)Object.assign(state,s)}catch(e){}
  if(!ZONES[state.zone])state.zone='ship';
+ /* saves from version 1 (Josias owned the ship; tomatoes; space map) */
+ if(state.f.metJosias){state.f.metOwner=1;state.f.finn=1;delete state.f.metJosias}
+ state.items=state.items.map(i=>({'토마토 상자':'지구 씨앗 상자','우주 지도':'성실호 항해 지도'})[i]||i);
 }
 
 /* ---------- input ---------- */
