@@ -9,8 +9,10 @@ CHAPTERS.push({id:'ch5',n:'5장',title:'산타 로사',place:'경찰서 · 하�
    in the Penacova hospice; Josias's "Go for the Seven"; Léonie killed; missile kills the marchioness, her husband and Variaka),
    c030 (Jalgori-Tobus + Aljan leave on the Polkadav; the real Gyvoy's stabbed corpse under the Dark Paradise club).
    Wynid interludes on the news screen: c019/c020, c021, c023, c025, c028.
-   True now: Finn & the Diligent are away (Kingsnest); Gyvoy left with them 12 years before the start; Terence (Operational Deputy
-   Director) works secretly for Makaio-Faraji; Jimena his wife, Aljan (medic) and Vanilda (Dawnkey) his children.
+   True now: Finn & the Diligent are away (Kingsnest); Gyvoy left with them 12 years before the start; Terence (Director of Special
+   Operations) works secretly for Makaio-Faraji; c019 Lućia questions Bopbe while Terence watches from the monitor room; c026 Terence
+   follows Lućia at High Rosa through her feed from his Santa Rosa office (the player sees through her sensors); c029 the survivors go
+   to Terence's Hafnir villa; Stanvar8 = the gang, the Dark Paradise = its club (members all arrested); Jimena his wife, Aljan (medic) and Vanilda (Dawnkey) his children.
    Networks as Terence numbers them: One = Makaio's, Two = unknown (Liliana/Toše), Three = Sahdiah's (Medusa).
    Lore source: notes/canon.md. Audit against the full book before publishing (see CLAUDE.md).
    ===================================================================== */
@@ -45,7 +47,7 @@ const DICT={
  '에어릴':{k:'3cm쯤 되는 아주 작은 감시 드론. 실처럼 생겼어요.',e:'aireel (tiny surveillance thread)'},
  '라이더':{k:'다른 사람 머릿속에 사는 기억과 성격의 복사본.',e:'rider (stored personality)'},
  '관리관':{k:'점령한 땅을 다스리는 사람.',e:'Custodian'},
- '유령':{k:'머리가 없는 셀레스철 전투 기계.',e:'Ghost (Celestial combat machine)'},
+ '고스트':{k:'셀레스철이 만든 전투 기계. 이번 고스트는 머리가 없어요.',e:'Ghost (Celestial combat machine)'},
  '체렌코프 칼':{k:'푸르게 빛나는 아주 드문 에너지 칼.',e:'Cherenkov blade'},
  '아콘':{k:'셀레스철 여왕을 위해 일하는 귀족. 대사이자 스파이 대장.',e:'archon'},
  '슬로볼':{k:'배를 먹어 버리는 나노 기계 구름.',e:'slowball (nanotech swarm)'},
@@ -108,7 +110,7 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'감시하다',ask:'저는 몇 주 동안 지카르를 몰래 ___.',opts:[['감시했어요',1],['감사했어요',0,'감사하다는 고마워하는 거예요! 몰래 지켜보는 건 "감시했어요".'],['구경했어요',0,'구경은 재미로 봐요. 몰래 계속 보는 건 "감시".']]},
   {w:'감시하다',ask:'토셰가 하이 로사에 있어요. 지금 루치아가 그 남자를 ___ 것 같아요.',opts:[['감시하는',1],['감시한다',0,'"것 같아요" 앞에는 "-는"을 써요 → "감시하는 것 같아요".']]},
  ],
- dock:[
+ maria:[
   {w:'폭발',ask:'캡슐에서 큰 ___이 있었어요. 빛이 번쩍했어요.',opts:[['폭발',1],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터지는 건 "폭발".'],['출발',0,'출발은 떠나는 거예요. 發은 같아요! 터지는 건 "폭발".']]},
   {w:'폭발',ask:'___한 캡슐에 탔던 사람은 아무도 살지 못했어요.',opts:[['폭발',1],['폭탄',0,'폭탄은 물건이에요. "폭탄한"은 없어요. 터진 캡슐 → "폭발한".']]},
  ],
@@ -327,6 +329,8 @@ const TOSE={art:{pal:{O:OL,H:'#2A2420',h:'#1E1A18',S:'#C8A080',M:'#9A7258',Y:'#C
  '...OPPO..OPPO...',
  '...OKKO..OKKO...'].map(r=>r.replace('E','O'))}};
 
+const MONITOR={art:{pal:{O:OL,c:'#3E4658',B:'#1E3A52',g:'#69CFD8',r:'#E0404A',k:'#2B3238'},down:[
+ '................','................','..OOOOOOOOOOOO..','..OccccccccccO..','..OcBBBBBBBBcO..','..OcBggBBBBBcO..','..OcBBBgggBBcO..','..OcBBBBBBrBcO..','..OccccccccccO..','..OOOOOOOOOOOO..','.......OO.......','......OkkO......','....OOOOOOOO....','....OkkkkkkO....','....OOOOOOOO....','................']}};
 const NEWS={art:{pal:{O:OL,c:'#5D667A',B:'#2A6AA8',w:'#DCEBFA',r:'#E0404A',p:'#6E7680',P:'#8A93A0'},down:[
  '..OOOOOOOOOOOO..',
  '.OccccccccccccO.',
@@ -439,6 +443,7 @@ const L_LUCIA={hair:'#1E1A22',skin:'#D9A882',shirt:'#2F3E5C',pants:'#22283A',bel
 const L_BOPBE={hair:'#D8D2C8',skin:'#E9C7A6',shirt:'#8A3FA0',pants:'#2A2A33',belt:'#E8C860',style:'spiky'};
 const L_JIMENA={hair:'#2A1E1A',skin:'#C99470',shirt:'#6E8A6A',pants:'#3D3550',style:'bun',lashes:1,lips:'#A0484E'};
 const L_VANILDA={hair:'#6A4630',skin:'#E0AE86',shirt:'#E8962A',pants:'#3B4650',style:'long',lashes:1,lips:'#C46A6A'};
+const L_ZIKAR={hair:'#1A1A1A',skin:'#D2A27C',shirt:'#C9A23A',pants:'#3A2A4A',style:'short',beard:'#1A1A1A'};
 const L_ALJAN={hair:'#4A3426',skin:'#E0AE86',shirt:'#F1F1EC',pants:'#3A5A7A',style:'short'};
 const L_ZELINDA={hair:'#D8B868',skin:'#F0C9A4',shirt:'#3A4A7A',pants:'#2A2A3A',belt:'#E8C860',style:'bun',lashes:1,lips:'#B5525A'};
 const L_MEDUSA_ST={art:{pal:{O:OL,E:OL,'1':'#E8505B','2':'#F29A3A','3':'#F2D54A','4':'#5CC46A','5':'#4A8EE0','6':'#9A5CD6',S:'#5A3A2A',M:'#3E261A',
@@ -466,6 +471,7 @@ const isWall=(set,c)=>c!=null&&set.includes(c);
 function face(set,x,y){return !isWall(set,at(x,y+1))&&at(x,y+1)!=null}
 function hqFloor(X,Y,x,y){r(X,Y,16,16,'#B7BDC8');r(X,Y,16,1,'#AAB0BC');r(X,Y,1,16,'#AAB0BC');if(hash(x,y)<10)r(X+5,Y+9,2,1,'#C6CBD4')}
 function coral(X,Y,x,y){r(X,Y,16,16,'#F5DCD3');r(X,Y,16,1,'#EDCFC4');r(X,Y,1,16,'#EDCFC4');const h=hash(x,y);r(X+(h%12)+2,Y+(h%9)+3,1,1,'#E8C860');if(h<40)r(X+((h*3)%12)+2,Y+((h*7)%10)+3,1,1,'#E4E8F0')}
+function vfloor(X,Y,x,y){r(X,Y,16,16,'#EFE6D2');r(X,Y,16,1,'#E2D6BC');r(X,Y,1,16,'#E2D6BC');if(hash(x,y)<15)r(X+6,Y+9,3,1,'#E6DAC2')}
 function wood(X,Y,x,y){r(X,Y,16,16,'#7A5236');for(let i=3;i<16;i+=4)r(X,Y+i,16,1,'#6A4630');const h=hash(x,y);r(X+(h%10)+2,Y+(h%3)*4+1,3,1,'#8A6040');r(X+((x+y)%2?4:11),Y+((x+y)%2?4:8),1,4,'#6A4630')}
 function cfloor(X,Y,x,y){r(X,Y,16,16,'#4A4452');const h=hash(x,y);r(X+(h%11)+2,Y+(h%7)+3,3,2,'#423C4A');if(h<30)r(X+((h*7)%12)+2,Y+((h*3)%12)+2,1,1,'#5A5462');if(h%9===0)r(X+3,Y+11,6,1,'#3E3846')}
 function asphalt(X,Y,x,y){r(X,Y,16,16,'#5B5F69');const h=hash(x,y);r(X+(h%13)+1,Y+(h%11)+2,1,1,'#686C76');r(X+((h*5)%13)+1,Y+((h*3)%13)+1,1,1,'#50545E')}
@@ -498,7 +504,9 @@ const TT={
  hqWall:(X,Y,x,y)=>{r(X,Y,16,16,'#3E4658');r(X,Y,16,1,'#4E5870');if(face(WALLC.hq,x,y)){r(X,Y+6,16,10,'#8792A8');r(X,Y+6,16,1,'#A3AEC2');r(X,Y+10,16,1,'#2F5DA8');r(X,Y+14,16,2,'#6D778C')}},
  hqWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3E4658');r(X,Y+3,16,11,'#5D667A');r(X+1,Y+4,14,9,'#9CC7E8');r(X+1,Y+4,14,2,'#C9E2F2');
   const h=hash(x,1);r(X+1,Y+9,5,4,'#EDE3CC');r(X+8,Y+8,7,5,'#E2D6BC');r(X+2+h%3,Y+10,1,1,'#4F6B80');r(X+10,Y+9,1,1,'#4F6B80');r(X+6,Y+10,3,3,'#8E6CC8');r(X+7,Y+9,1,1,'#B596E6');
-  const cx=(t*0.02+x*16)%64;if(cx<16)r(X+cx,Y+6,2,1,'#5D646D');r(X+7,Y+4,1,9,'#5D667A');r(X,Y+13,16,3,'#8792A8')},
+  const cx=(t*0.02+x*16)%64;if(cx<16)r(X+cx,Y+6,2,1,'#5D646D');
+  if(state.f.boom&&!state.f.occupied&&x===3){r(X+4,Y+4,1,5,'#9AA3AD');g.fillStyle='rgba(235,230,225,.9)';[[4,6,3],[7,5,2],[2,7,2]].forEach(([a,c,rr])=>{g.beginPath();g.arc(X+a+Math.sin(t/1200+a)*.6,Y+c,rr,0,7);g.fill()})}
+  r(X+7,Y+4,1,9,'#5D667A');r(X,Y+13,16,3,'#8792A8')},
  board:(X,Y,x,y)=>{r(X,Y,16,16,'#3E4658');r(X,Y+2,16,12,'#8792A8');r(X+1,Y+3,14,10,'#B58A55');r(X+1,Y+3,14,1,'#C9A06A');
   const h=hash(x,y);[[2,4],[9,6]].forEach(([a,c],i)=>{const px=X+a+(h+i)%3,py=Y+c+(i?0:(h%2));r(px,py,4,5,'#F1EEE6');r(px+1,py+1,2,2,i?'#5A3E2A':'#2A2220');r(px+1,py+3,2,1,'#7A8090')});
   r(X+5,Y+8,6,1,'#C0392B');r(X+4,Y+7,1,1,'#C0392B');r(X+11,Y+9,3,1,'#C0392B');
@@ -515,6 +523,8 @@ const TT={
  lab:(X,Y,x,y,t)=>{hqFloor(X,Y,x,y);r(X+1,Y+3,14,11,'#E8ECEF');r(X+1,Y+3,14,2,'#FFFFFF');r(X+1,Y+12,14,2,'#B8C0C8');const h=hash(x,y)%3;
   if(h===0){r(X+4,Y+1,3,8,'#3C4450');r(X+3,Y+8,6,2,'#3C4450');r(X+9,Y+6,2,4,'#69CFD8');r(X+12,Y+6,2,4,'#E86D8A')}else if(h===1){r(X+3,Y+5,10,5,'#2B3238');r(X+4,Y+6,8,3,(Math.floor(t/300)+x)%4?'#5DD07A':'#2E6E3E')}else{[3,6,9,12].forEach((a,i)=>{r(X+a,Y+5,2,5,'#CFE3E8');r(X+a,Y+7,2,3,['#E86D8A','#69CFD8','#F2D154','#5DD07A'][i])})}},
  plant:(X,Y,x,y)=>{hqFloor(X,Y,x,y);r(X+5,Y+10,6,5,'#9A6A3C');r(X+5,Y+10,6,1,'#B8844A');r(X+3,Y+3,10,7,'#3F8F4A');r(X+5,Y+1,6,4,'#5DB866');r(X+2,Y+6,3,2,'#5DB866');r(X+11,Y+5,3,2,'#5DB866')},
+ mirror:(X,Y,x,y,t)=>{TT.cellFloor(X,Y,x,y);r(X,Y+1,16,2,'#5D667A');g.fillStyle='rgba(120,150,170,.45)';g.fillRect(X,Y+3,16,11);r(X,Y+14,16,2,'#5D667A');r(X+3,Y+5,1,6,'#E4F4FA');r(X+11,Y+4,1,3,'#E4F4FA')},
+ console2:(X,Y,x,y,t)=>{hqFloor(X,Y,x,y);r(X+1,Y+2,14,12,'#2B3238');r(X+2,Y+3,12,6,'#1E3A52');const on=state.f.tail&&!state.f.capsule;r(X+3,Y+4,10,4,on?((Math.floor(t/300)%2)?'#69CFD8':'#3C8E96'):'#24303A');r(X+4,Y+11,8,2,'#5F6B72')},
  hqDoor:(X,Y,x,y)=>{hqFloor(X,Y,x,y);r(X,Y,16,16,'#5D667A');r(X+1,Y+1,14,15,'#A8D4E6');r(X+(x%2?0:15),Y,1,16,'#3E4658');r(X+3,Y+3,1,8,'#E4F4FA');r(X+(x%2?1:13),Y+8,2,2,'#3E4658')},
  /* --- Santa Rosa streets --- */
  bld:(X,Y,x,y,t)=>{const c=at(x,y),B=BUILD[c];if(!isB(at(x,y+1)))B.face(X,Y,x,y,t);else roof(X,Y,x,y,t,B.roof[0],B.roof[1])},
@@ -587,11 +597,19 @@ const TT={
  arch:(X,Y,x,y,t)=>{TT.coralWall(X,Y,x,y);r(X+3,Y+5,10,9,'#E8C860');r(X+4,Y+3,8,2,'#E8C860');r(X+4,Y+5,8,9,'#BFE3E8');r(X+5,Y+4,6,1,'#BFE3E8');r(X+4,Y+10,8,4,'#5E9E5A');r(X+6,Y+8,1,6,'#8A6A4A');r(X+4,Y+7,5,1,'#3F8F4A');r(X+10,Y+6,1,3,'#FFFFFF')},
  balc:(X,Y,x,y)=>{r(X,Y,16,16,'#F2CFC4');r(X,Y,16,1,'#E9B7AA');r(X+7,Y,1,16,'#EBC4B8');const h=hash(x,y);r(X+h%12+2,Y+h%10+3,1,1,'#E8C860')},
  manFloor:(X,Y,x,y)=>coral(X,Y,x,y),
- cushion:(X,Y,x,y,t)=>{coral(X,Y,x,y);if(!state.f.occupied){r(X+1,Y+3,14,10,'#B85A5A');r(X+2,Y+4,12,8,'#C86A6A');r(X+1,Y+3,14,1,'#E8C860');r(X+1,Y+12,14,1,'#E8C860');return}
+ cushion:(X,Y,x,y,t)=>{(ZID==='villa'?vfloor:coral)(X,Y,x,y);if(ZID!=='villa'){r(X+1,Y+3,14,10,'#B85A5A');r(X+2,Y+4,12,8,'#C86A6A');r(X+1,Y+3,14,1,'#E8C860');r(X+1,Y+12,14,1,'#E8C860');return}
   const cs=['#C25B7A','#5A8FB0','#E8C860','#7A9A5A'];r(X+1,Y+5,14,10,cs[(x+y)%4]);r(X+2,Y+3,7,6,cs[(x+y+1)%4]);r(X+8,Y+6,7,6,cs[(x+y+2)%4]);
   r(X+3,Y+7,4,4,x%2?'#F0C9A4':'#8A5A3A');r(X+3,Y+7,4,1,'#3A2A22');r(X+6,Y+10,8,4,'#E8E4D8');const z=Math.floor(t/700)%3;if(x%2===0)r(X+10+z,Y+3-z,2,1,'#FFFFFF')},
- palm:(X,Y,x,y,t)=>{coral(X,Y,x,y);r(X+5,Y+11,6,5,'#C9A23A');r(X+5,Y+11,6,1,'#F7E08A');r(X+7,Y+5,2,6,'#8A6A4A');const sw=Math.round(Math.sin(t/1100+x));r(X+2+sw,Y+3,12,2,'#3F8F4A');r(X+4+sw,Y+1,8,2,'#5DB866');r(X+1+sw,Y+5,3,2,'#3F8F4A');r(X+12+sw,Y+5,3,2,'#3F8F4A')},
+ palm:(X,Y,x,y,t)=>{(ZID==='villa'?vfloor:coral)(X,Y,x,y);r(X+5,Y+11,6,5,'#C9A23A');r(X+5,Y+11,6,1,'#F7E08A');r(X+7,Y+5,2,6,'#8A6A4A');const sw=Math.round(Math.sin(t/1100+x));r(X+2+sw,Y+3,12,2,'#3F8F4A');r(X+4+sw,Y+1,8,2,'#5DB866');r(X+1+sw,Y+5,3,2,'#3F8F4A');r(X+12+sw,Y+5,3,2,'#3F8F4A')},
  manDoor:(X,Y,x,y)=>{coral(X,Y,x,y);r(X,Y,16,16,'#C9A23A');r(X+1,Y+1,14,15,'#8A3A2A');r(X+(x%2?0:15),Y,1,16,'#C9A23A');r(X+(x%2?2:12),Y+8,2,2,'#F7E08A');r(X+3,Y+3,10,1,'#A04E3A')},
+ /* --- Terence's villa in Hafnir --- */
+ sea:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A8EB8');const o=Math.floor(t/500+x)%4;r(X+o*3,Y+5,6,1,'#8FD0E8');r(X+((o+2)%4)*3,Y+11,5,1,'#8FD0E8');if(hash(x,y)<20)r(X+9,Y+2,2,1,'#BFE6F2')},
+ sand:(X,Y,x,y,t)=>{r(X,Y,16,16,'#F2E2B8');const f2=(Math.floor(t/700)+x)%5;r(X,Y,16,2+(f2===0?1:0),'#FFFFFF');const h=hash(x,y);r(X+h%13+1,Y+8,1,1,'#D8C490');r(X+(h*3)%13+1,Y+12,1,1,'#D8C490')},
+ vWall:(X,Y,x,y)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y,16,1,'#EDE3CC');if(at(x,y+1)!=null&&at(x,y+1)!=='V'&&at(x,y+1)!=='w'){r(X,Y+5,16,11,'#EDE3CC');r(X,Y+5,16,1,'#FFF6E4');r(X,Y+14,16,2,'#CDBF9E')}},
+ vWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y+2,16,12,'#EDE3CC');r(X+1,Y+3,14,10,'#9FD4EC');r(X+1,Y+8,14,5,'#3A8EB8');const o=Math.floor(t/600+x)%3;r(X+2+o*4,Y+10,4,1,'#BFE6F2');r(X+1,Y+3,14,1,'#CFEAF6');r(X+7,Y+3,1,10,'#D9CDB2');r(X,Y+14,16,2,'#CDBF9E')},
+ vFloor:(X,Y,x,y)=>vfloor(X,Y,x,y),
+ vDoor:(X,Y,x,y)=>{vfloor(X,Y,x,y);r(X,Y,16,16,'#CDBF9E');r(X+1,Y+1,14,15,'#8A6A4A');r(X+3,Y+3,10,4,'#9FD4EC');r(X+(x%2?1:13),Y+9,2,2,'#E8C860')},
+ car:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X+1,Y+3,14,11,OL);r(X+2,Y+4,12,9,'#3A5A7A');r(X+3,Y+5,10,3,'#9FD4EC');r(X+2,Y+12,3,2,'#1A1A1A');r(X+11,Y+12,3,2,'#1A1A1A');r(X+2,Y+9,2,1,'#F2D54A');r(X+12,Y+9,2,1,'#F2D54A')},
  /* --- Fleesh Diamond bar --- */
  barWall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3E2A20');r(X,Y,16,1,'#4E3428');if(face(WALLC.bar,x,y)){r(X,Y+4,16,12,'#5A3A28');r(X,Y+10,16,6,'#6E4A32');r(X,Y+10,16,1,'#8A6040');if(x%4===2){const f=(Math.floor(t/1700)+x)%9===0;r(X+6,Y+5,4,3,f?'#C98A2A':'#FFC46B');r(X+5,Y+4,6,1,'#FFE2A8')}}},
  shelf:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3E2A20');r(X,Y+2,16,14,'#5A3A28');[4,9].forEach((sy,j)=>{r(X,Y+sy+4,16,1,'#8A6040');for(let i=0;i<4;i++){const c=['#3F8F4A','#C98A2A','#9A2A2A','#CFE3E8'][(i+x+j)%4];r(X+1+i*4,Y+sy,2,4,c);r(X+1+i*4,Y+sy-1,1,1,c)}});
@@ -620,14 +638,14 @@ const TT={
 const ZONES={
  hq:{name:'산타 로사 경찰서',reg:'SANTA ROSA POLICE HQ',
   legend:{'#':{tile:'hqWall'},'w':{tile:'hqWin'},'B':{tile:'board'},'k':{tile:'cellWall'},'.':{tile:'hqFloor',walk:1},'c':{tile:'cellFloor',walk:1},'d':{tile:'desk'},
-   'g':{tile:'glass'},'X':{tile:'exo'},'L':{tile:'lab'},'p':{tile:'plant'},'T':{tile:'terminal'},'D':{tile:'hqDoor',walk:1}},
+   'g':{tile:'glass'},'X':{tile:'exo'},'m':{tile:'mirror',walk:1},'V':{tile:'console2',walk:1},'L':{tile:'lab'},'p':{tile:'plant'},'T':{tile:'terminal'},'D':{tile:'hqDoor',walk:1}},
   map:[
 "######################",
 "#wwww#BBBBBBBBB#kkkkk#",
 "#T...#.........#ccXcc#",
 "#d...#..dd.dd..#ccccc#",
-"#d.............#ggcgg#",
-"#....#.........#.....#",
+"#d.............#ggmgg#",
+"#V...#.........#.....#",
 "###.##..dd.dd........#",
 "#LLL.#...............#",
 "#....#.......p..######",
@@ -635,8 +653,9 @@ const ZONES={
 "#....................#",
 "#..L.#..p.........p..#",
 "##########DD##########"],
-  rooms:[[1,1,4,5,'경찰서 · 국장실'],[6,1,14,11,'경찰서 · 수사과'],[16,1,20,4,'경찰서 · 취조실'],[15,5,20,7,'경찰서 · 취조실 앞'],[1,7,4,11,'경찰서 · 감식실']],
-  warps:{'10,12':{to:'city',x:5,y:3,dir:'down'},'11,12':{to:'city',x:5,y:3,dir:'down'}},
+  rooms:[[1,1,4,5,'경찰서 · 국장실'],[6,1,14,11,'경찰서 · 수사과'],[16,1,20,4,'경찰서 · 취조실'],[15,4,20,7,'경찰서 · 모니터실'],[1,7,4,11,'경찰서 · 감식실']],
+  warps:{'10,12':{to:'city',x:5,y:3,dir:'down'},'11,12':{to:'city',x:5,y:3,dir:'down'},
+   '1,5':{to:'tower',x:3,y:3,dir:'right',lock:()=>!f().tail?'루치아의 영상 콘솔. 지금은 신호가 없어요.':f().capsule?'영상이 끊겼어요. 신호 없음.':false}},
   spots:{
    '1,1':'창밖에 보라색 자카란다 나무가 보여요.','3,1':'창밖으로 케이블카가 지나가요.',
    get '7,1'(){return f().liliana?'수사 보드. 세 조직: 하나는 우리. 둘은 릴리아나와 토셰. 셋은 메두사와 사디아.':f().sting?'수사 보드. 세 조직. 둘: 토셰? 셋: 사디아 — 메두사?':'수사 보드. 곤디아에 정보원 조직이 적어도 세 개.'},
@@ -647,16 +666,16 @@ const ZONES={
    '8,3':'경찰 화면: "디어랙 거리 · 사망 5명"','12,3':'누가 커피를 두고 갔어요. 아직 따뜻해요.',
    '2,7':'현미경이에요.','3,7':'감식 화면: 초록 불빛이 깜빡여요.','13,8':'화분이에요. 잎이 반짝반짝해요.',
    get '18,2'(){return f().bopbeDead?'구속 의자. 바닥에 검게 탄 자국이 있어요.':'구속 의자예요. 금속 틀이 사람 몸을 잡아요.'}},
-  npcs:['lucia','bopbe','bersche','medusa','lab','news','maria']},
+  npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','maria','feed']},
  city:{name:'산타 로사',reg:'SANTA ROSA · GONDIAR',outdoor:1,
   legend:{'L':{tile:'bld'},'H':{tile:'bld'},'Z':{tile:'bld'},'F':{tile:'bld'},'K':{tile:'bld'},'D':{tile:'cityDoor',walk:1},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
    'r':{tile:'road',walk:1},'v':{tile:'vroad',walk:1},'j':{tile:'jaca'},'h':{tile:'holo'},'q':{tile:'qix'},'m':{tile:'memo'},'n':{tile:'bench'},'M':{tile:'manWall'},'G':{tile:'manGate',walk:1},
-   'A':{tile:'tower'},'E':{tile:'lift',walk:1}},
+   'A':{tile:'tower'},'E':{tile:'lift'},'C':{tile:'car',walk:1}},
   map:[
 "LLHHHHHHHLLZZZZZLLFFFFFLLKKKKL",
 "LLHHHHHHHLLZZZZZLLFFFFFLLKKKKL",
 "LLHHHDHHHLLZZZZZLLFFDFFLLKDKKL",
-",j,,,,,,,j,,,,,,,j,,,,,,j,,,,,",
+",j,,,,,,,j,,,,,,,j,,,,C,j,,,,,",
 "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
 "rrrrrrrrrrrrrrrrrrrrrrrrrrrrrr",
 ",,,,,,,,,,,,,vvvv,,,,,,,,,,,,,",
@@ -677,8 +696,7 @@ const ZONES={
    '20,2':{to:'bar',x:7,y:8,dir:'up'},
    '26,2':{to:'club',x:16,y:2,dir:'down',lock:()=>!f().club&&'다크 파라다이스 클럽. 갱들의 클럽이에요. 지금은 들어갈 이유가 없어요.'},
    '26,10':{to:'mansion',x:9,y:10,dir:'up',lock:()=>!f().liliana&&'총독 원형 저택이에요. 경비가 막아요. "오늘은 손님이 없어요."'},
-   '14,14':{to:'tower',x:3,y:3,dir:'right',lock:()=>f().occupied?'캡슐이 멈췄어요. 제국군이 탑을 막았어요.':!f().tail&&'탑 캡슐 역이에요. 지금은 하이 로사에 갈 일이 없어요.'},
-   '15,14':{to:'tower',x:3,y:3,dir:'right',lock:()=>f().occupied?'캡슐이 멈췄어요. 제국군이 탑을 막았어요.':!f().tail&&'탑 캡슐 역이에요. 지금은 하이 로사에 갈 일이 없어요.'}},
+   '22,3':{to:'villa',x:8,y:8,dir:'up',lock:()=>!f().missile&&'테렌스의 차예요. 하프니르의 집까지 구백 킬로미터예요.'}},
   spots:{
    '3,2':'산타 로사 경찰서. 파란 간판에 금색 별이 있어요.','13,2':'"지카르의 안디 수리". 창문에 로봇 머리가 가득해요.',
    '19,2':'"플리시 다이아몬드". 다이아몬드 모양 간판이 깜빡여요.','28,2':'다크 파라다이스 클럽. 분홍색 불빛이 지지직거려요.',
@@ -687,11 +705,11 @@ const ZONES={
    get '5,8'(){return f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
    get '6,9'(){return f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
    '24,9':'총독 원형 저택의 담. 분홍색 리브스톤에 금색 점이 반짝여요.',
-   get '12,15'(){return f().occupied?'산타 로사 탑. 하늘에 제국 항모가 떠 있어요. 그리고 돌로드도 보여요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
-   '17,15':'탑 아래쪽. 빨간 불이 깜빡여요.'},
+   get '12,15'(){return f().occupied?'산타 로사 탑. 탑 꼭대기, 하이 로사에 제국 항모가 붙었어요. 밤에는 분홍색 점, 돌로드가 떠요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
+   '17,15':'탑 아래쪽. 빨간 불이 깜빡여요.','14,14':'탑 캡슐 역. 하이 로사까지 올라가요.','15,14':'탑 캡슐 역. 사람들이 줄을 서 있어요.'},
   npcs:['zikar','snatch','aljan','vanilda','pro1','pro2','pro3','jimena','zelinda','medusaSt','general','lion1','lion2','ghost1','ghost2','ghost3']},
- tower:{name:'하이 로사 · 3층 독',reg:'HIGH ROSA · DOCK LEVEL 3',base:'plate',
-  legend:{'G':{tile:'girder'},'B':{tile:'bay'},'.':{tile:'plate',walk:1},'t':{tile:'track',walk:1},'E':{tile:'lift',walk:1},'s':{tile:'seat'},'W':{tile:'capWin'},'C':{tile:'hatch'}},
+ tower:{name:'하이 로사 · 루치아의 영상',reg:"HIGH ROSA · LUĆIA'S FEED",base:'plate',
+  legend:{'G':{tile:'girder'},'B':{tile:'bay'},'.':{tile:'plate',walk:1},'t':{tile:'track',walk:1},'E':{tile:'lift'},'s':{tile:'seat'},'W':{tile:'capWin'},'C':{tile:'hatch',walk:1}},
   map:[
 "GGGGGGGGGGGGGGGGGGGGGGGG",
 "GBBBBBBBBGGGGGGGGGGGGGGG",
@@ -708,13 +726,12 @@ const ZONES={
 "WWWWWWWWWWWWWWWWWWWWWWWW",
 "WWWWWWWWWWWWWWWWWWWWWWWW"],
   rooms:[[1,2,9,5,'하이 로사 · 3F 정박장'],[12,2,22,5,'하이 로사 · 3층 독'],[1,7,22,11,'하이 로사 · 캡슐 역 라운지']],
-  warps:{'2,3':{to:'city',x:14,y:13,dir:'down'}},
+  warps:{'22,7':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'},'22,8':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'}},
   spots:{'3,1':'시벨레스 이글호. 하얀 배가 3F 정박장에 붙어 있어요.','5,1':'배 옆에 빨간 독수리 그림이 있어요.','8,1':'배 엔진이 파랗게 빛나요.',
    '10,2':'철골 사이로 무중력 작업자들이 날아다녀요.',
-   get '22,7'(){return f().boom?'캡슐 승강장. 빨간 불. "운행 중지".':f().capsule?'캡슐 문이 닫혔어요. 캡슐이 내려가요.':'캡슐 승강장. "산타 로사행".'},
-   get '22,8'(){return f().boom?'캡슐 승강장. 빨간 불. "운행 중지".':'캡슐 승강장 문이에요.'},
+   '2,3':'엘리베이터. 아래 층 정박장으로 가요.',
    get '12,12'(){return f().boom?'창밖 아래, 탑의 줄 위에 연기가 남아 있어요.':'창밖 아래에 곤디아가 있어요. 탑의 줄이 땅까지 내려가요.'}},
-  npcs:['tose','luciaT','dock','cleaner']},
+  npcs:['tose','cleaner']},
  mansion:{name:'총독 원형 저택',reg:'ROUNDHOUSE MANSION · SANTA ROSA',
   legend:{'p':{tile:'garden'},'R':{tile:'rail'},'c':{tile:'coralWall'},'a':{tile:'arch'},',':{tile:'balc',walk:1},'.':{tile:'manFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'manDoor',walk:1}},
   map:[
@@ -734,8 +751,25 @@ const ZONES={
   warps:{'9,11':{to:'city',x:26,y:11,dir:'down'},'10,11':{to:'city',x:26,y:11,dir:'down'}},
   spots:{'6,2':'난간 아래에 정원이 있어요. 가는 야자나무들이 흔들려요.','12,2':'멀리 공원 너머에 높은 건물들이 보여요. 저 어딘가에…',
    '2,4':'둥근 창문. 금색 틀이에요.','14,4':'둥근 창문 밖으로 정원이 보여요.',
-   get '3,6'(){return f().occupied?'쿠션 위에서 아이들이 자요.':'작은 빨간 카펫이에요.'},get '16,6'(){return f().occupied?'담요 아래에서 아이가 잠꼬대를 해요.':'작은 빨간 카펫이에요.'}},
-  npcs:['makaio','otylia','zelindaS','aljanS','haian']},
+   '3,6':'작은 빨간 카펫이에요. 금색 테두리.','16,6':'작은 빨간 카펫이에요.'},
+  npcs:['makaio']},
+ villa:{name:'하프니르 · 테렌스의 빌라',reg:'HAFNIR · RYDEMOUTH',
+  legend:{'~':{tile:'sea'},'s':{tile:'sand'},'V':{tile:'vWall'},'w':{tile:'vWin'},'.':{tile:'vFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'vDoor',walk:1}},
+  map:[
+"~~~~~~~~~~~~~~~~~~",
+"ssssssssssssssssss",
+"VwwwwwwVVwwwwwwwwV",
+"V................V",
+"V..uu.......uu...V",
+"V................V",
+"V.o............o.V",
+"V................V",
+"V................V",
+"VVVVVVVVDDVVVVVVVV"],
+  warps:{'8,9':{to:'city',x:21,y:3,dir:'down'},'9,9':{to:'city',x:21,y:3,dir:'down'}},
+  spots:{'3,1':'하얀 모래 해변. 파도 소리가 들려요.','4,2':'창밖에 바다. 오늘은 바다도 조용해요.','12,2':'창밖에 바다. 멀리 배가 하나 지나가요.',
+   '3,4':'쿠션 위에서 아이들이 자요. 로렐라, 두샨, 에버렛의 아이들.','13,4':'담요 아래에서 아이가 잠꼬대를 해요.','2,6':'화분이에요. 야자나무 잎이 바람에 흔들려요.'},
+  npcs:['otylia','zelindaS','aljanS','haian']},
  bar:{name:'플리시 다이아몬드',reg:'FLEESH DIAMOND · BAUME AVE',
   legend:{'#':{tile:'barWall'},'h':{tile:'shelf'},'w':{tile:'barWin'},'.':{tile:'barFloor',walk:1},'b':{tile:'counter',over:1},'t':{tile:'table'},'k':{tile:'booth'},'D':{tile:'barDoor',walk:1}},
   map:[
@@ -770,59 +804,64 @@ const ZONES={
 "##################"],
   warps:{'16,1':{to:'city',x:26,y:3,dir:'down'}},
   spots:{'2,1':'녹화 장비예요. 갱들이 손님을 몰래 찍었어요.','6,1':'와인 선반… 가짜예요! 뒤에 총이 숨어 있어요.','8,1':'와인 병이 다 비어 있어요. 뒤에 무기 상자가 있어요.',
-   '13,1':'VIP 자리. 보라색 소파에 먼지가 쌓였어요.','2,4':'버려진 상자들이에요. 갱들이 급하게 도망갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
+   '13,1':'VIP 자리. 보라색 소파에 먼지가 쌓였어요.','2,4':'상자만 남았어요. 스탄바8 갱은 다 잡혀갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
   npcs:['patch','jimenaC']},
 };
 
 /* ---------- people ---------- */
 const NPC={
  lucia:{name:'루치아',zone:'hq',x:10,y:4,dir:'left',look:L_LUCIA,badge:['수사','정보원'],
-  hide:()=>!!f().tail,
+  hide:()=>!!f().tail||(b('정보원')&&!f().bopbeDead),
   after:'수사는 천천히, 정확하게. 국장님이 가르쳐 줬어요.',
   script:()=>{
    if(!b('정보원'))return null;
-   if(!f().bopbeDead)return [{say:'봅베는 {취조실|취조실}에 있어요. 오른쪽 끝 방이에요.'}];
-   if(!b('처형'))return [{say:'봅베가… 불에 탔어요. 저런 건 처음 봐요.'},{say:'{감식실|감식실}에 가 봐요. 왼쪽 아래 방이에요.'}];
+   if(!b('처형'))return [{say:'봅베가… 불에 탔어요. 제 손도 조금 데었어요.'},{say:'괜찮아요. 일주일만 쉬면 돼요. {감식실|감식실}에 가 봐요.'}];
    if(!f().sting)return [{say:'지카르 가게는 경찰서 앞 거리에 있어요.'},{say:'가면 쓰는 거 잊지 마세요. 국장님이 지카르예요!'}];
    if(!b('감시하다'))return [{say:'베르셰가 취조실에 있어요. 지카르를 납치하려고 했던 사람이에요.'}];
    return null},
   talk:()=>[
-   {say:'국장님, 왔어요? 봅베가 취조실에서 기다려요.'},
+   {say:'국장님, 왔어요? 봅베가 {취조실|취조실}에서 기다려요.'},
    {say:'어젯밤 디어랙 거리 총격전, 아직 모르는 게 많아요.'},
    Q.lucia[0],
    {say:'봅베는 그냥 범인이 아니에요. 다른 {아콘|아콘}을 위해서 일해요.'},
    Q.lucia[1],
    {say:'곤디아에 정보원 조직이 적어도 세 개 있는 것 같아요.'},
    {who:'테렌스',say:'하나는 우리 조직이고요. 나머지 두 개를 찾아요.'},
-   {say:'봅베는 클리닉에서 얼굴을 바꿨어요. 취조실로 가요.',award:['수사','정보원']}]},
+   {say:'제가 취조실에 들어갈게요. 국장님은 모니터실에서 보세요. 봅베가 국장님 얼굴을 보면 안 돼요.',award:['수사','정보원']}]},
+ luciaCell:{name:'루치아',zone:'hq',x:17,y:3,dir:'right',look:L_LUCIA,still:1,hide:()=>!b('정보원')||!!f().bopbeDead,talk:()=>[{say:'…'}]},
  bopbe:{name:'봅베',zone:'hq',x:18,y:3,dir:'down',badge:['체포하다'],
   get look(){return f().burn&&!f().bopbeDead?FIRE[Math.floor(performance.now()/140)%2]:L_BOPBE},
   hide:()=>!!f().bopbeDead,
   status:()=>b('수사')?'todo':null,
   script:()=>!b('수사')?[{say:'…형사님은 누구예요? 저는 높은 사람하고만 말해요.'}]:null,
   talk:()=>[
+   {who:'…',say:'테렌스는 모니터실, 거울 뒤에 있어요. 취조실에는 루치아가 들어가요.'},
    {say:'오, 형사님. 제 새 얼굴 어때요? 멋있죠?'},
-   {who:'테렌스',say:'봅베 씨, 당신은 이제 산타 로사 경찰서에 있어요.'},
+   {who:'루치아',say:'봅베 씨, 당신은 이제 산타 로사 경찰서에 있어요.'},
    Q.bopbe[0],
    {say:'디어랙 거리요? 거기 있던 사람들이 저를 잡으려고 했어요. 저는 피해자예요.'},
    Q.bopbe[1],
-   {who:'테렌스',say:'누구를 위해서 일해요? 말하면 도와줄 수 있어요.'},
-   {say:'저는… 아, 뜨거워요! 몸 안이… 뜨거워요!',set:()=>{f().burn=1}},
+   {who:'루치아',say:'누구를 위해서 일해요? 말하면 도와줄 수 있어요.'},
+   {say:'…테렌스 씨는 어디 있어요? 거울 뒤에 있죠? 이리 들어와요. 어른끼리 이야기해요.'},
+   {say:'아, 뜨거워요! 몸 안이… 뜨거워요!',set:()=>{f().burn=1}},
    {who:'…',say:'봅베의 몸에서 불이 나요! 아무도 막을 수 없어요.'},
-   {who:'테렌스',say:'불을 꺼요! 빨리!'},
-   {who:'…',say:'몇 초 후, 의자에는 검은 재만 남았어요.',award:['체포하다'],set:()=>{f().bopbeDead=1}}]},
+   {who:'테렌스 (마이크)',say:'루치아, 나와요! 지금!'},
+   {who:'…',say:'루치아가 뛰어나와요. 손을 조금 데었어요. 의자에는 검은 재만 남았어요.',award:['체포하다'],set:()=>{f().bopbeDead=1}}]},
  lab:{name:'감식 요원',zone:'hq',x:2,y:8,dir:'up',look:{hair:'#3A2A22',skin:'#C99470',shirt:'#F1F1EC',pants:'#3C4A5C',style:'short',coat:1},badge:['처형','증거'],
   status:()=>{if(!f().bopbeDead)return null;if(b('처형')&&f().helmet&&!f().liliana)return 'todo'},
   after:'증거는 거짓말을 안 해요. 사람은 해요.',
   script:()=>{
    if(!f().bopbeDead)return [{say:'요즘은 조용해요. 감식할 게 없어요.'}];
    if(b('처형')&&f().helmet&&!f().liliana)return [
-    {say:'국장님, 캡슐 역 영상을 다 봤어요. 이 여자 보세요.'},
-    {say:'이름은 "앙투아네트-2버그". 시벨레스 이글호를 타고 왔어요.'},
-    {who:'테렌스',say:'메두사가 말한 그 여자… {체렌코프 칼|체렌코프 칼}을 가진 여자.'},
-    {who:'테렌스',say:'가짜 이름이에요. 이 여자는… 릴리아나예요.'},
+    {who:'…',say:'석 달 후. 테렌스는 3F 독 영상을 백 번째로 다시 봐요.'},
+    {who:'테렌스',say:'이 여자 보세요. "앙투아네트-2버그". 시벨레스 이글호에 들어갔어요. 그런데 다시 안 나왔어요.'},
+    {say:'얼굴 검색 결과가 나왔어요. 옛날 영상에도 있어요. 경제 심포지엄에서 기보이 엔포하고 이야기해요.'},
+    {who:'테렌스',say:'메두사가 말한 그 여자… {체렌코프 칼|체렌코프 칼}을 가진 여자. 릴리아나예요.'},
     {w:'증거',build:['이 영상이','중요한','증거예요']},
-    {say:'그리고 국장님, 마카이오 님이 오셨어요. 총독 저택에서 기다려요.',give:'캡슐 역 영상',set:()=>{f().liliana=1}}];
+    {who:'메두사 (통신)',say:'사진 봤어요. 그 여자 맞아요. 그리고 토셰는 아카디아의 달호하고 간스부트호를 빌리려고 했어요.'},
+    {who:'메두사 (통신)',say:'이 정보, 몇 점이에요? 저는 이 별에 남고 싶어요.',give:'캡슐 역 영상'},
+    {who:'…',say:'열 달 후, 비밀 통신이 와요.'},
+    {who:'테렌스 (비밀 통신)',say:'…마카이오 님? 곤디아에 오셨어요? 총독 저택이요?',set:()=>{f().liliana=1}}];
    return null},
   talk:()=>[
    {say:'국장님, 봅베의 재를 봤어요.'},
@@ -830,7 +869,8 @@ const NPC={
    Q.lab[0],
    {say:'봅베가 잡히면 나노 기계가 몸을 태워요. 조직이 그렇게 만들었어요.'},
    Q.lab[1],
-   {say:'그리고 소식이 하나 있어요. 누가 오늘 밤 지카르 타소트를 납치하려고 해요.'},
+   {say:'그리고 루치아 팀의 정보원이 연락했어요. 일레븐 톡식스 안에 있는 사람이에요.'},
+   {say:'부두목 베르셰가 부하 셋을 보내요. 지카르 타소트를 잡아서 질문하려고요. 봅베 일하고 비슷해요.'},
    {who:'테렌스',say:'그럼 제가 지카르가 될게요.'},
    {say:'이건 {오더바이저|오더바이저} 가면이에요. 쓰면 지카르 얼굴이 돼요.',give:'오더바이저 가면',award:['처형','증거'],set:()=>{f().lead=1}}]},
  news:{name:'뉴스 화면',zone:'hq',x:10,y:8,dir:'down',look:NEWS,still:1,
@@ -838,32 +878,51 @@ const NPC={
   script:()=>{const e=nextNews();if(e)return e.steps.concat([{who:'뉴스 화면',say:'— 방송 끝 —',set:()=>{f()['news'+e.id]=1}}]);
    const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 밤 열 시 이후 외출 금지.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
   talk:()=>[]},
- maria:{name:'마리아 호세 서장',zone:'hq',x:14,y:3,dir:'left',look:{hair:'#2A1E1A',skin:'#C48E66',shirt:'#2F3E5C',pants:'#22283A',belt:'#C9A64A',style:'bun',cap:'#2F3E5C',lashes:1,lips:'#9A4A4A'},
-  hide:()=>!f().crackdown,
-  talk:()=>f().occupied?[
+ maria:{name:'마리아 호세 서장',zone:'hq',x:14,y:3,dir:'left',look:{hair:'#2A1E1A',skin:'#C48E66',shirt:'#2F3E5C',pants:'#22283A',belt:'#C9A64A',style:'bun',cap:'#2F3E5C',lashes:1,lips:'#9A4A4A'},badge:['폭발'],
+  hide:()=>!f().boom,
+  after:'여기는 경찰서예요. 아콘의 놀이터가 아니에요.',
+  script:()=>f().occupied?[
    {say:'국장님, 메두사 어디 있어요? 국장님이 데려갔죠?'},
    {who:'테렌스',say:'모르겠어요.'},
    {who:'…',say:'메두사는 페나코바 호스피스에 있어요. 다른 이름으로, 깊이 잠들어서.'},
-   {who:'…',say:'잡히면 죽여 달라고 했어요. 테렌스는 그 약속을 기억해요.'}]:[
-   {say:'저는 새 서장, 마리아 호세예요.'},
-   {say:'아콘 놀이는 이제 끝이에요, 국장님. 여기는 경찰서예요.'}]},
+   {who:'…',say:'잡히면 죽여 달라고 했어요. 테렌스는 그 약속을 기억해요.'}]:null,
+  talk:()=>[
+   {say:'테렌스 국장님. 저는 새 서장, 마리아 호세예요.'},
+   {say:'캡슐이 산타 로사로 내려가다가 터졌어요.'},
+   Q.maria[0],
+   {say:'이백삼십칠 명이 타고 있었어요. 그중 스무 명은 아이들이에요.'},
+   Q.maria[1],
+   {say:'그리고 하나 더. 아콘 놀이는 이제 끝이에요, 국장님.',award:['폭발']}]},
+ feed:{name:'루치아의 영상',zone:'hq',x:4,y:2,dir:'down',look:MONITOR,still:1,
+  status:()=>f().capsule&&!f().boom?'todo':null,
+  script:()=>{const F=f();
+   if(F.capsule&&!F.boom)return [
+    {who:'루치아 (통신)',say:'국장님… 토셰가 안 보여요. 캡슐에서 내린 것 같아요.'},
+    {who:'루치아 (통신)',say:'캡슐이 출발했어요. 사람이 많아요. 아이들도…'},
+    {who:'…',say:'화면이 하얘져요. 그리고 신호가 끊겨요.',set:()=>{f().boom=1;f().boomAt=Date.now()}},
+    {who:'…',say:'테렌스가 사무실 창문에 손을 대요. 탑 위에 하얀 구름이 퍼져요.'},
+    {who:'테렌스',say:'루치아… 루치아!'}];
+   if(F.boom)return [{who:'…',say:'화면에는 "신호 없음"만 있어요.'}];
+   if(F.tail)return [{who:'루치아 (통신)',say:'국장님, 저 하이 로사 3층 독이에요. 콘솔에서 제 영상을 보세요.'}];
+   return [{who:'…',say:'루치아의 영상 화면이에요. 지금은 꺼져 있어요.'}]},
+  talk:()=>[]},
  bersche:{name:'베르셰',zone:'hq',x:18,y:3,dir:'down',look:{hair:'#8A2A2A',skin:'#C48E66',shirt:'#2A2A2A',pants:'#3A3A40',belt:'#B8B8C0',style:'spiky'},badge:['감시하다'],
   hide:()=>!f().sting||!!f().medusa,
   after:'메두사는 무서운 여자예요. 저는 이제 끝났어요.',
   talk:()=>[
    {say:'변호사 불러요. 저는 아무 말도 안 해요.'},
-   {who:'테렌스',say:'일레븐 톡식스가 다 말했어요. 당신이 그 사람들 대장이죠?'},
+   {who:'테렌스',say:'일레븐 톡식스가 다 말했어요. 당신이 그 사람들 부두목이죠?'},
    {say:'…좋아요. 저는 몇 주 동안 지카르 가게를 지켜봤어요.'},
    Q.bersche[0],
    {who:'테렌스',say:'누가 시켰어요?'},
    {say:'메두사요. 머리가 무지개색인 여자요.'},
    {who:'테렌스',say:'메두사… 세 번째 조직, 사디아의 사람이에요.'},
-   {who:'루치아',say:'국장님! 토셰를 찾았어요. 하이 로사 3층 독이에요.'},
+   {who:'루치아',say:'국장님! 토셰가 시벨레스 이글호를 타고 와요. 하이 로사 3층 독이에요.'},
    Q.bersche[1],
-   {who:'루치아',say:'제가 먼저 올라가서 감시할게요. 탑 캡슐 역에서 만나요!',award:['감시하다'],set:()=>{f().tail=1}}]},
+   {who:'루치아',say:'제가 올라가서 감시할게요. 국장님은 사무실에서 제 영상을 보세요!',award:['감시하다'],set:()=>{f().tail=1}}]},
  medusa:{name:'메두사',zone:'hq',x:18,y:3,dir:'down',look:{hair:'#2A1E18',skin:'#5A3A2A',shirt:'#26232B',pants:'#26232B',style:'bald',cap:'#E6DCC2',lashes:1,lips:'#6A2E2A'},badge:['폭탄'],
   hide:()=>!f().medusa||!!f().occupied,
-  after:'저를 사디아 님한테 보내지 마세요. 부탁이에요.',
+  after:'저를 와이니드로 보내지 마세요. 부탁이에요.',
   talk:()=>[
    {say:'이 뼈 헬멧, 기분 나빠요. 거짓말하면 다 보이죠?'},
    {who:'테렌스',say:'캡슐을 터뜨린 사람은 누구예요?'},
@@ -872,10 +931,9 @@ const NPC={
    {say:'두 번째 조직이에요. 대장은 여자예요.'},
    {say:'그 여자는 {체렌코프 칼|체렌코프 칼}을 써요. 마르첼루를 잘 알았어요.'},
    Q.medusa[1],
-   {say:'하나 더요. 토셰가 아카디아의 달호를 빌리려고 했어요.'},
    {who:'…',say:'헬멧의 불이 초록색이에요. 메두사는 진실을 말했어요.',award:['폭탄'],set:()=>{f().helmet=1}}]},
  /* city */
- zikar:{name:'지카르 타소트',zone:'city',x:13,y:3,dir:'down',look:{hair:'#1A1A1A',skin:'#D2A27C',shirt:'#C9A23A',pants:'#3A2A4A',style:'short',beard:'#1A1A1A'},badge:['변장하다','단서'],
+ zikar:{name:'지카르 타소트',zone:'city',x:13,y:3,dir:'down',look:L_ZIKAR,badge:['변장하다','단서'],
   hide:()=>!!f().occupied,
   status:()=>{if(!f().lead)return null;if(!b('변장하다'))return 'todo';if(!f().sting)return 'wait';if(!b('단서'))return 'todo'},
   pool:()=>[...Q.zikar,...Q.zikar2],
@@ -916,7 +974,6 @@ const NPC={
   talk:()=>[
    {say:'아빠! 오늘 하프니르 해변 파티에 같이 가요. 엄마도 와요.'},
    {say:'로렐라도 와요. 오틸리아 아줌마 딸이요. 저… 로렐라랑 사귀어요.'},
-   {say:'그런데 로렐라 아빠, 조사이어스 아저씨는 또 다른 여자를 만나는 것 같아요.'},
    {say:'저는 의대 공부 때문에 바빠요. 그래도 파티는 가야죠!'}]},
  vanilda:{name:'바닐다',zone:'city',x:14,y:11,dir:'up',look:L_VANILDA,badge:['시위'],
   hide:()=>!!f().occupied,
@@ -956,14 +1013,15 @@ const NPC={
    {say:'총독님 명령이에요. 오늘부터 돈키 시위와 갱들을 다 단속해요.'},
    Q.zelinda[1],
    {say:'조사이어스 정당도 조사해요. 저희 동생 남편인데도요.'},
-   {say:'정보가 하나 있어요. 메두사가 소노마 거리에 있어요.',award:['테러'],set:()=>{f().crackdown=1}}]},
+   {who:'테렌스',say:'메두사는 소노마 거리에 있어요. 우리 팀이 계속 보고 있었어요.',award:['테러'],set:()=>{f().crackdown=1}}]},
  medusaSt:{name:'메두사',zone:'city',x:27,y:6,dir:'left',look:L_MEDUSA_ST,still:1,
   hide:()=>!f().crackdown||!!f().medusa,
   status:()=>'todo',
   talk:()=>[
    {say:'형사님, 혼자 왔어요? 용감하네요.'},
-   {who:'…',say:'메두사의 무지개색 머리카락이 뱀처럼 움직여요. 몸에는 셀레스철 갑옷.'},
-   {who:'테렌스',say:'메두사, 당신을 체포해요. 그 머리, 무기죠? 다 잘라요.'},
+   {who:'…',say:'메두사의 무지개색 머리카락이 뱀처럼 움직여요.'},
+   {who:'…',say:'테렌스는 경찰 옷 아래에 마카이오가 준 셀레스철 갑옷을 입었어요.'},
+   {who:'테렌스',say:'메두사, 당신을 체포해요. 그 머리, 무기죠? 끄고, 숨긴 것도 다 버려요.'},
    {say:'…알았어요. 그런데 캡슐 폭탄, 우리가 한 게 아니에요.'},
    {who:'…',say:'메두사가 무지개 머리를 다 밀었어요. 경찰이 수갑을 채워요.',set:()=>{f().medusa=1}}]},
  general:{name:'아보네발레리오 장군',zone:'city',x:21,y:8,dir:'down',look:GENERAL,still:1,badge:['점령하다'],
@@ -980,56 +1038,38 @@ const NPC={
    {say:'제 사자들 보이죠? 칠 톤이에요. 조심해서 다녀요.',award:['점령하다'],set:()=>{f().general=1}}]},
  lion1:{name:'각성 사자',zone:'city',x:20,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'칠 톤짜리 사자예요. 눈이 아주 똑똑해 보여요.'},{say:'크르르릉…'}]},
  lion2:{name:'각성 사자',zone:'city',x:22,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'사자가 테렌스의 냄새를 맡아요. 이빨이 손가락만 해요.'}]},
- ghost1:{name:'유령',zone:'city',x:3,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,
-  talk:()=>[{who:'…',say:'{유령|유령}이에요. 키가 3미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'유령이 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
- ghost2:{name:'유령',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'유령이 거리를 지켜요. 밤 열 시부터 통금이에요.'}]},
- ghost3:{name:'유령',zone:'city',x:17,y:10,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'유령이 광장을 지켜요. 사람들은 고개를 숙이고 지나가요.'}]},
+ ghost1:{name:'고스트',zone:'city',x:3,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,
+  talk:()=>[{who:'…',say:'{고스트|고스트}이에요. 키가 3미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'고스트이 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
+ ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트이 거리를 지켜요. 밤 열 시부터 통금이에요.'}]},
+ ghost3:{name:'고스트',zone:'city',x:17,y:10,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트이 광장을 지켜요. 사람들은 고개를 숙이고 지나가요.'}]},
  /* High Rosa */
  tose:{name:'토셰',zone:'tower',x:6,y:2,dir:'up',look:TOSE,still:1,
   hide:()=>!!f().capsule,
-  talk:()=>[
-   {who:'…',say:'남자가 시벨레스 이글호를 보고 있어요. 토셰예요.'},
+  pos:()=>f().aireel?[20,9]:[6,2],
+  status:()=>!f().aireel?'todo':null,
+  talk:()=>!f().aireel?[
+   {who:'…',say:'루치아의 눈으로 봐요. 시벨레스 이글호에서 남자가 내려요. 토셰예요.'},
    {who:'…',say:'눈 하나가 크게 튀어나왔어요. 그 눈은 날아다니는 작은 드론이에요.'},
-   {who:'…',say:'팔에 뱀 같은 근육이 붙어 있어요. 가까이 가면 안 돼요.'}]},
- luciaT:{name:'루치아',zone:'tower',x:9,y:3,dir:'left',look:L_LUCIA,
-  hide:()=>!f().tail||!!f().capsule,
-  status:()=>'todo',
-  talk:()=>[
-   {say:'국장님, 쉿. 저기 토셰예요. 시벨레스 이글호에서 내렸어요.'},
-   {say:'토셰가 캡슐 역으로 가요. 산타 로사로 내려가는 것 같아요.'},
-   {say:'토셰 옷에 {에어릴|에어릴}을 붙였어요. 아주 작은 감시 드론이에요.'},
-   {who:'테렌스',say:'조심해요, 루치아. 혼자 하지 마세요.'},
-   {say:'걱정 마세요. 저도 같은 캡슐을 탈게요. 아래에서 만나요!',set:()=>{f().capsule=1}}]},
- dock:{name:'독 관리인',zone:'tower',x:14,y:3,dir:'down',look:{hair:'#3A2A22',skin:'#E6C2A0',shirt:'#5B6C8E',pants:'#3B4650',cap:'#5B6C8E'},badge:['폭발'],
-  status:()=>!f().boom?null:undefined,
-  script:()=>!f().boom?[{say:'여기는 3층 독이에요. 캡슐 역은 아래쪽이에요.'}]:null,
-  after:'아직도 손이 떨려요.',
-  talk:()=>[
-   {say:'형사님… 캡슐이… 내려가다가 터졌어요.'},
-   Q.dock[0],
-   {say:'이백삼십칠 명이 타고 있었어요. 아이들도 스무 명…'},
-   Q.dock[1],
-   {say:'캡슐 운행은 다 멈췄어요. 형사님은 비상 캡슐로 내려가세요.',award:['폭발']}]},
+   {who:'테렌스 (통신)',say:'루치아, 가까이 가지 마요. 에어릴을 보내요.'},
+   {who:'루치아',say:'{에어릴|에어릴}을 보냈어요. 토셰 뒤를 따라가요.',set:()=>{f().aireel=1}}]:[
+   {who:'…',say:'토셰가 캡슐 역 라운지에 앉아 있어요. 팔에 뱀 같은 근육이 붙어 있어요.'}]},
  cleaner:{name:'청소 로봇',zone:'tower',x:17,y:9,dir:'left',kind:'andy',look:{body:'#D8DCE0',visor:'#E8962A'},
-  status:()=>f().capsule&&!f().boom?'todo':null,
-  talk:()=>f().capsule&&!f().boom?[
+  status:()=>f().aireel&&!f().capsule?'todo':null,
+  talk:()=>f().aireel&&!f().capsule?[
    {who:'…',say:'청소 로봇이 바닥에서 뭔가를 먹었어요. 작은 실 같은 거예요.'},
-   {who:'테렌스',say:'에어릴! 루치아의 에어릴이에요! 누가 이 로봇을 조종했어요.'},
-   {who:'테렌스',say:'루치아, 들려요? 토셰는 어디 있어요?'},
-   {who:'루치아 (통신)',say:'국장님… 토셰가 안 보여요. 캡슐에서 내린 것 같아요.'},
-   {who:'루치아 (통신)',say:'캡슐이 출발했어요. 사람이 많아요. 아이들도…'},
-   {who:'…',say:'번쩍! 창밖 아래, 탑의 줄 위에 하얀 빛이 피어요.',set:()=>{f().boom=1;f().boomAt=Date.now()}},
-   {who:'…',say:'소리는 안 들려요. 우주는 조용해요.'},
-   {who:'테렌스',say:'루치아… 루치아!'}]:[{say:'삐빅. 청소 중이에요. 발을 들어 주세요.'}]},
+   {who:'테렌스 (통신)',say:'에어릴! 청소 로봇이 에어릴을 먹었어요! 누가 조종해요!'},
+   {who:'루치아',say:'토셰가 캡슐로 가요. 저도 탈게요.'},
+   {who:'테렌스 (통신)',say:'조심해요, 루치아. 혼자 하지 마세요.'},
+   {who:'루치아',say:'걱정 마세요. 아래에서 만나요, 국장님.',set:()=>{f().capsule=1}}]:[{say:'삐빅. 청소 중이에요. 발을 들어 주세요.'}]},
  /* the Governor's mansion */
  makaio:{name:'마카이오파라지',zone:'mansion',x:7,y:3,dir:'up',badge:['암살'],
   get look(){return f().shot?MAKAIO_DEAD:MAKAIO},
   hide:()=>!f().liliana||!!f().occupied,
   get still(){return !!f().shot},
   after:'테렌스, 조심해요.',
-  script:()=>f().rider?[{who:'…',say:'경찰 테이프가 있어요. 마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'}]:null,
+  script:()=>f().rider?[{who:'…',say:'경찰 테이프가 있어요. 마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'},{who:'…',say:'테렌스는 여기 있으면 안 돼요. 아무도 그가 여기 왔던 걸 몰라요.'}]:null,
   talk:()=>[
-   {say:'테렌스, 왔어요? 이 정원은 언제 봐도 예뻐요.'},
+   {say:'테렌스, 왔어요? 곤디아는 처음이에요. 생각보다 아름다워요.'},
    {say:'저는 이제 아콘이 아니에요. 새 수석 아콘, 우알라나쇼이구가 저를 쫓아냈어요.'},
    {who:'테렌스',say:'캡슐 폭탄은 두 번째 조직이에요. 대장은 릴리아나예요.'},
    {say:'이건 큰 게임이에요. 누가 와이니드 안에서 움직이고 있어요.'},
@@ -1038,30 +1078,30 @@ const NPC={
    Q.makaio[1],
    {who:'…',say:'탕! 아주 먼 곳에서 소리가 났어요.',set:()=>{f().shot=1}},
    {who:'…',say:'마카이오파라지가 쓰러져요. 피가 많이 나요.'},
-   {say:'테… 테렌스… 머리를… 이리…'},
+   {who:'…',say:'마카이오의 입에서 피가 나요. 말을 못 해요. 옷이 보라색으로 번쩍여요.'},
    {who:'…',say:'큰 손이 테렌스의 머리를 잡아요. 차가운 무언가가 머릿속에 들어와요.'},
-   {who:'…',say:'그리고 마카이오의 머리가 스스로 타 버려요. 아무 비밀도 남지 않게요.'},
+   {who:'…',say:'테렌스가 물러나자 마카이오의 머리가 스스로 타 버려요. 아무 비밀도 남지 않게요.'},
    {who:'테렌스',say:'노이쉬 님… 아버님이… 뉴 피닉스 프로토콜이에요.'},
-   {who:'…',say:'마카이오파라지가, 곤디아에서, 암살당했어요.',award:['암살'],set:()=>{f().rider=1}}]},
- otylia:{name:'오틸리아',zone:'mansion',x:5,y:7,dir:'down',look:{hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'},
+   {who:'…',say:'마카이오파라지가, 곤디아에서, 암살당했어요. 테렌스는 아무도 모르게 빠져나가요.',award:['암살'],set:()=>{f().rider=1}}]},
+ otylia:{name:'오틸리아',zone:'villa',x:5,y:5,dir:'down',look:{hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'},
   hide:()=>!f().missile,
   status:()=>!f().rescued?'todo':null,
   talk:()=>!f().rescued?[
    {say:'테렌스… 와 줘서 고마워요.'},
-   {say:'{유령|유령}들이 저를 체포하러 왔어요. 그런데 누가 유령들을 쐈어요.'},
+   {say:'{고스트|고스트}들이 저를 체포하러 왔어요. 그런데 누가 고스트들을 쐈어요.'},
    {say:'그리고 하늘에서 {미사일|미사일}이… 집이 다 무너졌어요.'},
    {say:'엄마, 아빠, 버라이카 새언니… 다 죽었어요.'},
    {say:'에버렛 오빠는 너무 화가 나서 약을 먹고 자요.'},
-   {who:'테렌스',say:'유령을 쏜 사람은 아마 토셰예요. 일부러 미사일이 오게 한 것 같아요.'},
+   {who:'테렌스',say:'고스트을 쏜 사람은 아마 토셰예요. 일부러 미사일이 오게 한 것 같아요.'},
    {say:'핀이 돌아오면… 뭐라고 말해요?'},
-   {say:'우리는 폴카다브호를 타고 떠나요. 거기서 핀을 기다릴 거예요.',set:()=>{f().rescued=1}}]:[
+   {say:'우리는 하이 로사에서 폴카다브호를 타고 아누샤로 가요.',set:()=>{f().rescued=1}}]:[
    {say:'조사이어스는 어디 있는지 몰라요. 이제 저하고 상관없어요.'},
-   {say:'성실호는 옥사노톨 관문으로 올 거예요. 핀은 킹스네스트에 갔으니까요.'}]},
- zelindaS:{name:'젤린다',zone:'mansion',x:14,y:7,dir:'left',look:L_ZELINDA,hide:()=>!f().missile,
+   {say:'아니, 저는 핀을 기다릴 거예요. 성실호는 옥사노톨 관문으로 와요. 핀은 킹스네스트에 갔으니까요.'}]},
+ zelindaS:{name:'젤린다',zone:'villa',x:12,y:5,dir:'left',look:L_ZELINDA,hide:()=>!f().missile,
   talk:()=>[{say:'엄마가 없어요… 이제 제가 가족을 지켜야 돼요.'},{say:'폴카다브호는 작아요. 그래도 다 같이 가야 돼요.'}]},
- haian:{name:'하이안',zone:'mansion',x:15,y:9,dir:'up',look:{hair:'#6A5A4A',skin:'#E3B48C',shirt:'#4A6A5A',pants:'#2E2A28'},hide:()=>!f().missile,
+ haian:{name:'하이안',zone:'villa',x:13,y:7,dir:'up',look:{hair:'#6A5A4A',skin:'#E3B48C',shirt:'#4A6A5A',pants:'#2E2A28'},hide:()=>!f().missile,
   talk:()=>[{say:'저는 젤린다 옆에 있을게요. 어디든지요.'}]},
- aljanS:{name:'알잔',zone:'mansion',x:9,y:8,dir:'up',look:L_ALJAN,hide:()=>!f().missile,
+ aljanS:{name:'알잔',zone:'villa',x:8,y:6,dir:'up',look:L_ALJAN,hide:()=>!f().missile,
   status:()=>f().rescued&&!f().club?'todo':null,
   talk:()=>!f().rescued?[{say:'아빠, 다친 사람이 많아요. 저는 지금 바빠요.'}]:!f().club?[
    {say:'아빠, 저도 폴카다브호를 타요. 다친 사람이 많아요. 저는 의사예요.'},
@@ -1069,7 +1109,7 @@ const NPC={
    {who:'테렌스',say:'알잔… 몸 조심해. 엄마한테 자주 연락해.'},
    {say:'아빠도요. 바닐다랑 엄마 잘 지켜 주세요.'},
    {who:'테렌스',say:'아빠는 할 일이 있어. 다크 파라다이스 클럽이 지금 비어 있어.'},
-   {who:'테렌스',say:'갱들이 다 도망갔어. 그 지하에 뭐가 있는 것 같아.',set:()=>{f().club=1}}]:[{say:'아빠, 사랑해요. 꼭 다시 만나요.'}]},
+   {who:'테렌스',say:'스탄바8 갱은 다 잡혀갔어. 그 지하에 뭐가 있는 것 같아.',set:()=>{f().club=1}}]:[{say:'아빠, 사랑해요. 꼭 다시 만나요.'}]},
  /* Fleesh Diamond */
  barman:{name:'바텐더',zone:'bar',x:4,y:2,dir:'down',look:{hair:'#9A9AA0',skin:'#D7A77E',shirt:'#F1EEE6',pants:'#2A2A30',belt:'#2A2A30',beard:'#9A9AA0'},
   script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];
@@ -1088,7 +1128,7 @@ const NPC={
    {say:'토셰가 아주 먼 곳에서 저를 저격했어요.'},
    Q.spirit[1],
    {say:'이제 우리 둘이 같이 수사해요. 큰 게임은 아직 안 끝났어요.'},
-   {who:'…',say:'그리고 이 년이 지났어요. 어느 날 아침, 하늘에 제국 항모가 나타났어요.',award:['저격'],set:()=>{f().occupied=1}}]},
+   {who:'…',say:'그리고 이 년이 지났어요. 어느 날, 탑 꼭대기 하이 로사에 제국 항모가 붙었어요.',award:['저격'],set:()=>{f().occupied=1}}]},
  /* Dark Paradise basement */
  patch:{name:'리브스톤 바닥',zone:'club',x:9,y:6,dir:'down',still:1,
   get look(){return f().bones?BONES:PATCH},
@@ -1096,12 +1136,12 @@ const NPC={
   talk:()=>!f().bones?[
    {who:'…',say:'바닥 한 곳의 색이 조금 달라요. {리브스톤|리브스톤}이 새로 자란 것 같아요.'},
    {who:'테렌스',say:'바닐다, 뒤로 가.'},
-   {who:'…',say:'테렌스가 손바닥을 바닥에 대요. 손바닥의 보라색 선이 빛나요.'},
-   {who:'…',say:'돌이 물처럼 천천히 열려요.',set:()=>{f().bones=1}},
+   {who:'…',say:'테렌스가 손바닥을 벽의 작은 혹에 대요. 손바닥의 보라색 선이 빛나요.'},
+   {who:'…',say:'바닥 돌이 부서져요. 세 사람이 손으로 돌을 파내요.',set:()=>{f().bones=1}},
    {who:'…',say:'그 안에… 사람의 뼈가 있어요. 가슴뼈에 칼자국이 있어요.'},
    {who:'바닐다',say:'아빠… 시체예요?'},
    {who:'테렌스',say:'아주 오래된 시체야. 엄마 불러 줘.'}]:[
-   {who:'…',say:'오래된 뼈. 썩은 옷 조각이 조금 남아 있어요.'}]},
+   {who:'…',say:'오래된 뼈. 썩은 가죽 재킷 조각이 남아 있어요.'}]},
  jimenaC:{name:'히메나',zone:'club',x:6,y:7,dir:'right',look:L_JIMENA,
   status:()=>f().bones&&!f().done?'todo':null,
   talk:()=>!f().bones?[{say:'먼지가 많아요. 바닥을 잘 봐요. 갱들은 뭔가를 숨겼어요.'}]:f().done?[{say:'이 증거, 누구한테 보낼 거예요? 조심해요, 여보.'}]:[
@@ -1122,14 +1162,14 @@ const NEWS_ITEMS=[
   {who:'막간',say:'우알라나라이언 경이 아들들과 몰래 왔어요. 베켓의 과거를 수사해요.'},
   {who:'막간',say:'궤도의 배에 작은 나노 기계 구름이 와요. "{슬로볼|슬로볼}"이에요.'},
   {who:'막간',say:'배에 남은 두 아들, 루치오와 파벨이 먹혔어요.'},
-  {who:'우알라나라이언',say:'이 벽의 얼굴들… 나는 이 얼굴을 알아요!'},
+  {who:'우알라나라이언',say:'이 공작 조각… 그리고 이 모래… 땅 밑에 뭔가 있어요!'},
   {who:'막간',say:'번쩍. 우알라나라이언은 사라졌어요. 아들 쇼이구의 몸은 누가 가져갔어요.'}]},
  {id:2,when:()=>f().sting,steps:[
   {who:'막간',say:'막간 · 와이니드, 가말둠 궁전. 여덟 달 후.'},
   {who:'막간',say:'헬레나키오네 여왕이 증기실에 혼자 있어요.'},
   {who:'티라',say:'어머니, 이제 제 차례예요.'},
   {who:'막간',say:'티라가 여왕의 머리에 손을 대요. 여왕의 마음을 다 빼앗아요.'},
-  {who:'헬레나키오네',say:'너… 너는 죽었어! 내가 봤어!'},
+  {who:'헬레나키오네',say:'이건 계승이 아니야! 너는 여왕이 될 수 없어!'},
   {who:'막간',say:'여왕은 죽었어요. 티라는 여왕의 기억으로 모든 시험을 통과했어요.'},
   {who:'막간',say:'이제 티라는 "헬레나티라" 여왕이에요. 아버지 베켓은 궁정 장관이 됐어요.'}]},
  {id:3,when:()=>f().tail,steps:[
@@ -1137,7 +1177,7 @@ const NEWS_ITEMS=[
   {who:'막간',say:'티라가 수석 아콘 가히지칼더를 쫓아냈어요.'},
   {who:'막간',say:'새 수석 아콘은 "우알라나쇼이구" 경. 사실은 이운틴데틀레프예요.'},
   {who:'막간',say:'그 몸은 쇼이구의 몸이에요. 쇼이구의 기억은 지워졌어요.'},
-  {who:'막간',say:'밤에 티라가 우자냐 공주의 머리에 들어가요. 억지로 생각을 바꿔요.'},
+  {who:'막간',say:'회의가 끝나고, 작은 방. 티라가 우자냐 공주의 머리에 들어가요. 억지로 생각을 바꿔요.'},
   {who:'우자냐',say:'…네, 여왕님. 여왕님 말이 다 맞아요.'}]},
  {id:4,when:()=>f().boom,steps:[
   {who:'막간',say:'막간 · 바사 궤도 링의 코르토나.'},
@@ -1150,22 +1190,26 @@ const NEWS_ITEMS=[
   {who:'막간',say:'막간 · 켈로완 황궁. 캐롤리엔아마이아 여제.'},
   {who:'우알라나쇼이구',say:'여제님, 와이니드의 아콘이 곤디아에서 암살당했어요.'},
   {who:'캐롤리엔아마이아',say:'와이니드는 자기 아콘도 못 지켜요? 그럼 제가 직접 할게요.'},
-  {who:'막간',say:'여제가 아보네발레리오 장군을 보내요. 돌격 항모 일곱 척, 제국 기사, 유령 오십만.'},
+  {who:'막간',say:'여제가 아보네발레리오 장군을 보내요. 돌격 항모 일곱 척, 제국 기사, 고스트 오십만.'},
   {who:'막간',say:'사람들은 장군을 "초토화"라고 불러요.'},
   {who:'뉴스 화면',say:'곤디아 소식. 잘고리토부 가족이 제티안 궁전에서 쫓겨났어요.'}]},
  {id:6,when:()=>f().general,steps:[
-  {who:'뉴스 화면',say:'{관리관|관리관} 사무실 발표: 반란자 수백 명을 체포했어요.'},
-  {who:'뉴스 화면',say:'체포된 사람들은 {유버스터|유버스터}로 기억을 지웠어요.'},
-  {who:'…',say:'화면 속 사람들이 아기처럼 웃어요. 자기 이름도 몰라요.'},
-  {who:'테렌스',say:'처형보다 나빠요…'}]},
+  {who:'뉴스 화면',say:'{관리관|관리관} 사무실 발표: 반란자 수천 명을 체포했어요.'},
+  {who:'…',say:'사람들이 역 근처 창고에 갇혀 있어요. 소처럼요.'},
+  {who:'테렌스',say:'저기서 형무 농장으로 가요. 다시는 못 돌아와요…'}]},
  {id:7,when:()=>f().news6,steps:[
-  {who:'뉴스 화면',say:'불법 방송이에요. 하늘에는 이제 낮에도 돌로드가 보여요.'},
+  {who:'뉴스 화면',say:'불법 방송이에요. 밤하늘에 분홍색 점이 떠요. 돌로드예요.'},
   {who:'조사이어스',say:'곤디아 사람들! 제7조를 위해 모두 멈춰요! {총파업|총파업}이에요!'},
   {who:'뉴스 화면',say:'조사이어스와 같이 있던 여자, 레오니가 총에 맞아 죽었어요.'},
-  {who:'뉴스 화면',say:'하프니르 속보. 유령들이 오틸리아를 체포하러 갔어요.'},
-  {who:'뉴스 화면',say:'누가 유령들을 저격했어요. 그리고 하늘에서 {미사일|미사일}이 떨어졌어요.'},
+  {who:'뉴스 화면',say:'하프니르 속보. 고스트들이 오틸리아를 체포하러 갔어요.'},
+  {who:'뉴스 화면',say:'누가 고스트들을 저격했어요. 그리고 하늘에서 {미사일|미사일}이 떨어졌어요.'},
   {who:'뉴스 화면',say:'후작부인과 남편, 며느리 버라이카가 죽었어요.'},
-  {who:'테렌스',say:'또 토셰예요. 살아남은 사람들을 총독 저택에 숨겨야 돼요!',set:()=>{f().missile=1}}]},
+  {who:'테렌스',say:'또 토셰예요. 살아남은 사람들을 우리 집에 숨겨야 돼요!',set:()=>{f().missile=1}}]},
+ {id:8,when:()=>f().club,steps:[
+  {who:'뉴스 화면',say:'형무 농장이 꽉 찼어요. 관리관이 새 기계를 써요.'},
+  {who:'뉴스 화면',say:'체포된 사람들의 기억을 {유버스터|유버스터}로 지웠어요. 그리고 가족한테 돌려보내요.'},
+  {who:'…',say:'화면 속 사람들이 아기처럼 웃어요. 자기 이름도 몰라요.'},
+  {who:'테렌스',say:'처형보다 나빠요…'}]},
 ];
 function nextNews(){return NEWS_ITEMS.find(e=>e.when()&&!f()['news'+e.id])}
 
@@ -1191,9 +1235,10 @@ function questText(){
  if(!b('단서'))return '거리 · 지카르한테 다시 물어봐요';
  if(!b('감시하다'))return '취조실 · 베르셰를 심문해요';
  if(!b('시위'))return '광장 · 시위대를 지나가요';
- if(!F.capsule)return '하이 로사 · 루치아를 만나요';
- if(!F.boom)return '하이 로사 · 캡슐 역 라운지로 가요';
- if(!b('폭발'))return '하이 로사 · 독 관리인한테 물어봐요';
+  if(!F.aireel)return ZID==='tower'?'루치아의 영상 · 토셰를 찾아요':'국장실 · 루치아의 영상 콘솔';
+ if(!F.capsule)return '루치아의 영상 · 에어릴을 따라가요';
+ if(!F.boom)return ZID==='tower'?'루치아의 영상 · 캡슐 승강장':'국장실 · 루치아의 통신을 들어요';
+ if(!b('폭발'))return '경찰서 · 새 서장을 만나요';
  if(!b('장례식'))return '광장 · 추모식에 가요';
  if(!b('테러'))return '광장 · 젤린다를 만나요';
  if(!F.medusa)return '소노마 거리 · 메두사를 체포해요';
@@ -1203,11 +1248,11 @@ function questText(){
  if(!b('저격'))return '플리시 다이아몬드 · 꿈속의 바';
  if(!b('점령하다'))return '광장 · 점령군 장군을 만나요';
  if(!F.missile)return '경찰서 · 뉴스 화면을 봐요';
- if(!F.rescued)return '총독 저택 · 살아남은 사람들';
- if(!F.club)return '총독 저택 · 알잔하고 작별해요';
+ if(!F.rescued)return '하프니르 · 테렌스의 빌라';
+ if(!F.club)return '하프니르 · 알잔하고 작별해요';
  if(!F.bones)return '다크 파라다이스 · 지하실을 조사해요';
  return '다크 파라다이스 · 히메나한테 가요';
 }
-const PLAYER=TERENCE;
+const PLAYER=()=>ZID==='tower'?L_LUCIA:(f().disguised&&!f().sting?L_ZIKAR:TERENCE); // Lućia's feed at High Rosa; Zikar's face during the sting
 return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES:TT,PLAYER};
 }});
