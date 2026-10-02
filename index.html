@@ -1,0 +1,1079 @@
+<!doctype html><html lang="ko"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>성실호</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Orbit&family=IBM+Plex+Sans+KR:wght@400;600&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* Layout: a crew datapad from the arkship Diligent. Ceramic hull shell (worn off-white plating, amber running lights),
+   a dark visor screen holding the pixel map, the dialogue box as a comms readout, D-pad + A/B below.
+   Single deliberate look (the device is the same in any room light), so colors are fixed, not theme-switched. */
+:root{
+  color-scheme:light;
+  --hull:#D5D8CF; --hull-2:#C3C7BC; --seam:#9AA096; --ink:#1D2227; --muted:#5B625C;
+  --amber:#E8962A; --amber-ink:#2A1904; --amber-soft:#F6D9A6;
+  --glass:#0F141A; --glass-2:#1A222B; --glass-edge:#2C3742; --glass-ink:#E6EBE2; --glass-muted:#93A09A;
+  --cyan:#69CFD8; --red:#D2533F; --b:#4C5862;
+  --display:"Orbit","Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+  --body:"IBM Plex Sans KR","Apple SD Gothic Neo","Malgun Gothic",system-ui,sans-serif;
+  --mono:"IBM Plex Mono",ui-monospace,"SFMono-Regular",Menlo,monospace;
+}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0}
+body{background:var(--hull);color:var(--ink);font-family:var(--body);-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;
+  background-image:linear-gradient(var(--hull-2) 1px,transparent 1px),linear-gradient(90deg,var(--hull-2) 1px,transparent 1px);background-size:100% 96px,120px 100%}
+button{-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;font:inherit}
+button:focus-visible{outline:3px solid var(--amber);outline-offset:2px}
+.wrap{max-width:480px;margin:0 auto;padding:0 16px;padding-block:12px 20px;display:flex;flex-direction:column;gap:10px;box-sizing:border-box}
+
+header{display:flex;justify-content:space-between;align-items:flex-end;gap:8px}
+.id{display:flex;flex-direction:column;gap:2px;min-width:0}
+.id .reg{font-family:var(--mono);font-size:.68rem;letter-spacing:.14em;color:var(--muted);text-transform:uppercase;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+h1{margin:0;font-family:var(--display);font-weight:400;font-size:1.6rem;line-height:1;letter-spacing:.02em;white-space:nowrap}
+h1 .lamp{display:inline-block;width:.42em;height:.42em;border-radius:50%;background:var(--amber);margin-left:.35em;vertical-align:.18em;box-shadow:0 0 0 2px var(--hull),0 0 10px var(--amber)}
+.hbtns{display:flex;gap:6px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-family:var(--mono);font-size:.78rem;letter-spacing:.04em;background:var(--hull);color:var(--ink);border:2px solid var(--seam);border-radius:6px;padding:6px 9px;cursor:pointer;white-space:nowrap;font-variant-numeric:tabular-nums;box-shadow:inset 0 -2px 0 var(--hull-2)}
+.pill[aria-pressed="true"]{background:var(--ink);color:var(--amber-soft);border-color:var(--ink)}
+.pill.log{background:var(--amber);border-color:#B8701A;color:var(--amber-ink)}
+
+.quest{font-family:var(--mono);font-size:.8rem;display:flex;gap:10px;align-items:center;color:var(--ink);line-height:1.35;min-height:1.35em}
+.quest b{font-weight:500;background:var(--ink);color:var(--amber-soft);padding:1px 6px;border-radius:3px;letter-spacing:.08em;flex:none}
+.quest span{font-family:var(--body);font-weight:600}
+
+.screen{position:relative;border-radius:14px;overflow:hidden;background:var(--glass);line-height:0;border:3px solid #7F867D;box-shadow:inset 0 0 0 3px var(--glass),0 2px 0 #A9AEA4}
+canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;max-width:100%}
+.zone{position:absolute;left:8px;top:8px;line-height:1.2;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--glass-ink);background:rgba(15,20,26,.72);border:1px solid var(--glass-edge);padding:3px 7px;border-radius:4px;pointer-events:none;transition:opacity .4s}
+.fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .22s}
+.fade.on{opacity:1}
+
+.dlg{position:absolute;left:6px;right:6px;bottom:6px;line-height:1.5;background:rgba(15,20,26,.96);color:var(--glass-ink);border:2px solid var(--glass-edge);border-top:3px solid var(--amber);border-radius:6px;padding:9px 12px 11px;display:flex;flex-direction:column;gap:7px;max-height:calc(100% - 12px);box-sizing:border-box;overflow:auto}
+.who{display:flex;gap:8px;align-items:center;justify-content:space-between}
+.who .nm{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--amber)}
+.who .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--glass);background:var(--cyan);border-radius:3px;padding:0 6px;margin-left:6px}
+.spk{flex:none;width:30px;height:26px;border-radius:5px;border:1px solid var(--glass-edge);background:var(--glass-2);color:var(--glass-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;padding:0}
+.spk svg{width:16px;height:16px}
+.spk.on{color:var(--cyan);border-color:var(--cyan)}
+.txt{font-family:var(--body);font-size:1.12rem;font-weight:600;min-height:1.5em;word-break:keep-all}
+.gl{color:var(--amber-soft);text-decoration:underline dotted var(--amber);text-underline-offset:3px;cursor:help}
+.more{align-self:flex-end;font-size:.7rem;color:var(--amber);animation:blink 1s steps(2) infinite;line-height:1}
+@keyframes blink{50%{opacity:0}}
+.choices{display:flex;flex-direction:column;gap:5px}
+.choice{font-family:var(--body);font-size:1.05rem;font-weight:600;text-align:left;background:var(--glass-2);color:var(--glass-ink);border:1px solid var(--glass-edge);border-radius:5px;padding:7px 11px;cursor:pointer;word-break:keep-all;display:flex;gap:8px}
+.choice::before{content:"▸";color:var(--amber);visibility:hidden}
+.choice.sel{border-color:var(--amber);background:#2A2418}
+.choice.sel::before{visibility:visible}
+.build{display:flex;flex-direction:column;gap:7px}
+.slots{display:flex;flex-wrap:wrap;gap:5px;min-height:2.1em;align-items:center;border-bottom:1px dashed var(--glass-edge);padding-bottom:6px}
+.slots .ph{font-family:var(--mono);font-size:.75rem;color:var(--glass-muted);letter-spacing:.1em}
+.slots span.t{font-weight:600;font-size:1.05rem;color:var(--cyan)}
+.tiles{display:flex;flex-wrap:wrap;gap:6px}
+.tile{font-family:var(--body);font-weight:600;font-size:1.05rem;background:var(--glass-2);color:var(--glass-ink);border:1px solid var(--glass-edge);border-radius:5px;padding:6px 10px;cursor:pointer}
+.tile.sel{border-color:var(--amber);background:#2A2418}
+.tile.bad{animation:shake .3s}
+.tile.used{visibility:hidden}
+@keyframes shake{25%{transform:translateX(-4px)}75%{transform:translateX(4px)}}
+
+.gloss{position:absolute;left:12px;right:12px;top:10px;line-height:1.45;background:var(--amber-soft);color:var(--amber-ink);border-radius:6px;padding:8px 11px;font-size:.9rem;z-index:2;box-shadow:0 4px 0 rgba(0,0,0,.25)}
+.gloss b{font-family:var(--display);font-weight:400;font-size:1.05rem;margin-right:6px}
+.gloss .en{font-family:var(--mono);font-size:.72rem;opacity:.75;display:block;margin-top:2px}
+.toast{position:absolute;left:50%;top:34px;transform:translateX(-50%);line-height:1.3;background:var(--amber);color:var(--amber-ink);font-family:var(--body);font-weight:600;font-size:.95rem;padding:6px 14px;border-radius:5px;white-space:nowrap;max-width:90%;overflow:hidden;text-overflow:ellipsis;z-index:3;box-shadow:0 3px 0 #9A5E14}
+
+.pad{display:flex;justify-content:space-between;align-items:center;gap:12px;padding-top:6px;touch-action:none}
+.dpad{display:grid;grid-template-columns:repeat(3,56px);grid-template-rows:repeat(3,56px);filter:drop-shadow(0 3px 0 #A3A99F)}
+.dpad button{background:#3B444C;border:0;color:#AEB8B2;font-size:1.05rem;cursor:pointer;touch-action:none}
+.dpad .u{grid-column:2;grid-row:1;border-radius:8px 8px 0 0}
+.dpad .l{grid-column:1;grid-row:2;border-radius:8px 0 0 8px}
+.dpad .c{grid-column:2;grid-row:2;background:#3B444C}
+.dpad .r{grid-column:3;grid-row:2;border-radius:0 8px 8px 0}
+.dpad .d{grid-column:2;grid-row:3;border-radius:0 0 8px 8px}
+.dpad button.on{background:#262D33;color:var(--amber)}
+.ab{display:flex;gap:14px;align-items:flex-end;transform:rotate(-16deg)}
+.ab button{width:64px;height:64px;border-radius:50%;font-family:var(--mono);font-size:1.25rem;border:0;cursor:pointer;touch-action:none;box-shadow:0 4px 0 rgba(0,0,0,.28)}
+.ab .A{background:var(--amber);color:var(--amber-ink);margin-bottom:22px;transition:box-shadow .2s}
+.ab .A.ready{box-shadow:0 4px 0 rgba(0,0,0,.28),0 0 0 4px var(--hull),0 0 0 6px var(--amber)}
+.ab .B{background:var(--b);color:#DCE3DF}
+.ab button:active{transform:translateY(2px);box-shadow:0 2px 0 rgba(0,0,0,.28)}
+
+.panel{position:fixed;inset:0;background:rgba(15,20,26,.7);display:flex;align-items:center;justify-content:center;padding:16px;z-index:5}
+.sheet{background:var(--hull);color:var(--ink);border-radius:10px;border-top:4px solid var(--amber);max-width:440px;width:100%;max-height:92%;overflow:auto;padding:14px 16px 16px;display:flex;flex-direction:column;gap:12px;box-sizing:border-box}
+.sheet h2{margin:0;font-family:var(--display);font-weight:400;font-size:1.35rem;display:flex;justify-content:space-between;align-items:baseline;gap:8px}
+.sheet h2 small{font-family:var(--mono);font-size:.72rem;color:var(--muted);letter-spacing:.08em}
+.sheet h3{margin:0;font-family:var(--mono);font-weight:500;font-size:.72rem;letter-spacing:.14em;color:var(--muted)}
+.wlist{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.wd{border:1px solid var(--seam);background:var(--hull);border-radius:6px;padding:7px 4px 6px;text-align:center;display:flex;flex-direction:column;gap:4px;align-items:center;cursor:pointer;min-width:0;color:var(--ink)}
+.wd .w{font-weight:600;font-size:.95rem;word-break:keep-all}
+.wd.off{border-style:dashed;cursor:default}
+.wd.off .w{color:var(--seam)}
+.wd.sel{border-color:var(--ink);box-shadow:0 0 0 1px var(--ink)}
+.pips{display:flex;gap:2px}
+.pips i{width:6px;height:6px;border-radius:1px;background:var(--hull-2)}
+.pips i.on{background:var(--amber)}
+.pips.due i.on{background:var(--cyan)}
+.card{background:var(--glass);color:var(--glass-ink);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:6px;line-height:1.5}
+.card .top{display:flex;justify-content:space-between;align-items:center;gap:8px}
+.card .big{font-family:var(--display);font-size:1.6rem;line-height:1.1}
+.card .def{font-weight:600}
+.card .ex{color:var(--glass-muted);font-size:.92rem}
+.card .hj{font-family:var(--mono);font-size:.78rem;color:var(--amber-soft)}
+.card .en{font-family:var(--mono);font-size:.78rem;color:var(--glass-muted)}
+.card .enb{align-self:flex-start;font-family:var(--mono);font-size:.72rem;background:transparent;color:var(--glass-muted);border:1px solid var(--glass-edge);border-radius:4px;padding:2px 8px;cursor:pointer}
+.items{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+.items li{font-size:.88rem;font-weight:600;background:var(--amber-soft);color:var(--amber-ink);border-radius:4px;padding:3px 9px}
+.items li.none{background:transparent;color:var(--muted);font-weight:400;padding:3px 0}
+.row{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}
+.btn{font-family:var(--body);font-weight:600;font-size:.95rem;border-radius:6px;padding:8px 14px;cursor:pointer;border:2px solid var(--ink);background:transparent;color:var(--ink)}
+.btn.primary{background:var(--ink);color:var(--amber-soft)}
+.btn.warn{border-color:var(--red);color:var(--red)}
+.btn.warn.armed{background:var(--red);color:#fff}
+@media (max-width:370px){.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}.ab button{width:56px;height:56px}.wlist{grid-template-columns:repeat(3,1fr)}h1{font-size:1.35rem}}
+@media (prefers-reduced-motion: reduce){.more{animation:none}.fade{transition:none}.tile.bad{animation:none}}
+</style>
+</head><body>
+<div class="wrap">
+  <header>
+    <div class="id"><span class="reg" id="reg">ARK DILIGENT · 1장 도착</span><h1>성실호<span class="lamp"></span></h1></div>
+    <div class="hbtns">
+      <button class="pill" id="readBtn" aria-pressed="false">읽기</button>
+      <button class="pill" id="sndBtn" aria-pressed="true">소리</button>
+      <button class="pill log" id="logBtn">일지 0/16</button>
+    </div>
+  </header>
+  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span></div>
+  <div class="screen" id="screen">
+    <canvas id="cv" width="176" height="160"></canvas>
+    <div class="zone" id="zone"></div>
+    <div class="fade" id="fade"></div>
+    <div class="gloss" id="gloss" hidden></div>
+    <div class="dlg" id="dlg" hidden>
+      <div class="who"><span><span class="nm" id="who"></span><span class="tag" id="tag" hidden>복습</span></span>
+        <button class="spk" id="spk" aria-label="다시 듣기"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path d="M11 5.5c1 .8 1 4.2 0 5" stroke="currentColor" fill="none" stroke-width="1.4"/><path d="M12.8 3.8c2 1.8 2 6.6 0 8.4" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></button></div>
+      <div class="txt" id="txt"></div>
+      <div class="choices" id="choices" hidden></div>
+      <div class="build" id="build" hidden><div class="slots" id="slots"></div><div class="tiles" id="tiles"></div></div>
+      <div class="more" id="more" hidden>▼</div>
+    </div>
+    <div class="toast" id="toast" hidden></div>
+  </div>
+  <div class="pad">
+    <div class="dpad" id="dpad">
+      <button class="u" data-d="up" aria-label="위">▲</button>
+      <button class="l" data-d="left" aria-label="왼쪽">◀</button>
+      <span class="c"></span>
+      <button class="r" data-d="right" aria-label="오른쪽">▶</button>
+      <button class="d" data-d="down" aria-label="아래">▼</button>
+    </div>
+    <div class="ab">
+      <button class="B" id="btnB" aria-label="B">B</button>
+      <button class="A" id="btnA" aria-label="A">A</button>
+    </div>
+  </div>
+</div>
+<div class="panel" id="panel" hidden>
+  <div class="sheet" role="dialog" aria-label="항해 일지">
+    <h2>항해 일지 <small id="logCount"></small></h2>
+    <div class="wlist" id="wlist"></div>
+    <div class="card" id="card"></div>
+    <h3>가방</h3>
+    <ul class="items" id="items"></ul>
+    <div class="row">
+      <button class="btn warn" id="resetBtn">처음부터</button>
+      <button class="btn primary" id="closePanel">닫기</button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* =====================================================================
+   1장 · 도착 — content. The engine below draws, moves and runs dialogue.
+   Steps: {say} · {ask, opts:[[text,1],[wrong,0,'why']], w} · {build:[tiles…], w} · {listen:w}
+          add award:[words], give:'item', take:'item', set:fn to any step; who:'name' changes speaker.
+   Text may mark a gloss with {shown|key}; tapping it shows DICT[key].
+   ===================================================================== */
+const WORDS=['도착하다','궤도','선장','우주선','고장 나다','수리하다','산소','식량','위험','연료','출발하다','관측하다','행성','발견하다','지도','탐험'];
+const DICT={
+ '도착하다':{k:'어떤 곳에 와서 닿아요.',e:'to arrive',ex:'배가 곤디아에 도착했어요.',hj:'到着 · 着 = 닿다 · 착륙(着陸)'},
+ '궤도':{k:'행성이나 별 주위를 도는 길.',e:'orbit',ex:'성실호가 궤도를 돌아요.',hj:'軌道 · 道 = 길 · 도장(道場)의 도'},
+ '선장':{k:'배에서 제일 높은 사람.',e:'(ship) captain',ex:'선장님이 출발을 결정해요.',hj:'船長 · 長 = 사장님의 장'},
+ '우주선':{k:'우주를 나는 배.',e:'spaceship',ex:'우주선은 연료가 필요해요.',hj:'宇宙船 · 船 = 배 · 선장의 선'},
+ '고장 나다':{k:'기계가 망가져서 안 움직여요.',e:'to break down',ex:'엔진이 고장 났어요.',hj:'故障'},
+ '수리하다':{k:'고장 난 것을 고쳐요. "고치다"보다 딱딱한 말.',e:'to repair',ex:'기관장님이 엔진을 수리해요.',hj:'修理'},
+ '산소':{k:'숨 쉴 때 필요한 공기.',e:'oxygen',ex:'식물이 산소를 만들어요.',hj:'酸素'},
+ '식량':{k:'사람들이 오래 먹을 음식.',e:'food supplies',ex:'배에 식량이 충분해요.',hj:'食糧 · 食 = 음식의 식'},
+ '위험':{k:'다치거나 나쁜 일이 생길 수 있어요.',e:'danger',ex:'불은 위험해요.',hj:'危險 · 險 = 탐험의 험'},
+ '연료':{k:'엔진을 움직이는 것. 엔진의 밥.',e:'fuel',ex:'연료가 없으면 못 가요.',hj:'燃料 · 料 = 연체료의 료'},
+ '출발하다':{k:'어떤 곳을 떠나서 가기 시작해요.',e:'to depart',ex:'내일 아침에 출발해요.',hj:'出發 · 發 = 발견의 발'},
+ '관측하다':{k:'자세히 보고 재요. 과학자가 해요.',e:'to observe',ex:'망원경으로 별을 관측해요.',hj:'觀測 · 觀 = 관중의 관'},
+ '행성':{k:'별 주위를 도는 큰 공. 지구처럼요.',e:'planet',ex:'곤디아는 행성이에요.',hj:'行星 · 行 = 여행의 행'},
+ '발견하다':{k:'처음으로 찾아요.',e:'to discover',ex:'형사가 부품을 발견했어요.',hj:'發見 · 發 = 출발의 발'},
+ '지도':{k:'길과 땅을 그린 그림.',e:'map',ex:'지도를 보고 가요.',hj:'地圖 · 地 = 지구의 지'},
+ '탐험':{k:'아무도 안 간 곳에 가서 알아봐요.',e:'exploration',ex:'핀은 탐험을 좋아해요.',hj:'探險 · 險 = 위험의 험'},
+ /* glosses for words that appear in lines but are not badges */
+ '함교':{k:'배를 움직이는 방. 선장이 있어요.',e:'bridge (of a ship)'},
+ '수경 재배실':{k:'흙 없이 물로 채소를 키우는 방.',e:'hydroponics bay'},
+ '부품':{k:'기계에 들어가는 작은 조각.',e:'(machine) part'},
+ '세관':{k:'다른 나라나 기지에 들어갈 때 짐을 보는 곳.',e:'customs'},
+ '엔진실':{k:'엔진이 있는 방.',e:'engine room'},
+ '연료통':{k:'연료를 넣은 통.',e:'fuel canister'},
+ '망원경':{k:'멀리 있는 것을 크게 보는 기계.',e:'telescope'},
+ '궤도 엘리베이터':{k:'행성에서 궤도까지 올라가는 아주 긴 엘리베이터.',e:'orbital tower lift'},
+ '지겹다':{k:'같은 게 계속돼서 싫어요.',e:'to be sick of'},
+ '쌍둥이':{k:'같은 날 같이 태어난 두 사람.',e:'twins'},
+ '기관장':{k:'배에서 엔진을 책임지는 사람.',e:'chief engineer'},
+ '기사':{k:'셀레스철의 큰 갑옷 군인.',e:'Knight (armored soldier)'},
+ '도장':{k:'① 가라테 하는 곳 ② 종이에 찍는 이름 표시.',e:'① dojo ② stamp'},
+};
+/* sounds-alike / looks-alike words, used when a listening question is built */
+const CONFUSE={'선장':['선생','사장'],'궤도':['기도','도로'],'연료':['연체료','연습'],'관측하다':['관중','관심'],'행성':['항상','학생'],'산소':['상소','산수'],'위험':['위협','시험'],'지도':['기도','지구'],'탐험':['시험','모험'],'식량':['시력','심장'],'출발하다':['출근하다','발견하다'],'발견하다':['발표하다','출발하다'],'도착하다':['도전하다','착하다'],'수리하다':['수업하다','요리하다'],'고장 나다':['고향','고생하다'],'우주선':['우주인','우체국']};
+
+/* extra review questions (the terminals use these too, alongside every NPC question) */
+const BANK=[
+ {w:'도착하다',ask:'비행기가 몇 시에 ___?',opts:[['도착해요',1],['도착돼요',0,'도착하다는 "되다"를 안 써요. 그냥 "도착해요".']]},
+ {w:'궤도',ask:'달은 지구 주위의 ___를 돌아요.',opts:[['궤도',1],['기도',0,'기도는 신한테 말하는 거예요. 도는 길은 "궤도".']]},
+ {w:'선장',ask:'___님, 지금 출발할까요?',opts:[['선장',1],['선생',0,'선생님은 학교에 있어요. 배에는 "선장님".']]},
+ {w:'우주선',ask:'___이 우주 정거장에 도착했어요.',opts:[['우주선',1],['우체국',0,'우체국은 편지를 보내는 곳이에요! 나는 배는 "우주선".']]},
+ {w:'고장 나다',ask:'핸드폰이 ___ 전화를 못 해요.',opts:[['고장 나서',1],['고쳐서',0,'고치면 다시 돼요. 전화를 못 해요 → "고장 나서".']]},
+ {w:'수리하다',ask:'핸드폰을 ___ 센터에 맡겼어요.',opts:[['수리',1],['회복',0,'회복은 사람이 다시 건강해지는 거예요. 기계는 "수리".']]},
+ {w:'산소',ask:'우주에는 ___가 없어요. 헬멧을 꼭 써요.',opts:[['산소',1],['연료',0,'연료는 엔진이 먹어요. 사람은 "산소"로 숨 쉬어요.']]},
+ {w:'식량',ask:'긴 여행 전에 ___을 많이 모아요.',opts:[['식량',1],['간식',0,'간식은 조금 먹는 거예요. 오래 먹을 음식은 "식량".']]},
+ {w:'위험',ask:'조심해요! 뒤에 로봇이 있어요! ___!',opts:[['위험해요',1],['피곤해요',0,'피곤하면 자요. 지금은 "위험해요"!']]},
+ {w:'연료',ask:'자동차도 ___가 필요해요. 기름이요.',opts:[['연료',1],['연체료',0,'연체료는 책을 늦게 반납하면 내는 돈이에요! 차는 "연료".']]},
+ {w:'출발하다',ask:'서울에서 ___해서 부산에 도착했어요.',opts:[['출발',1],['도착',0,'도착한 곳은 부산이에요. 처음 떠난 곳 → "출발".']]},
+ {w:'관측하다',ask:'과학자들이 날씨를 ___해요.',opts:[['관측',1],['관중',0,'관중은 경기를 보는 사람이에요. 과학자가 재는 건 "관측".']]},
+ {w:'행성',ask:'지구도 ___이에요. 해 주위를 돌아요.',opts:[['행성',1],['별',0,'해는 별이에요. 해를 도는 지구는 "행성".']]},
+ {w:'발견하다',ask:'고양이가 숨은 쥐를 ___했어요.',opts:[['발견',1],['결정',0,'결정은 고르는 거예요. 처음 찾았어요 → "발견".']]},
+ {w:'지도',ask:'핸드폰 ___ 앱으로 카페를 찾아요.',opts:[['지도',1],['사전',0,'사전은 단어를 찾아요. 길은 "지도".']]},
+ {w:'탐험',ask:'정글 ___은 위험해요.',opts:[['탐험',1],['구경',0,'구경은 안전하게 봐요. 위험한 곳에 가는 건 "탐험".']]},
+];
+
+const Q={ // NPC questions, kept here so review can reuse them
+ ellie:[
+  {w:'도착하다',ask:'우리 배가 곤디아에 ___.',opts:[['도착했어요',1],['출발했어요',0,'출발은 떠나는 거예요. 우리는 지금 여기에 왔어요 → "도착했어요".'],['돌아갔어요',0,'돌아가다는 원래 곳으로 가는 거예요. 우리는 처음 왔어요 → "도착했어요".']]},
+  {w:'궤도',ask:'행성 주위를 빙글빙글 도는 길은 뭐예요?',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 우주에서 도는 길은 "궤도".'],['도장',0,'도장은 가라테 하는 곳이에요! 도는 길은 "궤도".']]},
+ ],
+ dejean:[
+  {w:'선장',ask:'배에서 제일 높은 사람은 ___이에요.',opts:[['선장',1],['사장님',0,'사장님은 가게나 회사에서 제일 높은 사람이에요. 배는 "선장". 長이 같아요!'],['심판',0,'심판은 시합에서 결정하는 사람이에요. 배는 "선장".']]},
+  {w:'우주선',ask:'우주를 나는 배는 ___이에요.',opts:[['우주선',1],['비행기',0,'비행기는 하늘을 날아요. 우주를 나는 배는 "우주선". 船 = 배!']]},
+ ],
+ josias:[
+  {w:'고장 나다',ask:'엔진이 안 움직여요. 엔진이 ___.',opts:[['고장 났어요',1],['고쳤어요',0,'고치면 다시 움직여요. 지금은 안 움직여요 → "고장 났어요".'],['지었어요',0,'짓다는 집이나 밥을 만들 때예요. 엔진은 "고장 났어요".']]},
+  {w:'고장 나다',ask:'고장 난 엔진을 다시 움직이게 해야 돼요. 엔진을 ___ 돼요.',opts:[['고쳐야',1],['고치해야',0,'"고치다"에 "하다"는 없어요. 고치다 → 고쳐요 → "고쳐야 돼요".']]},
+ ],
+ andy:[
+  {w:'수리하다',ask:'기계를 고쳐요. 딱딱한 말로 ___해요.',opts:[['수리',1],['회복',0,'회복은 사람이나 포켓몬이 다시 건강해지는 거예요. 기계는 "수리".'],['개선',0,'개선은 더 좋게 만드는 거예요. 고장 난 걸 고치는 건 "수리".']]},
+  {w:'수리하다',ask:'기관장님은 매일 기계를 ___.',opts:[['수리해요',1],['수리돼요',0,'기관장님이 직접 해요 → "수리해요". "수리돼요"는 기계가 주어일 때예요.']]},
+ ],
+ or:[
+  {w:'산소',ask:'식물은 우리한테 ___를 줘요. 숨 쉴 때 필요해요.',opts:[['산소',1],['상태',0,'상태는 지금 건강, 기분이에요. 숨 쉴 때 필요한 건 "산소".'],['물',0,'물도 필요해요! 그런데 숨 쉴 때는 "산소".']]},
+  {w:'식량',ask:'배 사람들이 몇 년 동안 먹을 음식. 그걸 ___이라고 해요.',opts:[['식량',1],['간식',0,'간식은 조금 먹는 거예요. 오래 먹을 음식 → "식량".'],['해산물',0,'해산물은 바다에서 와요. 여기 채소도 다 "식량".']]},
+ ],
+ customs:[
+  {w:'위험',ask:'___한 물건 있어요? 무기나 폭탄이요.',opts:[['위험',1],['중립적',0,'중립적은 어느 쪽도 아닌 거예요. 무기는 "위험"해요.'],['복잡',0,'복잡한 물건은 괜찮아요. 무기나 폭탄은 "위험"해요.']]},
+  {w:'위험',ask:'불은 ___. 만지지 마세요.',opts:[['위험해요',1],['안전해요',0,'안전은 위험의 반대예요. 불은 "위험해요"!']]},
+ ],
+ gyvoy:[
+  {w:'연료',ask:'엔진이 먹는 밥! 우주선이 움직이려면 ___가 필요해요.',opts:[['연료',1],['연체료',0,'하하! 연체료는 책을 늦게 반납하면 내는 돈이에요. 料는 같지만 엔진은 "연료".'],['식량',0,'식량은 사람이 먹어요. 엔진은 "연료".']]},
+ ],
+ gyvoy2:[
+  {w:'출발하다',ask:'연료가 있으면 언제든지 ___할 수 있어요.',opts:[['출발',1],['도착',0,'도착은 오는 거예요. 연료로 떠나는 건 "출발".'],['반납',0,'반납은 책을 돌려줄 때예요. 떠나는 건 "출발".']]},
+  {w:'출발하다',ask:'버스가 아홉 시에 ___해요. 늦지 마세요!',opts:[['출발',1],['연습',0,'버스는 연습 안 해요! 떠나요 → "출발".']]},
+ ],
+ lina:[
+  {w:'관측하다',ask:'망원경으로 별을 자세히 봐요. 그걸 ___해요.',opts:[['관측',1],['관중',0,'관중은 경기장에서 보는 사람이에요. 觀은 같아요! 과학자가 보는 건 "관측".'],['구경',0,'구경도 보는 거예요. 그런데 자세히 재는 건 "관측".']]},
+  {w:'행성',ask:'곤디아는 별 주위를 도는 ___이에요.',opts:[['행성',1],['별',0,'별은 스스로 빛나요. 해처럼요. 곤디아는 빛을 받아요 → "행성".'],['학생',0,'소리가 조금 비슷해요! 학생은 공부하는 사람. 도는 공은 "행성".']]},
+ ],
+ terence:[
+  {w:'발견하다',ask:'오늘 아침에 공원에서 부품을 ___.',opts:[['발견했어요',1],['잃어버렸어요',0,'잃어버리면 없어져요. 우리는 찾았어요! 처음 찾았어요 → "발견했어요".'],['반납했어요',0,'반납은 빌린 걸 돌려줄 때예요. 찾았어요 → "발견했어요".']]},
+  {w:'발견하다',ask:'과학자가 새로운 별을 ___했어요.',opts:[['발견',1],['설명',0,'설명은 말로 알려 주는 거예요. 처음 찾았어요 → "발견".']]},
+ ],
+ finn:[
+  {w:'지도',ask:'새로운 곳에 가면 길을 몰라요. 그래서 ___를 봐요.',opts:[['지도',1],['사전',0,'사전은 단어를 찾을 때 봐요. 길은 "지도".'],['간판',0,'간판은 가게 이름이에요. 길을 다 보려면 "지도".']]},
+  {w:'탐험',ask:'아무도 안 간 곳에 가 보는 걸 ___이라고 해요.',opts:[['탐험',1],['여행',0,'여행도 좋아요! 그런데 아무도 안 간 위험한 곳은 "탐험".'],['구경',0,'구경은 안전하게 보는 거예요. 아무도 안 간 곳 → "탐험".']]},
+ ],
+ cafe:[ // old words from 단어 마을, no badges
+  {ask:'포켓몬이 아파요. 포켓몬 ___가 안 좋아요.',opts:[['상태',1],['상대',0,'소리가 비슷해요! 상대는 같이 싸우는 사람. 건강은 "상태".']]},
+  {ask:'시합에서 제 ___는 아주 강해요.',opts:[['상대',1],['상태',0,'상태는 건강이나 기분이에요. 같이 싸우는 사람은 "상대".']]},
+  {ask:'빌린 책을 친구한테 ___.',opts:[['돌려줬어요',1],['돌아갔어요',0,'돌아가다는 내가 가는 거예요. 물건을 주는 건 "돌려주다".'],['돌아줬어요',0,'"돌아주다"는 없어요. "돌려줬어요"!']]},
+  {ask:'강아지가 멍멍 ___.',opts:[['짖어요',1],['지어요',0,'짓다는 집이나 밥을 만들 때예요. 강아지는 "짖어요".']]},
+  {ask:'내년에 집을 ___ 거예요.',opts:[['지을',1],['질',0,'"질 거예요"는 지다(시합에서 지다)예요. 짓다 → "지을 거예요".']]},
+  {ask:'도서관에 책을 늦게 반납했어요. ___를 내야 돼요.',opts:[['연체료',1],['연료',0,'연료는 엔진이 먹어요! 늦게 반납하면 "연체료".']]},
+ ],
+};
+
+const ITEMS={'토마토 상자':'갓 딴 토마토. 우주에서는 비싸요.','연료통':'헬륨3 연료가 들어 있어요.','부품':'엔진에 들어가는 은색 부품.','우주 지도':'핀이 준 지도. 하늘의 관문이 그려져 있어요.','세관 도장':'하이 로사 세관 도장. 쾅!'};
+
+const f=()=>state.f;
+const hasItem=i=>state.items.includes(i);
+const ZONES={
+ ship:{name:'성실호 · 선실 구역',reg:'ARK DILIGENT',
+  legend:{'#':{tile:'hull'},'.':{tile:'deck',walk:1},'=':{tile:'grate',walk:1},'w':{tile:'window'},'c':{tile:'console'},'h':{tile:'hydro'},
+   'b':{tile:'bunk'},'T':{tile:'terminal'},'e':{tile:'pipes'},'E':{tile:'engine'},'D':{tile:'airlock',walk:1}},
+  map:[
+"########################",
+"#b.b.#wwwwwwwwwwww#hhhh#",
+"#....#cc..cccc..cc#....#",
+"#....#............#hh.h#",
+"#T...#............#....#",
+"##.###.....cc.....#....#",
+"##.######.....#####.####",
+"#======================#",
+"#########=##########=###",
+"#ee.ee.ee..######......#",
+"#..........######......#",
+"#..EEEE....######......#",
+"#..EEEE....######......#",
+"#..........######......#",
+"#..........######......#",
+"##################DD####"],
+  rooms:[[1,1,4,5,'성실호 · 선실'],[6,1,17,5,'성실호 · 함교'],[19,1,22,5,'성실호 · 수경 재배실'],[1,7,22,7,'성실호 · 복도'],[1,9,10,14,'성실호 · 엔진실'],[17,9,22,14,'성실호 · 에어록']],
+  dark:()=>!f().fixed?[1,9,10,14]:null,
+  warps:{'18,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'},'19,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'}},
+  spots:{'7,1':'창밖에 별이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "궤도 진입 완료. 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  npcs:['ellie','dejean','josias','or','andy']},
+ dock:{name:'하이 로사 · 궤도 링',reg:'HIGH ROSA GEORING',
+  legend:{'#':{tile:'ring'},'.':{tile:'plate',walk:1},'W':{tile:'planetWin'},'k':{tile:'crate'},'s':{tile:'stall',over:1},'E':{tile:'lift',walk:1},'A':{tile:'airlock',walk:1},'T':{tile:'terminal'}},
+  map:[
+"########################",
+"#WWWWWWWWWWWWWWWWWWWWWW#",
+"#WWWWWWWWWWWWWWWWWWWWWW#",
+"#......................#",
+"#.kk.......ss.......EE.#",
+"#.kk.......ss..........#",
+"#.....................T#",
+"#......................#",
+"######.#################",
+"#......................#",
+"#.kkk.........kk.......#",
+"#.kkk.........kk.......#",
+"#......................#",
+"#......................#",
+"#AA#####################"],
+  planet:{cx:12*16,cy:-70,r:150},
+  warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
+  spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아나샤 광산"이라고 써 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
+  npcs:['customs','gyvoy','lina','trader']},
+ city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',
+  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'cable'},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
+  map:[
+"TTTTTTTTTTTTTTTTTTTTTTTTTT",
+"T.OO......III.......OO...T",
+"T.OO......IEI.......OO...T",
+"T.........,,,............T",
+"T.PPPPP...,,,....CCCCC...T",
+"T.PPPPP...,,,....CCCCC...T",
+"T.PPPPP...,,,....CCCCC...T",
+"T....,....,,,......,.....T",
+"T....,,,,,,,,,,,,,,,.....T",
+"T..........,,............T",
+"T.**.......,,.....~~~~...T",
+"T.**...n...,,.....~~~~...T",
+"T..........,,.......n....T",
+"T...TT.....,,......TT....T",
+"T...TT.....,,......TT....T",
+"T........................T",
+"TTTTTTTTTTTTTTTTTTTTTTTTTT"],
+  outdoor:1,
+  warps:{'11,2':{to:'dock',x:20,y:5,dir:'down'}},
+  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 써 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 양파 모양이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.','12,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.'},
+  npcs:['terence','finn','otylia','cafe']},
+};
+
+const NPC={
+ ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#7A2E22',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',long:1},badge:['도착하다','궤도'],
+  after:'창밖을 봐요. 우리가 궤도를 돌고 있어요!',
+  talk:()=>[
+   {say:'일어나요! 드디어 왔어요!'},
+   {say:'아주 오래 날아서 여기까지 왔어요. 저기 초록색 행성, 곤디아예요.'},
+   {say:'저는 이 배 조종사예요. 제일 잘 날아요!'},
+   Q.ellie[0],
+   {say:'이제 배는 곤디아 주위를 빙글빙글 돌아요.'},
+   Q.ellie[1],
+   {say:'궤도에 도착했으니까 할 일이 많아요. {함교|함교}에 가서 선장님한테 인사해요.',award:['도착하다','궤도']}]},
+ dejean:{name:'드장 선장',zone:'ship',x:9,y:3,dir:'down',look:{hair:'#3A2A26',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',long:1,arm:'#9AA3AD'},badge:['선장','우주선'],
+  after:'선장은 배를 지켜요. 그게 제 일이에요.',
+  script:()=>{
+   if(f().fixed&&!f().done&&state.badges.includes('선장'))return [
+    {say:'엔진 소리가 들려요! 옥테인 기관장이 해냈어요.'},
+    {say:'자, 마지막으로 하나만 말해 봐요. 이제 우리 배는…'},
+    {w:'출발하다',build:['성실호가','궤도에서','출발해요']},
+    {say:'좋아요! 다음 목적지는 하늘의 관문이에요.',set:()=>{f().done=1}},
+    {who:'핀',say:'와! 진짜 떠나요? 탐험이다!',when:()=>f().finn},
+    {say:'모두 자리에 앉아요. 출발!',finale:1}];
+   return null},
+  talk:()=>[
+   {say:'왔어요? 저는 이 배의 선장이에요. 드장이에요.'},
+   {say:'이 팔이요? 옛날 기계 팔이에요. 아직 잘 움직여요.'},
+   Q.dejean[0],
+   {say:'이 배 이름은 성실호예요. 아주 오래된 배예요.'},
+   Q.dejean[1],
+   {say:'그런데 문제가 있어요. 요시아스 씨한테 물어보세요. 저기 콘솔 옆에 있어요.',award:['선장','우주선']}]},
+ josias:{name:'요시아스',zone:'ship',x:14,y:4,dir:'left',look:{hair:'#EDEDED',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',long:0},badge:['고장 나다'],
+  after:'엘리요? 제 손녀의 손녀의… 아주 먼 가족이에요. 엔진만 고치면 어디든 갈 수 있어요!',
+  talk:()=>[
+   {say:'아, 새로 온 승무원이군요! 저는 요시아스, 이 배 주인이에요.'},
+   {say:'나쁜 소식이 있어요. 셀레스철 {기사|기사}들이 배에 와서 엔진을 망가뜨렸어요.'},
+   Q.josias[0],
+   Q.josias[1],
+   {say:'{엔진실|엔진실}에 가 보세요. 복도 아래예요. 옥테인 {기관장|기관장}이 있어요.',award:['고장 나다'],set:()=>{f().metJosias=1}}]},
+ or:{name:'오르',zone:'ship',x:20,y:4,dir:'down',look:{hair:'#5B6B3A',skin:'#D7A77E',shirt:'#5E8C4A',pants:'#3E4A33'},badge:['산소','식량'],
+  after:'식물이 산소를 만들어요. 그래서 여기 공기가 제일 좋아요.',
+  talk:()=>[
+   {say:'어서 와요. 여기는 {수경 재배실|수경 재배실}이에요. 흙 없이 채소를 키워요.'},
+   Q.or[0],
+   {say:'그리고 채소는 우리 밥이에요.'},
+   Q.or[1],
+   {say:'올해는 식량이 많아요. 이 토마토 상자 가져가요. 하이 로사 시장에서 바꿀 수 있어요.',give:'토마토 상자',award:['산소','식량']}]},
+ andy:{name:'옥테인 기관장',zone:'ship',x:7,y:12,dir:'left',look:{hair:'#2B2B30',skin:'#B98462',shirt:'#B7652F',pants:'#4A3A2E',belt:'#2B2B30',cap:'#E8962A'},badge:['수리하다'],
+  status:()=>{
+   if(!state.badges.includes('수리하다'))return f().metJosias?'todo':null;
+   if(!f().fixed)return hasItem('부품')&&hasItem('연료통')?'todo':'wait';
+  },
+  script:()=>{
+   if(!state.badges.includes('수리하다')){
+    if(!f().metJosias)return [{say:'어두워서 아무것도 안 보여요. 요시아스 씨를 먼저 만나세요.'}];
+    return null}
+   if(f().fixed)return null;
+   const need=[!hasItem('부품')&&'{부품|부품}',!hasItem('연료통')&&'{연료통|연료통}'].filter(Boolean);
+   if(need.length)return [{say:'아직 '+need.join(', ')+'이 없어요.'},{say:'에어록으로 나가면 하이 로사예요. 거기서 찾아보세요.'}];
+   return [
+    {say:'부품! 연료통! 다 가져왔어요? 최고예요!'},
+    {say:'지금부터 엔진을 수리할게요. 지지직…',take:['부품','연료통']},
+    {w:'수리하다',build:['기관장님이','엔진을','수리했어요']},
+    {say:'불이 켜졌어요! 엔진도 다시 움직여요. 선장님한테 가요!',set:()=>{f().fixed=1}}];
+  },
+  after:'엔진 상태 아주 좋아요. 기사들이 다 부순 줄 알았죠? 하하.',
+  talk:()=>[
+   {say:'누구예요? 아, 새 승무원! 저는 옥테인, 이 배 기관장이에요.'},
+   {say:'불이 꺼졌어요. 엔진이 고장 나서 전기가 없어요. 그래도 한 달이면 고칠 수 있어요.'},
+   Q.andy[0],
+   Q.andy[1],
+   {say:'수리하려면 두 개가 필요해요. {부품|부품}하고 연료.'},
+   {say:'부품은 하이 로사에 있을 거예요. 에어록 문을 열어 둘게요.',award:['수리하다'],set:()=>{f().needParts=1}}]},
+ customs:{name:'세관원',zone:'dock',x:6,y:8,dir:'down',kind:'andy',look:{body:'#5B6C8E',visor:'#E8962A'},badge:['위험'],
+  pos:()=>f().customs?[7,9]:[6,8],
+  after:'즐거운 여행 되세요. 위험한 물건은 안 돼요!',
+  talk:()=>[
+   {say:'정지! 하이 로사 {세관|세관}이에요. 성실호에서 왔어요?'},
+   Q.customs[0],
+   Q.customs[1],
+   {say:'좋아요. 도장을 찍어 줄게요. 쾅!',give:'세관 도장'},
+   {say:'가라테 {도장|도장} 말고요. 이 도장이에요. 들어가세요.',award:['위험'],set:()=>{f().customs=1}}]},
+ gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#C27A2E',skin:'#B9825A',shirt:'#D47A3A',pants:'#4B3A2E'},badge:['연료','출발하다'],
+  status:()=>{
+   if(!state.badges.includes('연료'))return 'todo';
+   if(!state.badges.includes('출발하다'))return hasItem('토마토 상자')?'todo':'wait';
+  },
+  pool:()=>[...Q.gyvoy,...Q.gyvoy2],
+  script:()=>{
+   if(!state.badges.includes('연료'))return null;
+   if(state.badges.includes('출발하다'))return null;
+   if(!hasItem('토마토 상자'))return [{say:'연료통? 공짜는 없어요. 식량하고 바꿔요. 신선한 거면 좋아요!'}];
+   return [
+    {say:'오! 진짜 토마토예요? 우주에서 진짜 토마토는 아주 비싸요!',take:['토마토 상자']},
+    Q.gyvoy2[0],
+    Q.gyvoy2[1],
+    {say:'거래 끝! 연료통 받아요.',give:'연료통'},
+    {say:'출발 전에 꼭 기도해요. 아스테리아 여신님, 지켜 주세요!',award:['출발하다']}];
+  },
+  after:'아스테리아 여신님 감사합니다! 또 오세요.',
+  talk:()=>[
+   {say:'아스테리아 여신님 감사합니다! 손님이다!'},
+   {say:'저는 기보이. 트래블러예요. 뭐든지 팔아요.'},
+   Q.gyvoy[0],
+   {say:'연료통이 필요해요? 공짜는 없어요. 식량하고 바꿔요!',award:['연료']}]},
+ lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',long:1},badge:['관측하다','행성'],
+  after:'오늘은 관측하기 좋은 날이에요.',
+  talk:()=>[
+   {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
+   Q.lina[0],
+   {say:'저 아래 큰 공 보여요? 곤디아예요. 사람들이 사는 곳이에요.'},
+   Q.lina[1],
+   {say:'저기 엘리베이터를 타면 곤디아까지 내려가요. {궤도 엘리베이터|궤도 엘리베이터}예요.',award:['관측하다','행성']}]},
+ trader:{name:'광부',zone:'dock',x:16,y:12,dir:'left',look:{hair:'#3A2A22',skin:'#C48E66',shirt:'#7C6A4A',pants:'#3A3530',cap:'#B5653A'},
+  talk:()=>[{say:'저는 아나샤 광산에서 왔어요. 땅이 다 빨개요.'},{say:'곤디아는 초록색이죠? 부러워요.'}]},
+ terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40'},badge:['발견하다'],
+  after:'도둑은 아직 못 찾았어요. 찾으면 연락할게요.',
+  talk:()=>[
+   {say:'흠. 성실호 사람이죠? 저는 테렌스 형사예요.'},
+   {say:'어젯밤에 누가 우주선 {부품|부품}을 훔쳤어요.'},
+   Q.terence[0],
+   Q.terence[1],
+   {say:'이 부품, 성실호 거예요? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
+ finn:{name:'핀',zone:'city',x:8,y:11,dir:'right',look:{hair:'#E0C070',skin:'#F0C9A4',shirt:'#2F8F8A',pants:'#2E3548'},badge:['지도','탐험'],
+  after:'이 도시를 떠나는 게 꿈이었어요!',
+  talk:()=>[
+   {say:'안녕하세요! 저는 핀이에요. 성실호에서 왔어요? 와!'},
+   {say:'저는 이 도시가 {지겨워요|지겹다}. 모든 게 똑같아요.'},
+   Q.finn[0],
+   Q.finn[1],
+   {w:'탐험',build:['저도','같이','탐험하고','싶어요']},
+   {say:'좋아요! 이 우주 지도 선물이에요. 같이 가요!',give:'우주 지도',award:['지도','탐험'],set:()=>{f().finn=1}}]},
+ otylia:{name:'오틸리아',zone:'city',x:21,y:12,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1},
+  talk:()=>f().finn?[{say:'제 {쌍둥이|쌍둥이} 핀이 성실호를 탄다고요?'},{say:'핀은 항상 탐험 얘기만 해요. 잘 부탁해요.'}]
+   :[{say:'안녕하세요. 저는 오틸리아예요.'},{say:'저기 연못 옆에 제 {쌍둥이|쌍둥이} 핀이 있어요. 또 지도를 보고 있어요.'}]},
+ cafe:{name:'카페 사장님',zone:'city',x:19,y:7,dir:'down',look:{hair:'#A0A0A0',skin:'#E8B892',shirt:'#5A3A2A',pants:'#2E2A28'},
+  script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 오세요! 커피 한 잔 하면서 옛날 단어 연습해요.'},{...q,old:1},{say:'또 오세요. 커피는 공짜예요.'}]},
+  talk:()=>[]},
+};
+const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f().fixed?'엔진 소리 들려요? 가슴이 뛰어요!':'성실호는 어디에 있어요? 빨리 보고 싶어요!'}]};
+
+const INTRO=[{who:'성실호',say:'삐— 삐— 궤도 진입 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
+const DONE=['1장 끝! 성실호가 궤도를 떠났어요.','다음 장에서는 하늘의 관문을 지나요.','일지에서 단어를 다시 볼 수 있어요.'];
+
+function questText(){
+ const F=f(),b=w=>state.badges.includes(w);
+ if(F.done)return '1장 끝 · 일지에서 복습해요';
+ if(!b('도착하다'))return '선실 · 엘리하고 이야기해요';
+ if(!b('선장'))return '함교 · 선장님한테 인사해요';
+ if(!F.metJosias)return '함교 · 요시아스 씨를 찾아요';
+ if(!F.needParts)return '엔진실 · 기관장님을 만나요';
+ if(F.fixed)return '함교 · 선장님한테 가요';
+ const p=hasItem('부품')?'✓':'·',fu=hasItem('연료통')?'✓':'·';
+ if(hasItem('부품')&&hasItem('연료통'))return '엔진실 · 기관장님한테 가져가요';
+ return `부품 ${p}  연료통 ${fu}`;
+}
+</script>
+
+<script>
+/* =====================================================================
+   Engine: tiles, movement, zones, dialogue, spaced review, speech, saving.
+   ===================================================================== */
+const $=id=>document.getElementById(id);
+const SAVE='seongsilho-ch1';
+let state=null,Z=null,ZID='ship',MAP=[],MW=0,MH=0,NPCS=[];
+const has=w=>!!state&&state.badges.includes(w);
+const now=()=>Date.now();
+
+/* ---------- spaced review: each word has a level 0..5 and a due time ---------- */
+const GAP=[0,5*60e3,30*60e3,4*3600e3,24*3600e3,3*24*3600e3];
+const lv=w=>state.lv[w]||{b:0,due:0};
+const isDue=w=>has(w)&&lv(w).due<=now();
+function grade(w,ok){
+ const L={...lv(w)};
+ L.b=ok?Math.min(5,L.b+1):0;L.due=now()+GAP[L.b];
+ state.lv[w]=L;save();return L.b;
+}
+const dueWords=()=>WORDS.filter(isDue);
+function nextDue(){const t=WORDS.filter(has).map(w=>lv(w).due).filter(d=>d>now());return t.length?Math.min(...t):null}
+function fmtWait(ms){const m=Math.ceil(ms/60e3);return m<60?`${m}분`:m<1440?`${Math.round(m/60)}시간`:`${Math.round(m/1440)}일`}
+
+/* ---------- settings ---------- */
+const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
+let soundOn=store.get('seongsilho-sound')!=='0';
+let readOn=store.get('seongsilho-read')==='1';
+
+/* ---------- sound ---------- */
+let AC=null;
+const SFX={move:[[1040,.04,0]],ok:[[880,.07,0],[1320,.12,.07]],no:[[240,.12,0],[180,.18,.1]],badge:[[660,.09,0],[880,.09,.09],[1100,.09,.18],[1320,.25,.27]],star:[[1320,.07,0],[1760,.07,.07],[2200,.2,.14]],door:[[300,.1,0],[220,.16,.08]],item:[[990,.06,0],[1480,.14,.06]],lock:[[160,.08,0],[160,.08,.12]]};
+function sfx(k){
+ if(!soundOn)return;
+ try{AC=AC||new (window.AudioContext||window.webkitAudioContext)();const t0=AC.currentTime;
+  SFX[k].forEach(([fq,d,st])=>{const o=AC.createOscillator(),gn=AC.createGain();o.type='square';o.frequency.value=fq;gn.gain.setValueAtTime(.035,t0+st);gn.gain.exponentialRampToValueAtTime(.0001,t0+st+d);o.connect(gn).connect(AC.destination);o.start(t0+st);o.stop(t0+st+d+.02)})}catch(e){}
+}
+
+/* ---------- speech (Korean voice, if this device has one) ---------- */
+const TTS='speechSynthesis' in window;
+let koVoice=null;
+function pickVoice(){if(!TTS)return;const vs=speechSynthesis.getVoices();koVoice=vs.find(v=>/^ko/i.test(v.lang)&&/google|yuna|sora|heami|neural/i.test(v.name))||vs.find(v=>/^ko/i.test(v.lang))||null;updateRead()}
+const canSpeak=()=>!!koVoice;
+const plain=t=>t.replace(/\{([^|}]+)\|[^}]+\}/g,'$1');
+function speak(t){
+ if(!canSpeak())return;
+ try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(plain(t).replace(/___/g,'뭐'));u.lang='ko-KR';u.voice=koVoice;u.rate=.92;speechSynthesis.speak(u)}catch(e){}
+}
+
+/* ---------- canvas + tiles ---------- */
+const cv=$('cv'),g=cv.getContext('2d');g.imageSmoothingEnabled=false;
+const TS=16,VW=11,VH=10;
+const r=(x,y,w,h,c)=>{g.fillStyle=c;g.fillRect(x,y,w,h)};
+const hash=(x,y)=>{let h=x*374761393+y*668265263;h=(h^(h>>13))*1274126177;return ((h^(h>>16))>>>0)%100};
+const at=(x,y)=>(x<0||y<0||x>=MW||y>=MH)?null:MAP[y][x];
+const same=(x,y)=>at(x,y)===at(x,y);
+const front=(x,y)=>at(x,y+1)!==at(x,y);
+let CAM={x:0,y:0};
+
+function stars(X,Y,x,y,t,depth){ // parallax: the stars drift slower than the walls as the camera moves
+ r(X,Y,16,16,'#05080D');
+ const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let i=0;i<3;i++){
+  const sx=((x*16+i*37+hash(x+i,y)*7-ox)%160+160)%160,sy=((y*16+i*53+hash(y+i,x)*3-oy)%160+160)%160;
+  const px=(sx%16),py=(sy%16);const tw=(hash(x*3+i,y)+Math.floor(t/600))%9===0;
+  r(X+px,Y+py,1,1,tw?'#FFFFFF':i===0?'#8FA3B8':'#C8D3DE');
+ }
+}
+function deck(X,Y,x,y){r(X,Y,16,16,'#C9CDC4');r(X,Y,16,1,'#B6BBB1');r(X,Y,1,16,'#B6BBB1');if(hash(x,y)<12){r(X+5,Y+6,2,2,'#B9BDB3')}}
+function plate(X,Y,x,y){r(X,Y,16,16,'#6E7680');r(X,Y,16,1,'#5D646D');r(X,Y,1,16,'#5D646D');r(X+2,Y+2,1,1,'#88909A');r(X+13,Y+13,1,1,'#88909A');if((x+y)%5===0)r(X+4,Y+8,8,1,'#636B74')}
+function lawn(X,Y,x,y){r(X,Y,16,16,'#8DC46A');const h=hash(x,y);if(h<55){r(X+(h%11)+2,Y+(h%7)+3,1,2,'#77B058');r(X+(h%11)+4,Y+(h%7)+4,1,1,'#77B058')}if(h%6===0)r(X+(h*3%12)+2,Y+(h*7%12)+2,1,1,'#B4DE8A')}
+function screenGlow(X,Y,t,c,seed){const on=(Math.floor(t/400)+seed)%5!==0;r(X,Y,6,4,on?c:'#24303A')}
+
+const TILES={
+ /* ship */
+ hull:(X,Y,x,y,t)=>{r(X,Y,16,16,'#868C84');r(X,Y,16,1,'#9CA299');if(front(x,y)&&at(x,y+1)){r(X,Y+10,16,6,'#ABB0A6');r(X,Y+10,16,1,'#C2C6BC');if(x%4===1)r(X+6,Y+12,4,2,(Math.floor(t/700)+x)%3?'#E8962A':'#7A5420')}else{r(X+3,Y+4,1,1,'#6F756E');r(X+12,Y+4,1,1,'#6F756E')}},
+ deck:(X,Y,x,y)=>deck(X,Y,x,y),
+ grate:(X,Y,x,y,t)=>{r(X,Y,16,16,'#575E5A');for(let i=1;i<16;i+=3)r(X+i,Y,1,16,'#474D4A');if(x%4===0){const on=(Math.floor(t/180)-x/4)%6===0;r(X+7,Y+7,2,2,on?'#FFD08A':'#B8701A')}},
+ window:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.35);r(X,Y,16,2,'#868C84');r(X,Y+14,16,2,'#ABB0A6');if(x%3===0)r(X,Y,1,16,'#6F756E');if(x>=9&&x<=13){const c=['#3E8E6A','#4E9E6E','#C9A64A'];r(X,Y+9,16,5,c[(x)%3]);r(X,Y+9,16,1,'#9FD7E8')}},
+ console:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+1,Y+3,14,11,'#2B3238');r(X+1,Y+3,14,2,'#3C454C');screenGlow(X+3,Y+6,t,x%2?'#69CFD8':'#E8962A',x);r(X+10,Y+7,3,1,'#5F6B72');r(X+10,Y+9,3,1,'#5F6B72')},
+ hydro:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+1,Y+5,14,9,'#5E655F');r(X+2,Y+6,12,2,'#3A6E8A');const h=hash(x,y);for(let i=0;i<3;i++){const px=X+3+i*4,ph=4+((h+i)%3);r(px,Y+6-ph+2,2,ph,'#3F8F4A');r(px-1,Y+6-ph+2,4,2,'#5DB866');if((h+i)%4===0)r(px,Y+6-ph+1,2,2,'#D9544B')}r(X+1,Y,14,1,'#C77DDB')},
+ bunk:(X,Y,x,y)=>{deck(X,Y,x,y);r(X+1,Y+1,14,14,'#5E655F');r(X+2,Y+2,12,4,'#ECEDE6');r(X+2,Y+6,12,8,'#C9873A');r(X+2,Y+6,12,1,'#E3A65A')},
+ terminal:(X,Y,x,y,t)=>{(Z===ZONES.dock?plate:deck)(X,Y,x,y);r(X+3,Y+1,10,14,'#2B3238');r(X+4,Y+2,8,6,'#0F141A');const due=state&&dueWords().length>0;
+  if(due){const on=Math.floor(t/350)%2;r(X+5,Y+3,6,4,on?'#69CFD8':'#2C5D63')}else{r(X+5,Y+4,4,1,'#3C6E6E');r(X+5,Y+6,6,1,'#3C6E6E')}r(X+5,Y+10,6,1,'#5F6B72');r(X+5,Y+12,6,1,'#5F6B72')},
+ pipes:(X,Y,x,y,t)=>{deck(X,Y,x,y);r(X+2,Y,4,16,'#6E7570');r(X+9,Y,4,16,'#6E7570');r(X+2,Y,1,16,'#899089');r(X+9,Y,1,16,'#899089');r(X+1,Y+6,6,3,'#4F5652');r(X+8,Y+10,6,3,'#4F5652');r(X+3,Y+7,2,1,'#D2533F')},
+ engine:(X,Y,x,y,t)=>{deck(X,Y,x,y);const ox=x-3,oy=y-11; // 4x2 block, drawn piece by piece
+  r(X,Y,16,16,'#30363B');if(oy===0)r(X,Y,16,2,'#454C52');if(ox===0)r(X,Y,2,16,'#454C52');if(ox===3)r(X+14,Y,2,16,'#252A2E');
+  const fixed=state&&state.f.fixed;const pulse=fixed?(Math.sin(t/260)+1)/2:0;
+  if(ox===1||ox===2){const c=fixed?`rgba(105,207,216,${.55+pulse*.45})`:((Math.floor(t/120)%7===0)?'#D2533F':'#3B2422');r(X+(ox===1?6:0),Y+(oy===0?8:0),10,8,c)}
+  if(oy===1&&(ox===0||ox===3))r(X+5,Y+4,6,3,fixed?'#E8962A':'#4A3A2A')},
+ airlock:(X,Y,x,y)=>{r(X,Y,16,16,'#3A4046');for(let i=-16;i<16;i+=6){g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();g.fillStyle='#E8B73A';g.beginPath();g.moveTo(X+i,Y+16);g.lineTo(X+i+3,Y+16);g.lineTo(X+i+19,Y);g.lineTo(X+i+16,Y);g.fill();g.restore()}r(X+2,Y+3,12,10,'#2B3136');r(X+7,Y+3,2,10,'#1E2327')},
+ /* dock */
+ ring:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3F4650');r(X,Y,16,1,'#4E5661');if(front(x,y)&&at(x,y+1)){r(X,Y+9,16,7,'#555D68');r(X,Y+9,16,1,'#6B7480');if(x%2===0)r(X+3,Y+11,10,2,(Math.floor(t/900)+x)%4?'#9FD7E8':'#4B6B78')}},
+ plate:(X,Y,x,y)=>plate(X,Y,x,y),
+ planetWin:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.15);const P=Z.planet;
+  g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+  const cx=P.cx-CAM.x,cy=P.cy+Math.sin(t/4000)*2-CAM.y*.0;
+  g.fillStyle='#2E7A68';g.beginPath();g.arc(cx,cy+170,P.r,0,Math.PI*2);g.fill();
+  g.fillStyle='#4E9E6E';g.beginPath();g.arc(cx-40,cy+190,60,0,Math.PI*2);g.fill();
+  g.fillStyle='#C9A64A';g.beginPath();g.arc(cx+60,cy+200,40,0,Math.PI*2);g.fill();
+  g.strokeStyle='rgba(159,215,232,.7)';g.lineWidth=2;g.beginPath();g.arc(cx,cy+170,P.r,Math.PI*1.05,Math.PI*1.95);g.stroke();
+  g.restore();
+  if(y===1)r(X,Y,16,2,'#3F4650');if(y===2)r(X,Y+14,16,2,'#555D68');if(x%4===0)r(X,Y,1,16,'#2E343C')},
+ crate:(X,Y,x,y)=>{plate(X,Y,x,y);r(X+1,Y+2,14,13,'#9C6A34');r(X+1,Y+2,14,2,'#B9844A');r(X+1,Y+8,14,1,'#7A5026');r(X+7,Y+2,2,13,'#7A5026');r(X+3,Y+5,3,1,'#E8962A')},
+ stall:(X,Y,x,y)=>{plate(X,Y,x,y);r(X,Y+4,16,11,'#6A3A2E');r(X,Y+4,16,3,'#A04E3A');if(y===4){for(let i=0;i<4;i++)r(X+i*4,Y,4,4,i%2?'#E8962A':'#F1E6D0')}else{r(X+3,Y+1,4,4,'#D9544B');r(X+9,Y+2,3,3,'#69CFD8')}},
+ lift:(X,Y,x,y,t)=>{(Z.outdoor?TILES.stone:plate)(X,Y,x,y);const p=(Math.sin(t/300)+1)/2;g.strokeStyle=`rgba(105,207,216,${.4+p*.6})`;g.lineWidth=2;g.strokeRect(X+2,Y+2,12,12);r(X+6,Y+6,4,4,'#69CFD8')},
+ /* city */
+ tree:(X,Y,x,y)=>{lawn(X,Y,x,y);r(X+6,Y+11,4,5,'#7A5530');r(X+2,Y+1,12,11,'#2F8466');r(X+1,Y+3,14,7,'#2F8466');r(X+4,Y+2,5,3,'#4FA67E');r(X+3,Y+5,2,2,'#4FA67E');r(X+2,Y+10,12,1,'#246A52')},
+ lawn:(X,Y,x,y)=>lawn(X,Y,x,y),
+ stone:(X,Y,x,y)=>{r(X,Y,16,16,'#E5D2B5');r(X,Y+7,16,1,'#D2BD9C');r(X+((y%2)?4:11),Y,1,7,'#D2BD9C');r(X+((y%2)?10:2),Y+8,1,8,'#D2BD9C')},
+ dome:(X,Y,x,y,t)=>{lawn(X,Y,x,y);const L=at(x-1,y)!=='O',T=at(x,y-1)!=='O';
+  if(T){g.fillStyle='#7FD3D8';g.beginPath();g.arc(X+(L?16:0),Y+9,9,Math.PI,0);g.fill();g.fillStyle='#BDEFF0';g.fillRect(X+(L?12:1),Y+3,2,4);r(X+(L?15:0),Y,1,2,'#E8962A')}
+  else{r(X+(L?4:0),Y,L?12:12,16,'#E9DCC7');r(X+(L?4:0),Y,L?12:12,2,'#5EB9C1');if(L)r(X+8,Y+6,4,6,'#5EB9C1');else r(X+4,Y+6,4,6,'#5EB9C1')}},
+ cable:(X,Y,x,y,t)=>{TILES.stone(X,Y,x,y);r(X+1,Y,14,16,'#9AA3AD');r(X+1,Y,14,2,'#B9C1C9');if(x===11){r(X+6,Y,4,16,'#5D646D')}else{r(X+3,Y+5,10,6,'#6E7680')}
+  if(x===11&&y===1){const p=(Math.sin(t/200)+1)/2;r(X+7,Y-16,2,16,`rgba(159,215,232,${.6+p*.4})`)}},
+ police:(X,Y,x,y)=>{r(X,Y,16,16,'#8C98AE');r(X,Y+15,16,1,'#6F7B91');if(at(x,y-1)!=='P'){r(X,Y,16,4,'#3E4C6A')}if(front(x,y)){if(x===4){r(X+3,Y+3,10,13,'#3E4C6A');r(X+4,Y+4,8,12,'#556483')}else if(x%2===0){r(X+3,Y+4,10,7,'#3E4C6A');r(X+4,Y+5,8,5,'#CFE3F5')}}},
+ cafe:(X,Y,x,y)=>{r(X,Y,16,16,'#F1D4CC');r(X,Y+15,16,1,'#D8B4AA');if(at(x,y-1)!=='C')r(X,Y,16,3,'#B85A5A');if(front(x,y)){for(let i=0;i<4;i++)r(X+i*4,Y,4,5,i%2?'#F7F1E6':'#2F8F8A');if(x===19){r(X+4,Y+6,8,10,'#6B4A2B')}else{r(X+3,Y+7,10,6,'#6B4A2B');r(X+4,Y+8,8,4,'#F7D98C')}}},
+ flowers:(X,Y,x,y)=>{lawn(X,Y,x,y);[[3,4,'#E86D8A'],[10,3,'#F7D154'],[6,10,'#FFFFFF'],[12,11,'#E86D8A']].forEach(([a,b,c])=>{r(X+a,Y+b,2,2,c);r(X+a,Y+b+2,1,2,'#3E8E3A')})},
+ pond:(X,Y,x,y,t)=>{r(X,Y,16,16,'#4AA3C8');const o=Math.floor(t/400+x)%4;r(X+o*3,Y+4,5,1,'#9FD7E8');r(X+((o+2)%4)*3,Y+10,5,1,'#9FD7E8');if(at(x,y-1)!=='~')r(X,Y,16,2,'#3A86A8')},
+ bench:(X,Y,x,y)=>{lawn(X,Y,x,y);r(X+1,Y+5,14,2,'#9A6A3C');r(X+1,Y+8,14,3,'#B68350');r(X+2,Y+11,2,4,'#6E4A28');r(X+12,Y+11,2,4,'#6E4A28')},
+};
+function tile(x,y,X,Y,t){const c=at(x,y);const L=c!=null&&Z.legend[c];const fn=L&&TILES[L.tile];if(fn)fn(X,Y,x,y,t);else r(X,Y,16,16,Z.outdoor?'#2F8466':'#1A1F24')}
+
+function drawChar(L,X,Y,dir,step){
+ const ol='#1B1E2B';
+ g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+3,Y+14,10,2);
+ const lg=step?1:0;
+ r(X+5,Y+11,6,4,ol);r(X+6,Y+11,2,3+(step===1?0:lg),L.pants);r(X+9,Y+11,2,3+(step===2?0:lg),L.pants);
+ r(X+3,Y+7,10,6,ol);r(X+4,Y+8,8,4,L.shirt);
+ if(L.arm){if(dir==='left'||dir==='down')r(X+3,Y+8,1,4,L.arm);else r(X+12,Y+8,1,4,L.arm)}
+ if(L.belt)r(X+4,Y+11,8,1,L.belt);
+ r(X+3,Y+1,10,8,ol);r(X+4,Y+2,8,6,L.skin);
+ const hair=L.hair;
+ if(dir==='up'){r(X+4,Y+2,8,6,hair)}
+ else{
+  r(X+4,Y+1,8,3,hair);
+  if(dir==='left'){r(X+10,Y+2,2,4,hair);r(X+5,Y+5,1,1,ol)}
+  else if(dir==='right'){r(X+4,Y+2,2,4,hair);r(X+10,Y+5,1,1,ol)}
+  else{r(X+6,Y+5,1,1,ol);r(X+9,Y+5,1,1,ol);r(X+7,Y+7,2,1,'#C98D78')}
+  if(L.long){r(X+3,Y+3,1,6,hair);r(X+12,Y+3,1,6,hair)}
+ }
+ if(L.cap){r(X+3,Y+0,10,3,ol);r(X+4,Y+1,8,2,L.cap);const v='#1B1E2B';if(dir==='down')r(X+4,Y+3,8,1,v);if(dir==='left')r(X+2,Y+3,4,1,v);if(dir==='right')r(X+10,Y+3,4,1,v)}
+}
+function drawAndy(L,X,Y,dir,step,t){
+ const ol='#1B1E2B';
+ g.fillStyle='rgba(0,0,0,.22)';g.fillRect(X+3,Y+14,10,2);
+ r(X+5,Y+11,2,4,ol);r(X+9,Y+11,2,4,ol);
+ r(X+3,Y+6,10,7,ol);r(X+4,Y+7,8,5,L.body);r(X+6,Y+8,4,2,'#5F6B72');
+ r(X+3,Y+0,10,7,ol);r(X+4,Y+1,8,5,L.body);
+ if(dir!=='up'){const blink=Math.floor(t/1700)%8===0;const vx=dir==='left'?X+4:dir==='right'?X+6:X+5;r(vx,Y+3,6,blink?1:2,L.visor)}
+ r(X+7,Y-2,2,2,ol);r(X+7,Y-3,2,1,Math.floor(t/500)%2?L.visor:'#5F6B72');
+}
+const pet={x:0,y:0,fx:0,fy:0,dir:'down',on:false};
+const petOn=()=>FOLLOW.when();
+function petReset(){pet.x=pet.fx=player.x;pet.y=pet.fy=player.y;pet.dir=player.dir}
+
+function marker(X,Y,t,st){
+ if(!st)return;
+ const bob=Math.round(Math.sin(t/220)*1.5);
+ if(st==='todo'){r(X+6,Y-9+bob,4,8,'#1B1E2B');r(X+7,Y-8+bob,2,4,'#E8962A');r(X+7,Y-3+bob,2,1,'#E8962A')}
+ else if(st==='review'){const y=Y-10+bob;r(X+5,y,6,9,'#1B1E2B');r(X+6,y+1,4,7,'#69CFD8');r(X+7,y+2,2,1,'#0F141A');r(X+8,y+3,1,1,'#0F141A');r(X+7,y+4,1,1,'#0F141A');r(X+7,y+6,1,1,'#0F141A')}
+ else if(st==='wait'){const y=Y-5+bob;[5,7,9].forEach((dx,i)=>r(X+dx,y,1,1,Math.floor(t/300)%3===i?'#FFFFFF':'#93A09A'))}
+ else{const y=Y-9+bob;r(X+7,y,2,2,'#E8962A');r(X+4,y+2,8,2,'#E8962A');r(X+5,y+4,6,1,'#E8962A');r(X+5,y+5,2,2,'#E8962A');r(X+9,y+5,2,2,'#E8962A');r(X+7,y+2,2,2,'#F6D9A6')}
+}
+function status(n){
+ if(n.status){const v=n.status();if(v!==undefined)return v}
+ if(!n.badge)return null;
+ if(!n.badge.every(has))return 'todo';
+ if(n.badge.some(isDue))return 'review';
+ return n.badge.every(w=>lv(w).b>=3)?'star':null;
+}
+
+/* ---------- player, movement, zones ---------- */
+const D={up:[0,-1],down:[0,1],left:[-1,0],right:[1,0]};
+const OPP={up:'down',down:'up',left:'right',right:'left'};
+const player={x:0,y:0,dir:'down',moving:false,t:0,fx:0,fy:0,step:0,look:{hair:'#2A2F4A',skin:'#F1C9A5',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A'}};
+let held=null,warping=false,lockMsgAt=0;
+function npcPos(n){return n.pos?n.pos():[n.x,n.y]}
+const npcAt=(x,y)=>NPCS.find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
+const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
+const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
+const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
+const panelOpen=()=>!$('panel').hidden;
+
+function tryMove(){
+ if(player.moving||!held||dlg||panelOpen()||warping)return;
+ player.dir=held;const [dx,dy]=D[held];const nx=player.x+dx,ny=player.y+dy;
+ const w=warpAt(nx,ny);const lock=w&&w.lock&&w.lock();
+ if(lock){if(performance.now()-lockMsgAt>1500){lockMsgAt=performance.now();sfx('lock');toast(lock)}return}
+ if(blocked(nx,ny))return;
+ player.moving=true;player.t=0;player.fx=player.x;player.fy=player.y;player.x=nx;player.y=ny;player.step=player.step===1?2:1;
+ if(petOn()){const ox=player.fx,oy=player.fy;pet.fx=pet.x;pet.fy=pet.y;if(ox!==pet.x||oy!==pet.y)pet.dir=ox>pet.x?'right':ox<pet.x?'left':oy>pet.y?'down':'up';pet.x=ox;pet.y=oy}
+}
+function arrive(){
+ state.x=player.x;state.y=player.y;state.dir=player.dir;save();
+ const w=warpAt(player.x,player.y);
+ if(w){goZone(w.to,w.x,w.y,w.dir);return true}
+ showRoom();return false;
+}
+function goZone(id,x,y,dir){
+ warping=true;sfx('door');$('fade').classList.add('on');
+ setTimeout(()=>{loadZone(id,x,y,dir);save();$('fade').classList.remove('on');setTimeout(()=>{warping=false;tryMove()},120)},230);
+}
+function loadZone(id,x,y,dir){
+ ZID=id;Z=ZONES[id];state.zone=id;
+ MAP=Z.map.map(row=>row.split(''));MW=MAP[0].length;MH=MAP.length;
+ NPCS=Z.npcs.map(k=>NPC[k]);NPCS.forEach(n=>{n.home=n.home||n.dir;n.turnAt=performance.now()+2000+Math.random()*3000});
+ Object.assign(player,{x,y,dir,moving:false,t:0});state.x=x;state.y=y;state.dir=dir;
+ petReset();pet.on=false;
+ $('reg').textContent=Z.reg+' · 1장 도착';showRoom(true);
+}
+let roomName='';
+function showRoom(force){
+ let nm=Z.name;(Z.rooms||[]).forEach(([a,b,c,d,n])=>{if(player.x>=a&&player.x<=c&&player.y>=b&&player.y<=d)nm=n});
+ if(nm!==roomName||force){roomName=nm;$('zone').textContent=nm}
+}
+function update(dt,t){
+ if(player.moving){player.t+=dt/170;if(player.t>=1){player.t=0;player.moving=false;if(!arrive())tryMove()}}
+ else tryMove();
+ if(!dlg)NPCS.forEach(n=>{if(n.still||n.pos)return;if(t>n.turnAt){const ds=['down','left','right',n.home,n.home];n.dir=ds[Math.random()*ds.length|0];n.turnAt=t+2500+Math.random()*3500}});
+ $('btnA').classList.toggle('ready',!dlg&&!player.moving&&!!facing());
+}
+const dark=document.createElement('canvas');dark.width=cv.width;dark.height=cv.height;const dg=dark.getContext('2d');
+function render(t){
+ const px=player.moving?player.fx+(player.x-player.fx)*player.t:player.x;
+ const py=player.moving?player.fy+(player.y-player.fy)*player.t:player.y;
+ let cx=px*TS+8-VW*TS/2,cy=py*TS+8-VH*TS/2;
+ cx=Math.max(0,Math.min(cx,MW*TS-VW*TS));cy=Math.max(0,Math.min(cy,MH*TS-VH*TS));
+ cx=Math.round(cx);cy=Math.round(cy);CAM={x:cx,y:cy};
+ const x0=Math.floor(cx/TS),y0=Math.floor(cy/TS);
+ for(let y=y0;y<=y0+VH;y++)for(let x=x0;x<=x0+VW;x++)tile(x,y,x*TS-cx,y*TS-cy,t);
+ const ents=NPCS.map(n=>{const [nx,ny]=npcPos(n);return {y:ny,f:()=>{const X=nx*TS-cx,Y=ny*TS-cy-2;n.kind==='andy'?drawAndy(n.look,X,Y,n.dir,0,t):drawChar(n.look,X,Y,n.dir,0);marker(X,Y,t,status(n))}}});
+ const walk=player.moving?(player.t<.5?player.step:0):0;
+ if(petOn()){
+  if(!pet.on){petReset();pet.on=true}
+  const qx=player.moving?pet.fx+(pet.x-pet.fx)*player.t:pet.x,qy=player.moving?pet.fy+(pet.y-pet.fy)*player.t:pet.y;
+  ents.push({y:qy-.01,f:()=>drawChar(FOLLOW.look,Math.round(qx*TS-cx),Math.round(qy*TS-cy-2),pet.dir,walk?3-walk:0)});
+ }else pet.on=false;
+ ents.push({y:py,f:()=>drawChar(player.look,Math.round(px*TS-cx),Math.round(py*TS-cy-2),player.dir,walk)});
+ ents.sort((a,b)=>a.y-b.y).forEach(e=>e.f());
+ /* lights out in a broken room: everything goes dark except a small circle around the player */
+ const dk=Z.dark&&Z.dark();
+ if(dk){
+  const [a,b,c,d]=dk;dg.clearRect(0,0,dark.width,dark.height);
+  dg.globalCompositeOperation='source-over';dg.fillStyle='rgba(4,6,10,.9)';dg.fillRect(a*TS-cx,b*TS-cy-4,(c-a+1)*TS,(d-b+1)*TS+4);
+  const flick=Math.random()<.04?4:0;
+  const lx=px*TS-cx+8,ly=py*TS-cy+6;const gr=dg.createRadialGradient(lx,ly,6,lx,ly,34-flick);
+  gr.addColorStop(0,'rgba(0,0,0,1)');gr.addColorStop(1,'rgba(0,0,0,0)');
+  dg.globalCompositeOperation='destination-out';dg.fillStyle=gr;dg.beginPath();dg.arc(lx,ly,34,0,Math.PI*2);dg.fill();
+  g.drawImage(dark,0,0);
+  if(Math.floor(t/600)%2){r(a*TS-cx+2,b*TS-cy+1,3,2,'#D2533F');r(c*TS-cx+11,b*TS-cy+1,3,2,'#D2533F')}
+ }
+}
+let last=performance.now();
+function loop(t){const dt=Math.min(50,t-last);last=t;if(Z){update(dt,t);render(t)}requestAnimationFrame(loop)}
+
+/* ---------- dialogue ---------- */
+let dlg=null,typing=null,pending=null,sel=0;
+function openDialog(name,steps,opts={}){
+ steps=steps.filter(s=>!s.when||s.when());
+ dlg={name,steps:steps.map(s=>({...s})),i:0,cur:null,next:null,missed:new Set(),npc:opts.npc||null,review:!!opts.review};
+ $('tag').hidden=!opts.review;$('dlg').hidden=false;show(dlg.steps[0]);
+}
+function show(s){
+ dlg.cur=s;hideGloss();
+ if(s.set){s.set();save()}
+ if(s.give){state.items.push(s.give);save();sfx('item');setTimeout(()=>toast('받았어요: '+s.give),200)}
+ if(s.take){state.items=state.items.filter(i=>!s.take.includes(i));save()}
+ if(s.award)award(s.award);
+ if(s.listen)s=prepListen(s);
+ $('who').textContent=s.who||dlg.name;
+ $('choices').hidden=true;$('choices').innerHTML='';$('build').hidden=true;$('more').hidden=true;
+ const text=s.say||s.ask||(s.build?'단어를 순서대로 골라요.':'');
+ typeText(text,()=>{if(s.ask)renderChoices(s);else if(s.build)renderBuild(s);else $('more').hidden=false});
+ if(readOn&&!s.listenOnly)speak(s.listen?'':text);
+ if(s.listen)setTimeout(()=>speak(s.listen),readOn?1200:150);
+ updateQuest();
+}
+function prepListen(s){
+ const w=s.listen;const pool=(CONFUSE[w]||[]).slice(0,2);
+ while(pool.length<2){const o=WORDS[Math.random()*WORDS.length|0];if(o!==w&&!pool.includes(o))pool.push(o)}
+ const out={...s,ask:'잘 들어 보세요. 무슨 단어예요?',w,opts:[[w,1],...pool.map(p=>[p,0,`"${w}"였어요. 다시 들어 보세요.`])],listenOnly:1};
+ dlg.cur=out;return out;
+}
+function glossHTML(t){
+ const esc=x=>x.replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ return esc(t).replace(/\{([^|}]+)\|([^}]+)\}/g,(m,a,k)=>`<span class="gl" data-k="${k}">${a}</span>`);
+}
+function typeText(text,done){
+ clearInterval(typing?.id);const el=$('txt');const p=plain(text);el.textContent='';let i=0;
+ const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
+ typing={id:null,finished:false};
+ const fin=()=>{clearInterval(typing.id);el.innerHTML=glossHTML(text);typing.finished=true;done()};
+ typing.fin=fin;
+ if(reduce)return fin();
+ typing.id=setInterval(()=>{i++;el.textContent=p.slice(0,i);if(i>=p.length)fin()},26);
+}
+function showGloss(k){
+ const d=DICT[k];if(!d)return;
+ const el=$('gloss');el.innerHTML=`<b>${k}</b>${d.k}<span class="en">${d.e}</span>`;el.hidden=false;
+ clearTimeout(showGloss.t);showGloss.t=setTimeout(hideGloss,4000);
+}
+function hideGloss(){$('gloss').hidden=true}
+
+const choiceBtns=()=>[...document.querySelectorAll('#choices .choice')];
+const tileBtns=()=>[...document.querySelectorAll('#tiles .tile:not(.used)')];
+const choosing=()=>!!dlg&&!$('choices').hidden&&choiceBtns().length>0;
+const building=()=>!!dlg&&!$('build').hidden;
+function shuffle(a){for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a}
+function renderChoices(s){
+ const box=$('choices');box.hidden=false;
+ const order=shuffle(s.opts.map((_,i)=>i));
+ box.innerHTML=order.map(i=>`<button class="choice" data-i="${i}">${s.opts[i][0]}</button>`).join('');
+ box.querySelectorAll('.choice').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();choose(s,+b.dataset.i)}));
+ sel=0;markSel();
+}
+function markSel(){const bs=choosing()?choiceBtns():tileBtns();bs.forEach((b,i)=>b.classList.toggle('sel',i===sel));bs[sel]?.focus({preventScroll:true});bs[sel]?.scrollIntoView({block:'nearest'})}
+function moveSel(d){const n=(choosing()?choiceBtns():tileBtns()).length;if(!n)return;sel=(sel+d+n)%n;markSel();sfx('move')}
+function confirmSel(){const b=(choosing()?choiceBtns():tileBtns())[sel];if(b)b.click()}
+
+function renderBuild(s){
+ s.got=0;$('build').hidden=false;
+ $('slots').innerHTML='<span class="ph">· · ·</span>';
+ const order=shuffle(s.build.map((_,i)=>i));
+ $('tiles').innerHTML=order.map(i=>`<button class="tile" data-i="${i}">${s.build[i]}</button>`).join('');
+ $('tiles').querySelectorAll('.tile').forEach(b=>b.addEventListener('click',e=>{e.stopPropagation();pickTile(s,b)}));
+ sel=0;markSel();
+}
+function pickTile(s,b){
+ const i=+b.dataset.i;
+ if(i!==s.got){sfx('no');s.missed=true;if(s.w)dlg.missed.add(s.w);b.classList.remove('bad');void b.offsetWidth;b.classList.add('bad');return}
+ sfx('move');s.got++;b.classList.add('used');b.classList.remove('sel');
+ if(s.got===1)$('slots').innerHTML='';
+ $('slots').insertAdjacentHTML('beforeend',`<span class="t">${s.build[i]}</span>`);
+ if(s.got===s.build.length){
+  const line=s.build.join(' ');sfx('ok');
+  if(s.review||dlg.review)gradeStep(s);
+  dlg.next='advance';$('build').hidden=true;
+  show({who:s.who,say:'맞아요! '+line+'.'});
+  if(readOn)speak(line);
+ }else{sel=0;markSel()}
+}
+function gradeStep(s){
+ if(!s.w)return;
+ const before=lv(s.w).b,b=grade(s.w,!s.missed);
+ updateHud();
+ if(!s.missed&&b>=3&&before<3){setTimeout(()=>{toast('★ '+s.w+' 완벽!');sfx('star')},250)}
+ dlg.steps.splice(dlg.i+1,0,{who:'항해 일지',say:s.missed?`"${s.w}" 다시 연습해요. 곧 또 나와요.`:`"${s.w}" 기억 레벨 ${b}/5.`+(b>=3?' ★':'')});
+}
+function choose(s,i){
+ const o=s.opts[i];
+ if(o[1]){
+  sfx('ok');
+  if(s.review||dlg.review)gradeStep(s);
+  dlg.next='advance';
+  const line=s.ask.includes('___')?s.ask.replace('___',o[0]):o[0];
+  show({who:s.who,say:'맞아요! '+(s.listenOnly?`"${o[0]}"`:line)});
+ }else{
+  sfx('no');s.missed=true;if(s.w)dlg.missed.add(s.w);
+  dlg.next=s;show({who:s.who,say:o[2]||'다시 해 봐요.'});
+ }
+}
+function advance(){
+ if(!dlg)return;
+ if(typing&&!typing.finished){typing.fin();return}
+ if(dlg.cur.ask||dlg.cur.build)return;
+ if(dlg.next){const n=dlg.next;dlg.next=null;if(n!=='advance'){show(n);return}}
+ if(dlg.cur.finale){closeDialog();finish();return}
+ dlg.i++;
+ if(dlg.i>=dlg.steps.length){closeDialog();return}
+ show(dlg.steps[dlg.i]);
+}
+function closeDialog(){
+ dlg=null;clearInterval(typing?.id);$('dlg').hidden=true;hideGloss();if(TTS)try{speechSynthesis.cancel()}catch(e){}
+ updateQuest();
+ if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
+}
+function cancel(){
+ if(panelOpen()){$('panel').hidden=true;return}
+ if(!$('gloss').hidden){hideGloss();return}
+ if(choosing()||building()){speak(dlg.cur.listen||dlg.cur.ask||'');return} // B never throws away a question; it replays it
+ if(dlg)closeDialog();
+}
+const says=a=>(Array.isArray(a)?a:[a]).map(t=>({say:t}));
+
+function allQuestions(){
+ const out=[...BANK];Object.keys(Q).forEach(k=>{if(k!=='cafe')out.push(...Q[k])});return out;
+}
+function reviewFor(words){ // pick a question for the weakest of these words
+ const ws=[...words].sort((a,b)=>(isDue(b)-isDue(a))||(lv(a).b-lv(b).b));
+ const w=ws[0];
+ const qs=allQuestions().filter(q=>q.w===w);
+ if(canSpeak()&&Math.random()<.35)return {listen:w,review:true};
+ return {...qs[Math.random()*qs.length|0],review:true};
+}
+function terminal(){
+ const due=dueWords();
+ if(!state.badges.length)return [{who:'신호 단말기',say:'신호 없음. 아직 일지가 비어 있어요.'}];
+ if(!due.length){const n=nextDue();return [{who:'신호 단말기',say:'새 신호가 없어요.'+(n?` 다음 신호: ${fmtWait(n-now())} 후.`:'')}]}
+ const pick=shuffle(due.slice()).slice(0,4);
+ const steps=[{who:'신호 단말기',say:`신호가 왔어요. 단어 ${due.length}개가 기다려요.`}];
+ pick.forEach(w=>steps.push(reviewFor([w])));
+ steps.push({who:'신호 단말기',say:'신호 끝. 다음에 또 와요.'});
+ return steps;
+}
+function facing(){
+ const [dx,dy]=D[player.dir];const tx=player.x+dx,ty=player.y+dy;
+ let n=npcAt(tx,ty);
+ if(!n&&(Z.legend[at(tx,ty)]||{}).over)n=npcAt(tx+dx,ty+dy);
+ if(n)return {n};
+ if(petOn()&&pet.x===tx&&pet.y===ty&&!(pet.x===player.x&&pet.y===player.y))return {pet:1};
+ const key=tx+','+ty;
+ if(Z.legend[at(tx,ty)]?.tile==='terminal')return {term:1};
+ if(Z.spots&&Z.spots[key])return {spot:Z.spots[key]};
+ const w=warpAt(tx,ty);if(w&&w.lock&&w.lock())return {spot:w.lock()};
+ return null;
+}
+function interact(){
+ if(panelOpen())return;
+ if(choosing()||building()){confirmSel();return}
+ if(dlg){advance();return}
+ if(player.moving||warping)return;
+ const F=facing();if(!F)return;
+ if(F.n){
+  const n=F.n;
+  if(!n.pos){n.dir=OPP[player.dir];n.turnAt=performance.now()+6000}
+  let steps=n.script?n.script():null,isReview=false;
+  if(!steps){
+   if(n.badge&&n.badge.every(has)){steps=[...says(n.after),reviewFor(n.badge)];isReview=true}
+   else steps=n.talk();
+  }
+  openDialog(n.name,steps,{npc:n,review:isReview});return;
+ }
+ if(F.pet){openDialog(FOLLOW.name,FOLLOW.talk());return}
+ if(F.term){openDialog('신호 단말기',terminal(),{review:true});return}
+ if(F.spot){openDialog('…',says(F.spot))}
+}
+
+function award(words){
+ const nw=words.filter(w=>!has(w));if(!nw.length)return;
+ state.badges.push(...nw);
+ const perfect=nw.filter(w=>!dlg.missed.has(w));
+ nw.forEach(w=>{state.lv[w]=perfect.includes(w)?{b:2,due:now()+GAP[2]}:{b:0,due:now()}});
+ save();updateHud();sfx('badge');
+ toast('일지에 추가: '+nw.join(', '));
+ const note=perfect.length===nw.length
+  ?{who:'항해 일지',say:`한 번도 안 틀렸어요! "${nw.join('", "')}" 기억 레벨 2/5.`}
+  :{who:'항해 일지',say:`일지에 적었어요. 틀린 단어는 곧 다시 나와요. 머리 위 ? 를 찾아요.`};
+ dlg.steps.splice(dlg.i+1,0,note);
+ if(state.badges.length>=WORDS.length&&!state.f.allWords){state.f.allWords=1;save();pending=says(['단어 열여섯 개를 다 모았어요!','이제 신호 단말기에서 복습하면 ★가 생겨요.'])}
+}
+function finish(){
+ $('fade').classList.add('on');sfx('star');
+ setTimeout(()=>{$('fade').classList.remove('on');openDialog('항해 일지',says(DONE))},900);
+}
+let toastT;function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2400)}
+
+/* ---------- HUD + log ---------- */
+function updateHud(){const n=state.badges.length,st=WORDS.filter(w=>has(w)&&lv(w).b>=3).length;$('logBtn').textContent=`일지 ${n}/${WORDS.length}`+(st?` ★${st}`:'')}
+function updateQuest(){$('questTxt').textContent=questText()}
+function updateRead(){$('readBtn').setAttribute('aria-pressed',readOn&&canSpeak()?'true':'false');$('spk').hidden=!canSpeak()}
+function updateSound(){$('sndBtn').setAttribute('aria-pressed',soundOn?'true':'false')}
+let logSel=null,showEn=false;
+function pips(w){const L=lv(w);return `<span class="pips${isDue(w)?' due':''}">${[1,2,3,4,5].map(i=>`<i class="${L.b>=i?'on':''}"></i>`).join('')}</span>`}
+function openPanel(){
+ const got=WORDS.filter(has);
+ $('logCount').textContent=`${got.length}/${WORDS.length} · 복습 ${dueWords().length}`;
+ if(!logSel||!has(logSel))logSel=got[got.length-1]||null;
+ $('wlist').innerHTML=WORDS.map(w=>has(w)?`<button class="wd${w===logSel?' sel':''}" data-w="${w}"><span class="w">${w}</span>${pips(w)}</button>`:`<div class="wd off"><span class="w">？</span></div>`).join('');
+ $('wlist').querySelectorAll('button.wd').forEach(b=>b.addEventListener('click',()=>{logSel=b.dataset.w;showEn=false;openPanel();speak(logSel)}));
+ if(logSel){const d=DICT[logSel],L=lv(logSel);
+  $('card').innerHTML=`<div class="top"><span class="big">${logSel}</span><button class="spk${canSpeak()?'':' '}" id="cardSpk" aria-label="듣기" ${canSpeak()?'':'hidden'}>${$('spk').innerHTML}</button></div>
+   <span class="def">${d.k}</span><span class="ex">예: ${d.ex}</span><span class="hj">${d.hj}</span>
+   <span class="hj">기억 레벨 ${L.b}/5 · ${isDue(logSel)?'지금 복습할 수 있어요':'다음 복습: '+fmtWait(L.due-now())+' 후'}</span>
+   ${showEn?`<span class="en">${d.e}</span>`:'<button class="enb" id="enBtn">영어 보기</button>'}`;
+  $('cardSpk')?.addEventListener('click',()=>speak(logSel+'. '+d.ex));
+  $('enBtn')?.addEventListener('click',()=>{showEn=true;openPanel()});
+ }else $('card').innerHTML='<span class="def">아직 단어가 없어요.</span><span class="ex">사람들한테 말을 걸면 일지에 단어가 생겨요.</span>';
+ $('items').innerHTML=state.items.length?state.items.map(i=>`<li title="${ITEMS[i]||''}">${i}</li>`).join(''):'<li class="none">비어 있어요.</li>';
+ $('panel').hidden=false;
+}
+
+/* ---------- saving ---------- */
+function fresh(){return {v:1,zone:'ship',x:2,y:3,dir:'down',badges:[],lv:{},items:[],f:{},seenIntro:false}}
+function save(){store.set(SAVE,JSON.stringify(state))}
+function loadState(){
+ state=fresh();
+ try{const s=JSON.parse(store.get(SAVE)||'null');if(s)Object.assign(state,s)}catch(e){}
+ if(!ZONES[state.zone])state.zone='ship';
+}
+
+/* ---------- input ---------- */
+function dirPress(d){
+ if(choosing()||building()){moveSel(d==='up'||d==='left'?-1:1);return true}
+ return false;
+}
+document.querySelectorAll('.dpad button').forEach(b=>{
+ const on=e=>{e.preventDefault();b.classList.add('on');const d=b.dataset.d;if(dirPress(d))return;held=d;if(dlg)return;tryMove()};
+ const off=()=>{b.classList.remove('on');if(held===b.dataset.d)held=null};
+ b.addEventListener('pointerdown',e=>{b.setPointerCapture?.(e.pointerId);on(e)});
+ b.addEventListener('pointerup',off);b.addEventListener('pointercancel',off);b.addEventListener('lostpointercapture',off);
+});
+$('btnA').addEventListener('pointerdown',e=>{e.preventDefault();interact()});
+$('btnB').addEventListener('pointerdown',e=>{e.preventDefault();cancel()});
+$('dlg').addEventListener('click',e=>{const gl=e.target.closest('.gl');if(gl){e.stopPropagation();showGloss(gl.dataset.k);return}if(e.target.closest('#spk'))return;advance()});
+$('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.listen||dlg.cur.say||dlg.cur.ask||'')});
+$('gloss').addEventListener('click',hideGloss);
+$('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
+$('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
+$('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});
+$('readBtn').addEventListener('click',()=>{
+ if(!canSpeak()){toast('이 기기에는 한국어 음성이 없어요.');return}
+ readOn=!readOn;store.set('seongsilho-read',readOn?'1':'0');updateRead();toast(readOn?'대사를 소리 내서 읽어요.':'읽기를 껐어요.');if(readOn&&dlg)speak(dlg.cur.say||dlg.cur.ask||'');
+});
+$('closePanel').addEventListener('click',()=>$('panel').hidden=true);
+$('panel').addEventListener('click',e=>{if(e.target.id==='panel')$('panel').hidden=true});
+let armT;
+$('resetBtn').addEventListener('click',()=>{
+ const b=$('resetBtn');
+ if(!b.classList.contains('armed')){b.classList.add('armed');b.textContent='한 번 더 누르면 지워져요';clearTimeout(armT);armT=setTimeout(()=>{b.classList.remove('armed');b.textContent='처음부터'},3000);return}
+ b.classList.remove('armed');b.textContent='처음부터';
+ state=fresh();state.seenIntro=true;save();loadZone(state.zone,state.x,state.y,state.dir);updateHud();updateQuest();$('panel').hidden=true;toast('처음부터 시작해요.');
+});
+document.addEventListener('contextmenu',e=>e.preventDefault());
+document.querySelector('.pad').addEventListener('touchstart',e=>{if(e.cancelable)e.preventDefault()},{passive:false});
+const KEYS={ArrowUp:'up',ArrowDown:'down',ArrowLeft:'left',ArrowRight:'right',w:'up',s:'down',a:'left',d:'right'};
+addEventListener('keydown',e=>{
+ if(KEYS[e.key]){e.preventDefault();if(dirPress(KEYS[e.key]))return;held=KEYS[e.key];return}
+ if(choosing()&&/^[1-4]$/.test(e.key)){const b=choiceBtns()[+e.key-1];if(b){e.preventDefault();b.click()}return}
+ if([' ','Enter','z','Z'].includes(e.key)){e.preventDefault();if(!e.repeat)interact();return}
+ if(['x','X','Escape'].includes(e.key)){e.preventDefault();cancel()}
+});
+addEventListener('keyup',e=>{if(KEYS[e.key]===held)held=null});
+
+/* ---------- start ---------- */
+function start(){
+ if(TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
+ loadState();
+ loadZone(state.zone,state.x,state.y,state.dir);
+ updateSound();updateRead();updateHud();updateQuest();
+ if(!state.seenIntro){state.seenIntro=true;save();setTimeout(()=>openDialog('성실호',INTRO),300)}
+ requestAnimationFrame(loop);
+}
+window.claude?.hot?.ready?window.claude.hot.ready(start):start();
+</script>
+</body></html>
