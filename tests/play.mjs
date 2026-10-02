@@ -2,6 +2,14 @@
 import {spawn} from 'node:child_process';import fs from 'node:fs';import path from 'node:path';
 const ch=process.argv[2]||'ch1';const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
 const out=path.join(root,'tests/shots',ch);fs.rmSync(out,{recursive:true,force:true});fs.mkdirSync(out,{recursive:true});
+// One Chrome at a time on this machine (7 GB RAM froze when several ran at once): take a lock, wait for it.
+const LOCK='/tmp/seongsilho-play.lock';
+for(let t=0;;t++){try{fs.writeFileSync(LOCK,String(process.pid),{flag:'wx'});break}catch(e){
+ let stale=true;try{process.kill(+fs.readFileSync(LOCK,'utf8'),0);stale=false}catch(_){}
+ if(stale){fs.rmSync(LOCK,{force:true});continue}
+ if(t%30===0)console.log('waiting for another playtest to finish…');await new Promise(r=>setTimeout(r,2000))}}
+const unlock=()=>{try{if(fs.readFileSync(LOCK,'utf8')===String(process.pid))fs.rmSync(LOCK)}catch(e){}};
+process.on('exit',unlock);for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>{unlock();process.exit(130)});
 const tmp=fs.mkdtempSync('/tmp/play-');
 import {execFileSync} from 'node:child_process';
 execFileSync('python3',[path.join(root,'build.py'),'--out',path.join(tmp,'built.html')]); // own build: safe when several chapters are tested at once
