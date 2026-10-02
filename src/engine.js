@@ -641,7 +641,7 @@ function start(){
  if(TTS){pickVoice();speechSynthesis.onvoiceschanged=pickVoice}
  updateSound();updateRead();
  const want=new URLSearchParams(location.search).get('ch')||store.get('seongsilho-chapter');
- boot(CHAPTERS.some(c=>c.id===want)?want:CHAPTERS[CHAPTERS.length-1].id);
+ boot(CHAPTERS.some(c=>c.id===want)?want:CHAPTERS[0].id); // first visit starts at chapter 1; after that, the last chapter played
  requestAnimationFrame(loop);
 }
 window.claude?.hot?.ready?window.claude.hot.ready(start):start();
