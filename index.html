@@ -6256,11 +6256,13 @@ function glossHTML(t){
 function lexLookup(w){ // word as written → [[lemma,{k,e}],…]; falls back to the longest known prefix (우주선이 → 우주선)
  const L=window.LEX||{map:{},defs:{}},hit=l=>C.DICT[l]?[l,C.DICT[l]]:L.defs[l]?[l,L.defs[l]]:null;
  let ls=L.map[w];
- if(!ls)for(let n=w.length;n>0&&!ls;n--){const pre=w.slice(0,n);if(L.map[pre])ls=L.map[pre];else if(hit(pre))ls=[pre]}
+ if(!ls)for(let n=w.length;n>0&&!ls;n--){const pre=w.slice(0,n); // longest known prefix, also as a verb/adjective stem (강해서 → 강하다)
+  const tries=[pre,pre+'다',/[해했]$/.test(pre)?pre.slice(0,-1)+'하다':null].filter(Boolean);
+  if(L.map[pre])ls=L.map[pre];else{const t=tries.find(x=>hit(x));if(t)ls=[t]}}
  return (ls||[]).map(hit).filter(Boolean);
 }
 function popGloss(rows){ // rows: [[headword,{k,e}],…] — Korean first; English only behind the ? button
- if(!rows.length){toast('사전에 없는 말이에요.');return}
+ if(!rows.length){hideGloss();toast('사전에 없는 말이에요.');return}
  const el=$('gloss');
  el.innerHTML=rows.map(([h,d])=>`<div class="gr"><b>${h}</b>${d.k}<span class="en" hidden>${d.e||''}</span></div>`).join('')+'<button class="q" type="button" aria-label="영어로 보기">?</button>';
  el.hidden=false;el.querySelector('.q').addEventListener('click',e=>{e.stopPropagation();el.querySelectorAll('.en').forEach(x=>x.hidden=!x.hidden);clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,8000)});
