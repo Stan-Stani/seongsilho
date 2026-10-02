@@ -29,3 +29,7 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
 - `python3 tests/sheet.py chN` → contact sheets; LOOK at every sheet (layout, overlaps, readability, markers, lighting).
 
 The epub and `claude-export/` are gitignored (copyright / personal data).
+
+## Public mirror
+After every publish run `tools/sync_public.sh`: it force-pushes this repo to the public twin (see tools/public-remote) with `notes/`
+filtered out of all history (book summaries stay private). GitHub Pages serves `index.html` from the public twin.
