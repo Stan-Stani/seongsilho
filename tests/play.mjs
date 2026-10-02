@@ -1,3 +1,4 @@
+import {execFileSync} from 'node:child_process';
 // Usage: node tests/play.mjs ch1   → builds, plays the chapter by keyboard in headless Chrome, saves screenshots to tests/shots/ch1/
 import {spawn} from 'node:child_process';import fs from 'node:fs';import path from 'node:path';
 const ch=process.argv[2]||'ch1';const root=path.resolve(path.dirname(new URL(import.meta.url).pathname),'..');
@@ -9,9 +10,10 @@ for(let t=0;;t++){try{fs.writeFileSync(LOCK,String(process.pid),{flag:'wx'});bre
  if(stale){fs.rmSync(LOCK,{force:true});continue}
  if(t%30===0)console.log('waiting for another playtest to finish…');await new Promise(r=>setTimeout(r,2000))}}
 const unlock=()=>{try{if(fs.readFileSync(LOCK,'utf8')===String(process.pid))fs.rmSync(LOCK)}catch(e){}};
-process.on('exit',()=>{unlock();try{fs.rmSync(tmp,{recursive:true,force:true})}catch(e){}});for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>{unlock();process.exit(130)});
+// Killing the flatpak wrapper leaves Chrome running inside the sandbox (287 orphans once) — kill everything using this run's profile.
+const reap=()=>{try{execFileSync('pkill',['-9','-f',`user-data-dir=${tmp}/prof`])}catch(e){}};
+process.on('exit',()=>{reap();unlock();try{fs.rmSync(tmp,{recursive:true,force:true})}catch(e){}});for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>{unlock();process.exit(130)});
 const tmp=fs.mkdtempSync('/tmp/play-');
-import {execFileSync} from 'node:child_process';
 execFileSync('python3',[path.join(root,'build.py'),'--out',path.join(tmp,'built.html')]); // own build: safe when several chapters are tested at once
 const html=fs.readFileSync(path.join(tmp,'built.html'),'utf8');
 const driver=fs.readFileSync(path.join(root,'tests/driver.js'),'utf8');
@@ -40,6 +42,6 @@ const res=await send('Runtime.evaluate',{expression:'JSON.stringify({err:window.
 const {err,log}=JSON.parse(res.result.value);
 const shot=await send('Page.captureScreenshot',{format:'png'});fs.writeFileSync(path.join(out,'99-end.png'),Buffer.from(shot.data,'base64'));
 fs.writeFileSync(path.join(out,'log.txt'),'ERRORS:\n'+(err.join('\n')||'none')+'\n\nLOG:\n'+log.join('\n'));
-sock.close();chrome.kill();
+sock.close();chrome.kill();reap();
 console.log((done?'':'TIMEOUT\n')+'ERRORS: '+(err.length?'\n'+err.join('\n'):'none'));console.log('shots:',fs.readdirSync(out).filter(f=>f.endsWith('.png')).length,'→',out);
 process.exit(err.length||!done?1:0);
