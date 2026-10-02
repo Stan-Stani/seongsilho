@@ -2,7 +2,7 @@ CHAPTERS.push({id:'ch7',n:'7장',title:'돌로드',place:'성실호 · 돌로드
  start:{zone:'ship',x:3,y:5,dir:'up'},introWho:'성실호',
  make:()=>{
 /* =====================================================================
-   7장 · 돌로드 — the finale. Book pin: c031–c035, opened by the end of c022 (Otylia's call from the Polkadav).
+   7장 · 돌로드 — the finale. Book pin: c031–c035, opened by the end of c022 (the Polkadav docks).
    True at this point: 31 y 8 m have passed on Gondiar since departure; Finn (owner of the Diligent) has aged only months.
    The marchioness, Finn's father and Variaka were killed by the occupation's missile (c029); Gondiar is occupied (c028).
    Aboard: Otylia (early 60s, grey) with Laurella and Dushan; Zelinda (now marchioness) and Haian; Everett and his children;
@@ -34,12 +34,12 @@ const DICT={
  '충돌하다':{k:'두 개가 아주 세게 부딪혀요.',e:'to collide, crash into',ex:'복스록이 켈로완에 충돌할 거예요.',hj:'衝突 · 突 = 갑자기, 세게'},
  '배신자':{k:'친구나 내 편을 배신한 사람.',e:'traitor',ex:'벤사스는 배신자였어요.',hj:'背信者 · 배신하다(3장) + 者 = 사람'},
  /* glosses for words that appear in lines but are not badges */
- '레콜':{k:'옛날 기억을 다시 보게 하는 약. 위험해요.',e:'rekaul (memory-replay drug)'},
+ '레콜':{k:'옛날 기억을 다시 보게 하는 약. 코로 들이마셔요. 위험해요.',e:'rekaul (memory-replay drug)'},
  '너브잼':{k:'신경을 막아서 몸을 못 움직이게 하는 무기.',e:'nervejam'},
  '셀레스철':{k:'인간보다 강한 종족. 은하를 다스려요.',e:'Celestial'},
  '유버스터':{k:'사람의 기억을 아기처럼 다 지우는 기계.',e:'YouBuster (mind-wiper)'},
- '복스록':{k:'돌로드 근처의 작고 빨간 행성.',e:'Boksrock (a small rust-red world)'},
- '켈로완':{k:'황후가 사는 셀레스철의 왕좌 행성. 8억 명이 살아요.',e:'Kelowan (the throne world)'},
+ '복스록':{k:'켈로완 별에서 제일 가까운 작은 행성. 빨간 들판이 있어요.',e:'Boksrock (a small rust-red world)'},
+ '켈로완':{k:'여제가 사는 셀레스철의 왕좌 행성. 8억 명이 살아요.',e:'Kelowan (the throne world)'},
  '앵커선':{k:'엔진 기지에서 나는 세모 날개 배. 길이 120미터.',e:'anchor ship (a tri-delta craft)'},
  '강하선':{k:'큰 배에서 행성으로 내려가는 작은 배.',e:'drop ship'},
  '접속하다':{k:'머리나 기계를 다른 기계에 연결해요.',e:'to connect, link in'},
@@ -141,7 +141,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
 };
 
-const ITEMS={'우주복':'드장 선장이 준 우주복. 무거운 중력에도 버텨요.','물병':'데이브가 준 물. 핀이 일어나면 줘야 돼요.','빈 레콜 병':'엘리가 그날 밤을 다시 본 약. 이제 비었어요.'};
+const ITEMS={'우주복':'드장 선장이 준 우주복. 무거운 중력에도 버텨요.','물병':'데이브가 준 물. 핀이 엔진에서 나오면 줘야 돼요.','빈 레콜 병':'엘리가 그날 밤을 다시 본 약. 이제 비었어요.'};
 
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
@@ -323,8 +323,6 @@ const scan=rows=>rows.map((s,i)=>i%3===1?s.replace(/a/g,'l'):s);
 const HOLO_TH={pal:{a:'#E3C8FF',b:'#B48BE6',c:'#7650B0',l:'#F4E8FF',y:'#FFE7A0',m:'#FF8FD8',g:'#C9A2FF',O:OL,P:'#5A6170',p:'#3A3F4A'},down:M(scan(THYRA).concat(PED))};
 const HOLO_TE={pal:{a:'#BFF5EA',b:'#69CFD8',c:'#2E8F98',l:'#E8FFFB',y:'#1E5A5E',g:'#9FF5E6',O:OL,P:'#5A6170',p:'#3A3F4A'},down:M(scan(TERENCE).concat(PED))};
 const FINN={hair:'#E0C070',skin:'#F0C9A4',shirt:'#2F8F8A',pants:'#2E3548'};
-const FINN_DOWN={art:{pal:{O:OL,H:'#E0C070',S:'#F0C9A4',E:'#9A6A4A',C:'#2F8F8A',c:'#25726E',P:'#2E3548',K:'#2A2A33'},
- down:['..OOOO..........','.OHHHHOOOOOOOOO.','OHSSSOCCCcCCPPKO','OHSESOCCCcCCPPKO','OHSSSOCCCcCCPPKO','.OOOOOOOOOOOOOO.']}};
 const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'};
 const DEJEAN={hair:'#8A8A90',skin:'#C99470',shirt:'#2E3B55',pants:'#2E3B55',cap:'#2E3B55',belt:'#E8962A',arm:'#B87333',lashes:1,lips:'#A8645E'};
 const ZELINDA={hair:'#A89070',skin:'#EDC3A0',shirt:'#2E4A6A',pants:'#26303E',style:'bun',coat:1,belt:'#C9A64A',lashes:1,lips:'#B06A70'};
@@ -361,15 +359,15 @@ const ZONES={
    '5,16':{to:'capo',x:10,y:9,dir:'up',lock:()=>!f().jump&&'관측 갑판 문이에요. 비상이라서 잠겨 있어요.'}},
   spots:{
    '8,1':['해적 방송이에요. 점령군에게 잡힌 사람들이 나와요.','{유버스터|유버스터}로 기억을 다 지웠어요. 아기처럼 됐어요.','사람들을 차에 싣고 집 앞에 버려요.','보고 있으면 분노가 끓어요.'],
-   get '2,1'(){return f().jump?'별이 낯설어요. 카포 프로이스의 하늘이에요.':acc()?'별이 줄처럼 길게 늘어나요. 배가 도망치고 있어요.':'창밖에 보라색 줄무늬 행성. 돌로드예요.'},
+   get '2,1'(){return f().jump?'관문이 아주 가까워요. 아직 켈로완 성계예요.':acc()?'별이 줄처럼 길게 늘어나요. 배가 도망치고 있어요.':'창밖에 보라색 줄무늬 행성. 돌로드예요.'},
    '13,2':'엘리의 침대예요. 베개가 조금 젖어 있어요.',
    '17,2':'따뜻한 등불이에요. 주인 숙소는 늘 이 색이에요.',
    '19,3':'필터 구예요. 공기가 보글보글 지나가요.',
-   get '4,11'(){return f().jump?'홀로그램 지도: 카포 프로이스 관문. 관문이 다섯 개 더 있어요.':acc()?'홀로그램 지도: 빨간 세모는 프리깃이에요. 점점 가까워져요.':'홀로그램 지도: 돌로드하고 곤디아가 보여요.'},
+   get '4,11'(){return f().jump?'홀로그램 지도: 카포 프로이스 관문. 건너가면 관문이 다섯 개 더 있어요.':acc()?'홀로그램 지도: 빨간 세모는 프리깃이에요. 점점 가까워져요.':'홀로그램 지도: 돌로드하고 곤디아가 보여요.'},
    '12,10':'진료실 침대예요. 깨끗한 냄새가 나요.',
    get '21,12'(){return !f().launch?'강하선이에요. 카이발에서 훔친 배예요.':f().woke?'앵커선이에요. 세모 날개가 세 개예요.':'빈 자리예요.'}},
   npcs:['otylia','gath','laurella','zelinda','everett','finn','ellie','pablo','holo1','aljan','dejean','gyvoy','bensath','daveS']},
- dolod:{name:'돌로드 · 엔진 기지',reg:'DOLOD · ARCHIMEDES ENGINE',
+ dolod:{name:'돌로드 · 엔진 기지',reg:'DOLOD · ARCHIMEDES ENGINE',slow:1.6,
   legend:{'S':{tile:'storm'},'d':{tile:'stormDoor'},'#':{tile:'fossil'},'w':{tile:'stormWin'},'.':{tile:'sfloor',walk:1},'P':{tile:'pad',walk:1},
    'X':{tile:'craft'},'e':{tile:'petal'},'U':{tile:'bulb'},'C':{tile:'cone'},'A':{tile:'tri'},'R':{tile:'ramp',walk:1}},
   map:[
@@ -415,7 +413,7 @@ const ZONES={
 "##########O#############"],
   rooms:[[1,5,22,9,'성실호 · 관측 갑판']],
   warps:{'10,10':{to:'ship',x:5,y:15,dir:'up'}},
-  spots:{'13,5':'카포 프로이스 관문. 검은 돔 가운데가 파랗게 빛나요.','4,5':'멀리 작은 고리들이 보여요. 다른 관문들이에요.','20,5':'창밖은 조용해요. 아직은요.'},
+  spots:{'13,5':'카포 프로이스 관문. 검은 돔 가운데가 파랗게 빛나요.','4,5':'관문 너머 카포 프로이스에는 관문이 다섯 개 더 있대요.','20,5':'창밖은 조용해요. 아직은요.'},
   npcs:['zelindaC','finnC','ellieC','dejeanC','holo3']},
 };
 
@@ -425,18 +423,18 @@ const LINK=()=>[
  {who:'…',say:'핀이 청록색 전구에 손을 대요. 빛이 커져요.'},
  {say:'원래 계획은 돌로드를 별에 떨어뜨리는 거였어요.'},
  {who:'기보이',say:'핀 엔진이에요. 핀 마음대로 해요.'},
- {say:'아니… 황후가 곤디아를 점령했어요. 우리 부모님도…'},
+ {say:'아니… 여제가 곤디아를 점령했어요. 우리 부모님도…'},
  Q.finnLink[1],
  {say:'{복스록|복스록}을 {켈로완|켈로완}으로 보낼 거예요.'},
  {say:'그들에게 {대가를 치르게|대가를 치르다} 할 거예요.'},
  Q.finnLink[0],
  {who:'…',say:'우르릉! 기지가 흔들려요. {앵커선|앵커선}들이 하늘로 날아가요.'},
- {who:'…',say:'핀이 바닥에 쓰러져요. 숨은 쉬어요.'},
- {who:'기보이',say:'핀은 쉬어야 돼요. 우리는 강하선을 보고 올게요.',set:()=>{f().linked=1}},
+ {who:'…',say:'핀은 눈을 감고 전구에 손을 대고 있어요. 움직이지 않아요.'},
+ {who:'기보이',say:'우리는 밖을 둘러보고 센서 경보를 달고 올게요.',set:()=>{f().linked=1}},
  {who:'…',say:'기보이하고 벤사스가 격납고 쪽으로 걸어가요.'}];
 const JUMP=()=>[
  {say:'{프리깃|프리깃}들이 우리를 쫓아와요.'},
- {say:'다섯 시간 뒤에 따라잡혀요. {반물질|반물질} 배 두 척도 와요.'},
+ {say:'{반물질|반물질} 배 두 척은 두 시간 뒤, 프리깃은 다섯 시간 뒤에 와요.'},
  {who:'핀',say:'카포 프로이스 관문으로 가요.'},
  {say:'관문까지 4AU라고요?!'},
  {who:'핀',say:'ZPZ를 켜요. 엔진의 {운동량|운동량}이 우리를 밀어 줄 거예요.'},
@@ -453,7 +451,6 @@ const NPC={
   talk:()=>[
    {say:'와 줘서 고마워요. 저는 오틸리아예요. 핀의 쌍둥이예요.'},
    {say:'핀, 넌 아직 젊구나. 나는 이렇게 늙었는데.'},
-   {who:'핀',say:'이제 나한테 누나가 둘이네.'},
    {say:'핀… 할 말이 있어. 내 기억을 보여 줄게.'},
    {who:'기억',say:'하프니르. {고스트|고스트}들이 오틸리아를 잡으러 와요.'},
    {who:'기억',say:'누가 고스트들을 쏴요. 그때 하늘에서 미사일이 떨어져요.'},
@@ -479,7 +476,8 @@ const NPC={
    Q.zelinda[0],
    {say:'곤디아 사람들을 지키는 게 제 일이에요.'},
    Q.zelinda[1],
-   {say:'우리한테는 돌로드를 멈출 방법이 있어요. 핀이 알아요.',award:['의무'],set:()=>{f().zel=1}}]},
+   {who:'핀',say:'우리한테는 돌로드를 멈출 방법이 있어요.'},
+   {say:'…어떻게요? 에버렛하고도 얘기해 봐요.',award:['의무'],set:()=>{f().zel=1}}]},
  everett:{name:'에버렛',zone:'ship',x:9,y:5,dir:'left',look:{hair:'#6A4A2E',beard:'#5A3E28',skin:'#E3B48C',shirt:'#3A3A44',pants:'#2A2A30'},badge:['복수','분노'],
   status:()=>!f().zel?null:undefined,
   script:()=>!f().zel?[{say:'…'},{say:'지금은 말하고 싶지 않아요.'}]:null,
@@ -508,15 +506,17 @@ const NPC={
  ellie:{name:'엘리',zone:'ship',x:15,y:3,dir:'down',look:ELLIE,badge:['진실','잊다','조종당하다'],hide:()=>!!f().jump,
   status:()=>{const F=f();return !F.woke?null:!F.witness?'wait':undefined},
   script:()=>{const F=f();
-   if(!F.woke)return [{say:'핀이 너무 화가 났어요. 걱정돼요.'},{say:'이 일, 정말 해야 돼요? 저는 잘 모르겠어요.'},{say:'그리고 기보이 씨… 왠지 무서워요. 이유는 모르겠어요.'}];
+   if(!F.woke)return [{say:'핀이 너무 화가 났어요. 걱정돼요.'},{say:'이 일, 정말 해야 돼요? 저는 잘 모르겠어요.'},{say:'왜 벤사스예요? 왜 제가 아니에요?'},{say:'그리고 기보이 씨… 왠지 무서워요. 이유는 모르겠어요.'}];
    if(!F.witness)return [{say:'돌아왔어요! 정말 다행이에요.'},{say:'잠깐만요. 파블로 얘기를 먼저 들어요. 현관에 있어요.'}];
    return null},
   after:'이제 아무것도 잊지 않을 거예요.',
   talk:()=>[
-   {say:'파블로 말을 듣고 {레콜|레콜}을 먹었어요. 그날 밤을 다시 봤어요.'},
-   {who:'기억',say:'기보이가 핀 머리에 손을 대요. 손바닥에서 보라색 선이 빛나요.'},
-   {who:'기억 속 기보이',say:'나쁜 기억은 아래로, 안녕~'},
+   {say:'파블로 말을 듣고 {레콜|레콜}을 마셨어요. 그날 밤을 다시 봤어요.'},
+   {who:'기억',say:'핀이 손바닥을 위로 내밀고 있어요. 기보이의 손바닥이 그 위에 있어요.'},
+   {who:'기억',say:'기보이 손바닥에서 보라색 선이 빛나요.'},
    {who:'기억',say:'제가 소리를 질렀어요. 그리고 {너브잼|너브잼}을 맞았어요.'},
+   {who:'기억 속 기보이',say:'핀의 부모님 일로 화를 조금 더 키우는 중이야.'},
+   {who:'기억 속 기보이',say:'(엘리의 머리를 잡고) 나쁜 기억은 아래로. 안녕~'},
    Q.ellie[0],
    {say:'기보이는 {셀레스철|셀레스철}이에요! 진짜 기보이가 아니에요.'},
    Q.ellie[1],
@@ -525,7 +525,7 @@ const NPC={
    Q.ellie[2],
    {w:'조종당하다',build:['핀은','기보이한테','조종당했어요']},
    {who:'오틸리아',say:'핀, 우리는 너를 믿어.'},
-   {say:'이 레콜 병은 버려 주세요. 다시는 안 먹어요.',give:'빈 레콜 병'},
+   {say:'이 레콜 병은 버려 주세요. 다시는 안 써요.',give:'빈 레콜 병'},
    {say:'이제 진실을 알아요. 선장님한테 가요. 도망쳐야 돼요.',award:['진실','잊다','조종당하다'],set:()=>{f().truth=1}}]},
  pablo:{name:'파블로',zone:'ship',x:23,y:3,dir:'down',look:{art:gath('#CDB894','#B09C74','#8A7A58','#5A3A2A')},badge:['목격자'],
   status:()=>!f().woke?null:undefined,
@@ -539,16 +539,16 @@ const NPC={
    Q.pablo[0],
    {say:'엘리 씨는 아무것도 기억 못 했어요. 그래서 파블로가 말했어요.'},
    Q.pablo[1],
-   {say:'엘리 씨가 레콜을 먹었어요. 지금 침실에 있어요.',award:['목격자'],set:()=>{f().witness=1}}]},
+   {say:'엘리 씨가 레콜을 썼어요. 지금 침실에 있어요.',award:['목격자'],set:()=>{f().witness=1}}]},
  holo1:{name:'막간',zone:'ship',x:20,y:4,dir:'down',still:1,look:{art:HOLO_TE},
   status:()=>f().i1?null:'todo',
   script:()=>[
    {who:'막간',say:'같은 시간, 곤디아. 테렌스가 셀레스철 배 아이아쿠스에 타요.'},
    {who:'테렌스',say:'진짜 기보이는 수십 년 전에 죽었어요. 시체를 찾았어요.'},
-   {who:'마카이오 영혼',say:'그럼 성실호에 있는 기보이는 누구지?'},
+   {who:'마카이오 (라이더)',say:'그럼 성실호에 있는 기보이는 누구지?'},
    {who:'테렌스',say:'모르겠어요. 하지만 좋은 사람은 아니에요.'},
    {who:'테렌스',say:'이 정보를 올로모하고 사디아한테 보냈어요.'},
-   {who:'마카이오 영혼',say:'아사히이리나가 너를 쫓고 있어. 빨리 떠나!',set:()=>{f().i1=1}}],
+   {who:'노이쉬 (통신)',say:'아사히이리나가 당신을 찾았어요. 아이아쿠스를 타고 빨리 떠나요!',set:()=>{f().i1=1}}],
   talk:()=>[]},
  aljan:{name:'알잔 선생님',zone:'ship',x:14,y:11,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#F1F1EC',pants:'#3C4A5C',coat:1},
   script:()=>{const q=Q.old[Math.random()*Q.old.length|0];
@@ -589,12 +589,12 @@ const NPC={
   after:'배신자는 잊지 않음.',
   talk:()=>[
    {say:'강하선 없음. 기보이 없음. 벤사스 없음.'},
-   {who:'…',say:'폭풍 문이 꽉 닫혀 있어요. 밖은 폭풍뿐이에요.'},
+   {who:'…',say:'격납고 문이 열려 있어요. 강하선은 없어요.'},
    {say:'네 시간 기다림. 안 옴. 우리, 갇혔음.'},
    Q.dave2[0],
    {say:'기보이, 벤사스. 배신자.'},
    Q.dave2[1],
-   {say:'물. 핀 일어나면 줘.',give:'물병',award:['갇히다','배신자'],set:()=>{f().stranded=1}}]},
+   {say:'물. 핀 나오면 줘.',give:'물병',award:['갇히다','배신자'],set:()=>{f().stranded=1}}]},
  bensathD:{name:'벤사스 하사',zone:'dolod',x:18,y:4,dir:'up',look:BENSATH,badge:['폭풍','번개'],hide:()=>!!f().linked,
   after:'폭풍이 점점 세져요.',
   talk:()=>[
@@ -606,18 +606,19 @@ const NPC={
    {say:'기지가 조용해요. 너무 조용해요.'},
    {say:'핀은 꽃 방에 있어요. 기보이 씨도 같이요.',award:['폭풍','번개']}]},
  finnD:{name:'핀',zone:'dolod',x:13,y:13,dir:'up',still:1,badge:['충돌하다','탈출하다'],
-  get look(){const F=state.f;return F.linked&&!F.woke?FINN_DOWN:FINN},
+  look:FINN,
   status:()=>{const F=f();if(!F.linked)return got('중력')&&got('폭풍')?'todo':'wait';if(!F.stranded)return null;if(!F.woke)return hasItem('물병')?'todo':null},
   script:()=>{const F=f();
    if(!F.linked){if(!got('중력')||!got('폭풍'))return [{say:'잠깐만요. 아직 준비 중이에요.'},{say:'데이브하고 벤사스가 기다려요. 다들 긴장했어요.'}];return LINK()}
-   if(!F.stranded)return [{who:'…',say:'핀이 바닥에 쓰러져 있어요. 숨은 쉬어요.'},{who:'…',say:'기보이하고 벤사스는 어디 갔어요?'}];
-   if(!F.woke&&!hasItem('물병'))return [{who:'…',say:'핀은 아직 일어나지 않아요.'}];
+   if(!F.stranded)return [{who:'…',say:'핀은 아직 엔진에 접속해 있어요.'},{who:'…',say:'기보이하고 벤사스는 어디 갔어요?'}];
+   if(!F.woke&&!hasItem('물병'))return [{who:'…',say:'핀은 아직 엔진에 접속해 있어요. 네 시간째예요.'}];
    return null},
   after:'모두보다 빨리 가야 돼요. 그게 유일한 길이에요.',
   talk:()=>[
-   {who:'…',say:'물을 주자 핀이 눈을 떠요.',take:['물병']},
+   {who:'…',say:'핀이 전구에서 손을 떼요. 물을 마셔요.',take:['물병']},
    {say:'강하선이 없어요? 기보이가… 우리를 두고 갔어요?'},
-   {say:'잠깐. 제가 엔진한테 뭘 시켰죠?'},
+   {say:'기지 컴퓨터에 다른 사람이 접속했어요. 벤사스도 우라닉이었어요!'},
+   {say:'제가 엔진한테 시킨 일… 이제 무서워요.'},
    {say:'복스록이 켈로완으로 날아가요. 8억 명이 사는 곳이에요.'},
    Q.finnD[0],
    {say:'내가 무슨 짓을 한 거지?'},
@@ -636,21 +637,23 @@ const NPC={
    {who:'막간',say:'돌로드 궤도. 긴 줄이 구름 속으로 내려와요. {스카이훅|스카이훅}이에요.'},
    {who:'막간',say:'기보이하고 벤사스가 반물질 통에 묶여서 올라가요.'},
    {who:'토셰',say:'대단해요. 배짱이 달만 해요.'},
-   {who:'티라',say:'다곤 삼촌, 잘했어요.',set:()=>{f().i2=1}}],
+   {who:'티라',say:'(아버지에게) 다곤 삼촌이 핀을 두고 떠났어요. 계획대로예요.',set:()=>{f().i2=1}}],
   talk:()=>[]},
  /* ===== 카포 프로이스 관문 ===== */
  zelindaC:{name:'젤린다',zone:'capo',x:12,y:6,dir:'up',look:ZELINDA,badge:['의무'],
   status:()=>f().done?undefined:f().i4?'todo':null,
   script:()=>{const F=f();
    if(F.done)return null;
-   if(!F.i4)return [{say:'카포 프로이스… 처음 보는 별이에요.'},{say:'곤디아가 너무 멀어요.'}];
+   if(!F.i4)return [{say:'저 관문을 지나면 카포 프로이스예요.'},{say:'곤디아가 너무 멀어요.'}];
    return [
     {say:'곤디아에서 아주 멀리 왔어요.'},
     {who:'핀',say:'미안해요, 언니. 다 제 잘못이에요.'},
-    {say:'저는 후작이에요. 언젠가 돌아가야 돼요.'},
+    {who:'오틸리아',say:'언니는 후작이 아니야. 곤디아에 빚진 거 없어.'},
+    {say:'아니, 저는 후작이에요. 언젠가 돌아가야 돼요.'},
     Q.zelindaC[0],
-    {who:'엘리',say:'그럼 같이 돌아가요. 이 배로요.'},
-    {who:'…',say:'같은 시간. 배 한 척이 카포 프로이스로 와요. 아르카디아의 달.'},
+    {who:'핀',say:'아이고, 이제 누나가 둘이네.'},
+    {who:'핀',say:'제가 도울게요. 엄마도 그걸 바랐을 거예요.'},
+    {who:'…',say:'같은 시간. 배 한 척이 조용히 돌로드를 떠나요. 아르카디아의 달.'},
     {who:'조사이어스',say:'이제 연설은 안 해요. 그 통 안에 뭐가 있어요?'},
     {who:'기보이',say:'폭탄. 아주 많은 폭탄.'},
     {who:'기보이',say:'반물질 삼천 톤. 목적지는 카포 프로이스예요.'},
@@ -659,7 +662,7 @@ const NPC={
   after:'언젠가 돌아갈 거예요. 그게 제 의무예요.',
   talk:()=>[]},
  finnC:{name:'핀',zone:'capo',x:9,y:6,dir:'up',look:FINN,
-  talk:()=>[{say:'카포 프로이스 관문이에요. 다른 관문이 다섯 개 더 있어요.'},{say:'제가 한 일을 잊지 않을 거예요.'}]},
+  talk:()=>[{say:'카포 프로이스로 가는 관문이에요. 건너가면 관문이 다섯 개 더 있어요.'},{say:'제가 한 일을 잊지 않을 거예요.'}]},
  ellieC:{name:'엘리',zone:'capo',x:15,y:6,dir:'up',look:ELLIE,
   talk:()=>[{say:'앵커선도 같이 왔어요. 이제 우리 거예요.'},{say:'기보이가 어디 있는지 몰라요. 그게 무서워요.'}]},
  dejeanC:{name:'드장 선장',zone:'capo',x:3,y:8,dir:'right',look:DEJEAN,
@@ -676,9 +679,9 @@ const NPC={
     {who:'올로모',say:'좋아. 같이 쫓자. 카포 프로이스로!',set:()=>{f().i3=1}}];
    return [
     {who:'막간',say:'켈로완. 복스록이 삼 주 뒤에 이 행성에 충돌해요.'},
-    {who:'막간',say:'황후 캐롤리엔아마이아가 탈출선으로 뛰어가요.'},
+    {who:'막간',say:'여제 캐롤리엔아마이아가 탈출선으로 뛰어가요.'},
     {who:'막간',say:'숨어 있던 {케스트럴 스프라이트|케스트럴 스프라이트}들이 탈출선에 붙어요.'},
-    {who:'막간',say:'탈출선의 반물질이 터져요. 황후가 죽었어요.'},
+    {who:'막간',say:'탈출선의 반물질이 터져요. 여제가 죽었어요.'},
     {who:'티라',say:'어머. 하나 끝, 셋 남았어요.'},
     {who:'티라',say:'다음은 케프리 할머니가 돌아오실 차례예요.'},
     {who:'목소리',say:'멍청한 아이.',set:()=>{f().i4=1}}]},

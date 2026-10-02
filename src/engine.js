@@ -275,7 +275,7 @@ function showRoom(force){
  if(nm!==roomName||force){roomName=nm;$('zone').textContent=nm}
 }
 function update(dt,t){
- if(player.moving){player.t+=dt/(170*(Z.slow||1)); // Z.slow > 1 = heavy gravity / deep snowif(player.t>=1){player.t=0;player.moving=false;if(!arrive())tryMove()}}
+ if(player.moving){player.t+=dt/(170*(Z.slow||1)); /* Z.slow > 1 = heavy gravity */if(player.t>=1){player.t=0;player.moving=false;if(!arrive())tryMove()}}
  else tryMove();
  if(!dlg)live().forEach(n=>{if(n.still||n.pos)return;if(t>n.turnAt){const ds=['down','left','right',n.home,n.home];n.dir=ds[Math.random()*ds.length|0];n.turnAt=t+2500+Math.random()*3500}});
  $('btnA').classList.toggle('ready',!dlg&&!player.moving&&!!facing());
