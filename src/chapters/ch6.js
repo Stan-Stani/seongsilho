@@ -31,8 +31,7 @@ const DICT={
  '슬퍼하다':{k:'다른 사람이 슬픈 마음을 보여요.',e:'to grieve, be sad (about)',ex:'딜런이 코아 때문에 슬퍼해요.',hj:'순우리말 · 슬프다 + -어하다 (남의 마음)'},
  /* glosses for words that appear in lines but are not badges */
  '해왕성':{k:'태양계의 여덟 번째 행성. 아주 커요.',e:'Neptune'},
- '셔틀':{k:'큰 배와 땅 사이를 오가는 작은 우주선.',e:'shuttle'},
- '오바르':{k:'버스만큼 큰 딱정벌레. 사람을 태우고 날아요.',e:'Ovar (beetle transport)'},
+ '오바르':{k:'버스만큼 큰 딱정벌레 체인즐링. 말도 해요. 사람을 태우고 날아요.',e:'Ovar (beetle Changeling)'},
  '이카리안':{k:'팔다리에 날개 같은 피부가 있는 사람들. 무중력에서 살아요.',e:'Icarians'},
  '킹스네스트 멀미':{k:'끝없는 구름을 보고 머리가 어지러운 병.',e:'gulf sickness'},
  '토하다':{k:'먹은 것이 입으로 다시 나와요.',e:'to vomit'},
@@ -371,7 +370,7 @@ const ZONES={
 "#...cc.......cc....#",
 "#..................#",
 "########DD##########"],
-  warps:{'8,10':{to:'mytal',x:10,y:2,dir:'down',lock:()=>!f().briefed&&'셔틀 헤즈업은 아직 준비 중이에요.'},'9,10':{to:'mytal',x:10,y:2,dir:'down',lock:()=>!f().briefed&&'셔틀 헤즈업은 아직 준비 중이에요.'}},
+  warps:{'8,10':{to:'mytal',x:10,y:2,dir:'down',lock:()=>!f().briefed&&'강하선 헤즈업은 아직 준비 중이에요.'},'9,10':{to:'mytal',x:10,y:2,dir:'down',lock:()=>!f().briefed&&'강하선 헤즈업은 아직 준비 중이에요.'}},
   spots:{get '6,2'(){return f().argue?'켈로완 행성들이 반짝여요. 포세이돈 성운이 보라색으로 빛나요.':'흰 별 두 개 사이에 투명한 공. 킹스네스트예요.'},
    get '13,2'(){return f().argue?'작은 빨간 점이 깜빡여요. 우리 배 근처에 다른 배가 있어요.':'공 안에 구름이 층층이 쌓여 있어요. 가운데는 까매요.'},
    '1,3':'항해 화면: "키유세로 쌍성 · 거리 20킬로미터"','18,3':'화면: "성실호 · 기다리는 시간 넉 달"'},
@@ -511,7 +510,7 @@ const NPC={
    Q.uemi[1],
    {w:'층',build:['구름이','층층이','쌓여','있어요']},
    {say:'공장은 오천 킬로미터 아래, 까만 층에 있대요.'},
-   {say:'{셔틀|셔틀} {헤즈업|헤즈업}이 준비됐어요. 아홉 명이 가요!',award:['구름','층'],set:()=>{f().briefed=1}}]},
+   {say:'강하선 {헤즈업|헤즈업}이 준비됐어요. 아홉 명이 가요!',award:['구름','층'],set:()=>{f().briefed=1}}]},
  ellieS:{name:'엘리',zone:'ship',x:15,y:7,dir:'left',look:ELLIE,hide:()=>f().briefed&&!f().argue,
   status:()=>f().argue&&!f().makeup?'todo':null,
   script:()=>{
@@ -737,7 +736,7 @@ const NPC={
    {who:'…',say:'코아가 조립 홀을 따라 날아요. 철골이 우리를 가둬요.'},
    {who:'기보이',say:'{슬로봄|슬로봄} 쏴요!'},
    {who:'…',say:'쾅— 철골 사이에 큰 구멍이 뚫렸어요.',set:()=>{f().os=1}},
-   {who:'엘리',say:'코아한테 가요. 아래 터널이에요.'}]},
+   {who:'엘리',say:'코아가 우리를 아래 터널에 내려 줬어요. 데이브가 뭘 봤대요.'}]},
  dave1:{name:'데이브',zone:'factory',x:6,y:16,dir:'right',still:1,look:DAVE('#C77A86'),badge:['빛나다','거미'],
   status:()=>{if(!has6('빛나다'))return f().os?'todo':'wait'},
   after:'…거미. 싫어요.',
@@ -758,7 +757,7 @@ const NPC={
   status:()=>f().web&&!f().ambush?'todo':null,
   script:()=>{
    if(f().ambush)return [{who:'…',say:'코아는 움직이지 않아요. 독니 자국이 깊어요.'}];
-   if(!f().web)return says6(['여기서 기다릴게요, 친구들! 빨리 와요!']);
+   if(!f().web)return says6(['잠깐 쉬어요, 친구들. 출구까지 금방이에요!']);
    return [
     {say:'친구들! 도와줘요! 몸이 안 움직여요!'},
     {say:'거미줄이 끈적끈적해요. 카이젠도 걸렸어요!'},

@@ -9,7 +9,7 @@ for(let t=0;;t++){try{fs.writeFileSync(LOCK,String(process.pid),{flag:'wx'});bre
  if(stale){fs.rmSync(LOCK,{force:true});continue}
  if(t%30===0)console.log('waiting for another playtest to finish…');await new Promise(r=>setTimeout(r,2000))}}
 const unlock=()=>{try{if(fs.readFileSync(LOCK,'utf8')===String(process.pid))fs.rmSync(LOCK)}catch(e){}};
-process.on('exit',unlock);for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>{unlock();process.exit(130)});
+process.on('exit',()=>{unlock();try{fs.rmSync(tmp,{recursive:true,force:true})}catch(e){}});for(const sig of ['SIGINT','SIGTERM'])process.on(sig,()=>{unlock();process.exit(130)});
 const tmp=fs.mkdtempSync('/tmp/play-');
 import {execFileSync} from 'node:child_process';
 execFileSync('python3',[path.join(root,'build.py'),'--out',path.join(tmp,'built.html')]); // own build: safe when several chapters are tested at once

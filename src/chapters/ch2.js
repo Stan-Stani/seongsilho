@@ -377,7 +377,7 @@ const POD={pal:{O:OL,F:'#5F6E7A',f:'#46525C',C:'#D9D2BE',c:'#B9B19B',get G(){ret
  down:["................","................","..OOOOOOOOOOOO..",".OFFFFFFFFFFFFO.",".OFGGGGGGGGGGFO.",".OFCCCCCCCCCCFO.",".OFCcCCCCCCcCFO.",".OFCCCCCCCCCCFO.",".OFCCCCCCCCCCFO.",".OFCcCCCCCCcCFO.",".OFCCCCCCCCCCFO.",".OFCCCCCCCCCCFO.",".OFFFFFFFFFFFFO.",".OffffffffffffO.","..OOOOOOOOOOOO..","................"]};
 
 /* ---------- people (book descriptions where the book gives them; otherwise designer's choice) ---------- */
-const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'short'};
+const ELLIE={hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'};
 const FINN={hair:'#E0C070',skin:'#F0C9A4',shirt:'#2F8F8A',pants:'#2E3548'};
 
 const ZONES={
@@ -627,7 +627,7 @@ const NPC={
  resident:{name:'버블타운 주민',zone:'bubbletown',x:20,y:14,dir:'left',look:{hair:'#7A6A5A',skin:'#D7A77E',shirt:'#6A7079',pants:'#3A3A40',cap:'#B5653A'},
   talk:()=>[{say:'저 탑 보여요? 50킬로미터예요. 꼭대기에 부두 원반이 있어요.'},{say:'밖은 공기가 없어요. 우리는 은색 공 안에서 살아요.'},{say:'아래 행성이요? 추워요. 저는 여기가 좋아요.'}]},
  /* ---------------- Breakerville ---------------- */
- tabia:{name:'타비아',zone:'breakerville',x:17,y:11,dir:'down',look:{hair:'#1E1A1A',skin:'#B57A55',shirt:'#3E6B8A',pants:'#2A3340',belt:'#C9A64A',style:'bun'},badge:['계약'],
+ tabia:{name:'타비아',zone:'breakerville',x:17,y:11,dir:'down',look:{hair:'#1E1A1A',skin:'#B57A55',shirt:'#3E6B8A',pants:'#2A3340',belt:'#C9A64A',style:'bun',lashes:1,lips:'#B8606A'},badge:['계약'],
   hide:()=>!!f().attack,
   status:()=>{const F=f();if(!b('계약'))return undefined;if(!F.contract)return hasItem('계약서')?'todo':'wait';if(!F.daves)return hasItem('은행 기록')?'todo':'wait';return null},
   script:()=>{const F=f();if(!b('계약'))return null;
