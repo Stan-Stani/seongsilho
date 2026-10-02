@@ -11,8 +11,9 @@ names=set()
 for r in [repo,here.parent]:
     for p in sorted((r/'src/chapters').glob('ch*.js')):
         src=p.read_text(encoding='utf-8')
-        for m in re.finditer(r"name:'([^']+)'",src):
+        for m in re.finditer(r"(?:name|who):'([^']+)'",src):
             for part in re.split(r'[ ()·]+',m.group(1)):
+                if len(part)>2 and part.endswith('의'): part=part[:-1]   # 멜로리의 유령 → 멜로리
                 if re.fullmatch('[가-힣]{2,}',part): names.add((part,'NNP'))
         for m in re.finditer(r"^\s*'([가-힣 ]{2,})':\{k:",src,flags=re.M):
             w=m.group(1)
