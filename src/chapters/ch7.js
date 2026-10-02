@@ -287,7 +287,6 @@ const T7={
  gateView:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.1);const G=Z.gate;
   g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
   const cx=G.cx-CAM.x,cy=G.cy-CAM.y,R=G.R;
-  [[-150,-26],[132,-34],[196,2],[-204,8],[72,-48]].forEach(([dx,dy],i)=>{g.fillStyle='#2A3142';g.beginPath();g.arc(cx+dx,cy+dy,3+i%2,0,Math.PI*2);g.fill();r(cx+dx,cy+dy,1,1,'#9FD7E8')});
   g.fillStyle='rgba(120,170,255,.10)';g.beginPath();g.arc(cx,cy,R+9,0,Math.PI*2);g.fill();
   g.fillStyle='#161A22';g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fill();
   g.strokeStyle='#2B3240';g.lineWidth=2;for(let i=0;i<16;i++){const a=i/16*Math.PI*2;g.beginPath();g.moveTo(cx+Math.cos(a)*15,cy+Math.sin(a)*15);g.lineTo(cx+Math.cos(a)*(R-2),cy+Math.sin(a)*(R-2));g.stroke()}
