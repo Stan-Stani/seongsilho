@@ -10,9 +10,10 @@ CHAPTERS.push({id:'ch4',n:'4장',title:'카이발',place:'성실호 · 나트 ·
    Kajval: a billion Celestials killed by the Crystal Gun 6,000 years ago; the air froze into dust that fills the old ocean
    basins; vacuum; lava rivers; dead herds and birds. The Natt is a human crawling town. Elsbeth McQuillan "just takes you there".
    Raid on compound BK37: saberstone moat — Edusal and all of Fomki's team die, locksmith Mique Odox is shot through the helmet,
-   Bensath's men are hit; Ellie (ordered by Gyvoy to stay in the tank) fires missiles at two hoodoos → rubble causeway; Elsbeth's
+   Bensath's men are hit; Ellie (ordered by Gyvoy to stay in the tank) plans it, Elsbeth fires missiles at two hoodoos → causeway; Elsbeth's
    tank is lost; Finn, Elsbeth and Ellie are bitten (suits seal). Spiral stair, Ghosts, mines; mummified Kajval family; Finn wakes a
-   fluted-cone drop ship and burns out through the roof. Elsbeth joins the crew ("you owe me a tank"). Bensath survives.
+   fluted-cone drop ship; it burns through the floor and slides out through an archway. Elsbeth joins ("you owe me a tank"; after docking in c022). Bensath survives.
+   BK37 order (audit): wall → moat directly inside → trap field → hoodoo tower. Gyvoy leads the raid; Mique is shot by a Ghost; Finn drops the stair mines.
    Lore source: notes/canon.md + notes/chapters-outline.md (4장). Audit against the full book before publishing (see CLAUDE.md).
    ===================================================================== */
 const WORDS=['화산','용암','진공','우주복','담','침입하다','발자국','구르다','무너지다','계단','먼지','질식하다','전멸','물리다','희생','멸망하다'];
@@ -40,17 +41,17 @@ const DICT={
  '홀로그램':{k:'빛으로 만든 그림. 공중에 떠 있어요.',e:'hologram'},
  '마라 야마':{k:'사람을 잡아가서 기억을 읽는 무서운 우주 종족.',e:'the Mara Yama'},
  '방주':{k:'사람들을 싣고 아주 오래 나는 큰 배. 성실호도 방주예요.',e:'arkship'},
- '수정총':{k:'카이발의 세계를 죽인 무기.',e:'the Crystal Gun'},
+ '수정총':{k:'카이발의 세계를 죽인 무기. 공기를 작은 수정 가루로 바꿨어요.',e:'the Crystal Gun'},
  '가루':{k:'아주 작게 부서진 것. 밀가루처럼요.',e:'powder'},
  '드롭십':{k:'행성으로 내려갔다가 다시 올라가는 작은 배.',e:'drop ship'},
  '격납고':{k:'작은 배를 넣어 두는 큰 방.',e:'hangar'},
  '항법사':{k:'배가 갈 길을 계산하는 사람.',e:'astrogator'},
- '나트':{k:'바퀴로 천천히 움직이는 마을. 카이발에 있어요.',e:'the Natt (Noveck Active Travel Town)'},
+ '나트':{k:'탱크처럼 아주 큰 바퀴 띠로 천천히 기어가는 마을. 카이발에 있어요.',e:'the Natt (Noveck Active Travel Town)'},
  '방패':{k:'날아오는 것을 막는 판.',e:'shield'},
  '자물쇠 전문가':{k:'잠긴 문을 여는 일을 하는 사람.',e:'locksmith'},
  '함정':{k:'숨겨 놓은 위험한 장치.',e:'trap'},
- '핵 폭약':{k:'아주 강한 폭탄. 벽을 부술 때 써요.',e:'nuclear charge'},
- '세이버스톤':{k:'달걀 같은 하얀 돌 기계. 별 모양 입으로 물어요.',e:'saberstones'},
+ '핵 폭약':{k:'아주 강한 폭탄. 방사능은 없어요. 벽을 부술 때 써요.',e:'nuclear charge'},
+ '세이버스톤':{k:'달걀 같은 연한 회색 돌 기계. 별 모양 입으로 물어요.',e:'saberstones'},
  '무전':{k:'멀리 있는 사람하고 하는 전화 같은 것.',e:'radio'},
  '후두':{k:'아주 높은 돌기둥. 카이발에는 1킬로미터짜리도 있어요.',e:'hoodoo (rock pillar)'},
  '고스트':{k:'셀레스철이 만든 전투 로봇. 종류가 아주 많아요.',e:'Ghost (combat machine)'},
@@ -86,7 +87,7 @@ const BANK=[
 
 const Q={ // NPC questions, kept here so review can reuse them
  finn:[
-  {w:'멸망하다',ask:'카이발의 셀레스철은 모두 죽었어요. 그 세계는 ___.',opts:[['멸망했어요',1],['결정했어요',0,'결정은 고르는 거예요. 세계가 완전히 없어졌어요 → "멸망했어요".'],['실망했어요',0,'실망은 기분이 나쁜 거예요. 세계가 없어졌어요 → "멸망했어요".']]},
+  {w:'멸망하다',ask:'카이발의 셀레스철은 거의 다 죽었어요. 그 세계는 ___.',opts:[['멸망했어요',1],['결정했어요',0,'결정은 고르는 거예요. 세계가 완전히 없어졌어요 → "멸망했어요".'],['실망했어요',0,'실망은 기분이 나쁜 거예요. 세계가 없어졌어요 → "멸망했어요".']]},
   {w:'진공',ask:'공기가 하나도 없는 곳은 ___이에요.',opts:[['진공',1],['진짜',0,'진짜는 "가짜가 아니에요"예요. 공기가 없는 곳은 "진공".'],['공항',0,'공항에는 공기가 많아요! 空은 같아요. 공기가 없는 곳은 "진공".']]},
  ],
  binopal:[
@@ -103,7 +104,7 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'침입하다',ask:'도둑이 밤에 남의 집에 ___.',opts:[['침입했어요',1],['입학했어요',0,'입학은 학교에 들어가는 거예요. 몰래 들어가요 → "침입했어요".'],['초대했어요',0,'초대는 오라고 부르는 거예요. 허락 없이 들어가요 → "침입했어요".']]},
  ],
  pandiana:[
-  {w:'먼지',ask:'옛날 공기가 얼어서 하얀 ___가 됐어요.',opts:[['먼지',1],['먼저',0,'먼저는 "제일 처음에"예요. 작은 가루는 "먼지".'],['편지',0,'편지는 쓰는 거예요. 작은 가루는 "먼지".']]},
+  {w:'먼지',ask:'옛날 공기가 반짝이는 ___가 됐어요.',opts:[['먼지',1],['먼저',0,'먼저는 "제일 처음에"예요. 작은 가루는 "먼지".'],['편지',0,'편지는 쓰는 거예요. 작은 가루는 "먼지".']]},
   {w:'침입하다',ask:'폭약이 터진 ___ 담 안으로 침입해요.',opts:[['후에',1],['전에',0,'터지기 전에 들어가면 아주 위험해요! 터지고 나서 → "터진 후에".']]},
  ],
  miqueB:[
@@ -140,7 +141,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
 };
 
-const ITEMS={'우주복':'엘스베스가 준 우주복. 헬멧을 벗으면 안 돼요.','핵 폭약':'벤사스 하사가 준 폭약. 담을 부술 때 써요.'};
+const ITEMS={'우주복':'성실호 준비실에서 받은 우주복. 헬멧을 벗으면 안 돼요.','핵 폭약':'벤사스 하사가 준 폭약. 담을 부술 때 써요.'};
 
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
@@ -245,8 +246,8 @@ const CORPSE={art:{pal:{O:OL,Y:'#C9CDD2',V:'#26384A',X:'#07070A',C:'#5A5A62',c:'
 CORPSE.art.up=CORPSE.art.left=CORPSE.art.down;
 /* the mummified Kajval family: an adult reaching out, holding a child; prehensile furred tails */
 const MUMMY={art:{pal:{O:OL,B:'#7A6650',b:'#5A4A3A',L:'#9A8468',F:'#C2B08E',E:'#2A2018'},
- down:["................","..OO............",".OLBO..OOOO.....","..OLBOOLLLBO....","...OLBOEBBBO....","....OBOBBBO.....",".....OOBBBO.....","....OLLBBBBO....","...OLBBbBBBO....",
-  "..OOLBbBbBBO....",".OLLO.OBbBBBO...","OLBEBOOBBBBBO...","OBBBBBOBBBBBBOO.",".OBbBOLBBBBBBOFO",".OOOOOLBBBBBBOFO","....OLBBBBBBBOFO","...OBBbbbbbBBOFO","...OOOOOOOOOOOFO"]}};
+ down:["................",".OO.OOO.........","OLBOOLLBOOOOOOO.",".OBBBEBBBbBbBBBO","..OOOBBbBbBBBOFO",".....OOOOOOOO.FO","..............FO","...OO.OOO.......",
+  "..OLBOOLBOOOOO..","...OBBEBBBbBBOF.","....OOOOOOOOO.FO","..............OO"]}};
 MUMMY.art.up=MUMMY.art.left=MUMMY.art.down;
 
 /* ---------------- tiles ---------------- */
@@ -406,8 +407,8 @@ const TILES={
  moat:(X,Y,x,y,t)=>{dustBase(X,Y,x,y,t,'~');if(f().attack&&!f().done)saber(X,Y,x,y,t);else{const h=hash(x,y);if((Math.floor(t/700)+h)%29===0)r(X+h%13,Y+h%11,2,1,'#ECECE6')}},
  cause:(X,Y,x,y,t)=>{if(!f().causeway)return TILES.moat(X,Y,x,y,t);rubble(X,Y,x,y);r(X,Y,2,16,'#B5D2E1');r(X+14,Y,2,16,'#B5D2E1');r(X+3,Y+6,10,3,'#857C74');
   const a=since('causeAt');if(a<5000){g.fillStyle=`rgba(200,195,190,${.6*(1-a/5000)})`;g.fillRect(X,Y,16,16)}},
- wreck:(X,Y,x,y,t)=>{TILES.moat(X,Y,x,y,t);if(!f().causeway)return;r(X+1,Y+5,14,8,OL);r(X+2,Y+6,12,6,'#5A5E46');r(X+2,Y+6,12,1,'#737858');r(X+4,Y+2,8,5,OL);r(X+5,Y+3,6,3,'#4E523C');r(X+9,Y+3,2,2,'#D2533F');
-  r(X,Y+11,16,5,'#CFE8F2');r(X+2,Y+11,4,1,'#E6F4FA');saber(X,Y,x,y,t)},
+ wreck:(X,Y,x,y,t)=>{if(!f().causeway)return ash(X,Y,x,y,t);ash(X,Y,x,y,t);r(X+1,Y+5,14,8,OL);r(X+2,Y+6,12,6,'#5A5E46');r(X+2,Y+6,12,1,'#737858');r(X+4,Y+2,8,5,OL);r(X+5,Y+3,6,3,'#4E523C');r(X+9,Y+3,2,2,'#D2533F');
+  r(X,Y+10,16,6,'#CFE8F2');r(X+2,Y+10,4,1,'#E6F4FA');r(X+10,Y+1,5,4,'#CFE8F2');saber(X,Y,x,y,t)},
  tower:(X,Y,x,y,t)=>{const L=at(x-1,y)!=='T',R=at(x+1,y)!=='T';r(X,Y,16,16,'#6E6660');
   for(let j=0;j<16;j++){if((y*16+j)%13===0)r(X,Y+j,16,1,'#5E5752')}
   if(L){r(X,Y,1,16,OL);r(X+1,Y,4,16,'#8A817A')}if(R){r(X+15,Y,1,16,OL);r(X+11,Y,4,16,'#4E4844')}
@@ -426,14 +427,15 @@ const TILES={
   if(at(x-1,y)==='O'){r(X,Y,3,16,'#8A8078');r(X+1,Y,1,16,'#5E5550');for(let i=1;i<16;i+=5)r(X,Y+i,3,1,'#A39A90')}
   if(at(x,y+1)==='O'){r(X,Y+13,16,3,'#8A8078');r(X,Y+14,16,1,'#5E5550')}
   if(at(x,y-1)==='O'){r(X,Y,16,3,'#8A8078');r(X,Y+1,16,1,'#5E5550')}
-  const a=since('boomAt');if(a<1800&&y>=10){g.fillStyle=`rgba(255,170,80,${.7*(1-a/1800)})`;g.fillRect(X,Y,16,16)}},
+  const a=since('boomAt');if(a<1800&&y>=10){g.fillStyle=`rgba(170,110,255,${.7*(1-a/1800)})`;g.fillRect(X,Y,16,16)}},
  shaft:(X,Y,x,y,t)=>{r(X,Y,16,16,'#07070A');const h=hash(x,y);r(X+(h%11),Y+(h*7%13),4,1,'#1A1716');r(X+((h*3)%12),Y+((h*5)%13),3,1,'#121010');
   if(at(x-1,y)!=='O')r(X,Y,2,16,'#1A1716');if(at(x+1,y)!=='O')r(X+14,Y,2,16,'#121010');if(at(x,y-1)!=='O')r(X,Y,16,2,'#1E1A18')},
  landing:(X,Y,x,y)=>{r(X,Y,16,16,'#5A524C');r(X,Y,16,1,'#4E4741');r(X,Y,1,16,'#4E4741');if((x+y)%2)r(X+6,Y+6,4,4,'#625A53')},
  broken:(X,Y,x,y,t)=>{TILES.stair(X,Y,x,y,t);r(X,Y+4,16,9,'#07070A');r(X+1,Y+2,6,4,'#6E655E');r(X+9,Y+11,6,4,'#6E655E');r(X+3,Y+7,3,2,'#4A433E');r(X+11,Y+5,2,2,'#4A433E')},
  hwall:(X,Y,x,y)=>{r(X,Y,16,16,'#34343C');r(X+7,Y,2,16,'#40404A');r(X,Y+10,16,6,'#46464F');r(X,Y+10,16,1,'#5E5E6A');r(X+3,Y+12,10,1,'#3A3A44')},
- harch:(X,Y,x,y,t)=>{TILES.hwall(X,Y,x,y);r(X+2,Y+3,12,13,OL);r(X+3,Y+4,10,12,'#0E0E14');r(X+4,Y+3,8,1,'#0E0E14');if(f().woke){const p=(Math.sin(t/350+x)+1)/2;r(X+4,Y+14,8,2,`rgba(150,120,220,${.4+p*.5})`)}},
- hfloor:(X,Y,x,y)=>{r(X,Y,16,16,'#2C2E34');r(X,Y,16,1,'#34373E');r(X,Y,1,16,'#34373E');if((x+y)%2)r(X+5,Y+5,6,6,'#30333A')},
+ harch:(X,Y,x,y,t)=>{TILES.hwall(X,Y,x,y);r(X+2,Y+3,12,13,OL);r(X+3,Y+4,10,12,'#FFF0C8');r(X+4,Y+3,8,1,'#FFF0C8');r(X+3,Y+4,10,5,'#1A1A24');r(X+4,Y+5,1,1,'#FFFFFF');r(X+9,Y+6,1,1,'#C8D3DE');r(X+3,Y+12,10,4,'#4A403A');r(X+3,Y+12,10,1,'#8A7A66')},
+ hfloor:(X,Y,x,y)=>{r(X,Y,16,16,'#2C2E34');r(X,Y,16,1,'#34373E');r(X,Y,1,16,'#34373E');if((x+y)%2)r(X+5,Y+5,6,6,'#30333A');
+  if(at(x,1)==='a'||at(x,y-1)==='a'){g.fillStyle='rgba(255,230,170,.22)';g.fillRect(X+2,Y,12,16)}},
  dship:(X,Y,x,y,t)=>{TILES.hfloor(X,Y,x,y);const [a,b]=blk(x,y);const X0=X-(x-a)*16,Y0=Y-(y-b)*16,cx=X0+24,live=f().woke&&a===6;
   clipT(X,Y,()=>{oval(cx,Y0+44,20,3,'rgba(0,0,0,.35)');
    for(let yy=0;yy<41;yy++){if(!rowIn(Y0+2+yy))continue;const hw=Math.round(1+yy*19/40);r(cx-hw-1,Y0+2+yy,hw*2+3,1,OL);
@@ -488,12 +490,12 @@ const ZONES={
   rooms:[[1,2,6,7,'나트 · 식당'],[8,2,14,14,'나트 · 중앙 홀'],[16,2,24,5,'나트 · 장비실'],[16,7,24,14,'나트 · 차고']],
   warps:{'11,1':{to:'ship',x:18,y:4,dir:'down'},
    '20,15':{to:'plain',x:10,y:16,dir:'up',lock:()=>gateLock()},'21,15':{to:'plain',x:10,y:16,dir:'up',lock:()=>gateLock()}},
-  spots:{'1,1':'축구 경기예요. 그런데 공이 두 개예요! 두 공이 줄로 이어져 있어요.','4,1':'창밖으로 검은 땅이 천천히 지나가요. 나트가 움직이고 있어요.','20,1':'멀리 화산이 보여요. 꼭대기가 주황색이에요.',
+  spots:{'1,1':'축구 경기예요. 그런데 공이 두 개예요! 공 두 개가 서로 붙어 있어요. 잔디는 파란색이에요.','4,1':'창밖으로 검은 땅이 천천히 지나가요. 나트가 움직이고 있어요.','20,1':'멀리 화산이 보여요. 꼭대기가 주황색이에요.',
    '18,3':'우주복 사물함. 헬멧이 줄지어 있어요.','8,9':'기계가 웅웅거려요. 바닥이 조금 흔들려요.','17,10':'엘스베스의 탱크. 아주 크고 무거워요.','22,10':'두 번째 탱크. 옆에 "미사일"이라고 써 있어요.'},
   npcs:['binopal','mique','cook','els','fomki','bensathN','gyvoyN','ellieN']},
  plain:{name:'카이발 · 후두 정원',reg:'KAJVAL · HOA QUINZU',outdoor:1,
   legend:{'v':{tile:'sky'},'V':{tile:'horizon'},'W':{tile:'rwall'},'B':{tile:'breach',walk:1},'H':{tile:'hoodoo'},'Q':{tile:'topple'},'.':{tile:'ash',walk:1},'t':{tile:'track',walk:1},
-   '~':{tile:'dust'},'R':{tile:'rock'},'L':{tile:'lava'},'T':{tile:'dtree'},'b':{tile:'bison'},'f':{tile:'bird'},'E':{tile:'tankE'},'K':{tile:'tankP'},'e':{tile:'hatchT',walk:1}},
+   '~':{tile:'dtree'},'R':{tile:'rock'},'L':{tile:'dtree'},'T':{tile:'dtree'},'b':{tile:'bison'},'f':{tile:'bird'},'E':{tile:'tankE'},'K':{tile:'tankP'},'e':{tile:'hatchT',walk:1}},
   map:[
 "vvvvvvQQvvvvvvvvvvvvQQvvvvHH",
 "VVVVVVQQVVVVVVVVVVVVQQVVVVHH",
@@ -516,12 +518,12 @@ const ZONES={
   rooms:[[0,4,27,16,'카이발 · 후두 정원']],
   warps:{'9,16':{to:'natt',x:20,y:14,dir:'up'},
    '13,3':{to:'bk37',x:11,y:20,dir:'up',lock:()=>!f().breach&&'높은 담이에요. 폭약 없이는 못 들어가요.'},'14,3':{to:'bk37',x:12,y:20,dir:'up',lock:()=>!f().breach&&'높은 담이에요. 폭약 없이는 못 들어가요.'}},
-  spots:{'12,5':'새가 하늘에서 떨어진 그대로 있어요. 깃털에 얼어붙은 공기가 반짝여요.','1,15':'작은 새. 육천 년 동안 여기 누워 있었어요.',
-   '17,7':'들소예요. 서 있는 그대로 죽었어요. 털에 하얀 수정이 반짝여요.','16,8':'들소 떼예요. 모두 같은 쪽을 보고 있어요.','17,9':'들소예요. 만지면 가루가 떨어져요.',
-   '3,4':'반짝이는 바다. 물이 아니에요. 얼어붙은 공기 가루예요.','4,11':'검은 나무. 손을 대면 부서져서 조각이 돼요.','5,12':'죽은 숲이에요. 잎이 하나도 없어요.',
+  spots:{'12,5':'새가 하늘에서 떨어진 그대로 있어요. 깃털에 수정이 된 공기가 반짝여요.','1,15':'작은 새. 육천 년 동안 여기 누워 있었어요.',
+   '17,7':'들소예요. 쓰러진 그대로 죽었어요. 털에 하얀 수정이 반짝여요.','16,8':'들소 떼예요. 모두 같은 쪽을 보고 있어요.','17,9':'들소예요. 만지면 가루가 떨어져요.',
+   '4,5':'죽은 숲이 끝없이 이어져요. 후두 정원은 80킬로미터예요.','4,11':'검은 나무. 손을 대면 부서져서 조각이 돼요.','5,12':'죽은 숲이에요. 잎이 하나도 없어요.',
    get '7,4'(){return f().causeway?'엘리의 미사일로 무너진 후두. 밑동만 남았어요.':'후두. 1킬로미터 높이의 돌기둥이에요. 꼭대기가 안 보여요.'},
    get '20,4'(){return f().causeway?'무너진 후두. 돌 조각이 담 너머까지 날아갔어요.':'후두. 아주 높아요. 밑이 조금 부서져 있어요.'},
-   '20,10':'용암이 강처럼 흘러요. 우주복이 있어도 너무 뜨거워요.','8,6':'검은 바위예요. 화산에서 날아온 돌이에요.',
+   '20,10':'죽은 나무들이에요. 여기는 용암이 없어요. 화산은 멀리 있어요.','8,6':'검은 바위예요. 화산에서 날아온 돌이에요.',
    get '11,11'(){return f().causeway?'빈 미사일 거치대예요. 탱크는 해자 쪽으로 갔어요.':'엘스베스의 탱크. 엘리가 안에 있어요.'},'9,14':'다른 탱크예요. 뒷문으로 나트에 돌아갈 수 있어요.'},
   npcs:['pandiana','edusal','ellieP']},
  bk37:{name:'BK37 · 담 안',reg:'COMPOUND BK37 · KAJVAL',outdoor:1,
@@ -533,13 +535,7 @@ const ZONES={
 "#......TTTTTTTTTT......#",
 "#.R....TTTTTTTTTT....R.#",
 "#......TTTTAATTTT......#",
-"#......................#",
-"#......................#",
-"#~~~~~~~~~~c~~~~~~~~~~~#",
-"#~~~~~~~~~~c~~~~~~~~~~~#",
-"#~~~~~~~~~~cX~~~~~~~~~~#",
-"#~~~~~~~~~~c~~~~~~~~~~~#",
-"#~~~~~~~~~~c~~~~~~~~~~~#",
+"#..............X.......#",
 "#......................#",
 "#ggggggggggpggggggggggg#",
 "#ggggggggggpppggggggggg#",
@@ -547,17 +543,23 @@ const ZONES={
 "#ggggggggpppppggggggggg#",
 "#ggggggggpggggggggggggg#",
 "#ggggggggpppggggggggggg#",
-"#ggggggggggpggggggggggg#",
-"#gggggggggg..gggggggggg#",
+"#......................#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
+"#~~~~~~~~~~cc~~~~~~~~~~#",
 "###########BB###########"],
-  rooms:[[1,13,22,20,'BK37 · 함정 밭'],[1,7,22,12,'BK37 · 해자'],[1,1,22,6,'BK37 · 탑 앞']],
+  rooms:[[1,14,22,20,'BK37 · 해자'],[1,7,22,13,'BK37 · 함정 밭'],[1,1,22,6,'BK37 · 탑 앞']],
   warps:{'11,21':{to:'plain',x:13,y:4,dir:'down'},'12,21':{to:'plain',x:14,y:4,dir:'down'},
    '11,4':{to:'tower',x:9,y:21,dir:'up',lock:()=>!f().bitten&&'엘스베스가 다쳤어요. 먼저 가 봐요.'},'12,4':{to:'tower',x:10,y:21,dir:'up',lock:()=>!f().bitten&&'엘스베스가 다쳤어요. 먼저 가 봐요.'}},
-  spots:{'10,17':'초록색으로 빛나는 그물이에요. 밟으면 끝이에요.','12,15':'땅속에서 무엇이 빙글빙글 돌아요. 칼 같아요.',
-   get '5,11'(){return f().attack?'먼지 속에서 하얀 공들이 굴러다녀요. 수백만 개예요.':'반짝이는 먼지 해자. 아주 조용해요.'},
-   get '12,9'(){return f().causeway?'엘스베스의 탱크가 먼지 속으로 가라앉았어요. 위에 세이버스톤이 가득해요.':'반짝이는 먼지예요.'},
+  spots:{'10,11':'초록색으로 빛나는 그물이에요. 밟으면 끝이에요.','12,9':'땅속에서 무엇이 빙글빙글 돌아요. 칼 같아요.',
+   get '5,14'(){return f().attack?'먼지 속에서 연한 회색 공들이 굴러다녀요. 수백만 개예요.':'반짝이는 수정 가루 해자. 무릎까지 빠져요.'},
+   get '15,5'(){return f().causeway?'엘스베스의 탱크가 탑 앞에서 세이버스톤에 묻혔어요.':'탑 앞의 빈 땅이에요.'},
    '8,4':'BK37 탑. 돌기둥을 깎아서 만들었어요. 발코니가 층층이 있어요.','2,3':'검은 바위예요.'},
-  npcs:['miqueB','bensathB','fomkiB','edusalB','swarm','elsB']},
+  npcs:['miqueB','gyvoyB','bensathB','fomkiB','edusalB','swarm','swarm2','elsB','ellieB']},
  tower:{name:'BK37 · 나선 계단',reg:'COMPOUND BK37 · STAIRWELL',
   legend:{'#':{tile:'twall'},'s':{tile:'stair',walk:1},'O':{tile:'shaft'},'l':{tile:'landing',walk:1},'x':{tile:'broken'},'A':{tile:'arch',walk:1},
    'H':{tile:'hwall'},'a':{tile:'harch'},'.':{tile:'hfloor',walk:1},'D':{tile:'dship'},'m':{tile:'mummy'}},
@@ -586,15 +588,14 @@ const ZONES={
 "####llllllllllll####",
 "#########AA#########"],
   rooms:[[1,2,18,6,'BK37 · 격납고'],[4,8,15,21,'BK37 · 나선 계단']],
-  dark:()=>!f().woke?[1,1,18,6]:null,
   warps:{'9,22':{to:'bk37',x:11,y:5,dir:'down'},'10,22':{to:'bk37',x:12,y:5,dir:'down'}},
   spots:{'3,4':'카이발 드롭십. 홈이 세 개 있는 원뿔이에요.','16,4':'드롭십이 네 대 있어요. 모두 원뿔 모양이에요.','12,4':'이 드롭십은 육천 년 동안 기다렸어요.',
    '14,5':'카이발 셀레스철 미라. 꼬리를 몸에 감고 있어요.','3,6':'미라예요. 손이 드롭십 쪽을 향해 있어요.','17,6':'미라예요. 털이 조금 남아 있어요.',
    '8,12':'아래가 안 보여요. 아주 깊어요.','6,13':'무너진 계단이에요. 건널 수 없어요.','7,13':'계단이 부서져서 구멍이 났어요.'},
-  npcs:['dave1','dave2','ghost1','ghost2','bensathT','mummyA','finnB','elsT']},
+  npcs:['dave1','dave2','ghost1','ghost2','gyvoyT','mummyA','finnB','elsT']},
 };
 function gateLock(){
- if(!hasItem('우주복'))return '밖은 진공이에요. 우주복이 없으면 못 나가요.';
+ if(!hasItem('우주복'))return '헬멧을 쓰고 나가요.';
  if(!f().charges)return '아직 폭약이 없어요. 벤사스 하사를 만나요.';
  if(!f().ellieTank)return '기보이 씨가 출발 전에 할 말이 있대요.';
  return false;
@@ -619,28 +620,29 @@ const NPC={
     {say:'우리 배가 관문을 지난 건 처음이에요. 놀랄 만해요.'},
     {say:'그런데 이상한 배가 우리를 불러요. 저 {홀로그램|홀로그램} 앞으로 가 봐요.',set:()=>{f().metDejean=1}}];
    if(!f().warned)return [{say:'홀로그램 앞으로 가요. 누가 우리한테 할 말이 있어요.'}];
-   if(!f().orbit)return [{say:'5주예요. 핀 씨가 카이발 이야기를 할 거예요.'}];
-   return [{say:'격납고는 저 문 너머예요. 5주 안에 꼭 돌아와요.'}]}},
+   if(!f().orbit)return [{say:'성계에서 5주, 땅에서 5일이에요. 핀 씨가 카이발 이야기를 할 거예요.'}];
+   return [{say:'격납고는 저 문 너머예요. 5일 안에 꼭 돌아와요.'}]}},
  uemi:{name:'우에미주발리',zone:'ship',x:3,y:4,dir:'up',look:{hair:'#1E1E24',skin:'#C68E64',shirt:'#3E6E8E',pants:'#2E3B55',style:'bun',lashes:1,lips:'#B0605E'},
   talk:()=>[{say:'저는 {항법사|항법사} 우에미주발리예요.'},{say:'관문을 나오니까 호아 퀸주 성계예요. 카이발은 바로 저 앞이에요.'},{say:'점프할 때 시간이 멈춘 것 같았어요. 정말 이상해요.'}]},
  pablo:{name:'파블로',zone:'ship',x:13,y:5,dir:'left',look:PABLO,
   pos:()=>f().orbit?[12,7]:[13,5],
   talk:()=>f().orbit?[{say:'파블로가 문 열었어요. 조심히 다녀와요.'},{say:'개스 형제들이 배를 잘 지켜요.'}]
-   :[{say:'파블로예요. 개스 형제들 다 괜찮아요.'},{say:'관문 지날 때 파블로는 조금 무서웠어요.'},{say:'여기는 {격납고|격납고} 문이에요. 핀 씨가 말하면 열어요.'}]},
+   :[{say:'파블로예요. 개스 형제들 다 괜찮아요.'},{say:'관문 지날 때 파블로는 하나도 안 무서웠어요.'},{say:'여기는 {격납고|격납고} 문이에요. 핀 씨가 말하면 열어요.'}]},
  woiykan:{name:'보이크안',zone:'ship',x:7,y:7,dir:'down',look:WOIY,
   status:()=>f().metDejean&&!f().warned?'todo':null,
   script:()=>{
    if(!f().metDejean)return [{say:'…지지직…'},{who:'…',say:'홀로그램이 깜빡거려요. 선장님한테 먼저 가 봐요.'}];
    if(f().warned)return [{say:'…조심해요, 인간의 배…'},{who:'…',say:'홀로그램이 꺼졌어요.'}];
    return [
-    {say:'인간의 배. 들려요? 저는 라타라잔의 배, 보이크안이에요.'},
-    {say:'경고해요. 데 베리아 가스 행성 궤도에 {마라 야마|마라 야마} 함대가 있어요.'},
-    {say:'지금 거기서 연료를 넣고 있어요.'},
-    {say:'마라 야마는 {방주|방주}를 아주 좋아해요. 조심해요.'},
-    {who:'기보이',say:'마라 야마는 사람을 잡아가요.'},
-    {who:'기보이',say:'몇십 년 동안 살려 두고, 그 사람의 기억을 봐요.'},
-    {who:'드장 선장',say:'…좋아요. 카이발에서는 5주만 있어요.'},
-    {who:'드장 선장',say:'5주가 지나면 무조건 떠나요. 핀 씨, 시작해요.',set:()=>{f().warned=1}}]}},
+    {say:'인간의 배. 저는 라타라잔의 배, 보이크안이에요. 왜 왔어요?'},
+    {say:'옛날 지구의 {방주|방주}? 그건 위험해요.'},
+    {say:'3년 전에 {마라 야마|마라 야마} 함대가 왔어요. 지금 데 베리아 궤도에 있어요.'},
+    {say:'조심해서 가요. 책임은 당신들한테 있어요.'},
+    {who:'기보이',say:'거기서 연료를 넣고 있을 거예요.'},
+    {who:'핀',say:'마라 야마는 방주를 노려요. 사람을 잡아가요.'},
+    {who:'핀',say:'몇십 년 동안 살려 두고, 그 사람의 기억을 봐요.'},
+    {who:'드장 선장',say:'…좋아요. 이 성계에서는 5주만 있어요.'},
+    {who:'드장 선장',say:'카이발 땅에서는 5일이에요. 5일이 지나면 무조건 떠나요.',set:()=>{f().warned=1}}]}},
  gyvoy:{name:'기보이',zone:'ship',x:9,y:7,dir:'left',look:GYVOY,
   talk:()=>f().warned?[{say:'마라 야마가 오기 전에 끝내야 돼요.'},{say:'이번 일의 대장은 저예요. 걱정 마세요.'}]
    :[{say:'아스테리아 여신님, 감사합니다! 첫 점프 성공!'},{say:'이번 일은 제가 대장이에요. 잘 부탁해요.'}]},
@@ -651,16 +653,16 @@ const NPC={
   talk:()=>[
    {say:'화면 봐요. 저기가 카이발이에요.'},
    {say:'육천 년 전에 {수정총|수정총}이 이 세계를 죽였어요.'},
-   {say:'셀레스철이 십억 명 살았어요. 모두 한꺼번에 죽었어요.'},
+   {say:'셀레스철이 십억 명쯤 살았어요. 거의 다 한꺼번에 죽었어요.'},
    Q.finn[0],
-   {say:'그때 공기가 얼어서 {가루|가루}가 됐어요. 바다가 그 가루로 가득해요.'},
+   {say:'그때 공기가 작은 수정 {가루|가루}로 변했어요. 바다가 그 가루로 가득해요.'},
    {say:'그래서 지금 카이발에는 공기가 없어요.'},
    Q.finn[1],
    {say:'우리는 거기서 셀레스철 {드롭십|드롭십}을 가져와야 돼요.'},
    {say:'{격납고|격납고}로 가요. 파블로한테 문을 열라고 했어요.',award:['멸망하다','진공'],set:()=>{f().orbit=1}}]},
  ellieS:{name:'엘리',zone:'ship',x:20,y:3,dir:'left',look:ELLIE,
   hide:()=>!!f().boarded&&ZID!=='ship',
-  talk:()=>[{say:'헤즈업 준비 끝! 엔포 가문의 강하선이에요. 진주 같죠?'},{say:'먼저 {나트|나트}로 내려가요. 바퀴로 움직이는 마을이에요.'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
+  talk:()=>[{say:'헤즈업 준비 끝! 엔포 가문의 강하선이에요. 진주 같죠?'},{say:'우주복 입었어요? 헤즈업에서 {나트|나트}까지 걸어가요. 탱크처럼 기어가는 마을이에요.',give:'우주복'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
  /* ---- the Natt ---- */
  binopal:{name:'비노팔',zone:'natt',x:12,y:4,dir:'down',look:BINO,badge:['화산','용암'],
   after:'나트는 느려요. 그래도 용암보다는 빨라요. 하하.',
@@ -684,20 +686,20 @@ const NPC={
    Q.mique[1],
    {say:'담 안에는 {함정|함정}이 많아요. 그래서 제가 같이 가요.',award:['담','침입하다'],set:()=>{f().mique=1}}]},
  cook:{name:'나트 식당 아저씨',zone:'natt',x:2,y:7,dir:'up',look:{hair:'#8A8A8A',skin:'#E0B08A',shirt:'#D8D8D0',pants:'#4A4A50',cap:'#E8E8E0'},
-  script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 와요! 국 한 그릇 하면서 옛날 단어 연습해요.'},{...q,old:1},{say:'공 두 개 축구, 재미있죠? 또 와요.'}]},
+  script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 와요! 음식 봉지 하나 먹으면서 옛날 단어 연습해요.'},{...q,old:1},{say:'공 두 개 축구, 재미있죠? 또 와요.'}]},
   talk:()=>[]},
  els:{name:'엘스베스',zone:'natt',x:20,y:12,dir:'left',look:ELS_N,badge:['우주복','질식하다'],hide:()=>!!f().breach,
   status:()=>{if(!state.badges.includes('우주복'))return f().binopal?'todo':null},
   script:()=>!f().binopal?[{say:'탱크요? 비노팔 씨를 통해서 와요.'}]:null,
   after:'저는 데려다주기만 해요. 기억해요.',
   talk:()=>[
-   {say:'엘스베스예요. 여기 탱크 세 대가 다 제 거예요.'},
+   {say:'엘스베스예요. 제 탱크는 \'헬 웰컴스\'예요. 탱크 두 대가 더 같이 가요.'},
    {say:'제 규칙은 하나예요. 저는 데려다주기만 해요. 싸움은 당신들 일이에요.'},
    Q.els[0],
    {say:'헬멧에 구멍이 나면 숨을 못 쉬어요.'},
    Q.els[1],
    Q.els[2],
-   {say:'이 우주복 입어요. 크기는 대충 맞을 거예요.',give:'우주복',award:['우주복','질식하다'],set:()=>{f().els=1}}]},
+   {say:'우주복 잘 입었네요. 헬멧은 꼭 잠가요.',award:['우주복','질식하다'],set:()=>{f().els=1}}]},
  fomki:{name:'폼키',zone:'natt',x:18,y:11,dir:'down',look:FOM,hide:()=>!!f().breach,
   talk:()=>[{say:'폼키예요. 우리 팀이 제일 앞에서 걸어요.'},{say:'에두살은 벌써 밖에 나갔어요. 성격이 급해요.'}]},
  bensathN:{name:'벤사스 하사',zone:'natt',x:21,y:8,dir:'down',look:BEN,hide:()=>!!f().breach,
@@ -727,87 +729,102 @@ const NPC={
  pandiana:{name:'판디아나',zone:'plain',x:12,y:4,dir:'down',look:PAN_H,badge:['먼지'],
   status:()=>{if(!state.badges.includes('먼지'))return hasItem('핵 폭약')?'todo':null},
   script:()=>!hasItem('핵 폭약')&&!f().breach?[{say:'판디아나예요. 폭약은 어디 있어요?'}]:null,
-  after:'먼지 바다에 들어가지 마세요. 가라앉아요.',
+  after:'해자에 오래 서 있지 마세요. 가라앉아요.',
   talk:()=>[
    {say:'판디아나예요. 17시간 달렸어요. 다리가 아파요.'},
-   {say:'저기 반짝이는 바다 보여요? 물이 아니에요.'},
+   {say:'담 안에 반짝이는 해자가 있대요. 물이 아니에요.'},
    Q.pandiana[0],
-   {say:'폭약 줘요. 담에 설치할게요.',take:['핵 폭약']},
+   {say:'폭약 줘요. 로봇이 담 밑에 가져다 놓을 거예요.',take:['핵 폭약']},
    Q.pandiana[1],
-   {say:'다들 뒤로! 삼, 이, 일…',set:()=>{f().breach=1;f().breachAt=Date.now()}},
+   {say:'다들 엎드려요! 삼, 이, 일…',set:()=>{f().breach=1;f().breachAt=Date.now()}},
    {say:'번쩍! …그런데 아무 소리도 안 들려요. 진공이라서요.'},
-   {say:'담에 큰 구멍이 났어요. 미크가 앞에서 걸어요.',award:['먼지']}]},
+   {say:'담에 구멍이 세 개 났어요. 고스트는 구멍으로 가요.'},
+   {say:'우리는 담을 타고 넘어가요. 미크가 앞에서 가요.',award:['먼지']}]},
  edusal:{name:'에두살',zone:'plain',x:16,y:5,dir:'left',look:EDU_H,
   hide:()=>!!f().breach,
-  talk:()=>[{say:'에두살이에요. 폼키 팀이에요.'},{say:'들소들이 아직 살아 있는 것 같아요. 조금 무서워요.'},{say:'그래도 이번 일은 돈을 많이 줘요.'}]},
- ellieP:{name:'엘리',zone:'plain',x:13,y:12,dir:'left',look:ELLIE_H,badge:['무너지다'],
+  talk:()=>[{say:'에두살이에요. 폼키 팀이에요.'},{say:'오는 길에 쓰러진 들소들을 봤어요. 조금 무서워요.'},{say:'그래도 이번 일은 돈을 많이 줘요.'}]},
+ ellieP:{name:'엘리',zone:'plain',x:13,y:12,dir:'left',look:ELLIE_H,
   hide:()=>!!f().causeway,
-  status:()=>f().attack&&!f().causeway?'todo':null,
-  script:()=>{
-   if(!f().attack)return [{say:'저는 여기 탱크 안에 있어요. 카메라로 다 봐요.'},{say:'조종사인데… 기다리기만 해요.'}];
-   return null},
-  talk:()=>[
-   {say:'{무전|무전} 다 들었어요. 폼키 팀이… 미크 씨가…'},
-   {say:'생각이 있어요. 담 옆에 큰 {후두|후두} 두 개 보여요?'},
-   Q.ellie[0],
-   {say:'후두가 해자 위로 쓰러지면 돌 길이 생겨요.'},
-   Q.ellie[1],
-   {w:'무너지다',build:['후두가','무너져서','길이','생겼어요']},
-   {say:'탱크 미사일, 발사!',set:()=>{f().causeway=1;f().causeAt=Date.now()}},
-   {say:'후두 두 개가 천천히 무너져요. 소리는 하나도 없어요.'},
-   {say:'엘스베스가 탱크로 먼저 건너요. 우리도 가요! 제가 같이 갈게요.',award:['무너지다']}]},
- /* ---- BK37 ---- */
- miqueB:{name:'미크 오독스',zone:'bk37',x:11,y:19,dir:'down',get look(){return f().attack?CORPSE:MIQ_H},badge:['발자국'],
-  pos:()=>f().prints?[10,12]:[11,19],
+  talk:()=>f().attack?[{say:'{무전|무전} 다 들었어요! 기보이 씨한테 말해요. 생각이 있어요!'}]
+   :[{say:'저는 여기 탱크 안에 있어요. 카메라로 다 봐요.'},{say:'조종사인데… 기다리기만 해요.'}]},
+ /* ---- BK37: wall, moat, trap field, tower ---- */
+ miqueB:{name:'미크 오독스',zone:'bk37',x:11,y:13,dir:'down',get look(){return f().attack?CORPSE:MIQ_H},badge:['발자국'],
+  pos:()=>f().prints?[9,5]:[11,13],
   status:()=>f().attack?null:undefined,
   script:()=>f().attack?[{who:'…',say:'미크 씨가 쓰러져 있어요. 헬멧에 총알 구멍이 났어요.'},{who:'…',say:'피가 진공 속에서 끓어서 하얀 김이 돼요.'},{who:'…',say:'미크 씨는 죽었어요.'}]
-   :f().prints?[{say:'벤사스 하사가 해자 앞에 있어요. 폼키 팀이 먼저 건너요.'}]:null,
+   :f().prints?[{say:'빨리 와요. 벤사스 하사가 기다려요.'}]:null,
   after:'제 발자국만 밟아요. 한 줄로요.',
   talk:()=>[
-   {say:'여기부터 {함정|함정} 밭이에요. 초록 그물 보여요?'},
+   {say:'해자를 건넜어요. 여기부터 {함정|함정} 밭이에요. 초록 그물 보여요?'},
    {say:'제가 앞에서 걸을게요. 땅에 제 발 모양이 남아요.'},
    Q.miqueB[0],
    Q.miqueB[1],
    {say:'한 줄로 따라와요. 천천히.',award:['발자국'],set:()=>{f().prints=1}}]},
- bensathB:{name:'벤사스 하사',zone:'bk37',x:11,y:12,dir:'up',look:BEN_H,badge:['구르다','전멸'],
-  pos:()=>f().attack?[13,12]:[11,12],
+ gyvoyB:{name:'기보이',zone:'bk37',x:12,y:13,dir:'up',look:helm(GYVOY,'#8A5A7A'),badge:['무너지다'],
+  pos:()=>f().causeway?[10,6]:f().prints?[12,6]:[12,13],
+  status:()=>{if(!state.badges.includes('무너지다'))return f().attack?'todo':null},
+  script:()=>!f().attack?[{say:'제가 미크 바로 뒤에서 가요. 대장이니까요.'}]:null,
+  after:'계속 가요! 멈추면 죽어요!',
+  talk:()=>[
+   {say:'계속 가요! 멈추면 죽어요!'},
+   {say:'{무전|무전}! 탱크의 엘리 씨를 불러요.'},
+   {who:'엘리',say:'다 들었어요. 생각이 있어요!'},
+   {who:'엘리',say:'담 밖에 큰 {후두|후두} 두 개 있죠? 그 밑을 미사일로 쏴요.'},
+   Q.ellie[0],
+   {who:'엘리',say:'후두가 해자 위로 쓰러지면 돌 길이 생겨요.'},
+   Q.ellie[1],
+   {w:'무너지다',build:['후두가','무너져서','길이','생겼어요']},
+   {who:'엘스베스',say:'좋은 생각이에요. 미사일 발사!',set:()=>{f().causeway=1;f().causeAt=Date.now()}},
+   {who:'…',say:'후두 두 개가 천천히 무너져요. 소리는 하나도 없어요.'},
+   {who:'…',say:'탱크가 돌 길로 해자를 건너요. 탑 앞까지 달려요.'},
+   {who:'…',say:'탑 5미터 앞에서 세이버스톤 파도가 탱크를 덮쳐요!'},
+   {say:'탑 앞으로! 두 사람을 도와요!',award:['무너지다']}]},
+ bensathB:{name:'벤사스 하사',zone:'bk37',x:11,y:6,dir:'down',look:BEN_H,badge:['구르다','전멸'],
+  pos:()=>f().attack?[7,6]:[11,6],
   hide:()=>!!f().bitten,
   status:()=>{if(!state.badges.includes('전멸'))return f().prints?'todo':null},
   script:()=>{if(!f().prints)return [{say:'미크 뒤로 한 줄로 와요. 발자국 밖은 위험해요.'}];
-   if(f().attack&&!f().causeway)return [{say:'엘리한테 가요! 탱크에 무기가 있어요.'}];return null},
-  after:'우리는 여기서 버텨요. 하지만 오래는 못 버텨요.',
+   if(f().attack&&!f().causeway)return [{say:'기보이 씨한테 가요! 무전으로 탱크를 불러요.'}];return null},
+  after:'남은 사람은 열두 명이에요. 버텨요.',
   talk:()=>[
-   {say:'잘 왔어요. 폼키 팀이 먼저 해자를 건너요. 기다려요.'},
+   {say:'잘 왔어요. 우리는 먼저 건넜어요. 폼키 팀이 아직 해자에 있어요.'},
    {who:'에두살',say:'하사님, 먼지가… 움직여요?'},
-   {who:'…',say:'반짝이는 먼지 밑에서 하얀 공이 수백만 개 나와요.'},
+   {who:'…',say:'반짝이는 먼지 밑에서 연한 회색 공이 수백만 개 나와요.'},
    {say:'{세이버스톤|세이버스톤}! 파도처럼 와요!'},
    Q.bensath[0],
    {who:'에두살',say:'으악! 발이…!'},
    {who:'…',say:'에두살이 쓰러져요. 발이 없어요. 먼지 속으로 가라앉아요.'},
    {who:'…',say:'폼키 팀이 한 명씩 사라져요. 모두요.',set:()=>{f().attack=1}},
-   {who:'미크 오독스',say:'뒤로! 다들 뒤로 가요!'},
-   {who:'…',say:'탕! 어디선가 총알이 날아와서 미크 씨 헬멧을 뚫었어요.'},
-   {say:'제 사람들도 맞았어요! 물러나요!'},
+   {who:'미크 오독스',say:'앞으로! 빨리 가요!'},
+   {who:'…',say:'탕! 언덕 위의 고스트가 쐈어요. 총알이 미크 씨 헬멧을 뚫었어요.'},
+   {who:'…',say:'기보이하고 핀이 고스트를 쏴요. 고스트가 쓰러져요.'},
+   {say:'제 사람들도 맞았어요!'},
    Q.bensath[1],
-   {say:'엘리한테 가요. 탱크에 미사일이 있어요.',award:['구르다','전멸']}]},
- fomkiB:{name:'폼키',zone:'bk37',x:11,y:9,dir:'up',look:FOM_H,hide:()=>!!f().attack,talk:()=>[{say:'먼저 갈게요!'}]},
- edusalB:{name:'에두살',zone:'bk37',x:11,y:8,dir:'up',look:EDU_H,hide:()=>!!f().attack,talk:()=>[{say:'먼지가 반짝반짝 예뻐요.'}]},
- swarm:{name:'세이버스톤',zone:'bk37',x:11,y:11,dir:'down',look:SWARM,
+   {say:'뒤는 세이버스톤, 앞은 고스트. 기보이 씨한테 가요.',award:['구르다','전멸']}]},
+ fomkiB:{name:'폼키',zone:'bk37',x:12,y:18,dir:'up',look:FOM_H,hide:()=>!!f().attack,talk:()=>[{say:'우리 팀이 마지막이에요. 먼저 가요!'}]},
+ edusalB:{name:'에두살',zone:'bk37',x:12,y:16,dir:'up',look:EDU_H,hide:()=>!!f().attack,talk:()=>[{say:'먼지가 무릎까지 와요. 반짝반짝 예뻐요.'}]},
+ swarm:{name:'세이버스톤',zone:'bk37',x:11,y:14,dir:'down',look:SWARM,
   hide:()=>!f().attack||!!f().causeway,
-  talk:()=>[{who:'…',say:'하얀 공들이 굴러다녀요. 별 모양 입이 열렸다 닫혀요.'},{who:'…',say:'이쪽으로는 못 건너요. 엘리가 탱크에 있어요.'}]},
- elsB:{name:'엘스베스',zone:'bk37',x:12,y:6,dir:'down',look:ELS_H,badge:['물리다'],
+  talk:()=>[{who:'…',say:'연한 회색 공들이 굴러다녀요. 별 모양 입이 열렸다 닫혀요.'},{who:'…',say:'해자로 돌아갈 수 없어요.'}]},
+ swarm2:{name:'세이버스톤',zone:'bk37',x:12,y:14,dir:'down',look:SWARM,
+  hide:()=>!f().attack||!!f().causeway,
+  talk:()=>[{who:'…',say:'세이버스톤이 해자 가장자리에 가득해요.'}]},
+ elsB:{name:'엘스베스',zone:'bk37',x:14,y:5,dir:'down',look:ELS_H,badge:['물리다'],
   hide:()=>!f().causeway||!!f().chase,
   status:()=>{if(!state.badges.includes('물리다'))return 'todo'},
   after:'다리는 괜찮아요. 탱크가 안 괜찮아요.',
   talk:()=>[
    {say:'아야… 엘스베스예요. 살아 있어요.'},
-   {say:'제 탱크는 먼지 속에 빠졌어요. 마지막 몇 미터는 뛰었어요.'},
+   {say:'제 탱크는 탑 앞에서 세이버스톤에 묻혔어요. 마지막 5미터는 뛰었어요.'},
    {say:'그때 세이버스톤이 제 다리를 물었어요.'},
    Q.elsB[0],
    {say:'괜찮아요. 우주복이 구멍을 바로 막았어요.'},
-   {who:'엘리',say:'저도 팔을 물렸어요. 핀 씨도요.'},
+   {who:'엘리',say:'저도 다리를 물렸어요. 핀 씨도요.'},
    Q.elsB[1],
    {say:'탑으로 가요. 위에 격납고가 있대요.',award:['물리다'],set:()=>{f().bitten=1}}]},
+ ellieB:{name:'엘리',zone:'bk37',x:16,y:6,dir:'left',look:ELLIE_H,
+  hide:()=>!f().causeway||!!f().bitten,
+  talk:()=>[{say:'탱크 앞문으로 뛰어나왔어요. 엘스베스 씨가 다쳤어요!'}]},
  /* ---- the stairwell and hangar ---- */
  dave1:{name:'데이브',zone:'tower',x:7,y:20,dir:'right',look:DAVE,badge:['계단'],
   status:()=>{if(!state.badges.includes('계단'))return 'todo'},
@@ -829,34 +846,36 @@ const NPC={
  ghost2:{name:'고스트',zone:'tower',x:14,y:21,dir:'up',look:{get art(){return (f().mined?GHOST_DEAD:GHOST).art}},
   pos:ghostPos(4,[14,21],[12,15]),hide:()=>!f().chase,
   talk:()=>f().mined?[{who:'…',say:'고스트 조각이에요. 아직 조금 뜨거워요.'}]:[{who:'…',say:'고스트가 팔을 휘둘러요! 위로, 위로!'}]},
- bensathT:{name:'벤사스 하사',zone:'tower',x:9,y:7,dir:'down',look:BEN_H,
+ gyvoyT:{name:'기보이',zone:'tower',x:9,y:7,dir:'down',look:helm(GYVOY,'#8A5A7A'),
   pos:()=>f().mined?[15,6]:[9,7],
   status:()=>f().chase&&!f().mined?'todo':null,
   script:()=>{
    if(!f().chase)return [{say:'데이브들은요? 아래에 있어요. 같이 와요.'}];
-   if(f().mined)return [{say:'{지뢰|지뢰}가 잘 터졌어요. 이제 격납고예요.'}];
+   if(f().mined)return [{say:'핀, 이제 당신 차례예요.'}];
    return [
     {say:'빨리! 위로 올라와요!'},
-    {say:'계단에 {지뢰|지뢰}를 깔았어요. 고스트가 밟으면…'},
-    {who:'…',say:'번쩍! 계단 아래가 주황색으로 빛나요.',set:()=>{f().mined=1;f().boomAt=Date.now()}},
-    {say:'고스트가 부서졌어요. 데이브들도 괜찮아요.'},
-    {say:'격납고는 어두워요. 핀 씨가 안에 있어요.'}]},
+    {say:'계단에 {지뢰|지뢰}를 깔아요!'},
+    {who:'핀',say:'지뢰 떨어뜨렸어요! 30초 후에 터져요!'},
+    {who:'…',say:'번쩍! 계단 아래가 보라색으로 빛나요.',set:()=>{f().mined=1;f().boomAt=Date.now()}},
+    {who:'…',say:'고스트 열두 대가 쓰러져요. 미사일이 계단 하나를 부숴요.'},
+    {who:'…',say:'틈을 뛰어넘던 대원 한 명이 총에 맞았어요.'},
+    {say:'격납고에 햇빛이 들어와요. 핀, 이제 당신 차례예요.'}]},
   talk:()=>[]},
  mummyA:{name:'카이발 미라',zone:'tower',x:10,y:5,dir:'down',look:MUMMY,
-  talk:()=>[{who:'…',say:'카이발 셀레스철 {미라|미라}예요. 꼬리에 고양이 같은 털이 있어요.'},{who:'…',say:'어른 한 명이 아이를 안고 손을 뻗고 있어요.'},{who:'…',say:'드롭십까지 몇 걸음. 육천 년 전에 여기서 멈췄어요.'}]},
+  talk:()=>[{who:'…',say:'카이발 셀레스철 {미라|미라}예요. 꼬리에 고양이 같은 털이 있어요.'},{who:'…',say:'두 명이 드롭십 쪽으로 기어가서 손을 뻗고 있어요.'},{who:'…',say:'한 명은 작아요. 부모와 아이일까요?'},{who:'…',say:'드롭십까지 몇 걸음. 육천 년 전에 여기서 멈췄어요.'}]},
  finnB:{name:'핀',zone:'tower',x:7,y:5,dir:'down',look:FINN_H,badge:['희생'],
   status:()=>{if(!state.badges.includes('희생'))return 'todo';if(!f().done)return 'todo'},
   script:()=>{
    if(!state.badges.includes('희생'))return null;
    if(f().done)return [{say:'카이발이 멀어져요. 다시는 오고 싶지 않아요.'}];
    return [
-    {say:'다 탔어요? 지붕을 뚫고 나가요!'},
+    {say:'다 탔어요? 아치로 나가요!'},
     {w:'멸망하다',build:['멸망한','세계를','떠나요']},
-    {who:'엘스베스',say:'잠깐. 제 탱크는요? 먼지 속에 있어요.'},
-    {say:'미안해요. 성실호에 같이 가요. 새 일이 있어요.'},
-    {who:'엘스베스',say:'좋아요. 그런데 탱크 하나, {빚|빚}진 거예요.',set:()=>{f().done=1}},
-    {who:'…',say:'드롭십이 불을 뿜어요. 지붕이 녹아서 구멍이 나요.'},
-    {say:'출발!',finale:1}]},
+    {who:'엘스베스',say:'잠깐. 제 탱크는 없어졌어요. 당신들이 탱크 하나 {빚|빚}졌어요.'},
+    {who:'엘스베스',say:'그러니까 저도 성실호에 타요. 보물은 똑같이 나눠요.'},
+    {who:'기보이',say:'좋아요. 거래예요.',set:()=>{f().done=1}},
+    {who:'…',say:'드롭십이 불을 뿜어요. 바닥이 녹아요. 천장을 긁으면서 아치 밖으로 날아가요.'},
+    {who:'기보이',say:'태워요! 출발!',finale:1}]},
   after:'그 사람들의 희생을 기억해요.',
   talk:()=>[
    {say:'왔어요? 여기 봐요. 모두 다섯 명이에요.'},
@@ -869,12 +888,12 @@ const NPC={
  elsT:{name:'엘스베스',zone:'tower',x:12,y:6,dir:'left',look:ELS_H,
   talk:()=>[{say:'다리가 아직 아파요.'},{say:'탱크 없는 탱크 운전사… 웃기죠.'}]},
 };
-const FOLLOW={name:'엘리',look:ELLIE_H,when:()=>!!f().causeway&&!f().done,
+const FOLLOW={name:'엘리',look:ELLIE_H,when:()=>!!f().bitten&&!f().done,
  talk:()=>[{say:ZID==='tower'?(f().chase&&!f().mined?'뛰어요! 뒤에 고스트가 있어요!':'위에 격납고가 있어요. 핀 씨가 기다려요.')
-  :ZID==='bk37'?'물린 팔이 좀 아파요. 그래도 괜찮아요.':'탱크가 없으니까 이상해요.'}]};
+  :ZID==='bk37'?'물린 다리가 좀 아파요. 그래도 괜찮아요.':'탱크가 없으니까 이상해요.'}]};
 
 const INTRO=[{who:'성실호',say:'프레임 해제. 관문 통과 완료.'},{who:'성실호',say:'성실호의 첫 번째 관문 점프예요.'},{who:'성실호',say:'현재 위치: 호아 퀸주 성계.'}];
-const DONE=['4장 끝! 드롭십이 카이발을 떠나요.','미크, 에두살, 폼키 팀은 돌아오지 못했어요.','엘스베스는 성실호 승무원이 됐어요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['4장 끝! 드롭십이 카이발을 떠나요.','미크, 에두살, 폼키 팀, 벤사스 팀 몇 명이 돌아오지 못했어요.','엘스베스는 성실호 승무원이 됐어요.','일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f(),b=w=>state.badges.includes(w);
@@ -889,9 +908,9 @@ function questText(){
  if(!F.ellieTank)return '나트 차고 · 기보이를 만나요';
  if(!F.breach)return '후두 정원 · 담 앞의 판디아나한테 폭약을 줘요';
  if(!F.prints)return 'BK37 · 미크를 따라가요';
- if(!F.attack)return 'BK37 · 해자 앞 벤사스 하사한테 가요';
- if(!F.causeway)return '후두 정원 · 탱크의 엘리한테 가요';
- if(!F.bitten)return 'BK37 · 해자를 건너요';
+ if(!F.attack)return 'BK37 · 함정 밭 끝의 벤사스 하사한테 가요';
+ if(!F.causeway)return 'BK37 · 기보이한테 가요. 무전!';
+ if(!F.bitten)return 'BK37 · 탑 앞의 엘스베스를 도와요';
  if(!F.chase)return '탑 · 데이브들을 만나요';
  if(!F.mined)return '탑 · 계단을 올라가요!';
  if(!b('희생'))return '격납고 · 핀을 찾아요';
