@@ -156,6 +156,7 @@ const ITEMS={'오더바이저 가면':'쓰면 지카르 타소트의 얼굴이 �
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const b=w=>state.badges.includes(w);
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
 
 /* ---------- pixel-art sprites (rows: '.' = clear; outline O) ---------- */
 const OL='#1B1E2B';
@@ -497,6 +498,11 @@ const BUILD={
  K:{roof:['#3A3040','#2A2230'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#1E1824','#120E16');const fl=(Math.floor(t/90)+x*3)%23===0;r(X,Y+2,16,2,fl?'#5A1A40':'#E040A0');r(X,Y+4,16,1,'#8A2A6A');
   if(x===28){r(X+5,Y+6,6,6,OL);r(X+6,Y+7,4,4,'#3A1A3A');r(X+7,Y+8,2,2,'#E040A0')}}},
 };
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TT={
  /* --- police HQ --- */
  hqFloor:(X,Y,x,y)=>hqFloor(X,Y,x,y),
@@ -550,40 +556,39 @@ const TT={
    if(top){r(X+4,Y+3,6,7,'#F1EEE6');r(X+5,Y+4,4,3,x===5?'#1E1A22':'#5A3E2A');r(X+5,Y+7,4,2,x===5?'#D9A882':'#C99470');r(X+4,Y+3,2,1,OL);r(X+4,Y+3,1,2,OL)}
    [3,8,12].forEach((a,i)=>{r(X+a,Y+13,2,3,'#F1EEE6');const fl=(Math.floor(t/120)+i+x)%3;r(X+a,Y+11-(fl===0?1:0),2,2,fl?'#FFC46B':'#FFE27A')})}},
  manWall:(X,Y,x,y,t)=>{const isM=c=>c==='M'||c==='G';
-  if(!isM(at(x,y+1))){r(X,Y,16,16,'#E9B7AA');r(X,Y,16,1,'#F2C8BC');r(X,Y+2,16,1,'#E8C860');r(X,Y+13,16,3,'#C99488');for(let i=2;i<16;i+=5)r(X+i,Y+4,1,8,'#D9A296');const h=hash(x,y);r(X+h%13+1,Y+6,1,1,'#E8C860');r(X+(h*3)%13+1,Y+9,1,1,'#E4E8F0');return}
+  if(!isM(at(x,y+1))){r(X,Y,16,16,'#E2D6BC');r(X,Y,16,1,'#F2EAD8');for(let i=1;i<16;i+=5){r(X+i,Y+1,3,2,'#3A404C');r(X+i+1,Y+1,1,1,'#D2533F')}r(X,Y+13,16,3,'#C9BC9C');for(let i=2;i<16;i+=5)r(X+i,Y+4,1,8,'#D2C4A6');return}
   r(X,Y,16,16,'#3F7A4A');const h=hash(x,y);r(X+1,Y+2,9,8,'#2F6A3E');r(X+2,Y+3,5,3,'#4E9A5A');r(X+7,Y+7,8,8,'#2F6A3E');r(X+8,Y+8,4,3,'#4E9A5A');if(h<50)r(X+h%10+2,Y+11,2,2,'#5DB866');
-  const e='#D99C90',l='#F2C8BC';if(!isM(at(x,y-1))){r(X,Y,16,4,e);r(X,Y,16,1,l);r(X,Y+4,16,1,'#2A4A30')}if(!isM(at(x-1,y))){r(X,Y,4,16,e);r(X,Y,1,16,l)}if(!isM(at(x+1,y))){r(X+12,Y,4,16,e);r(X+15,Y,1,16,'#B98478')}},
+  const e='#D2C4A6',l='#F2EAD8';if(!isM(at(x,y-1))){r(X,Y,16,4,e);r(X,Y,16,1,l);r(X+3,Y+1,2,2,'#3A404C');r(X+11,Y+1,2,2,'#3A404C');r(X,Y+4,16,1,'#2A4A30')}if(!isM(at(x-1,y))){r(X,Y,4,16,e);r(X,Y,1,16,l)}if(!isM(at(x+1,y))){r(X+12,Y,4,16,e);r(X+15,Y,1,16,'#B8AA8C')}},
  manGate:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X,Y,16,3,'#E8C860');r(X,Y+1,16,1,'#F7E08A');for(let i=1;i<16;i+=3)r(X+i,Y+3,1,13,'#C9A23A');r(X,Y+8,16,1,'#C9A23A');r(X+7,Y+6,2,4,'#F7E08A')},
  tower:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A404C');r(X,Y,16,1,'#4E5666');if(at(x,y-1)!=='A'){r(X,Y,16,4,'#5A6274');r(X,Y,16,1,'#7A8494')}r(X+(x%2?14:1),Y+5,1,10,'#2E343E');
-  if(x===14||x===15){const p=(Math.sin(t/260+y)+1)/2;r(X+(x===14?13:0),Y,3,16,`rgba(159,215,232,${.5+p*.5})`)}
+  if(x===14||x===15){r(X+(x===14?13:0),Y,3,16,'#1A1E26');r(X+(x===14?13:2),Y,1,16,'#2E343E')}
   if((x+y)%4===0)r(X+7,Y+8,2,2,Math.floor(t/500+x)%3?'#D2533F':'#5A1A1A');if(y===17)r(X,Y+12,16,4,'#2A2F38')},
  /* --- High Rosa dock level three --- */
  girder:(X,Y,x,y,t)=>{r(X,Y,16,16,'#1E232D');g.strokeStyle='#3A4352';g.lineWidth=1;g.beginPath();g.moveTo(X,Y+0.5);g.lineTo(X+16,Y+0.5);g.moveTo(X+0.5,Y);g.lineTo(X+16,Y+16);g.moveTo(X+16,Y);g.lineTo(X,Y+16);g.stroke();
   r(X+1,Y+1,1,1,'#5A6474');r(X+14,Y+14,1,1,'#5A6474');if(hash(x,y)<6)r(X+7,Y+7,2,2,(Math.floor(t/800)+x)%2?'#FFD08A':'#7A5420');
   const below=at(x,y+1);if(below&&below!=='G'&&below!=='B'&&below!=='W'){r(X,Y+11,16,5,'#4A5466');r(X,Y+11,16,1,'#6B7790');for(let i=0;i<16;i+=4)r(X+i,Y+14,2,2,'#E8B73A')}},
- bay:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.3);const i=x-1;g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
-  const top=i===0?7:5,bot=i===0?11:13;r(X+(i===0?6:0),Y+top,16,bot-top,'#DCE0E6');r(X+(i===0?6:0),Y+top,16,1,'#F4F6F8');r(X+(i===0?6:0),Y+bot-2,16,2,'#AEB4BE');
-  if(i===0){r(X+3,Y+8,3,2,'#DCE0E6');r(X+2,Y+9,1,1,'#AEB4BE')}
+ bay:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.3);const i=x-1;g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+  const top=i===0?7:i%2?5:6,bot=i===0?11:i%2?13:12,hc=['#B8BEC6','#A8916A','#8A939E','#C9B89A','#7E9278','#B08A72','#9AA3AD','#8E8A9E'][i]||'#9AA3AD';
+  r(X+(i===0?6:0),Y+top,16,bot-top,hc);r(X+(i===0?6:0),Y+top,16,1,'rgba(255,255,255,.35)');r(X+(i===0?6:0),Y+bot-2,16,2,'rgba(0,0,0,.22)');if(i>0)r(X,Y+top,1,bot-top,'#4A5466');
+  if(i===0){r(X+3,Y+8,3,2,hc);r(X+2,Y+9,1,1,'#7A8494')}
   if(i>0&&i<7){r(X+3,Y+8,2,2,(i+Math.floor(t/1300))%3?'#FFE3A0':'#4A6A8A');r(X+10,Y+8,2,2,'#4A6A8A')}
-  if(i===3){r(X+4,Y+7,8,1,'#B03A2E');r(X+3,Y+8,3,1,'#B03A2E');r(X+10,Y+8,3,1,'#B03A2E');r(X+7,Y+8,2,3,'#C9A23A')}
   if(i===7){r(X+8,Y+6,8,8,'#3A404C');r(X+12,Y+7,4,6,(Math.floor(t/150))%2?'#7FD3FF':'#BFF1FF')}
   if(i===2||i===5){r(X+7,Y,2,5,'#6E7680');r(X+6,Y+4,4,1,'#8A93A0')}g.restore();
   r(X,Y,16,2,'#2A2F3A');r(X,Y+14,16,2,'#4A5466');r(X,Y+14,16,1,'#6B7790');if(x%2===0)r(X,Y,1,16,'#2A2F3A')},
  track:(X,Y,x,y,t)=>{plate(X,Y,x,y);r(X,Y+4,16,2,'#8A93A0');r(X,Y+10,16,2,'#8A93A0');r(X,Y+6,16,1,'#4A5260');r(X,Y+12,16,1,'#4A5260');
   const p=((t*0.06)+x*16)%64;if(p<16){r(X+p,Y+3,2,10,'#69CFD8');r(X+p,Y+3,2,1,'#BFF1FF')}},
  seat:(X,Y,x,y)=>{plate(X,Y,x,y);r(X+2,Y+2,12,12,OL);r(X+3,Y+3,10,6,'#8E3A44');r(X+3,Y+3,10,1,'#B04A56');r(X+3,Y+9,10,4,'#B04A56');r(X+2,Y+8,2,6,'#3A3036');r(X+12,Y+8,2,6,'#3A3036')},
- capWin:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.15);g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+ capWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.15);g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
   const cx=12*16+8-CAM.x,top=12*16-CAM.y;
   g.fillStyle='#2E7A68';g.beginPath();g.arc(cx,top+20+300,300,0,Math.PI*2);g.fill();
   g.fillStyle='#4E9E6E';g.beginPath();g.arc(cx-70,top+20+60,50,0,Math.PI*2);g.fill();
   g.fillStyle='#C9A64A';g.beginPath();g.arc(cx+90,top+20+50,46,0,Math.PI*2);g.fill();
   g.strokeStyle='rgba(159,215,232,.75)';g.lineWidth=2;g.beginPath();g.arc(cx,top+20+300,300,Math.PI*1.2,Math.PI*1.8);g.stroke();
   r(cx,top,1,22,'#9FD7E8');
-  const s=state.f;if(s.capsule&&!s.boom){const cy=top+2+((t/260)%14);r(cx-2,cy,5,3,OL);r(cx-1,cy+1,3,1,'#FFE3A0')}
+  const s=state.f;if(s.capsule&&!s.boom){const cy=top+2;r(cx-2,cy,5,3,OL);r(cx-1,cy+1,3,1,'#FFE3A0')}
   if(s.boom){const age=Date.now()-(s.boomAt||0),ey=top+9;
    if(age<4500){const k=age/4500,rad=3+k*10;g.fillStyle=`rgba(255,240,200,${1-k})`;g.beginPath();g.arc(cx,ey,rad,0,7);g.fill();g.fillStyle=`rgba(242,154,58,${.9-k*.6})`;g.beginPath();g.arc(cx,ey,rad*.6,0,7);g.fill()}
-   g.fillStyle='rgba(150,130,120,.75)';[[0,0,5],[4,-2,3],[-4,1,4],[2,3,3]].forEach(([a,c,rr])=>{g.beginPath();g.arc(cx+a+Math.sin(t/900+a)*1,ey+c,rr,0,7);g.fill()});
-   for(let i=0;i<7;i++){const d=((t/60)+i*13)%28;r(cx+Math.round(Math.sin(i*2.3)*(3+d*.4)),ey+Math.round(d*.5),1,1,i%2?'#F29A3A':'#D8D2C8')}
+      for(let i=0;i<7;i++){const d=((t/60)+i*13)%28;r(cx+Math.round(Math.sin(i*2.3)*(3+d*.4)),ey+Math.round(d*.5),1,1,i%2?'#F29A3A':'#D8D2C8')}
    r(cx,ey+6,1,16,'#3A4A55')}
   g.restore();if(y===12){r(X,Y,16,2,'#4A5466');r(X,Y,16,1,'#6B7790')}if(x%4===0)r(X,Y,1,16,'#2A2F3A')},
  hatch:(X,Y,x,y,t)=>{TT.girder(X,Y,x,y,t);r(X+2,Y+1,12,14,'#4A5466');r(X+3,Y+2,10,12,'#6E7680');r(X+4,Y+3,8,10,'#9AA3AD');r(X+6,Y+5,4,4,'#3A4A55');r(X+7,Y+6,2,2,'#9FD7E8');
@@ -603,12 +608,12 @@ const TT={
  palm:(X,Y,x,y,t)=>{(ZID==='villa'?vfloor:coral)(X,Y,x,y);r(X+5,Y+11,6,5,'#C9A23A');r(X+5,Y+11,6,1,'#F7E08A');r(X+7,Y+5,2,6,'#8A6A4A');const sw=Math.round(Math.sin(t/1100+x));r(X+2+sw,Y+3,12,2,'#3F8F4A');r(X+4+sw,Y+1,8,2,'#5DB866');r(X+1+sw,Y+5,3,2,'#3F8F4A');r(X+12+sw,Y+5,3,2,'#3F8F4A')},
  manDoor:(X,Y,x,y)=>{coral(X,Y,x,y);r(X,Y,16,16,'#C9A23A');r(X+1,Y+1,14,15,'#8A3A2A');r(X+(x%2?0:15),Y,1,16,'#C9A23A');r(X+(x%2?2:12),Y+8,2,2,'#F7E08A');r(X+3,Y+3,10,1,'#A04E3A')},
  /* --- Terence's villa in Hafnir --- */
- sea:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A8EB8');const o=Math.floor(t/500+x)%4;r(X+o*3,Y+5,6,1,'#8FD0E8');r(X+((o+2)%4)*3,Y+11,5,1,'#8FD0E8');if(hash(x,y)<20)r(X+9,Y+2,2,1,'#BFE6F2')},
- sand:(X,Y,x,y,t)=>{r(X,Y,16,16,'#F2E2B8');const f2=(Math.floor(t/700)+x)%5;r(X,Y,16,2+(f2===0?1:0),'#FFFFFF');const h=hash(x,y);r(X+h%13+1,Y+8,1,1,'#D8C490');r(X+(h*3)%13+1,Y+12,1,1,'#D8C490')},
+ sea:(X,Y,x,y,t)=>{r(X,Y,16,16,'#0E1A2E');const o=Math.floor(t/500+x)%4;r(X+o*3,Y+5,6,1,'#2E4A6A');r(X+((o+2)%4)*3,Y+11,5,1,'#2E4A6A');if(hash(x,y)<20)r(X+9,Y+2,2,1,'#5A7498')},
+ sand:(X,Y,x,y,t)=>{r(X,Y,16,16,'#8A8270');const f2=(Math.floor(t/700)+x)%5;r(X,Y,16,2+(f2===0?1:0),'#B8B4A8');const h=hash(x,y);r(X+h%13+1,Y+8,1,1,'#6E6858');r(X+(h*3)%13+1,Y+12,1,1,'#6E6858')},
  vWall:(X,Y,x,y)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y,16,1,'#EDE3CC');if(at(x,y+1)!=null&&at(x,y+1)!=='V'&&at(x,y+1)!=='w'){r(X,Y+5,16,11,'#EDE3CC');r(X,Y+5,16,1,'#FFF6E4');r(X,Y+14,16,2,'#CDBF9E')}},
- vWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y+2,16,12,'#EDE3CC');r(X+1,Y+3,14,10,'#9FD4EC');r(X+1,Y+8,14,5,'#3A8EB8');const o=Math.floor(t/600+x)%3;r(X+2+o*4,Y+10,4,1,'#BFE6F2');r(X+1,Y+3,14,1,'#CFEAF6');r(X+7,Y+3,1,10,'#D9CDB2');r(X,Y+14,16,2,'#CDBF9E')},
+ vWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y+2,16,12,'#EDE3CC');r(X+1,Y+3,14,10,'#141C34');if(hash(x,y)<40)r(X+2+hash(x,y)%11,Y+5,1,1,'#C9D2E8');r(X+1,Y+8,14,5,'#0E1A2E');const o=Math.floor(t/600+x)%3;r(X+2+o*4,Y+10,4,1,'#2E4A6A');r(X+1,Y+3,14,1,'#1E2844');r(X+7,Y+3,1,10,'#D9CDB2');r(X,Y+14,16,2,'#CDBF9E')},
  vFloor:(X,Y,x,y)=>vfloor(X,Y,x,y),
- vDoor:(X,Y,x,y)=>{vfloor(X,Y,x,y);r(X,Y,16,16,'#CDBF9E');r(X+1,Y+1,14,15,'#8A6A4A');r(X+3,Y+3,10,4,'#9FD4EC');r(X+(x%2?1:13),Y+9,2,2,'#E8C860')},
+ vDoor:(X,Y,x,y)=>{vfloor(X,Y,x,y);r(X,Y,16,16,'#CDBF9E');r(X+1,Y+1,14,15,'#8A6A4A');r(X+3,Y+3,10,4,'#141C34');r(X+(x%2?1:13),Y+9,2,2,'#E8C860')},
  car:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X+1,Y+3,14,11,OL);r(X+2,Y+4,12,9,'#3A5A7A');r(X+3,Y+5,10,3,'#9FD4EC');r(X+2,Y+12,3,2,'#1A1A1A');r(X+11,Y+12,3,2,'#1A1A1A');r(X+2,Y+9,2,1,'#F2D54A');r(X+12,Y+9,2,1,'#F2D54A')},
  /* --- Fleesh Diamond bar --- */
  barWall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3E2A20');r(X,Y,16,1,'#4E3428');if(face(WALLC.bar,x,y)){r(X,Y+4,16,12,'#5A3A28');r(X,Y+10,16,6,'#6E4A32');r(X,Y+10,16,1,'#8A6040');if(x%4===2){const f=(Math.floor(t/1700)+x)%9===0;r(X+6,Y+5,4,3,f?'#C98A2A':'#FFC46B');r(X+5,Y+4,6,1,'#FFE2A8')}}},
@@ -625,10 +630,11 @@ const TT={
  /* --- Dark Paradise club basement --- */
  clubWall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#231C2B');r(X,Y,16,1,'#2E2638');if(face(WALLC.club,x,y)){r(X,Y+5,16,11,'#3A3046');r(X,Y+5,16,1,'#4E4260');const h=hash(x,y);r(X+h%12+1,Y+8,3,2,'#342A40');r(X+(h*3)%12+1,Y+12,2,1,'#463A54');r(X,Y+14,16,2,'#2A2232')}},
  clubFloor:(X,Y,x,y)=>cfloor(X,Y,x,y),
- rack:(X,Y,x,y,t)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+2,14,14,'#2A2D36');r(X+1,Y+2,14,1,'#3E424E');for(let j=0;j<4;j++){r(X+2,Y+4+j*3,12,2,'#1A1C22');for(let i=0;i<3;i++){const on=(Math.floor(t/(200+i*90))+x+j*2+i)%4;r(X+3+i*4,Y+4+j*3,1,1,on?(i===1?'#E0404A':'#5DD07A'):'#2A2D36')}}r(X+10,Y+5,3,3,'#6E7680')},
+ rack:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');const h=hash(x,y);r(X+1,Y+3,14,12,'#4A4450');r(X+1,Y+3,14,1,'#5E5866');r(X+2,Y+5,7,7,'#2A2630');r(X+3,Y+6,5,5,'#4E5A64');r(X+4,Y+7,2,2,'#7A8A94');
+  r(X+10,Y+5,4,3,['#7A4A32','#4E6A4E','#6A4A6A'][h%3]);r(X+10,Y+9,4,1,'#6E6878');r(X+10,Y+11,3,1,'#6E6878');r(X+1,Y+13,14,2,'#3A3440');r(X+2+h%10,Y+3,3,1,'#7A7480')},
  wine:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+2,14,13,'#3E2A20');g.strokeStyle='#5A3E2A';g.lineWidth=1;g.beginPath();for(let i=-16;i<16;i+=6){g.moveTo(X+1+i,Y+2);g.lineTo(X+15+i,Y+15);g.moveTo(X+15-i,Y+2);g.lineTo(X+1-i,Y+15)}g.stroke();
   for(let i=0;i<3;i++)for(let j=0;j<2;j++)r(X+3+i*4+(j?2:0),Y+5+j*5,2,2,(i+j+x)%3?'#2E5A3A':'#6A1A2A');r(X,Y+14,16,2,'#2A2232')},
- vip:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+3,14,12,'#5A2E6A');r(X+2,Y+4,12,6,'#7A3E8E');r(X+1,Y+3,14,1,'#E8C860');[4,8,12].forEach(a=>r(X+a,Y+6,1,1,'#4A2458'));r(X+1,Y+13,14,2,'#3A1E46')},
+ vip:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+3,14,12,'#4A3A30');r(X+2,Y+4,12,6,'#5E4A3C');r(X+1,Y+3,14,1,'#6E5A4A');[4,8,12].forEach(a=>r(X+a,Y+6,1,1,'#3A2C24'));r(X+1,Y+13,14,2,'#2E241E');const h=hash(x,y);r(X+2+h%10,Y+5,2,1,'#8A8078');r(X+3+(h*3)%9,Y+11,1,1,'#8A8078')},
  junk:(X,Y,x,y)=>{cfloor(X,Y,x,y);const h=hash(x,y)%3;if(h===0){r(X+1,Y+4,14,11,'#6A4E34');r(X+1,Y+4,14,2,'#86643E');r(X+7,Y+4,2,11,'#4A3422')}
   else if(h===1){r(X+2,Y+6,8,9,'#5A5462');r(X+2,Y+6,8,1,'#6E6878');r(X+8,Y+2,7,8,'#6A4E34');r(X+8,Y+2,7,1,'#86643E')}else{r(X+3,Y+3,10,2,'#8A93A0');r(X+3,Y+5,2,10,'#6E7680');r(X+11,Y+5,2,10,'#6E7680');r(X+3,Y+9,10,1,'#8A93A0');r(X+1,Y+12,6,3,'#3A3046')}},
  stairs:(X,Y,x,y)=>{for(let i=0;i<4;i++){r(X,Y+i*4,16,4,i%2?'#6A6272':'#827A8C');r(X,Y+i*4,16,1,'#9A92A4')}r(X,Y,1,16,'#231C2B');r(X+15,Y,1,16,'#231C2B')},
@@ -666,6 +672,15 @@ const ZONES={
    '8,3':'경찰 화면: "디어랙 거리 · 사망 5명"','12,3':'누가 커피를 두고 갔어요. 아직 따뜻해요.',
    '2,7':'현미경이에요.','3,7':'감식 화면: 초록 불빛이 깜빡여요.','13,8':'화분이에요. 잎이 반짝반짝해요.',
    get '18,2'(){return f().bopbeDead?'구속 의자. 바닥에 검게 탄 자국이 있어요.':'구속 의자예요. 금속 틀이 사람 몸을 잡아요.'}},
+  things:{
+   '#':['경찰서 벽이에요. 파란 줄이 그어져 있어요.','벽에 오래된 공지 자국이 남아 있어요.','차가운 벽이에요. 어디선가 전화가 울려요.'],
+   'w':(x,y)=>f().occupied?'창밖 거리가 텅 비었어요. 지금은 통금이에요.':vary(x,y,['창밖에 크림색 건물들이 보여요.','창밖 자카란다 나무에 보라색 꽃이 가득해요.']),
+   'B':['수사 보드. 사진이 빼곡해요.','빨간 실이 이리저리 이어져 있어요.','메모마다 물음표가 많아요.'],
+   'k':['취조실 벽이에요. 소리가 밖으로 안 새요.','두꺼운 벽이에요. 작은 구멍이 줄지어 있어요.'],
+   'd':['형사의 책상이에요. 일이 많아 보여요.','책상 위에 서류가 쌓여 있어요. 커피는 식었어요.'],
+   'g':['두꺼운 유리벽. 취조실 안이 다 보여요.','유리에 손자국이 조금 있어요.'],
+   'L':['감식 장비예요. 함부로 만지면 안 돼요.','하얀 책상이 아주 깨끗해요. 약 냄새가 나요.'],
+   'p':'화분이에요. 누가 매일 물을 줘요.'},
   npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','maria','feed']},
  city:{name:'산타 로사',reg:'SANTA ROSA · GONDIAR',outdoor:1,
   legend:{'L':{tile:'bld'},'H':{tile:'bld'},'Z':{tile:'bld'},'F':{tile:'bld'},'K':{tile:'bld'},'D':{tile:'cityDoor',walk:1},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
@@ -702,11 +717,22 @@ const ZONES={
    '19,2':'"플리시 다이아몬드". 다이아몬드 모양 간판이 깜빡여요.','28,2':'다크 파라다이스 클럽. 분홍색 불빛이 지지직거려요.',
    get '3,7'(){return f().occupied?'홀로그램: 제국 깃발. "질서와 평화."':'홀로그램 광고: "하프니르 새 빌라, 바다가 보여요!"'},
    '10,7':'벽에 "Q-I-X". 망명한 여왕을 믿는 사람들의 표시예요. 누가 지금도 그리고 있어요.','11,7':'벽에 "Q-I-X". 페인트가 아직 안 말랐어요.',
-   get '5,8'(){return f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
-   get '6,9'(){return f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
-   '24,9':'총독 원형 저택의 담. 분홍색 리브스톤에 금색 점이 반짝여요.',
+   get '5,8'(){return f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
+   get '6,9'(){return f().occupied?'꽃밭이에요. 벌이 날아다녀요.':f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
+   '24,9':'총독 원형 저택의 담. 십 미터 높이의 리브스톤이에요.',
    get '12,15'(){return f().occupied?'산타 로사 탑. 탑 꼭대기, 하이 로사에 제국 항모가 붙었어요. 밤에는 분홍색 점, 돌로드가 떠요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
    '17,15':'탑 아래쪽. 빨간 불이 깜빡여요.','14,14':'탑 캡슐 역. 하이 로사까지 올라가요.','15,14':'탑 캡슐 역. 사람들이 줄을 서 있어요.'},
+  things:{
+   'j':(x,y)=>vary(x,y,f().occupied?['자카란다 나무. 보라색 꽃이 가득해요.','나무 속 광고가 다 꺼졌어요.']:['자카란다 나무. 보라색 꽃이 가득해요.','보라색 꽃잎이 바람에 떨어져요.','나무 사이에 작은 홀로그램 광고가 있어요.']),
+   'A':(x,y)=>x===14||x===15?'검은 탑이 하늘 끝까지 곧게 올라가요.':vary(x,y,['산타 로사 탑의 아래쪽. 아주 큰 금속 벽이에요.','탑에서 낮게 웅웅 소리가 나요.']),
+   'L':['크림색 리브스톤 건물이에요.','창문 안에서 누가 커튼을 쳐요.','건물 위로 케이블카 줄이 지나가요.'],
+   'H':['산타 로사 경찰서 건물. 파란 띠가 둘러 있어요.','경찰서 창문. 안에서 형사들이 바빠요.'],
+   'Z':['진열창 안에 안디 머리들이 줄지어 있어요.','"지카르의 안디 수리" 가게예요. 기름 냄새가 나요.'],
+   'F':['플리시 다이아몬드 바. 창문 불빛이 따뜻해요.','바 안에서 잔 부딪치는 소리가 들려요.'],
+   'K':(x,y)=>f().club?'클럽이 비어 있어요. 네온만 혼자 깜빡여요.':f().occupied?'다크 파라다이스 클럽. 문이 굳게 잠겨 있어요.':vary(x,y,['다크 파라다이스 클럽. 분홍 네온이 지지직거려요.','클럽 안에서 음악이 쿵쿵 울려요.']),
+   'M':['높은 리브스톤 담이에요. 위에 센서가 줄지어 있어요.','담 너머로 정원의 나무가 보여요.'],
+   'n':['벤치예요. 빵 부스러기가 조금 있어요.','벤치에 앉으면 광장이 다 보여요.'],
+   'm':(x,y)=>f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':vary(x,y,f().boom?['꽃과 촛불이 가득해요. 사람들이 조용히 울어요.','촛불 옆에 손으로 쓴 편지가 있어요.']:['꽃밭이에요. 노란 꽃, 분홍 꽃, 하얀 꽃.','꽃밭 위로 나비가 날아요.'])},
   npcs:['zikar','snatch','aljan','vanilda','pro1','pro2','pro3','jimena','zelinda','medusaSt','general','lion1','lion2','ghost1','ghost2','ghost3']},
  tower:{name:'하이 로사 · 루치아의 영상',reg:"HIGH ROSA · LUĆIA'S FEED",base:'plate',
   legend:{'G':{tile:'girder'},'B':{tile:'bay'},'.':{tile:'plate',walk:1},'t':{tile:'track',walk:1},'E':{tile:'lift'},'s':{tile:'seat'},'W':{tile:'capWin'},'C':{tile:'hatch',walk:1}},
@@ -727,10 +753,15 @@ const ZONES={
 "WWWWWWWWWWWWWWWWWWWWWWWW"],
   rooms:[[1,2,9,5,'하이 로사 · 3F 정박장'],[12,2,22,5,'하이 로사 · 3층 독'],[1,7,22,11,'하이 로사 · 캡슐 역 라운지']],
   warps:{'22,7':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'},'22,8':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'}},
-  spots:{'3,1':'시벨레스 이글호. 하얀 배가 3F 정박장에 붙어 있어요.','5,1':'배 옆에 빨간 독수리 그림이 있어요.','8,1':'배 엔진이 파랗게 빛나요.',
+  spots:{'3,1':'시벨레스 이글호. 3F 정박장에 붙어 있어요.','5,1':'통마다 색과 재료가 달라요. 여러 곳에서 만들었어요.','8,1':'배 엔진이 파랗게 빛나요.',
    '10,2':'철골 사이로 무중력 작업자들이 날아다녀요.',
    '2,3':'엘리베이터. 아래 층 정박장으로 가요.',
-   get '12,12'(){return f().boom?'창밖 아래, 탑의 줄 위에 연기가 남아 있어요.':'창밖 아래에 곤디아가 있어요. 탑의 줄이 땅까지 내려가요.'}},
+   get '12,12'(){return f().boom?'창밖 아래, 빛나는 조각들이 우주로 흩어져요.':'창밖 아래에 곤디아가 있어요. 탑의 줄이 땅까지 내려가요.'}},
+  things:{
+   'G':['철골 사이로 성운 빛이 보여요.','차가운 철골이에요. 작은 불빛이 깜빡여요.','노란 줄무늬 경고 표시가 있어요.'],
+   'W':(x,y)=>f().boom?vary(x,y,['창밖 아래, 탑 옆에서 빛나는 조각들이 흩어져요.','창밖에 곤디아가 보여요. 아무도 말이 없어요.']):f().capsule?'캡슐 문이 곧 닫혀요. 서둘러야 돼요.':vary(x,y,['창밖 아래에 초록 곤디아가 아주 커요.','유리창 너머로 성운이 가득해요.']),
+   's':['빨간 의자예요. 몸을 묶는 끈이 달려 있어요.','빈 컵 하나가 의자 위에 둥둥 떠 있어요.'],
+   'B':['여러 모양의 통을 이어 붙인 배예요.','배와 독 사이에 두꺼운 관이 이어져 있어요.']},
   npcs:['tose','cleaner']},
  mansion:{name:'총독 원형 저택',reg:'ROUNDHOUSE MANSION · SANTA ROSA',
   legend:{'p':{tile:'garden'},'R':{tile:'rail'},'c':{tile:'coralWall'},'a':{tile:'arch'},',':{tile:'balc',walk:1},'.':{tile:'manFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'manDoor',walk:1}},
@@ -750,8 +781,15 @@ const ZONES={
   rooms:[[4,3,15,3,'총독 저택 · 발코니']],
   warps:{'9,11':{to:'city',x:26,y:11,dir:'down'},'10,11':{to:'city',x:26,y:11,dir:'down'}},
   spots:{'6,2':'난간 아래에 정원이 있어요. 가는 야자나무들이 흔들려요.','12,2':'멀리 공원 너머에 높은 건물들이 보여요. 저 어딘가에…',
-   '2,4':'둥근 창문. 금색 틀이에요.','14,4':'둥근 창문 밖으로 정원이 보여요.',
+   '2,4':'높은 아치 창문. 금색 틀이에요.','14,4':'아치 창문 밖으로 발코니와 정원이 보여요.',
    '3,6':'작은 빨간 카펫이에요. 금색 테두리.','16,6':'작은 빨간 카펫이에요.'},
+  things:{
+   'c':['분홍색 산호 리브스톤 벽이에요.','벽에 작은 금색, 은색 점이 박혀 있어요.'],
+   'p':['아래 정원에 하얀 길이 나 있어요.','정원의 나무들이 바람에 흔들려요.'],
+   'R':(x,y)=>f().shot&&!f().occupied?'난간에 피가 튀어 있어요. 빨리 나가야 돼요.':vary(x,y,['분홍색 난간이에요. 아주 매끈해요.','난간 아래로 정원이 내려다보여요.']),
+   'a':['높은 아치 창문이에요. 밖에 넓은 발코니가 있어요.','금색 틀이 반짝반짝해요.'],
+   'u':'빨간 카펫이에요. 아주 부드러워요.',
+   'o':'금색 화분에 야자나무가 있어요.'},
   npcs:['makaio']},
  villa:{name:'하프니르 · 테렌스의 빌라',reg:'HAFNIR · RYDEMOUTH',
   legend:{'~':{tile:'sea'},'s':{tile:'sand'},'V':{tile:'vWall'},'w':{tile:'vWin'},'.':{tile:'vFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'vDoor',walk:1}},
@@ -768,7 +806,14 @@ const ZONES={
 "VVVVVVVVDDVVVVVVVV"],
   warps:{'8,9':{to:'city',x:21,y:3,dir:'down'},'9,9':{to:'city',x:21,y:3,dir:'down'}},
   spots:{'3,1':'하얀 모래 해변. 파도 소리가 들려요.','4,2':'창밖에 바다. 오늘은 바다도 조용해요.','12,2':'창밖에 바다. 멀리 배가 하나 지나가요.',
-   '3,4':'쿠션 위에서 아이들이 자요. 로렐라, 두샨, 에버렛의 아이들.','13,4':'담요 아래에서 아이가 잠꼬대를 해요.','2,6':'화분이에요. 야자나무 잎이 바람에 흔들려요.'},
+   '3,4':'쿠션 위에서 젊은 손님들이 자요. 로렐라, 두샨, 에버렛의 아이들.','13,4':'담요 아래에서 누가 잠꼬대를 해요.','2,6':'화분이에요. 야자나무 잎이 바람에 흔들려요.'},
+  things:{
+   'V':['하얀 벽이에요. 아주 매끈해요.','벽 옆에 손님들 가방이 쌓여 있어요.'],
+   '~':['까만 바다. 파도가 천천히 와요.','밤바다가 까매요. 파도 소리만 들려요.'],
+   's':['하얀 모래. 작은 조개껍데기가 있어요.','모래 위에 발자국이 많아요.'],
+   'w':['창밖에 바다와 하얀 모래가 보여요.','창문이 조금 열려 있어요. 바다 냄새가 나요.'],
+   'u':'담요 아래 누가 자요. 울다가 잠들었어요.',
+   'o':'야자나무 화분이에요. 잎 끝이 조금 말랐어요.'},
   npcs:['otylia','zelindaS','aljanS','haian']},
  bar:{name:'플리시 다이아몬드',reg:'FLEESH DIAMOND · BAUME AVE',
   legend:{'#':{tile:'barWall'},'h':{tile:'shelf'},'w':{tile:'barWin'},'.':{tile:'barFloor',walk:1},'b':{tile:'counter',over:1},'t':{tile:'table'},'k':{tile:'booth'},'D':{tile:'barDoor',walk:1}},
@@ -786,6 +831,13 @@ const ZONES={
   warps:{'7,9':{to:'city',x:20,y:3,dir:'down'},'8,9':{to:'city',x:20,y:3,dir:'down'}},
   spots:{'3,1':'술병이 가득해요. 초록, 노랑, 빨강.','11,1':'창밖은 바우메 거리. 비가 와요.','13,1':'창밖으로 노란 글로브캡이 지나가요.',
    '2,6':'가죽 소파. 오래돼서 반짝반짝해요.','10,6':'가죽 소파. 누가 신문을 두고 갔어요.'},
+  things:{
+   '#':['나무 벽이에요. 따뜻한 램프가 걸려 있어요.','오래된 나무 냄새가 나요.'],
+   'h':['술병이 줄지어 있어요.','병 하나가 램프 불빛에 반짝여요.'],
+   'b':['바 카운터. 반질반질한 나무예요.','카운터 위에 빈 잔이 있어요.'],
+   'w':'창밖 거리에 분홍 네온 불빛이 비쳐요.',
+   't':'작은 탁자 위에 촛불이 흔들려요.',
+   'k':'빨간 가죽 자리예요. 푹신해요.'},
   npcs:['barman','spirit']},
  club:{name:'다크 파라다이스 · 지하',reg:'DARK PARADISE CLUB · BASEMENT',
   legend:{'#':{tile:'clubWall'},'R':{tile:'rack'},'W':{tile:'wine'},'v':{tile:'vip'},'.':{tile:'clubFloor',walk:1},'x':{tile:'junk'},'S':{tile:'stairs',walk:1}},
@@ -803,8 +855,14 @@ const ZONES={
 "#................#",
 "##################"],
   warps:{'16,1':{to:'city',x:26,y:3,dir:'down'}},
-  spots:{'2,1':'녹화 장비예요. 갱들이 손님을 몰래 찍었어요.','6,1':'와인 선반… 가짜예요! 뒤에 총이 숨어 있어요.','8,1':'와인 병이 다 비어 있어요. 뒤에 무기 상자가 있어요.',
-   '13,1':'VIP 자리. 보라색 소파에 먼지가 쌓였어요.','2,4':'상자만 남았어요. 스탄바8 갱은 다 잡혀갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
+  spots:{'2,1':'낡은 무대 장비와 광고 기계예요. 먼지투성이예요.','6,1':'와인 선반… 가짜예요! 뒤에 총이 숨어 있어요.','8,1':'와인 병이 다 비어 있어요. 뒤에 무기 상자가 있어요.',
+   '13,1':'아주 낡은 가구들이에요. 소파에 먼지가 쌓였어요.','2,4':'상자만 남았어요. 스탄바8 갱은 다 잡혀갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
+  things:{
+   '#':['어두운 지하 벽이에요. 공기가 아주 말라 있어요.','벽에 금이 가 있어요.'],
+   'x':['상자와 부서진 물건이 쌓여 있어요.','먼지투성이예요. 안은 비어 있어요.'],
+   'W':'와인 선반이에요. 이것도 뒤에 뭐가 있을까요?',
+   'R':'낡은 음료 광고 기계예요. 지금은 없는 상표예요.',
+   'v':'오래된 소파예요. 먼지가 가득 쌓였어요.'},
   npcs:['patch','jimenaC']},
 };
 
@@ -876,7 +934,7 @@ const NPC={
  news:{name:'뉴스 화면',zone:'hq',x:10,y:8,dir:'down',look:NEWS,still:1,
   status:()=>nextNews()?'todo':null,
   script:()=>{const e=nextNews();if(e)return e.steps.concat([{who:'뉴스 화면',say:'— 방송 끝 —',set:()=>{f()['news'+e.id]=1}}]);
-   const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 밤 열 시 이후 외출 금지.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
+   const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 모두 지금 집으로 돌아가세요.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
   talk:()=>[]},
  maria:{name:'마리아 호세 서장',zone:'hq',x:14,y:3,dir:'left',look:{hair:'#2A1E1A',skin:'#C48E66',shirt:'#2F3E5C',pants:'#22283A',belt:'#C9A64A',style:'bun',cap:'#2F3E5C',lashes:1,lips:'#9A4A4A'},badge:['폭발'],
   hide:()=>!f().boom,
@@ -1040,7 +1098,7 @@ const NPC={
  lion2:{name:'각성 사자',zone:'city',x:22,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'사자가 테렌스의 냄새를 맡아요. 이빨이 손가락만 해요.'}]},
  ghost1:{name:'고스트',zone:'city',x:3,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,
   talk:()=>[{who:'…',say:'{고스트|고스트}이에요. 키가 3미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'고스트가 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
- ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 거리를 지켜요. 밤 열 시부터 통금이에요.'}]},
+ ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 거리를 지켜요. 지금은 통금이에요.'}]},
  ghost3:{name:'고스트',zone:'city',x:17,y:10,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 광장을 지켜요. 사람들은 고개를 숙이고 지나가요.'}]},
  /* High Rosa */
  tose:{name:'토셰',zone:'tower',x:6,y:2,dir:'up',look:TOSE,still:1,
@@ -1067,7 +1125,7 @@ const NPC={
   hide:()=>!f().liliana||!!f().occupied,
   get still(){return !!f().shot},
   after:'테렌스, 조심해요.',
-  script:()=>f().rider?[{who:'…',say:'경찰 테이프가 있어요. 마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'},{who:'…',say:'테렌스는 여기 있으면 안 돼요. 아무도 그가 여기 왔던 걸 몰라요.'}]:null,
+  script:()=>f().rider?[{who:'…',say:'마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'},{who:'…',say:'테렌스는 여기 있으면 안 돼요. 아무도 그가 여기 왔던 걸 몰라요.'}]:null,
   talk:()=>[
    {say:'테렌스, 왔어요? 곤디아는 처음이에요. 생각보다 아름다워요.'},
    {say:'저는 이제 아콘이 아니에요. 새 수석 아콘, 우알라나쇼이구가 저를 쫓아냈어요.'},

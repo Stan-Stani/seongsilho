@@ -154,6 +154,8 @@ const clip=(X,Y,fn)=>{g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();fn();g.r
 const big=(X,Y,x,y,ox,oy,fn)=>clip(X,Y,()=>fn(X-(x-ox)*16,Y-(y-oy)*16,X,Y));
 /* pixel disc (crisp edges); only rows inside [y0,y1] are drawn */
 const disc=(cx,cy,rd,c,y0,y1)=>{for(let dy=-rd;dy<=rd;dy++){const yy=cy+dy;if(y0!=null&&(yy<y0||yy>y1))continue;const w=Math.floor(Math.sqrt(rd*rd-dy*dy)+.35);r(cx-w,yy,2*w+1,1,c)}};
+/* pixel ellipse: the wreck's holes are oval (c013/c014) */
+const ell=(cx,cy,rx,ry,c)=>{for(let dy=-ry;dy<=ry;dy++){const w=Math.floor(rx*Math.sqrt(1-(dy/ry)**2)+.35);r(cx-w,cy+dy,2*w+1,1,c)}};
 const night=()=>ZID==='breakerville'&&!!f().mapped&&f().attack!==2;
 /* zone lighting: red alarm on the Lestari, night + sleet + plasma at Breakerville, flashes in the wreck */
 function fx(X,Y,x,y,t,lit){
@@ -168,15 +170,19 @@ function fx(X,Y,x,y,t,lit){
  if(ZID==='wreck'&&F.attack===1&&Math.floor(t/120)%23===0)r(X,Y,16,16,'rgba(180,140,255,.24)');
 }
 
-/* Lestari: beige padded tank walls, red cables, pearl lounge */
+/* Lestari: walls crowded with bolted-on modules, panels and wiring, amber ceiling lights (c013), red cables, pearl lounge */
 const wallL=c=>c==='#'||c==='r'||c==='w';
-function padTop(X,Y,x,y){r(X,Y,16,16,'#8C836C');r(X,Y,16,1,'#A1987F');r(X+(x%2?2:10),Y,1,16,'#80786A');r(X+(x%2?3:11),Y,1,16,'#98907A');const h=hash(x,y);if(h<40)r(X+4+h%5,Y+3+(h>>2)%9,3,2,'#857C67')}
-function padFace(X,Y,x,y){
- r(X,Y+5,16,11,'#BFB59A');r(X,Y+5,16,1,'#D8D0B8');
- r(X,Y+10,16,1,'#A89E83');r(X+(x%2?3:11),Y+6,1,4,'#A89E83');r(X+(x%2?11:3),Y+11,1,4,'#A89E83');
- r(X+1,Y+6,14,1,'#CEC6AD');r(X+1,Y+11,14,1,'#CEC6AD');
- const h=hash(x,y);if(h<35){r(X+3+h%7,Y+12,4,2,'#A69B7C');r(X+4+h%7,Y+14,2,1,'#A69B7C')}
- r(X,Y+15,16,1,'#7A725E');
+function padTop(X,Y,x,y){r(X,Y,16,16,'#4E5257');r(X,Y,16,1,'#62676C');const h=hash(x,y),o=x%2?4:10;
+ r(X,Y+o,16,2,'#2E3135');r(X,Y+o,16,1,'#3E4246');r(X+(x%3)*5,Y+o-1,2,4,'#7A7F84'); // hose run + clamp
+ if(h<60){const a=2+h%7,b=(o<8?8:2)+(h>>3)%3;r(X+a,Y+b,6,4,'#363A3E');r(X+a,Y+b,5,3,'#6A6F74');r(X+a,Y+b,1,1,'#A0A6AC');r(X+a+4,Y+b+2,1,1,'#A0A6AC')}}
+function padFace(X,Y,x,y){const h=hash(x,y),k=h%3;
+ r(X,Y+5,16,11,'#666B70');r(X,Y+5,16,1,'#F0B04A');r(X,Y+6,16,1,'#9A7A48'); // amber ceiling strip (c013)
+ if(x%2)r(X+6,Y+5,4,2,'#FFD27A');
+ if(k===0){r(X+2,Y+8,8,6,'#3E4246');r(X+2,Y+8,7,5,'#545A60');r(X+3,Y+9,5,3,'#1E3A34');r(X+4,Y+10,3,1,'#5EC28A');[[2,8],[8,8],[2,12],[8,12]].forEach(([a,b])=>r(X+a,Y+b,1,1,'#A0A6AC'));r(X+12,Y+7,1,9,'#B85A3A');r(X+13,Y+7,1,9,'#C8A040')}
+ else if(k===1){r(X+3,Y+7,2,9,'#2E3135');r(X+3,Y+7,1,9,'#4A4E52');r(X+10,Y+7,3,9,'#3E4246');r(X+10,Y+7,1,9,'#5A5E62');r(X+2,Y+10,12,2,'#7A7F84');r(X+2,Y+10,12,1,'#9AA0A6')}
+ else{r(X+2,Y+8,12,6,'#3E4246');r(X+3,Y+9,10,4,'#5A6066');for(let i=0;i<4;i++)r(X+4+i*2,Y+10,1,2,i===1?'#F0B04A':'#2A2E32')}
+ for(let i=0;i<16;i++){const u=((x*16+i)%20)/20,yy=Y+7+Math.round(6*u*(1-u)*(h%2?1:.6));r(X+i,yy,1,1,'#2A2622')} // sagging wire web
+ r(X,Y+15,16,1,'#3A3E42');
 }
 function pearl(X,Y,x,y,t){r(X,Y,16,16,'#D3DEE1');r(X,Y,16,7,'#DAE4E6');r(X,Y,16,1,'#BAC6CA');r(X,Y,1,16,'#BAC6CA');r(X+1,Y+1,14,1,'#E8EFF0');const p=(Math.sin(t/1300+x*.9+y*.5)+1)/2;r(X+1,Y+15,15,1,`rgba(170,215,230,${(.25+.5*p).toFixed(2)})`);if(hash(x,y)<20)r(X+5,Y+9,5,1,'#C9D4D7')}
 function mesh(X,Y,x,y){r(X,Y,16,16,'#7F7A6C');for(let i=0;i<16;i+=4){r(X+i,Y,1,16,'#726E61');r(X,Y+i,16,1,'#726E61')}r(X,Y,16,1,'#928D7E');if(hash(x,y)<14)r(X+9,Y+9,2,2,'#5E5A50')}
@@ -208,7 +214,7 @@ function tunnel(X,Y,x,y){r(X,Y,16,16,'#4C5848');const o=(x+y)%2?3:10;r(X,Y+o,16,
 function wallTop(X,Y,x,y){r(X,Y,16,16,'#283029');const h=hash(x,y);r(X+(h%12),Y+(h%9)+2,3,1,'#323B33');r(X+((h*3)%13),Y+((h*7)%12)+1,1,1,'#3E4A3A');r(X+((h*5)%11)+3,Y+((h*11)%10)+3,2,2,'#1E2420');
  if(at(x,y-1)&&at(x,y-1)!=='#'&&at(x,y-1)!=='K')r(X,Y,16,2,'#3E4A3A');if(at(x-1,y)&&at(x-1,y)!=='#')r(X,Y,1,16,'#36412F');if(at(x+1,y)&&at(x+1,y)!=='#')r(X+15,Y,1,16,'#36412F')}
 function wallFace(X,Y,x,y){const h=hash(x,y);r(X,Y+5,16,11,'#6F7F6A');r(X,Y+5,16,1,'#8A9A84');r(X,Y+15,16,1,'#46523F');r(X+(h%13),Y+8+(h%5),2,1,'#62725D');
- const k=h%4;if(k===0){disc(X+8,Y+11,3,'#56634F');disc(X+8,Y+11,2,'#141917');r(X+7,Y+13,3,1,'#4E5A4A')}
+ const k=h%4;if(k===0){ell(X+8,Y+11,2,4,'#56634F');ell(X+8,Y+11,1,3,'#141917')}
  else if(k===1){r(X+2,Y+8,9,1,'#C0703A');r(X+5,Y+10,9,1,'#D08A4A');r(X+3,Y+12,6,1,'#C0703A');r(X+9,Y+13,4,1,'#9A5A2E')}
  else if(k===2){r(X+4,Y+9,2,5,'#5A4A9A');r(X+6,Y+7,2,7,'#7A6AC8');r(X+8,Y+10,2,4,'#5A4A9A');r(X+6,Y+7,1,2,'#C8BCF4');r(X+11,Y+11,2,3,'#7A6AC8')}
  else{[[3,4],[8,6],[12,3]].forEach(([a,l])=>{r(X+a,Y+6,3,1,'#85957F');r(X+a+1,Y+7,1,l,'#85957F');r(X+a+1,Y+6+l,1,1,'#9AAA93')})}}
@@ -216,8 +222,13 @@ function wreckHull(X,Y,x,y){big(X,Y,x,y,6,2,(BX,BY)=>{r(BX,BY,192,48,'#6F7F6A');
   [7,17,29,39].forEach((k,n)=>{for(let i=0;i<192;i+=2){const yy=BY+k+Math.round(2.2*Math.sin(i/31+n));r(BX+i,yy,2,1,'#5A6956');r(BX+i,yy+1,2,1,'#8A9A84')}});
   for(let i=0;i<90;i++){const a=hash(i,7)*1.92|0,c=hash(7,i)*.47|0;r(BX+a,BY+c,1,1,i%3?'#62725D':'#86967F')}
   [[12,11,4],[40,33,3],[61,13,5],[95,35,3],[118,10,4],[149,31,5],[177,13,4],[28,22,2],[134,41,2],[82,24,3],[167,40,2],[106,21,2]].forEach(([a,c,d])=>{
-   disc(BX+a,BY+c-1,d+1,'#56634F');disc(BX+a,BY+c,d,'#141917');r(BX+a-d+1,BY+c+d-1,2*d-1,1,'#4E5A4A');r(BX+a-d+2,BY+c+d,2*d-3,1,'#9AAA93')})})}
+   ell(BX+a,BY+c-1,d,d+2,'#56634F');ell(BX+a,BY+c,d-1,d+1,'#141917');r(BX+a-d+2,BY+c+d+2,2*d-3,1,'#9AAA93')})})}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TILES={
  /* ---- Lestari ---- */
  lpad:(X,Y,x,y,t)=>{padTop(X,Y,x,y);const bl=at(x,y+1);if(bl&&!wallL(bl))padFace(X,Y,x,y);fx(X,Y,x,y,t)},
@@ -226,11 +237,11 @@ const TILES={
   else{r(X,Y+5,16,6,'#5A2420');r(X,Y+5,16,2,'#A3473A');r(X,Y+6,16,1,'#C8604F');r(X,Y+8,16,1,'#7A2F28');r(X,Y+9,16,1,'#2A2622');r(X+5,Y+4,3,8,'#6A6455');r(X+5,Y+4,3,1,'#8A8475')}fx(X,Y,x,y,t)},
  pearl:(X,Y,x,y,t)=>{pearl(X,Y,x,y,t);fx(X,Y,x,y,t)},
  mesh:(X,Y,x,y,t)=>{mesh(X,Y,x,y);if(y===7&&x%3===0){const on=(Math.floor(t/200)-x)%8===0;r(X+7,Y+7,2,2,on?'#E8962A':'#6E5A3A')}fx(X,Y,x,y,t)},
- cupola:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.2);const F=f(),PX=X-(x-1)*16,PY=Y-(y-1)*16;
+ cupola:(X,Y,x,y,t)=>{const F=f();(F.gift?stars:nebula)(X,Y,x,y,t,.2);const PX=X-(x-1)*16,PY=Y-(y-1)*16;
   clip(X,Y,()=>{
    if(!F.gift){const cx=PX+80,cy=PY+76;[[62,'#26304A'],[54,'#1C2336'],[46,'#26304A'],[38,'#1C2336'],[30,'#222B40']].forEach(([d,c])=>disc(cx,cy,d,c,Y,Y+15));
     for(let a=-2.75;a<-.35;a+=.22)for(let d=24;d<62;d+=2){const px=Math.round(cx+Math.cos(a)*d),py=Math.round(cy+Math.sin(a)*d);if(py>=Y&&py<Y+16)r(px,py,1,1,'#3A4766')}
-    disc(cx,cy,24,'#080B12',Y,Y+15);const p=(Math.sin(t/450)+1)/2;for(let a=-3.1;a<0;a+=.16){const py=Math.round(cy+Math.sin(a)*25);if(py>=Y&&py<Y+16)r(Math.round(cx+Math.cos(a)*25),py,1,1,`rgba(191,230,255,${(.35+.65*p).toFixed(2)})`)}}
+    disc(cx,cy,24,'#080B12',Y,Y+15);const NC=['#8E5C8C','#5E3C72','#7A6A9E','#9A7AA8'];for(let a=-3.1,k=0;a<0;a+=.16,k++){if(hash(k,7)%3)continue;const py=Math.round(cy+Math.sin(a)*25);const q=(Math.sin(t/2200+k*1.7)+1)/2;if(py>=Y&&py<Y+16&&q>.55)r(Math.round(cx+Math.cos(a)*25),py,1,1,NC[k%4])}}
    else if(!F.beam){disc(PX+134,PY+19,8,'#DDE7EC',Y,Y+15);r(PX+127,PY+19,15,3,'#5E9A86');r(PX+138,PY+13,4,12,'rgba(60,80,100,.35)');
     if(F.ambush)for(let i=0;i<9;i++){const ph=((t/2400)+i*.083)%1,mx=Math.round(PX+4+ph*120),my=PY+4+(i*7)%24;r(mx-8,my,8,1,'rgba(255,150,90,.45)');r(mx,my,2,1,'#FF5A4A')}}
    else{terrik(X,Y,x,y,16+120,16+52,34);if(Math.floor(t/160)%3)r(PX+28,PY+10,2,1,'#FFB060')}
@@ -247,7 +258,7 @@ const TILES={
  fusion:(X,Y,x,y,t)=>{mesh(X,Y,x,y);const [ox,oy]=org(x,y);const F=f();big(X,Y,x,y,ox,oy,(BX,BY)=>{
   r(BX,BY,64,32,'#2E2B27');r(BX,BY,64,2,'#4A453E');r(BX,BY+30,64,2,'#1E1C19');for(let i=4;i<64;i+=10)r(BX+i,BY+3,2,26,'#3A3631');
   const beam=F.beam,p=(Math.sin(t/(beam?120:400))+1)/2;r(BX+8,BY+9,48,14,OL);
-  r(BX+9,BY+10,46,12,beam?'#7A5ACF':'#A3471F');r(BX+9,BY+13,46,6,beam?`rgba(230,218,255,${(.6+.4*p).toFixed(2)})`:`rgba(255,170,80,${(.45+.4*p).toFixed(2)})`);r(BX+9,BY+15,46,2,beam?'#FFFFFF':'#FFE0A0');
+  r(BX+9,BY+10,46,12,beam?'#7A5ACF':'#7A8494');r(BX+9,BY+13,46,6,beam?`rgba(230,218,255,${(.6+.4*p).toFixed(2)})`:`rgba(232,238,248,${(.45+.4*p).toFixed(2)})`);r(BX+9,BY+15,46,2,'#FFFFFF');
   for(let i=0;i<5;i++)r(BX+14+i*9,BY+10,1,12,'rgba(0,0,0,.35)');r(BX+2,BY+4,4,4,(Math.floor(t/500)%2)?'#69CFD8':'#2C5D63');r(BX+58,BY+24,3,3,'#E8962A')});fx(X,Y,x,y,t)},
  /* ---- Bubbletown on Five ---- */
  void:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.15);terrik(X,Y,x,y,20*16,-26,46)},
@@ -323,8 +334,9 @@ const TILES={
   if(x%2===0){r(X+5,Y,4,4,'#E4E1D6');r(X+6,Y+1,2,2,'#B5653A');if(Math.floor(t/400)%2)r(X+7,Y-2,1,2,'rgba(240,240,240,.7)')}else{r(X+4,Y+1,8,3,'#3A3F46');r(X+5,Y+1,6,1,'#9AA0AA')}fx(X,Y,x,y,t)},
  hut:(X,Y,x,y,t)=>{basalt(X,Y,x,y);const [ox,oy]=org(x,y);big(X,Y,x,y,ox,oy,(BX,BY)=>{
   r(BX+1,BY+2,46,29,OL);r(BX+2,BY+3,44,11,'#5E6B4A');r(BX+2,BY+3,44,2,'#7A8A60');for(let i=6;i<46;i+=8)r(BX+i,BY+5,1,9,'#4A5638');
-  r(BX+2,BY+14,44,16,'#B9BFC5');for(let i=4;i<46;i+=3)r(BX+i,BY+14,1,16,'#A3AAB1');r(BX+4,BY+19,40,8,OL);r(BX+5,BY+20,38,6,'#6B4A2B');r(BX+5,BY+20,38,1,'#94704C');
-  r(BX+8,BY+18,4,3,'#C9A64A');r(BX+15,BY+17,3,4,'#6F7F6A');r(BX+21,BY+18,5,3,'#9FD7E8');r(BX+29,BY+16,3,5,'#5A4A9A');r(BX+35,BY+18,4,3,'#B8703A');
+  r(BX+2,BY+14,44,16,'#B9BFC5');for(let i=4;i<46;i+=3)r(BX+i,BY+14,1,16,'#A3AAB1');r(BX+4,BY+16,40,13,OL);r(BX+5,BY+17,38,11,'#141A20'); // a bank of screens and a hologram cube (c014)
+  for(let i=0;i<4;i++){const on=(Math.floor(t/600)+i)%5;r(BX+6+i*9,BY+18,8,5,'#1E3A40');r(BX+7+i*9,BY+19,5,1,on?'#69CFD8':'#2C5D63');r(BX+7+i*9,BY+21,3+(i%3),1,'#3C8E8E')}
+  const hp=(Math.sin(t/500)+1)/2;r(BX+20,BY+24,8,1,'#2C5D63');r(BX+21,BY+24,6,1,`rgba(105,207,216,${(.5+.5*hp).toFixed(2)})`);r(BX+22,BY+23,4,1,`rgba(191,239,245,${(.4+.4*hp).toFixed(2)})`);r(BX+21,BY+25,1,2,'#69CFD8');r(BX+26,BY+25,1,2,'#69CFD8');r(BX+21,BY+27,6,1,'#69CFD8');
   r(BX+38,BY+6,6,6,OL);r(BX+39,BY+7,4,4,'#E3E1D6');r(BX+43,BY+11,2,2,OL)});fx(X,Y,x,y,t)},
  scrap:(X,Y,x,y,t)=>{basalt(X,Y,x,y);r(X+1,Y+8,14,7,OL);r(X+2,Y+9,6,5,'#8A5A3A');r(X+7,Y+6,7,8,'#6A4A30');r(X+7,Y+6,7,1,'#9A6A44');r(X+3,Y+5,5,5,OL);r(X+4,Y+6,3,3,'#7A818A');r(X+10,Y+9,3,2,'#E3E1D6');r(X+2,Y+13,5,1,'#E3E1D6');fx(X,Y,x,y,t)},
  pole:(X,Y,x,y,t)=>{basalt(X,Y,x,y);r(X+6,Y+2,4,14,OL);r(X+7,Y+3,2,13,'#5A6068');r(X+4,Y+14,8,2,'#454A50');r(X+3,Y,10,4,OL);r(X+4,Y+1,8,2,'#2A2E33');r(X+5,Y+3,6,1,'#FFF6D8');fx(X,Y,x,y,t);
@@ -332,10 +344,10 @@ const TILES={
  /* ---- inside the wreck ---- */
  whull:(X,Y,x,y,t)=>{wallTop(X,Y,x,y);const bl=at(x,y+1);if(bl&&bl!=='#'&&bl!=='K')wallFace(X,Y,x,y);fx(X,Y,x,y,t)},
  tunnel:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);fx(X,Y,x,y,t)},
- node:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const top=at(x,y-1)!=='N',hot=f().attack===1,p=(Math.sin(t/(hot?90:500))+1)/2;
+ node:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const top=at(x,y-1)!=='N';
   r(X+1,Y,14,16,OL);r(X+2,Y+(top?1:0),12,top?15:16,'rgba(190,220,210,.25)');r(X+3,Y+(top?2:0),10,top?14:16,'#1E2A26');
   const gold='#E8C46A',plat='#D6DEE6';r(X+7,Y+(top?3:0),2,top?13:16,top?gold:plat);for(let i=(top?4:1);i<16;i+=3){r(X+4,Y+i,3,1,i%2?gold:plat);r(X+9,Y+i+1,3,1,i%2?plat:gold)}
-  r(X+5,Y+(top?6:8),6,1,`rgba(105,207,216,${(.3+.7*p).toFixed(2)})`);if(hot&&Math.floor(t/80)%3===0)r(X+2+hash(Math.floor(t/80),y)%11,Y+hash(y,Math.floor(t/80))%14,2,2,'#B48CFF');fx(X,Y,x,y,t)},
+  r(X+3,Y+(top?2:0),10,top?14:16,'rgba(8,12,10,.45)');fx(X,Y,x,y,t)}, /* dead node: dark, no lights (c014) */
  zpz:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const dug=f().dug;big(X,Y,x,y,9,1,(BX,BY)=>{
   const S=[[16,15,13],[47,14,13],[19,36,11],[45,36,11]];
   const inside=(px,py)=>S.some(([a,c,d])=>(px-a)**2+(py-c)**2<(d-1)**2);
@@ -344,7 +356,7 @@ const TILES={
   spike(16,15,45,36,9);spike(47,14,19,36,9);spike(16,15,47,14,8);spike(19,36,45,36,6);
   for(let i=0;i<5;i++){const k=Math.floor(t/90)+i*31;if(k%4<2){const px=BX+4+hash(k,i)%56,py=BY+2+hash(i,k)%42;r(px,py,1,1,'#E6D6FF');r(px+1,py,1,1,'#B48CFF');r(px,py+1,1,1,'#B48CFF')}}
   if(!dug){for(let i=0;i<64;i+=5){const hh=8+hash(i,3)%10;r(BX+i,BY+48-hh,6,hh,'#4E5A4A');r(BX+i+1,BY+48-hh,4,1,'#6F7F6A')}}});fx(X,Y,x,y,t)},
- rubble:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);if(f().dug){r(X+2,Y+11,4,3,'#4E5A4A');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,1,i%8?OL:'#E8B73A')}
+ rubble:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);if(f().dug){r(X+2,Y+11,4,3,'#4E5A4A');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,1,i%8?OL:'#E8762A')}
   else{const h=hash(x,y);[[0,7,8,8],[6,4,9,11],[3,10,10,6],[10,9,6,7]].forEach(([a,c,w,hh],i)=>{const sh=(h+i)%3;r(X+a+1,Y+c,w-2,hh,OL);r(X+a,Y+c+1,w,hh-2,OL);r(X+a+1,Y+c+1,w-2,hh-2,['#5F6E5B','#56634F','#6A7A64'][sh]);r(X+a+1,Y+c+1,w-2,1,'#8A9A84');r(X+a+1,Y+c+hh-2,w-2,1,'#46523F')});r(X+5+h%5,Y+8,2,1,'#7A6AC8')}fx(X,Y,x,y,t)},
  cache:(X,Y,x,y,t)=>{wallTop(X,Y,x,y);r(X,Y+5,16,11,'#6F7F6A');r(X,Y+5,16,1,'#8A9A84');if(f().mapped){r(X+3,Y+7,10,9,OL);r(X+4,Y+8,8,8,'#14181A');r(X+12,Y+7,3,9,'#5F6E5B');r(X+5,Y+14,6,1,'#C9A23A')}else{r(X+3,Y+7,10,9,'#687862');r(X+3,Y+7,10,1,'#7C8C76')}fx(X,Y,x,y,t)},
  exitHole:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const sky=night()||f().mapped&&f().attack!==2?'#1E2A44':'#9FB0B8';r(X+1,Y+2,14,14,'#2E3530');r(X+2,Y+3,12,13,sky);r(X+2,Y+3,12,2,'rgba(255,255,255,.15)');
@@ -406,6 +418,13 @@ const ZONES={
   spots:{get '4,2'(){const F=f();return !F.gift?'창밖에 하늘의 관문이 있어요. 아주 큰 검은 돔이에요.':!F.beam?(F.ambush?'빨간 점 아홉 개가 다가와요. 미사일이에요!':'관문을 지났어요. 멀리 하얀 행성이 보여요.'):'하얀 행성 테릭 파푸안. 땅이 거의 다 얼음이에요.'},
    '17,1':'작은 제단이에요. 아스테리아 여신의 별이 있어요.',get '2,10'(){return f().beam?'핵융합 엔진이 보라색으로 빛나요. 사실은 무기예요.':'셀레스철 핵융합 엔진. 따뜻하고 조용해요.'},
    '22,2':'구명 침대예요. 관문을 지날 때 여기 누워요.','15,3':'라운지 탁자. 차가운 차하고 카드가 있어요.','8,3':'레이더 화면. 초록 점이 하나 있어요. 우리 배예요.'},
+  things:{'#':()=>f().ambush&&!f().beam?'벽의 빨간 불이 깜빡깜빡해요!':['벽에 기계와 전선이 잔뜩 붙어 있어요.','천장에 주황색 불이 줄지어 있어요.'],
+   'r':'빨간 전선이 벽에 늘어져 있어요.',
+   'w':()=>{const F=f();return !F.gift?['큰 검은 돔이 하늘을 가렸어요.','돔이 성운 빛에 희미하게 반짝여요.']:!F.beam?(F.ambush?'빨간 불빛이 빠르게 다가와요!':['멀리 하얀 행성이 보여요.','별이 아주 많아요. 조용해요.']):'하얀 행성이 아주 크게 보여요.'},
+   'c':()=>{const F=f();return F.ambush&&!F.beam?'화면에 빨간 점이 가득해요!':F.beam?'화면이 조용해요. 적의 신호가 꺼졌어요.':'조종 화면이에요. 숫자가 천천히 바뀌어요.'},
+   'h':['구명 침대. 안이 하얗고 푹신해요.','구명 침대 위에서 작은 불이 깜빡여요.'],
+   't':'라운지 탁자. 컵 몇 개가 놓여 있어요.',
+   'F':()=>f().beam?'엔진이 보라색으로 밝게 빛나요.':'엔진이 하얗게 빛나요. 아직 힘을 다 안 써요.'},
   npcs:['uzoma','ellie','basyl','tose1','grssia1','ichika1','finn','dream']},
  bubbletown:{name:'파이브 · 버블타운',reg:'FIVE · BUBBLETOWN',
   legend:{'%':{tile:'void'},'=':{tile:'disk',walk:1},'g':{tile:'gantry'},'B':{tile:'bubbleW'},'P':{tile:'plane'},'p':{tile:'pdoor',walk:1},'A':{tile:'airlock',walk:1},
@@ -435,6 +454,12 @@ const ZONES={
   spots:{'7,3':'부두 크레인이에요. 잔해 조각을 들어요.',get '11,4'(){return f().bubble?'버블이 다 감겼어요. 은색으로 반짝반짝해요.':'잔해를 은색 버블로 감싸고 있어요. 불꽃이 튀어요.'},
    '22,3':'삼각형 날개 우주비행기. 대기권도 날 수 있어요.','11,8':'50킬로미터 탑이에요. 꼭대기에 부두 원반이 있어요.','1,9':'반쯤 묻힌 은색 공. 사람들이 안에서 살아요.',
    '3,12':'광산 구덩이예요. 아주 깊어요.','13,12':'"레스타리 · 엔포 가문" 상자.','5,1':'하늘에 테릭 파푸안이 떠 있어요. 하얗고 커요.','20,1':'하늘에 테릭 파푸안이 떠 있어요. 초록 띠는 바다예요.'},
+  things:{'%':['까만 하늘이에요. 여기는 공기가 없어요.','별이 반짝여요. 아주 조용해요.'],
+   'o':['반쯤 묻힌 은색 공 집이에요.','은색 공 집. 둥근 문이 있어요.'],
+   'B':()=>f().bubble?'은색 버블이 잔해를 다 감쌌어요.':'용접 기계가 이음매를 따라 기어가요. 불꽃이 튀어요.',
+   '-':'공 집과 공 집을 잇는 은색 통로예요.','P':'삼각형 날개 우주비행기. 하얗고 매끈해요.',
+   '|':'탑 기둥에 빨간 불이 깜빡여요.','O':'광산 구덩이. 바닥이 안 보여요.',
+   'g':'노란 크레인이 천천히 움직여요.','k':'주황색 상자. 단단히 잠겨 있어요.'},
   npcs:['yoru','miteris','okimi','resident']},
  breakerville:{name:'테릭 파푸안 · 브레이커빌',reg:'TERRIK PAPUAN · BREAKERVILLE',base:'plate',
   legend:{'~':{tile:'algae'},'n':{tile:'rail'},'m':{tile:'beam'},'b':{tile:'rim'},'W':{tile:'wreckHull'},'H':{tile:'hole',walk:1},'=':{tile:'bridge',walk:1},
@@ -463,8 +488,18 @@ const ZONES={
   warps:{'13,4':{to:'wreck',x:11,y:13,dir:'up',lock:()=>!f().daves?'플렉살 팀만 들어가요. 계약이 먼저예요.':(f().mapped&&!f().attack)&&'밤이에요. 잔해 문이 닫혔어요.'},
    '23,15':{to:'bubbletown',x:23,y:5,dir:'down',lock:()=>f().attack===1&&'지금은 못 떠나요! 공격 중이에요!'}},
   spots:{'1,6':'초록색 조류가 바다를 덮었어요. 2미터 두께. 빠지면 못 나와요.','2,6':'크레인 레일 기둥. 녹이 많이 슬었어요.','12,5':'열린 버블. 잘라 낸 은색 조각들이 바다 위에 떠 있어요.',
-   '4,9':'은색 버블 조각으로 만든 집이에요.','7,11':'로지예요. 안에서 수프 냄새가 나요.','20,10':'감정사의 오두막. 옛날 물건이 가득해요.','11,8':'아크 등이에요. 밤에도 부두가 밝아요.',
-   '14,12':'녹슨 기계 조각. 소금이 하얗게 붙었어요.','22,14':'미테리스의 우주비행기예요.',get '14,5'(){return f().attack===2?'크레인 레일이 무너져서 바다에 빠졌어요.':'잔해 옆 다리예요. 아래는 조류 바다예요.'}},
+   '4,9':'은색 버블 조각으로 만든 집이에요.','7,11':'로지예요. 안에서 수프 냄새가 나요.','20,10':'감정사의 오두막. 안에 화면이 가득해요.','11,8':'아크 등이에요. 밤에도 부두가 밝아요.',
+   '14,12':'녹슨 기계 조각. 소금이 하얗게 붙었어요.',get '22,14'(){return f().dug?'미테리스의 우주비행기예요. 다시 내려왔어요.':'미테리스의 우주비행기예요. 곧 궤도로 올라가요.'},get '14,5'(){return f().attack===2?'크레인 레일이 무너져서 바다에 빠졌어요.':'잔해 옆 다리예요. 아래는 조류 바다예요.'}},
+  things:{'~':()=>f().attack===1?'조류가 깨졌어요! 바다에서 뭔가 나와요!':['초록 조류가 바다를 덮었어요.','조류가 천천히 출렁여요. 냄새가 고약해요.'],
+   'W':()=>f().attack===1?'보라색 불빛이 번쩍번쩍해요!':['아주 큰 배의 조각이에요. 회색빛 초록색이에요.','표면에 길쭉한 구멍이 많아요. 아주 오래됐어요.'],
+   'b':'잘라 낸 은색 버블 조각이에요. 차갑고 반짝여요.',
+   'm':x=>f().attack===2&&x>=8&&x<=10?'크레인 레일이 끊어져서 바다에 빠졌어요.':x%5===0?'레일에 노란 기계가 달려 있어요.':'크레인 레일이에요. 아주 길어요.',
+   'n':'크레인 기둥이에요. 녹이 슬었어요.',
+   'S':()=>f().mapped&&f().attack!==2?'창문에 노란 불이 켜져 있어요.':'은색 조각으로 만든 집. 창문이 작아요.',
+   'L':()=>f().mapped&&f().attack!==2?'로지 창문이 따뜻하게 빛나요.':'로지 지붕 위로 연기가 올라와요.',
+   'R':'감정사 오두막. 벽에 화면이 가득해요.','P':'우주비행기 날개가 젖어 있어요.',
+   'C':x=>x%2===0?'수프 그릇에서 김이 나요.':'카운터 위에 쇠 쟁반이 있어요.',
+   'i':'아크 등이에요. 하얀 불빛이 밝아요.','x':'녹슨 기계 조각이에요. 무거워요.'},
   npcs:['tabia','davrux','guard','dave','dave2','grssia','ichika','ichikaBody','tabiaBody','tose','basylB','keeper','finnB','miterisB','ghost1','ghost2','ghost3']},
  wreck:{name:'잔해 · 내부',reg:'AKTORU WRECK · PORTISHEAD',
   legend:{'#':{tile:'whull'},'.':{tile:'tunnel',walk:1},'N':{tile:'node'},'G':{tile:'zpz'},'r':{tile:'rubble'},'K':{tile:'cache'},'E':{tile:'exitHole',walk:1},'l':{tile:'alamp'}},
@@ -487,8 +522,13 @@ const ZONES={
   rooms:[[1,2,4,4,'잔해 · 네트워크 노드'],[6,1,15,5,'잔해 · 발생기 방'],[17,2,22,4,'잔해 · 작은 방'],[4,11,18,13,'잔해 · 입구 홀'],[1,5,22,10,'잔해 · 굴']],
   dark:()=>!f().mapped?[1,1,22,10]:null,
   warps:{'11,14':{to:'breakerville',x:13,y:6,dir:'down'}},
-  spots:{'1,2':'네트워크 노드. 벽 속에 금색, 은색 고사리 같은 선이 있어요.',get '8,3'(){return f().dug?'공 네 개가 빨간 가시에 꿰여 있어요. ZPZ 발생기!':'돌 아래에서 보라색 불꽃이 튀어요.'},
-   get '22,2'(){return f().mapped?'벽에 작은 문이 열려 있어요. 안은 비었어요.':'벽이 조금 이상해요. 문 모양이에요.'},'4,12':'아크 등이 윙윙 소리를 내요.','6,14':'벽에 동그란 구멍이 많아요. 아주 오래된 배예요.'},
+  spots:{'1,2':'네트워크 노드. 벽 속에 금색, 은색 고사리 같은 선이 있어요.',get '8,3'(){return f().dug?'공 네 개가 빨간 가시에 꿰여 있어요. ZPZ 발생기!':'잔해 속에서 보라색 빛이 보여요.'},
+   get '22,2'(){return f().mapped?'벽에 작은 문이 열려 있어요. 안은 비었어요.':'벽이 조금 이상해요. 문 모양이에요.'},'4,12':'아크 등이 윙윙 소리를 내요.','6,14':'벽에 길쭉한 구멍이 많아요. 아주 오래된 배예요.'},
+  things:{'#':['회색빛 초록 벽이에요. 차갑고 조금 까칠해요.','오래된 벽이에요. 길쭉한 구멍이 있어요.','벽을 두드리면 쿵쿵 울려요.'],
+   'G':()=>f().dug?'공 네 개가 보라색으로 반짝여요.':'벽 속에 뭔가 박혀 있어요. 틈으로 보라색 빛이 보여요.',
+   'r':()=>f().dug?'조각을 다 치웠어요. 주황색 줄이 그어져 있어요.':'잔해 조각이 높이 쌓였어요. 혼자서는 못 치워요.',
+   'N':()=>f().attack===1?'노드 안은 깜깜해요. 밖에서 쿵쿵 소리가 나요.':'투명한 벽 속에 금색, 은색 고사리가 보여요.',
+   'l':'아크 등이 눈부셔요.'},
   npcs:['davrux2','finnW']},
 };
 

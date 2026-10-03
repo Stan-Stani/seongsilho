@@ -71,6 +71,7 @@
  {check:()=>state.f.done,msg:'chapter done'},
  {clock:26*3600e3},
  {inspect:['breakerville',8,13],shot:'21-terminal'},
+ {look:true,shot:'90-look'},
  {panel:1,shot:'22-log'},
  {chapters:1,shot:'23-chapters'},
 ]

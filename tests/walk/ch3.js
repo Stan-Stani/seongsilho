@@ -40,5 +40,6 @@
  {talk:'epi'},
  {clock:26*3600e3},
  {inspect:['ship',27,10]},
+ {look:true,shot:'90-look'},
  {panel:1,shot:'21-log'},
 ]

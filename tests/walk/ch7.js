@@ -58,5 +58,6 @@
  {clock:26*3600e3},
  {inspect:['ship',1,4],shot:'20-terminal'},
  {talk:'zelindaC'},
+ {look:true,shot:'90-look'},
  {panel:1,shot:'21-log'},
 ]

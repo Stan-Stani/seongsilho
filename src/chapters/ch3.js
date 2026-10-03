@@ -255,6 +255,11 @@ function kid(hair,shirt,pants,girl){ // a small child, 12×12
  up:['...OOOOOO...',girl?'..OHHHHHHRO.':'..OHHHHHHO..','.OHHHHHHHHO.','.OHHHHHHHHO.','.OHHHHHHHHO.','.OHHHHHHHHO.','..OSSSSSSO..','..OCCCCCCO..','.OSCCCCCCSO.',girl?'.OCCCCCCCCO.':'..OCCCCCCO..',`..O${P}${P}OO${P}${P}O..`,'..OKKOOKKO..'],
  left:['...OOOOO....',girl?'..OHHHHHRO..':'..OHHHHHO...','.OHHHHHHHO..','.OSSHHHHHO..','OSESSSHHHO..','.OMSSSSHO...','..OSSSSO....','..OCCCCO....','..OCSCCO....',girl?'.OCCCCCCO...':'..OCCCCO....',`..O${P}${P}${P}${P}O....`,'..OKKOKKO...']}}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TL={
  /* ship · Sphere One, owner's quarters, command deck, High Rosa hangar 3 */
  moss:(X,Y,x,y)=>moss(X,Y,x,y),
@@ -280,7 +285,7 @@ const TL={
   if(a===1){const fl=Math.floor(t/90)%17===0;g.globalAlpha=fl?.35:.8;disc(X+8,Y+3,4,'#2E7A68');disc(X+7,Y+2,2,'#4E9E6E');g.globalAlpha=1;r(X+3,Y+7,10,1,'#69CFD8');r(X+13,Y+1,1,1,(Math.floor(t/400)%2)?'#FFFFFF':'#69CFD8')}},
  gantry:(X,Y,x,y,t)=>{r(X,Y,16,16,'#30363E');for(let i=0;i<16;i++){r(X+i,Y+i,1,1,'#B08A2E');r(X+15-i,Y+i,1,1,'#B08A2E')}r(X,Y,2,16,'#4A525C');r(X+14,Y,2,16,'#4A525C');
   if(front(x,y)&&at(x,y+1)){r(X,Y+9,16,7,'#555D68');r(X,Y+9,16,1,'#6B7480');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,3,'#E8B73A')}},
- lestari:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.2);let a=0;while(at(x-a-1,y)==='L')a++;const bx=X-a*16;
+ lestari:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.2);let a=0;while(at(x-a-1,y)==='L')a++;const bx=X-a*16;
   clip(X,Y,()=>{const y0=Y+5;r(bx+10,y0,92,7,'#BFB59A');r(bx+10,y0,92,2,'#D8D0B8');r(bx+10,y0+5,92,2,'#9C937A');r(bx+6,y0+1,4,5,'#BFB59A');r(bx+4,y0+2,2,3,'#9C937A');r(bx+102,y0+1,4,5,'#9C937A');
    for(let i=18;i<100;i+=13)r(bx+i,y0,1,7,'#A3473A');r(bx+60,y0-2,8,2,'#DCE6E8');r(bx+30,y0+3,40,1,'#A3473A');r(bx+105,y0+2,2,2,(Math.floor(t/500)%2)?'#BFE6FF':'#3A4650')});
   r(X,Y,16,3,'#3F4650');r(X,Y+13,16,3,'#555D68');r(X,Y+13,16,1,'#6B7480');if(x%3===0)r(X,Y,1,16,'#2E343C')},
@@ -353,6 +358,15 @@ const ZONES={
    '23,1':'창밖에 레스타리가 있어요. 석 달 동안 우리 집이었어요.','16,10':'과일 나무 화분. 개스들이 매일 물을 줘요.',
    get '23,4'(){return f().zpz?'ZPZ 발생기. 공 네 개가 빨간 가시에 꽂혀 있어요. 보라색 불꽃이 튀어요.':f().swap?'ZPZ 발생기가 들어왔어요. 아직 설치 전이에요.':'상자 두 개. 안에 엔트로피 드라이브가 있어요.'},
    get '22,10'(){return f().filter?'물이 맑아요. 새 필터가 잘 돌아가요.':'물이 갈색이에요. 필터가 막혔어요.'}},
+  things:{'#':['오래된 선체 벽이에요. 고친 자국이 많아요.','벽이 조금 따뜻해요. 웅웅 소리가 나요.'],
+   'C':['원통 발코니에 덩굴이 늘어져 있어요.','발코니마다 주황색 과일이 달렸어요.'],
+   'v':['화분에 주황색 과일이 달렸어요.','흙 냄새가 좋아요. 잎이 반짝반짝해요.'],
+   'g':'격납고 벽이에요. 노란 줄무늬가 있어요.','b':'대나무 칸막이예요. 마른 풀 냄새가 나요.',
+   'S':['벽 화면에 그래프가 움직여요.','벽 화면에 숫자가 반짝여요.'],
+   'L':'창밖에 레스타리가 떠 있어요. 큰 엔진 두 개가 보여요.','c':'화면에 메시지가 가득해요. 다 못 읽겠어요.',
+   'Z':()=>f().swap?'공 네 개가 빨간 가시에 꽂혀 있어요.':'큰 상자예요. 노란 줄이 그어져 있어요.',
+   't':()=>f().filter?'탱크 물이 맑아요. 거품이 올라가요.':'탱크 물이 갈색이에요. 빨간 불이 깜빡여요.',
+   'H':'홀로그램 지도가 천천히 돌아요.','u':'푹신한 소파예요. 쿠션이 하나 있어요.','k':'격납고 상자예요. 단단히 묶여 있어요.'},
   npcs:['dejean','ellie','finn','epi','gyvoy','malvin','dave1','dave2','nglon','pablo','renata']},
  round:{name:'총독 원형 저택',reg:'ROUNDHOUSE · SANTA ROSA',outdoor:1,
   legend:{'R':{tile:'coral'},'U':{tile:'banner'},'G':{tile:'glassLawn',walk:1},'O':{tile:'tree'},'m':{tile:'maple'},'b':{tile:'birch'},'*':{tile:'flowers',walk:1},'P':{tile:'stone',walk:1},
@@ -380,6 +394,11 @@ const ZONES={
   warps:{'3,16':{to:'ship',x:24,y:5,dir:'up'},
    '24,16':{to:'hafnir',x:8,y:2,dir:'down',lock:()=>f().rode?false:!hasItem('화살 열차표')?'화살 열차표가 없어요.':!f().blessing?'어머니가 핀을 찾아요. 인사하고 가요.':false}},
   spots:{'13,8':'제일 큰 세쿼이아. 황후의 나무예요. 금빛 띠가 있어요.','9,8':'거대한 세쿼이아. 일곱 그루가 일곱 별을 뜻해요.','9,1':'총독의 깃발이에요.','1,1':'분홍 산호 리브스톤 벽. 금빛, 은빛 점이 반짝여요.','7,13':'연못에 하늘의 수정 돔이 비쳐요.'},
+  things:{'R':['분홍 산호 같은 벽이에요. 금빛 점이 반짝여요.','벽이 매끈해요. 돌이 살아 있는 것 같아요.'],
+   'Q':['거대한 세쿼이아예요. 고개를 들어도 끝이 안 보여요.','나무껍질이 빨갛고 부드러워요.'],
+   'O':'초록 잎이 무성한 나무예요.','m':'단풍나무예요. 잎이 빨개요.','b':'자작나무예요. 껍질이 하얘요.',
+   '~':['연못에 작은 물고기가 있어요.','연못 물이 아주 맑아요.'],'n':'나무 벤치예요. 조금 쉬어도 돼요.',
+   'U':'총독의 깃발. 금색 무늬가 있어요.'},
   npcs:['guard','josias','mother','zelinda','wynid']},
  hafnir:{name:'하프니르',reg:'HAFNIR · GONDIAR',outdoor:1,
   legend:{'J':{tile:'jaca'},'r':{tile:'guide'},'X':{tile:'train'},'x':{tile:'train',walk:1},'P':{tile:'platform',walk:1},'Y':{tile:'pillar'},'.':{tile:'lawn',walk:1},'S':{tile:'street',walk:1},
@@ -407,6 +426,14 @@ const ZONES={
   warps:{'8,1':{to:'round',x:24,y:15,dir:'up'}},
   spots:{'13,3':'"하프니르역 · 산타 로사행 화살 열차"','14,5':'포스터: "{리걸 민주당|리걸 민주당} · 하프니르를 위해!"','10,9':'지붕에서 폭포가 떨어지는 집. 누가 이렇게 지었을까요?',
    '20,6':'오틸리아가 디자인한 집. 버섯이 모여 있는 것 같아요.','10,15':'파도가 하얗게 부서져요.','3,4':'리브스톤 집. 집마다 모양이 달라요.'},
+  things:{'w':['바다가 파랗게 반짝여요.','멀리 바다 끝이 하늘하고 만나요.'],
+   'J':['보라색 꽃나무예요. 자카란다예요.','보라색 꽃잎이 바닥에 떨어졌어요.'],
+   'f':['하얀 거품이 모래 위로 밀려와요.','발이 젖을 것 같아요. 물이 차가워요.'],
+   'r':'화살 열차 선로예요. 반짝반짝해요.','X':'하얀 화살 열차. 아주 빠를 것 같아요.',
+   'V':['리브스톤 집이에요. 지붕이 둥글어요.','창문이 두 개 있는 크림색 집이에요.'],
+   'M':'버섯 집 창문에 노란 불이 켜져 있어요.','W':'지붕에서 물이 떨어져요. 시원한 소리가 나요.',
+   'n':'바닷가 벤치. 모래가 조금 있어요.','K':'바닷가 카페 카운터. 주스 냄새가 나요.',
+   'Y':'역 표지판이에요. 하얗고 깨끗해요.','q':'파라솔 아래는 시원해요.'},
   npcs:['station','otylia','vari','laurella','dushan','terence','cafe']},
 };
 

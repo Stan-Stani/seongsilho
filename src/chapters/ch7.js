@@ -147,6 +147,8 @@ const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const got=w=>state.badges.includes(w);
 const acc=()=>!!(state&&state.f.woke&&!state.f.jump); // red alert: frigates 5 hours out, until the 10,000 g flight
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
+const WALL7=(x,y)=>acc()?vary(x,y,['벽의 경보등이 빨갛게 깜빡여요.','빨간 불빛 때문에 벽이 붉어요.']):vary(x,y,['성실호의 벽이에요. 매끈하고 조용해요.','벽 등불이 따뜻하게 비춰요.']);
 
 /* ---------- pixel helpers for this chapter ---------- */
 const M=rows=>rows.map(s=>s+[...s].reverse().join('')); // mirror a half sprite into a symmetric one
@@ -170,7 +172,7 @@ const anchorShip=()=>spr('anchor',64,48,d=>{ // the 120 m tri-delta anchor ship,
  d(32,8,1,32,'#7E878F');d(23,30,19,1,'#8E979F');d(18,37,29,1,'#8E979F');d(30,11,5,3,'#47D6C2');d(31,11,2,1,'#BFF5EA');
  d(13,17,1,2,'#47D6C2');d(51,17,1,2,'#47D6C2');d(25,41,4,2,'#FFB86A');d(35,41,4,2,'#FFB86A');d(8,46,4,1,'#FFB86A');d(52,46,4,1,'#FFB86A')});
 /* Dolod's storm: banded purple-orange layers that drift and braid, with lightning */
-const STORM=['#2A2140','#3E3160','#5B4A7A','#7A4F6E','#A35A4E','#C76A3A','#E39A55','#C76A3A','#7A4F6E','#5B4A7A','#3E3160'];
+const STORM=['#2E2228','#43303A','#5A3A40','#7A4A4E','#9A5E5A','#B87468','#D08A78','#B87468','#9A5E5A','#7A4A4E','#5A3A40'];
 function storm(X,Y,x,y,t,x0,y0,w,h){
  for(let i=x0;i<x0+w;i+=2)for(let j=y0;j<y0+h;j+=2){const wx=x*16+i,wy=y*16+j;
   const v=wy*.2+2.4*Math.sin((wx+t*.03)/21)+1.3*Math.sin((wx*.7-t*.05)/9);const n=STORM.length;r(X+i,Y+j,2,2,STORM[((Math.floor(v)%n)+n)%n])}
@@ -187,7 +189,7 @@ function sfloor(X,Y,x,y,t){ // the station's dull-silver floor with scalloped se
  r(X,Y,16,16,'#8E949A');r(X,Y,16,1,'#A3A9AF');r(X+2,Y+11,4,1,'#7C8288');r(X+1,Y+10,1,1,'#7C8288');r(X+6,Y+10,1,1,'#7C8288');r(X+10,Y+11,4,1,'#7C8288');r(X+9,Y+10,1,1,'#7C8288');r(X+14,Y+10,1,1,'#7C8288');
  if(hash(x,y)<14)r(X+5+hash(y,x)%6,Y+4,2,1,'#9AA0A6');
  if(ZID==='dolod'&&x>=8&&x<=19&&y>=10&&y<=15){
-  const F=state.f,cx=14*16,cy=12*16,sp=F.linked?.05:.02,col=F.woke?'rgba(255,255,255,.55)':F.linked?'rgba(120,255,230,.55)':'rgba(71,214,194,.35)';
+  const F=state.f,cx=14*16,cy=12*16,sp=.05,col='rgba(120,255,230,.55)';if(!F.linked||F.woke)return;
   g.fillStyle=col;for(let i=0;i<16;i+=2)for(let j=0;j<16;j+=2){const d=Math.hypot(x*16+i-cx,y*16+j-cy);if(((d-t*sp)%22+22)%22<1.6)g.fillRect(X+i,Y+j,2,2)}}
 }
 function pad(X,Y,x,y,t){
@@ -202,6 +204,11 @@ function holoFloor(cx,cy,rr,t,body){ // round projection glow used by the tactic
  g.fillStyle='rgba(105,207,216,.13)';g.beginPath();g.arc(cx,cy,rr,0,Math.PI*2);g.fill();body()}
 function ball(cx,cy,R,cols){for(let dy=-R;dy<=R;dy++){const hw=Math.floor(Math.sqrt(R*R-dy*dy));const i=Math.floor((dy+R)/(2*R+1)*cols.length);r(cx-hw,cy+dy,hw*2+1,1,cols[Math.min(cols.length-1,i)])}}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const T7={
  /* ---- 성실호 ---- */
  swall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#7B8079');r(X,Y,16,1,'#959A92');
@@ -211,9 +218,9 @@ const T7={
  carpet:(X,Y,x,y,t)=>{carpet(X,Y,x,y);alertTint(X,Y,t)},
  sdeck:(X,Y,x,y,t)=>{deck(X,Y,x,y);alertTint(X,Y,t)},
  sgrate:(X,Y,x,y,t)=>{TILES.grate(X,Y,x,y,t);alertTint(X,Y,t)},
- accWin:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.35);
-  if(acc()){g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();for(let i=0;i<3;i++){const sx=(hash(x,i)*7+i*5)%16,sp=(t*.22+hash(i,x)*13)%40-14;r(X+sx,Y+sp,1,7,i?'#BFE6FF':'#FFFFFF')}g.restore()}
-  else if(ZID==='ship'&&!state.f.jump&&(x===3||x===4)){g.save();g.beginPath();g.rect(X,Y+2,16,12);g.clip();ball(4*16-CAM.x,16+8-CAM.y,6,['#5B4A7A','#C76A3A','#7A4F6E','#E39A55','#5B4A7A','#3E3160']);g.restore()}
+ accWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.35);
+  if(acc()){if(hash(x,7)<45){const fx=X+3+hash(x,3)%10,fy=Y+4+hash(3,x)%7,p=(Math.sin(t/400+x)+1)/2;r(fx-2,fy,2,1,'#B85A3A');r(fx,fy,2,1,p>.5?'#FFE7A0':'#FFB86A');r(fx+1,fy,1,1,'#FFFFFF')}}
+  else if(ZID==='ship'&&!state.f.jump&&(x===3||x===4)){g.save();g.beginPath();g.rect(X,Y+2,16,12);g.clip();ball(4*16-CAM.x,16+8-CAM.y,6,['#7A4A4E','#E3A08A','#9A5E5A','#F0B8A0','#B87468','#5A3A40']);g.restore()}
   r(X,Y,16,2,'#7B8079');r(X,Y+14,16,2,'#A3A89E');if(x%3===0)r(X,Y,1,16,'#646A63')},
  newsV:(X,Y,x,y,t)=>{r(X,Y,16,16,'#7B8079');r(X+1,Y+2,14,11,OL);r(X+2,Y+3,12,9,'#2A1E24');const k=Math.floor(t/120);
   for(let i=0;i<4;i++)r(X+2+hash(i,k)%11,Y+3+hash(k,i)%8,2,1,'#5A4A54');
@@ -251,7 +258,7 @@ const T7={
    if(F.jump){g.strokeStyle='#69CFD8';g.lineWidth=1;g.beginPath();g.arc(cx,cy,6,0,Math.PI*2);g.stroke();r(cx-1,cy-1,2,2,'#BFE6FF')}
    else if(acc()){r(cx-1,cy,3,2,'#FFFFFF');const k=(t/60)%14;for(let i=0;i<4;i++){const fx=cx+20-k+(i%2)*3,fy=cy-6+i*4;r(fx,fy,2,1,'#FF5A44');r(fx-1,fy+1,4,1,'#D2533F')}
     r(cx-18+k/2,cy-5,2,2,'#FFB86A');r(cx-17+k/2,cy+5,2,2,'#FFB86A');if(Math.floor(t/300)%2){r(oX+2,oY+14,44,1,'#D2533F')}}
-   else{ball(cx-4,cy,6,['#5B4A7A','#C76A3A','#7A4F6E','#E39A55','#5B4A7A']);r(cx+10,cy-6,3,3,'#4E9E6E');r(cx+7,cy+5,2,2,'#B5653A')}});
+   else{ball(cx-4,cy,6,['#7A4A4E','#E3A08A','#9A5E5A','#F0B8A0','#B87468','#5A3A40']);r(cx+10,cy-6,3,3,'#4E9E6E');r(cx+7,cy+5,2,2,'#B5653A')}});
   for(let i=0;i<w;i++)for(let j=0;j<h;j++)alertTint(oX+i*16,oY+j*16,t)}),
  /* ---- 돌로드 엔진 기지 ---- */
  storm:(X,Y,x,y,t)=>storm(X,Y,x,y,t,0,0,16,16),
@@ -272,9 +279,9 @@ const T7={
   if(Math.floor(t/700+x*3+y)%6===0)r(X+8,Y+4+Math.floor(t/110)%11,1,2,'#BFF5EA')},
  bulb:(X,Y,x,y,t)=>blockOnce(X,Y,x,y,(oX,oY,w,h,ox,oy)=>{
   for(let i=0;i<w;i++)sfloor(oX+i*16,oY,ox+i,oy,t);
-  const F=state.f,cx=oX+16,cy=oY+8,p=(Math.sin(t/(F.linked?140:420))+1)/2;
-  const core=F.woke?['#FFFFFF','#FFFFFF','#F4FFFC','#DFFBF6']:F.linked?['#E8FFFB','#9FF5E6','#5FE3CF','#2FB5A4']:['#9FF5E6','#5FE3CF','#47D6C2','#2A9C8C'];
-  g.fillStyle=F.woke?`rgba(255,255,255,${.25+p*.3})`:`rgba(71,214,194,${.15+p*.25})`;g.beginPath();g.arc(cx,cy,11+p*(F.linked?6:3),0,Math.PI*2);g.fill();
+  const F=state.f,cx=oX+16,cy=oY+8,p=(Math.sin(t/420)+1)/2,lit=F.linked&&!F.woke;
+  const core=lit?['#E8FFFB','#9FF5E6','#5FE3CF','#2FB5A4']:['#E4EAEC','#C8D2D6','#AEBAC0','#97A4AA'];
+  if(lit){g.fillStyle=`rgba(71,214,194,${.15+p*.25})`;g.beginPath();g.arc(cx,cy,11+p*4,0,Math.PI*2);g.fill()}
   ball(cx,cy+1,7,[OL]);ball(cx,cy+1,6,core);r(cx-3,cy-3,2,2,'#FFFFFF')}),
  cone:(X,Y,x,y,t)=>blockOnce(X,Y,x,y,(oX,oY,w,h,ox,oy)=>{
   for(let i=0;i<w;i++)sfloor(oX+i*16,oY,ox+i,oy,t);
@@ -284,16 +291,14 @@ const T7={
   for(let i=0;i<w;i++)for(let j=0;j<h;j++)pad(oX+i*16,oY+j*16,ox+i,oy+j,t);g.drawImage(anchorShip(),oX+(w*16-64)/2,oY+(h*16-48)/2);
   if(state.f.woke){const on=Math.floor(t/250)%2;r(oX+(w*16-64)/2+25,oY+(h*16-48)/2+41,4,2,on?'#FFE7A0':'#FFB86A');r(oX+(w*16-64)/2+35,oY+(h*16-48)/2+41,4,2,on?'#FFE7A0':'#FFB86A')}}),
  /* ---- 카포 프로이스 ---- */
- gateView:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.1);const G=Z.gate;
+ gateView:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.1);const G=Z.gate;
   g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
   const cx=G.cx-CAM.x,cy=G.cy-CAM.y,R=G.R;
-  g.fillStyle='rgba(120,170,255,.10)';g.beginPath();g.arc(cx,cy,R+9,0,Math.PI*2);g.fill();
   g.fillStyle='#161A22';g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fill();
-  g.strokeStyle='#2B3240';g.lineWidth=2;for(let i=0;i<16;i++){const a=i/16*Math.PI*2;g.beginPath();g.moveTo(cx+Math.cos(a)*15,cy+Math.sin(a)*15);g.lineTo(cx+Math.cos(a)*(R-2),cy+Math.sin(a)*(R-2));g.stroke()}
-  g.strokeStyle='#3A4456';g.beginPath();g.arc(cx,cy,R-1,0,Math.PI*2);g.stroke();
-  const p=(Math.sin(t/500)+1)/2;g.fillStyle='#22304A';g.beginPath();g.arc(cx,cy,15,0,Math.PI*2);g.fill();g.fillStyle='#2F4F86';g.beginPath();g.arc(cx,cy,9,0,Math.PI*2);g.fill();
-  g.fillStyle='#BFE6FF';g.beginPath();g.arc(cx,cy,3+p*2,0,Math.PI*2);g.fill();r(cx-1,cy-1,2,2,'#FFFFFF');
-  const ph=(t%5200)/5200;if(ph<.18){g.strokeStyle=`rgba(191,230,255,${1-ph/.18})`;g.lineWidth=2;g.beginPath();g.arc(cx,cy,9+ph/.18*44,0,Math.PI*2);g.stroke()}
+  g.lineWidth=2;[R-1,R-9,R-17,R-25,R-33].forEach((rr,i)=>{g.strokeStyle=i%2?'#232A36':'#2E3644';g.beginPath();g.arc(cx,cy,rr,0,Math.PI*2);g.stroke()});
+  g.fillStyle='#0C0F14';g.beginPath();g.arc(cx,cy,7,0,Math.PI*2);g.fill();
+  const ph=(t%5200)/5200;if(ph<.06){g.strokeStyle=`rgba(230,244,255,${1-ph/.06*.3})`;g.lineWidth=3;g.beginPath();g.arc(cx,cy,R-1,0,Math.PI*2);g.stroke()}
+  else if(ph<.2){const k=(ph-.06)/.14;g.strokeStyle=`rgba(191,230,255,${1-k})`;g.lineWidth=2;g.beginPath();g.arc(cx,cy,Math.max(1,(R-1)*(1-k)),0,Math.PI*2);g.stroke()}
   g.restore();
   if(y===1)r(X,Y,16,2,'#7B8079');if(y===4)r(X,Y+14,16,2,'#A3A89E');if(x%4===0)r(X,Y,1,16,'#5E635C')},
  rail:(X,Y,x,y)=>{deck(X,Y,x,y);g.fillStyle='rgba(159,215,232,.28)';g.fillRect(X,Y,16,9);r(X,Y,16,1,'#BFE6FF');r(X,Y+9,16,2,'#8A929A');r(X,Y+9,16,1,'#C0C6CC');if(x%2===0)r(X+7,Y+11,2,4,'#6E767E')},
@@ -358,13 +363,25 @@ const ZONES={
    '5,16':{to:'capo',x:10,y:9,dir:'up',lock:()=>!f().jump&&'관측 갑판 문이에요. 비상이라서 잠겨 있어요.'}},
   spots:{
    '8,1':['해적 방송이에요. 점령군에게 잡힌 사람들이 나와요.','{유버스터|유버스터}로 기억을 다 지웠어요. 아기처럼 됐어요.','사람들을 차에 싣고 집 앞에 버려요.','보고 있으면 분노가 끓어요.'],
-   get '2,1'(){return f().jump?'관문이 아주 가까워요. 아직 켈로완 성계예요.':acc()?'빨간 경보예요. 프리깃들이 점점 가까워져요.':'창밖에 보라색 줄무늬 행성. 돌로드예요.'},
+   get '2,1'(){return f().jump?'관문이 아주 가까워요. 아직 켈로완 성계예요.':acc()?'빨간 경보예요. 프리깃들이 점점 가까워져요.':'창밖에 분홍빛 줄무늬 행성. 돌로드예요.'},
    '13,2':'엘리의 침대예요. 베개가 조금 젖어 있어요.',
    '17,2':'따뜻한 등불이에요. 주인 숙소는 늘 이 색이에요.',
    '19,3':'필터 구예요. 공기가 보글보글 지나가요.',
    get '4,11'(){return f().jump?'홀로그램 지도: 카포 프로이스 관문. 건너가면 관문이 다섯 개 더 있어요.':acc()?'홀로그램 지도: 빨간 세모는 프리깃이에요. 점점 가까워져요.':'홀로그램 지도: 돌로드하고 곤디아가 보여요.'},
    '12,10':'진료실 침대예요. 깨끗한 냄새가 나요.',
    get '21,12'(){return !f().launch?'강하선이에요. 카이발에서 훔친 배예요.':f().woke?'앵커선이에요. 세모 날개가 세 개예요.':'빈 자리예요.'}},
+  things:{
+   '#':WALL7,
+   'W':(x,y)=>acc()?'창밖 멀리 밝은 불꽃들이 다가와요.':!f().jump&&(x===3||x===4)?'창밖에 분홍빛 줄무늬 행성이 보여요.':vary(x,y,['창밖에 성운이 가득해요.','창밖이 아주 조용해요.']),
+   'X':()=>!f().launch?'강하선이에요. 문이 꼭 닫혀 있어요.':f().woke?'앵커선이에요. 크고 조용해요.':'빈 자리예요. 바닥에 노란 표시만 있어요.',
+   'c':()=>acc()?'콘솔에 빨간 경고가 깜빡여요.':'콘솔 화면에 파란 숫자가 떠 있어요.',
+   'p':['관이 벽을 따라 지나가요. 물소리가 나요.','관이 조금 따뜻해요.'],
+   'F':'둥근 필터 통이에요. 작은 거품이 올라가요.',
+   'H':()=>f().jump?'홀로그램 지도에 관문이 떠 있어요.':acc()?'홀로그램 지도에 빨간 점이 가까워져요.':'홀로그램 지도에 분홍빛 행성이 떠 있어요.',
+   'L':'등불 빛이 따뜻해요.',
+   's':'빨간 소파예요. 아주 푹신해요.',
+   'B':'큰 침대예요. 보라색 이불이 있어요.',
+   'k':'진료실 침대예요. 작은 초록 불이 깜빡여요.'},
   npcs:['otylia','gath','laurella','zelinda','everett','finn','ellie','pablo','holo1','aljan','dejean','gyvoy','bensath','daveS']},
  dolod:{name:'돌로드 · 엔진 기지',reg:'DOLOD · ARCHIMEDES ENGINE',slow:1.6,
   legend:{'S':{tile:'storm'},'d':{tile:'stormDoor'},'#':{tile:'fossil'},'w':{tile:'stormWin'},'.':{tile:'sfloor',walk:1},'P':{tile:'pad',walk:1},
@@ -390,11 +407,21 @@ const ZONES={
   rooms:[[1,3,12,6,'엔진 기지 · 격납고'],[14,3,26,6,'엔진 기지 · 폭풍 전망대'],[1,8,26,8,'엔진 기지 · 물결 복도'],[8,10,19,15,'엔진 기지 · 꽃 방'],[21,10,26,15,'엔진 기지 · 앵커선 격납고'],[1,10,6,15,'엔진 기지 · 작은 방']],
   warps:{'23,14':{to:'ship',x:22,y:14,dir:'down',lock:()=>!f().woke&&'앵커선 문이 잠겼어요. 엔진만 열 수 있어요.'}},
   spots:{
-   '1,12':'작은 창이에요. 밖은 보라색, 주황색 폭풍뿐이에요.',
+   '1,12':'작은 창이에요. 밖은 폭풍 구름뿐이에요.',
    '9,2':'폭풍 문이에요. 아주 두껍고 무거워요.',
-   get '17,2'(){return f().woke?'구름이 하얗게 빛나요. 엔진이 돌로드의 힘을 쓰고 있어요.':'구름이 층층이 흘러요. 바람이 소리보다 빨라요.'},
-   get '13,11'(){return f().woke?'전구가 눈부시게 하얘요.':'청록색 전구예요. 4미터 원뿔 위에서 빛나요.'},
+   get '17,2'(){return f().woke?'창밖은 아직 어두워요. 곧 엔진이 깨어나요.':'구름이 층층이 흘러요. 바람이 아주 세요.'},
+   get '13,11'(){return f().woke?'전구가 조용해요. 핀의 명령이 끝났어요.':f().linked?'전구가 부드러운 청록색으로 빛나요.':'투명한 전구예요. 4미터 원뿔 꼭대기에 있어요.'},
    '8,10':'거대한 꽃잎이에요. 이 방은 꽃 두 송이 같아요.'},
+  things:{
+   '#':(x,y)=>x===0||x===27||y===16?'두꺼운 바깥 벽이에요. 차갑고 단단해요.':vary(x,y,['크림색 벽이에요. 뼈 같은 무늬가 있어요.','벽 무늬에서 희미한 빛이 나와요.']),
+   'S':'두꺼운 구름 띠가 끝없이 돌아요. 번개가 쳐요.',
+   'w':(x,y)=>f().woke?'창밖은 아직 어두워요. 곧 엔진이 깨어나요.':vary(x,y,['창밖은 폭풍 구름뿐이에요.','창밖 구름이 아주 빠르게 흘러가요.']),
+   'd':(x,y)=>x===6?(f().stranded?'문 옆에 빨간 불이 깜빡여요.':'문 옆에 청록색 불이 켜져 있어요.'):'두꺼운 문이에요. 노란 줄무늬가 있어요.',
+   'X':()=>f().linked?'강하선이 없어요. 빈 자리만 남았어요.':'강하선이에요. 여기까지 타고 왔어요.',
+   'e':['거대한 꽃잎이에요. 가운데 청록색 줄이 있어요.','꽃잎이 돌처럼 단단해요.'],
+   'U':()=>f().woke?'전구가 조용해요. 핀의 명령이 끝났어요.':f().linked?'전구가 부드러운 청록색으로 빛나요.':'투명한 전구예요. 원뿔 꼭대기에 있어요.',
+   'C':'하얀 원뿔이에요. 아주 매끈해요.',
+   'A':()=>f().woke?'앵커선이에요. 노란 불이 깜빡여요.':'앵커선이에요. 세모 날개가 세 개예요.'},
   npcs:['dave1','dave2','bensathD','finnD','gyvoyD','holo2']},
  capo:{name:'카포 프로이스 관문',reg:'CAPO FROIS INGRESS GATE',gate:{cx:12*16,cy:3*16+20,R:44},
   legend:{'#':{tile:'swall'},'G':{tile:'gateView'},'l':{tile:'rail'},'.':{tile:'sdeck',walk:1},'s':{tile:'sofa'},'c':{tile:'alertCon'},'O':{tile:'airlock',walk:1}},
@@ -412,14 +439,20 @@ const ZONES={
 "##########O#############"],
   rooms:[[1,5,22,9,'성실호 · 관측 갑판']],
   warps:{'10,10':{to:'ship',x:5,y:15,dir:'up'}},
-  spots:{'13,5':'카포 프로이스 관문. 검은 돔 가운데가 파랗게 빛나요.','4,5':'관문 너머 카포 프로이스에는 관문이 다섯 개 더 있대요.','20,5':'창밖은 조용해요. 아직은요.'},
+  spots:{'13,5':'카포 프로이스 관문. 고리 무늬가 있는 검은 돔이에요.','4,5':'관문 너머 카포 프로이스에는 관문이 다섯 개 더 있대요.','20,5':'창밖은 조용해요. 아직은요.'},
+  things:{
+   'G':['검은 돔이에요. 고리 무늬가 겹겹이 있어요.','관문 뒤로 성운이 빛나요.','가끔 테두리가 번쩍하고 빛이 안으로 밀려가요.'],
+   '#':WALL7,
+   'l':['유리 난간이에요. 차갑고 깨끗해요.','난간에 손자국이 조금 있어요.'],
+   's':'빨간 소파예요. 여기서 관문이 잘 보여요.',
+   'c':'콘솔이 조용해요. 파란 숫자만 깜빡여요.'},
   npcs:['zelindaC','finnC','ellieC','dejeanC','holo3']},
 };
 
 /* ---------- scenes ---------- */
 const LINK=()=>[
  {say:'접속할게요. 엔진이 저한테 말을 걸어요.'},
- {who:'…',say:'핀이 청록색 전구에 손을 대요. 빛이 커져요.'},
+ {who:'…',say:'핀이 투명한 전구에 손을 대요. 청록색 빛이 켜져요.'},
  {say:'원래 계획은 돌로드를 별에 떨어뜨리는 거였어요.'},
  {who:'기보이',say:'핀 엔진이에요. 핀 마음대로 해요.'},
  {say:'아니… 여제가 곤디아를 점령했어요. 우리 부모님도…'},
@@ -598,7 +631,7 @@ const NPC={
   after:'폭풍이 점점 세져요.',
   talk:()=>[
    {say:'밖을 봐요. 저게 돌로드예요.'},
-   {say:'보라색, 주황색 구름이 층층이 돌아요. 바람이 소리보다 빨라요.'},
+   {say:'두꺼운 구름 띠가 층층이 돌아요. 바람이 아주 세요.'},
    Q.bensath[0],
    {who:'…',say:'번쩍! 구름 사이로 하얀 빛이 갈라져요.'},
    Q.bensath[1],

@@ -26,6 +26,7 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
 - Only one playtest runs at a time (lock in play.mjs); never run more than 2 agents that playtest in parallel —
   6 parallel Chrome runs froze this 7 GB machine (2026-10-01).
 - Publish only audited chapters: `python3 build.py --chapters ch1,ch3,…`.
+- `node tests/coverage.mjs chN`: every object tile should say something when inspected (zone `things:{char:line}` for a tile kind, `spots` for one tile); keep it at 100%. Inspect lines are lore claims too — they go through the audit.
 - `python3 tests/sheet.py chN` → contact sheets; LOOK at every sheet (layout, overlaps, readability, markers, lighting).
 
 The epub and `claude-export/` are gitignored (copyright / personal data).

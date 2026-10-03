@@ -128,7 +128,7 @@ const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const ZONES={
  ship:{name:'성실호 · 선실 구역',reg:'ARK DILIGENT',
-  legend:{'#':{tile:'hull'},'.':{tile:'deck',walk:1},'=':{tile:'grate',walk:1},'w':{tile:'window'},'c':{tile:'console'},'h':{tile:'hydro'},
+  legend:{'#':{tile:'hull'},'.':{tile:'deck',walk:1},'=':{tile:'grate',walk:1},'w':{tile:'nebWin'},'c':{tile:'console'},'h':{tile:'hydro'},
    'b':{tile:'bunk'},'T':{tile:'terminal'},'e':{tile:'pipes'},'E':{tile:'engine'},'D':{tile:'airlock',walk:1}},
   map:[
 "########################",
@@ -150,10 +150,16 @@ const ZONES={
   rooms:[[1,1,4,5,'성실호 · 선실'],[6,1,17,5,'성실호 · 함교'],[19,1,22,5,'성실호 · 수경 재배실'],[1,7,22,7,'성실호 · 복도'],[1,9,10,14,'성실호 · 엔진실'],[17,9,22,14,'성실호 · 에어록']],
   dark:()=>!f().fixed?[1,9,10,14]:null,
   warps:{'18,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'},'19,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'}},
-  spots:{'7,1':'창밖에 별이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  spots:{'7,1':'창밖에 성운이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  things:{'#':['오래된 벽이에요. 고친 자국이 많아요.','차가운 쇠벽이에요. 웅웅 소리가 나요.'],
+   'w':x=>x>=9&&x<=13?'아래에 초록색, 금색 땅이 보여요.':'창밖에 성운이 빛나요. 아주 조용해요.',
+   'c':['화면에 숫자가 빠르게 지나가요.','버튼이 아주 많아요. 함부로 누르면 안 돼요.'],
+   'h':['흙이 없어요. 채소가 물에서 자라요.','작은 빨간 열매가 달렸어요. 맛있겠어요.'],
+   'e':()=>f().fixed?'파이프가 따뜻해요. 쉬익 소리가 나요.':'파이프가 차가워요. 아무 소리도 없어요.',
+   'E':()=>f().fixed?'엔진이 웅웅 돌아가요. 바닥이 떨려요.':'엔진이 조용해요. 불이 다 꺼졌어요.'},
   npcs:['ellie','dejean','finn','or','andy']},
  dock:{name:'하이 로사 · 궤도 링',reg:'HIGH ROSA GEORING',
-  legend:{'#':{tile:'ring'},'.':{tile:'plate',walk:1},'W':{tile:'planetWin'},'k':{tile:'crate'},'s':{tile:'stall',over:1},'E':{tile:'lift',walk:1},'A':{tile:'airlock',walk:1},'T':{tile:'terminal'}},
+  legend:{'#':{tile:'ring'},'.':{tile:'plate',walk:1},'W':{tile:'nebPlanetWin'},'k':{tile:'crate'},'s':{tile:'stall',over:1},'E':{tile:'lift',walk:1},'A':{tile:'airlock',walk:1},'T':{tile:'terminal'}},
   map:[
 "########################",
 "#WWWWWWWWWWWWWWWWWWWWWW#",
@@ -173,13 +179,17 @@ const ZONES={
   planet:{cx:12*16,cy:-70,r:150},base:'plate',
   warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
   spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아누샤 광산"이라고 써 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
+  things:{'#':['하이 로사의 벽이에요. 철골이 많아요.','벽의 파란 불이 천천히 깜빡여요.'],
+   'W':['창밖에 곤디아가 아주 크게 보여요.','창밖에 성운이 가득해요. 별은 잘 안 보여요.'],
+   'k':['나무 상자예요. 아주 무거워요.','상자에 숫자가 잔뜩 써 있어요.'],
+   's':['노점이에요. 반짝이는 물건이 많아요.','노점 지붕이 줄무늬예요.']},
   npcs:['customs','gyvoy','lina','trader']},
  city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',
-  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'cable'},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
+  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'stationHill'},'=':{tile:'rails',walk:1},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
   map:[
 "TTTTTTTTTTTTTTTTTTTTTTTTTT",
-"T.OO......III.......OO...T",
-"T.OO......IEI.......OO...T",
+"T.OO...===III===....OO...T",
+"T.OO...===IEI===....OO...T",
 "T.........,,,............T",
 "T.PPPPP...,,,....CCCCC...T",
 "T.PPPPP...,,,....CCCCC...T",
@@ -196,7 +206,12 @@ const ZONES={
 "TTTTTTTTTTTTTTTTTTTTTTTTTT"],
   outdoor:1,
   warps:{'11,2':{to:'dock',x:20,y:5,dir:'down'}},
-  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 써 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 양파 모양이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.','12,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.'},
+  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 써 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 둥근 돔이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.','12,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.'},
+  things:{'T':['큰 나무예요. 그늘이 시원해요.','나뭇잎 사이에서 광고 홀로그램이 반짝여요.','새가 짹짹 울어요.'],
+   'P':['경찰서 벽이에요. 창문이 깨끗해요.','경찰서 안에서 전화 소리가 나요.'],
+   'C':['카페 창문에 케이크가 보여요.','줄무늬 차양이 예뻐요.'],
+   '~':['연못에 작은 물고기가 있어요.','물이 맑아요. 하늘이 비쳐요.'],
+   'O':'수정 탑이 햇빛에 반짝여요.','I':'거대한 탑이 하늘로 올라가요. 끝이 안 보여요.','n':'나무 벤치예요. 앉아서 쉬고 싶어요.'},
   npcs:['terence','josias','otylia','cafe']},
 };
 
@@ -308,7 +323,7 @@ const NPC={
  lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1,lashes:1,lips:'#C46A70'},badge:['관측하다','행성'],
   after:'오늘은 관측하기 좋은 날이에요.',
   talk:()=>[
-   {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
+   {say:'쉿… 지금 성운을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
    Q.lina[0],
    {say:'저 아래 큰 공 보여요? 곤디아예요. 사람들이 사는 곳이에요.'},
    Q.lina[1],
@@ -343,6 +358,39 @@ const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f
 const INTRO=[{who:'성실호',say:'삐— 삐— 궤도 진입 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
 const DONE=['1장 끝! 성실호가 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.','일지에서 단어를 다시 볼 수 있어요.'];
 
+/* ---------- this chapter's own tiles (new names only, so other chapters keep the engine's) ---------- */
+/* Kelowan sits inside the Poseidon Nebula: from orbit the windows show nebula glow, hardly any stars (c013) */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
+const TILES={
+ nebWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.35);r(X,Y,16,2,'#868C84');r(X,Y+14,16,2,'#ABB0A6');if(x%3===0)r(X,Y,1,16,'#6F756E');if(x>=9&&x<=13){const c=['#3E8E6A','#4E9E6E','#C9A64A'];r(X,Y+9,16,5,c[(x)%3]);r(X,Y+9,16,1,'#9FD7E8')}},
+ nebPlanetWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.15);const P=Z.planet;
+  g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+  const cx=P.cx-CAM.x,cy=P.cy+Math.sin(t/4000)*2;
+  g.fillStyle='#2E7A68';g.beginPath();g.arc(cx,cy+170,P.r,0,Math.PI*2);g.fill();
+  g.fillStyle='#4E9E6E';g.beginPath();g.arc(cx-40,cy+190,60,0,Math.PI*2);g.fill();
+  g.fillStyle='#C9A64A';g.beginPath();g.arc(cx+60,cy+200,40,0,Math.PI*2);g.fill();
+  g.strokeStyle='rgba(159,215,232,.7)';g.lineWidth=2;g.beginPath();g.arc(cx,cy+170,P.r,Math.PI*1.05,Math.PI*1.95);g.stroke();
+  g.restore();
+  if(y===1)r(X,Y,16,2,'#3F4650');if(y===2)r(X,Y+14,16,2,'#555D68');if(x%4===0)r(X,Y,1,16,'#2E343C')},
+ /* the orbital tower comes down on a hill turned into a hive of caverns (the station mountain), ringed by rail yards (c002, c006) */
+ stationHill:(X,Y,x,y,t)=>{const L=at(x-1,y)!=='I',R=at(x+1,y)!=='I'&&at(x+1,y)!=='E',top=at(x,y-1)!=='I';
+  lawn(X,Y,x,y);
+  for(let i=0;i<16;i++){const u=L?i/16:R?1-i/16:1,h=top?Math.round(4+10*Math.min(1,u*1.3)):16;
+   r(X+i,Y+16-h,1,h,'#A3957E');r(X+i,Y+16-h,1,1,'#C4B69C');if(top&&h>3)r(X+i,Y+17-h,1,1,'#7FB45E')}
+  const h=hash(x,y);r(X+3+h%5,Y+(top?11:4),3,1,'#8A7D68');r(X+9-(h%4),Y+(top?13:9),2,1,'#8A7D68');
+  if(!top){const ax=L?1:R?7:4;r(X+ax,Y+6,8,10,'#5E5446');r(X+ax+1,Y+5,6,1,'#5E5446');r(X+ax+1,Y+7,6,9,'#231E1A');r(X+ax+2,Y+6,4,1,'#231E1A');
+   const p=(Math.sin(t/700+x)+1)/2;r(X+ax+2,Y+9,4,1,`rgba(232,196,106,${(.4+.6*p).toFixed(2)})`);r(X+ax+1,Y+13,6,1,'#5A6068');r(X+ax+1,Y+15,6,1,'#5A6068')}
+  if(top)(L?[[9,9]]:R?[[4,9]]:[[1,7],[12,7]]).forEach(([a,b])=>{r(X+a,Y+b+1,3,3,'#231E1A');r(X+a+1,Y+b,1,1,'#231E1A');r(X+a,Y+b+3,3,1,'#E8C46A')}); // cavern openings
+  if(top&&!L&&!R){r(X+5,Y-16,6,20,'#9AA3AD');r(X+5,Y-16,1,20,'#C4CBD2');r(X+10,Y-16,1,20,'#6E7680');
+   const p=(Math.sin(t/200)+1)/2;r(X+7,Y-16,2,18,`rgba(159,215,232,${(.6+p*.4).toFixed(2)})`);r(X+7,Y-16+((Math.floor(t/60))%18),2,3,'#E8F6FA')}},
+ rails:(X,Y,x,y,t)=>{r(X,Y,16,16,'#A99F90');const h=hash(x,y);if(h<60)r(X+h%14,Y+(h>>2)%14,1,1,'#8E8576');
+  for(let i=1;i<16;i+=4)r(X+i,Y+3,2,10,'#6E5A44');r(X,Y+5,16,1,'#5A6068');r(X,Y+4,16,1,'#B9C1C9');r(X,Y+10,16,1,'#5A6068');r(X,Y+9,16,1,'#B9C1C9');
+  const end=y===1&&(at(x+1,y)==='I'||at(x-1,y)==='I');if(end){const bx=at(x+1,y)==='I'?12:1;r(X+bx,Y+2,3,12,'#B84A3A');r(X+bx,Y+5,3,2,'#F2D24A')}},
+};
+
 function questText(){
  const F=f(),b=w=>state.badges.includes(w);
  if(F.done)return '1장 끝 · 일지에서 복습해요';
@@ -355,5 +403,5 @@ function questText(){
  if(hasItem('부품')&&hasItem('연료통'))return '엔진실 · 기관장님한테 가져가요';
  return `하이 로사 · 부품 ${p} · 연료통 ${fu}`;
 }
-return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText};
+return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES};
 }});

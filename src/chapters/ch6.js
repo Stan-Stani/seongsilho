@@ -144,6 +144,10 @@ const ITEMS={'거래 물건 상자':'기보이가 준 상자. 트래블러 물�
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const has6=w=>state.badges.includes(w);
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
+const SAIL=(x,y)=>vary(x,y,has6('돛')?['까만 돛이 바람을 받아요.','까만 돛이 천천히 흔들려요.']:['까만 천이 바람을 받아요.','까만 천이 천천히 흔들려요.']);
+const RIG=['굵은 줄이 이리저리 묶여 있어요.','줄이 바람에 팽팽해요.'];
+const AIRP='작은 풀이 공기 속에 둥둥 떠 있어요.';
 
 /* ---------- pixel helpers (engine globals r, g, at, hash, CAM, Z, ZID, MH, walkable, front are used at draw time) ---------- */
 const O='#1B1E2B';
@@ -167,7 +171,7 @@ function sky(X,Y,x,y,t){
  if(hash(x,y)%13===0){const d=Math.floor(t/500+hash(y,x))%14;r(X+(hash(y,x)%12)+2,Y+1+d,1,1,shc(S[k],.62))}
 }
 /* Ovar body: a bus-sized Atlas beetle shell seen from above, head toward the bottom (the head is the NPC sprite) */
-const OV={koa:{b:'#2A2236',m:'#4A3E60',p:'#1E1A28',s:['#7A4FC0','#4F86D0','#3FB8A6']},kech:{b:'#1E2A30',m:'#36505A',p:'#16222A',s:['#2E9C8C','#6CC79A','#C6D86A']},
+const OV={koa:{b:'#17151D',m:'#33303E',p:'#110F16',s:['#6A4FA0','#3F76B0','#3F9C8A']},kech:{b:'#15181C',m:'#30343C',p:'#0F1216',s:['#3F8C7C','#9A5A8A','#A89A4A']},
  kaizen:{b:'#2A2818',m:'#4A4630',p:'#201E14',s:['#9CA83E','#D0A23E','#D0683E']},gen:{b:'#22223A',m:'#3A3A5A',p:'#1A1A2A',s:['#4F6ED0','#8A4FC0','#D04F9C']}};
 function ovarCanvas(nm,dead,fr){return cvs(`ov-${nm}-${dead?1:0}-${fr}`,48,32,(R,L)=>{const P=OV[nm];
  const ell=(cy,rx,ry,v)=>{const e=(v-cy)/ry;return Math.abs(e)<=1?Math.floor(rx*Math.sqrt(1-e*e)):0};
@@ -326,7 +330,7 @@ const TILES={
  tfloor:(X,Y,x,y,t)=>{r(X,Y,16,16,'#232823');const h=hash(x,y);r(X+h%13,Y+(h*3)%13,3,2,'#2C332B');r(X+(h*7)%14,Y+(h*5)%14,2,1,'#2C332B');if(h%9===0){const on=(Math.floor(t/700)+h)%3;r(X+(h%10)+3,Y+(h%8)+4,1,1,on?'#3E8B5A':'#2A4A34')}},
  mouth:(X,Y,x,y,t)=>{sky(X,Y,x,y,t);r(X,Y,16,2,'#2C352B');r(X,Y+14,16,2,'#2C352B');for(let i=0;i<16;i+=3)r(X+i,Y+2,2,2+(i%2),'#566652')},
  crystal:(X,Y,x,y,t)=>{r(X,Y,16,16,'#4A3380');const h=hash(x,y);for(let i=0;i<3;i++){const cx=X+1+i*5,hh=8+((h+i*3)%6);r(cx,Y+16-hh,4,hh,'#8C6BD1');r(cx+1,Y+16-hh-1,2,1,'#B79CF0');r(cx,Y+16-hh,1,hh,'#B79CF0');r(cx+3,Y+16-hh,1,hh,'#5A3F96')}
-  const s=((Math.floor(t/90)+x*5+y*3)%40);if(s<12)r(X+s%16,Y+2+s%6,1,3,'#E6DBFF')},
+  const k=hash(y,x),ox=3+k%8,oy=5+k%6;r(X+ox,Y+oy,3,3,'#3A2870');r(X+ox,Y+oy,3,1,'#5A44A0');if((Math.floor(t/600)+k)%6===0)r(X+ox+1,Y+oy,1,1,'#F4EEFF')},
  cfloor:(X,Y,x,y,t)=>{r(X,Y,16,16,'#2C2443');r(X,Y,16,1,'#241D38');const h=hash(x,y);if(h%3===0){const on=(Math.floor(t/500)+h)%4===0;r(X+h%13+1,Y+(h*7)%13+1,1,1,on?'#E6DBFF':'#6B52A8')}},
  wwall:(X,Y,x,y)=>{r(X,Y,16,16,'#E3E9EB');r(X,Y,16,2,'#F4F8F9');r(X,Y+12,16,4,'#CDD6D9');if(front(x,y)&&walkable(x,y+1)){r(X,Y+12,16,4,'#F7FAFB');r(X,Y+15,16,1,'#B9C4C8')}},
  speck:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D6E1DF');r(X,Y,16,1,'#C9D5D3');for(let i=0;i<3;i++){const h=hash(x+i*7,y);const px=(h+Math.floor(t/90)+i*5)%16,py=(h*3-Math.floor(t/140)+i*40)%16;r(X+((px%16)+16)%16,Y+((py%16)+16)%16,2,2,i?'#4BE38A':'#B8F5CF')}},
@@ -339,20 +343,22 @@ const TILES={
   for(let v=-14;v<=14;v++){const w=Math.floor(22*Math.sqrt(1-(v/14.6)**2));R(cx-w,cy+v,w,1,v<-8?'#6E7480':'#4E5560');if(v%4===0)R(cx-w,cy+v,w,1,'#3A4048')}
   for(let a=0;a<12;a++){const an=a/12*Math.PI*2;L(cx,cy,Math.round(cx+Math.cos(an)*21),Math.round(cy+Math.sin(an)*13.5),1,a<6&&a>0?'#8A7E66':'#2C313B')}
   for(let a=0;a<64;a++){const an=a/64*Math.PI*2;R(Math.round(cx+Math.cos(an)*22),Math.round(cy+Math.sin(an)*14),1,1,an>Math.PI*.5&&an<Math.PI*1.5?'#8A939E':'#5E6670')}
-  for(let a=0;a<32;a++){const an=a/32*Math.PI*2;R(Math.round(cx+Math.cos(an)*7),Math.round(cy+Math.sin(an)*4.5),2,1,(a+bl*8)%32<6?'#B8FFF6':'#3FD1C1')}
-  R(cx-2,cy-1,4,2,'#0B0D10');[[8,12],[14,22],[11,6]].forEach(([a,b],k)=>R(a,b,2,1,(bl+k)%4?'#69CFD8':'#1E3A40'));
+  for(let a=0;a<32;a++){const an=a/32*Math.PI*2;R(Math.round(cx+Math.cos(an)*7),Math.round(cy+Math.sin(an)*4.5),2,1,a%4?'#3A4048':'#5E6670')}
+  R(cx-2,cy-1,4,2,'#0B0D10');[[8,12],[14,22],[11,6]].forEach(([a,b])=>R(a,b,2,1,'#2C313B'));
   R(30,3,1,26,'#2A2F38');R(38,6,1,20,'#2A2F38');R(29,3,10,1,'#2A2F38');R(29,28,10,1,'#2A2F38');R(41,9,3,2,'#E8962A')}),X,Y,x,y)},
  ghost:(X,Y,x,y,t)=>{TILES.hall(X,Y,x,y,t);r(X+3,Y+6,10,7,O);r(X+4,Y+7,8,5,'#7A808A');r(X+4,Y+7,8,1,'#A0A6B0');r(X+1,Y+10,4,3,'#9A6A3A');r(X+11,Y+4,3,6,'#5A6070');r(X+6,Y+13,2,3,'#5A6070');r(X+10,Y+13,3,2,'#9A6A3A');if(Math.floor(t/130+x)%9===0)r(X+7,Y+5,2,2,'#FFD27A')},
- smoke:(X,Y,x,y,t)=>{r(X,Y,16,16,'#060709');for(let i=0;i<4;i++){const ph=t/900+i*1.7+y*.6;const cx=X+8+Math.round(Math.sin(ph)*5),cy=Y+((i*4+Math.floor(t/120))%16);r(cx-3,cy,6,2,i%2?'#24232A':'#1A191F');r(cx-1,cy+2,3,1,'#2E2D35')}if((Math.floor(t/90)+hash(x,y))%23===0)r(X+hash(x,y)%14+1,Y+hash(y,x)%14+1,1,1,'#C06BFF')},
+ smoke:(X,Y,x,y,t)=>{r(X,Y,16,16,'#060709');if(!f().os)return;for(let i=0;i<4;i++){const ph=t/900+i*1.7+y*.6;const cx=X+8+Math.round(Math.sin(ph)*5),cy=Y+((i*4+Math.floor(t/120))%16);r(cx-3,cy,6,2,i%2?'#24232A':'#1A191F');r(cx-1,cy+2,3,1,'#2E2D35')}if((Math.floor(t/90)+hash(x,y))%23===0)r(X+hash(x,y)%14+1,Y+hash(y,x)%14+1,1,1,'#C06BFF')},
  bulb:(X,Y,x,y,t)=>{TILES.hall(X,Y,x,y,t);r(X,Y,16,4,'#0B0D10');const on=f().cmd&&!f().os;const p=(Math.sin(t/(on?160:500))+1)/2;
-  r(X+1,Y+9,14,6,'#2C313B');r(X+2,Y+8,12,1,'#3E4450');for(let v=-4;v<=4;v++){const w=Math.floor(5*Math.sqrt(1-(v/4.6)**2));r(X+8-w,Y+6+v,2*w,1,`rgba(63,209,193,${.55+p*.45})`)}r(X+5,Y+3,2,2,'#B8FFF6')},
- web:(X,Y,x,y,t)=>{webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t)},
+  for(let v=-6;v<=5;v++){const w=Math.floor(7*Math.sqrt(1-(v/6.6)**2));r(X+8-w,Y+10+v,2*w,1,v<-2?'#F2E6C8':v<3?'#E2D4B0':'#C9B994')}r(X+8,Y+6,4,1,'#FFF6E0');
+  const a=f().os?.35:.55+p*.45;r(X+7,Y+3,2,3,'#D8CBA8');r(X+4,Y+1,8,2,`rgba(255,236,190,${a})`);r(X+5,Y,6,1,`rgba(255,236,190,${a})`);r(X+4,Y+3,8,1,'#B8A884');r(X+6,Y+1,2,1,'#FFFFFF')},
+ web:(X,Y,x,y,t)=>{if(!f().web){TILES.kelp(X,Y,x,y,t);return}webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t)},
  groz:(X,Y,x,y,t)=>{webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t);if(!f().web)return;blit(grozCanvas(!!f().ambush,f().ambush?0:Math.floor(t/260)%4),X,Y,x,y)},
 };
 function webBase(X,Y,x,y,t){TILES.tfloor(X,Y,x,y,t)}
-function webThreads(X,Y,x,y,t){const p=(Math.sin(t/700+x)+1)/2,c=p>.5?'#C9A8FF':'#9B78E8';
+function webThreads(X,Y,x,y,t){if(!f().web)return;const p=(Math.sin(t/700+x)+1)/2,c=p>.5?'#E4ECF8':'#B4C2DA';
  const ey=(a,b)=>hash(a,b)%12+2,ex=(a,b)=>hash(b+31,a)%12+2;
- line(X,Y+ey(x,y),X+15,Y+ey(x+1,y),1,c);line(X+ex(x,y),Y,X+ex(x,y+1),Y+15,1,c);if(hash(x,y)%2)line(X,Y,X+15,Y+15,1,'#7A5AC0');else line(X+15,Y,X,Y+15,1,'#7A5AC0')}
+ line(X,Y+ey(x,y),X+15,Y+ey(x+1,y),1,c);line(X+ex(x,y),Y,X+ex(x,y+1),Y+15,1,c);if(hash(x,y)%2)line(X,Y,X+15,Y+15,1,'#8A9AB8');else line(X+15,Y,X,Y+15,1,'#8A9AB8');
+ r(X+ex(x,y)-1,Y+ey(x,y)-1,2,2,'#F2A93A');r(X+4+hash(y,x)%8,Y+4+hash(x+5,y)%8,1,1,'#F2A93A')}
 
 /* ---------- zones ---------- */
 const ZONES={
@@ -374,6 +380,10 @@ const ZONES={
   spots:{get '6,2'(){return f().argue?'켈로완 행성들이 반짝여요. 포세이돈 성운이 보라색으로 빛나요.':'흰 별 두 개 사이에 투명한 공. 킹스네스트예요.'},
    get '13,2'(){return f().argue?'작은 빨간 점이 깜빡여요. 우리 배 근처에 다른 배가 있어요.':'공 안에 구름이 층층이 쌓여 있어요. 가운데는 까매요.'},
    '1,3':'항해 화면: "키유세로 쌍성 · 거리 20킬로미터"','18,3':'화면: "성실호 · 기다리는 시간 넉 달"'},
+  things:{
+   '#':['성실호의 벽이에요. 여기저기 고친 자국이 있어요.','벽 안에서 낮게 웅웅 소리가 나요.'],
+   'S':(x,y)=>vary(x,y,f().argue?['켈로완의 행성들이 작은 점처럼 반짝여요.','보라색 성운이 화면에 퍼져 있어요.']:['화면에 하얀 별 두 개가 아주 밝아요.','화면 가운데에 투명한 공이 떠 있어요.']),
+   'c':['콘솔이에요. 작은 불빛이 깜빡여요.','콘솔 화면의 숫자가 천천히 바뀌어요.']},
   npcs:['dejean','uemi','ellieS','gyShip','otylia']},
  mytal:{name:'마이탈포트 · 철골 기둥',reg:'MYTALPORT · KINGSNEST',sky:['#F1F7F5','#E4F2EC','#D2EADF','#BFE2D0','#A9D8C1','#93CDB2','#7DC0A3','#68B294'],
   legend:{'P':{tile:'port'},'H':{tile:'airlock',walk:1},'~':{tile:'sky6'},'X':{tile:'truss'},'=':{tile:'girder',walk:1},'p':{tile:'gplate',walk:1},
@@ -399,7 +409,14 @@ const ZONES={
   warps:{'10,1':{to:'ship',x:8,y:9,dir:'up',lock:()=>!f().argue&&'아직 할 일이 있어요. 성실호는 넉 달 기다려요.'},'11,1':{to:'ship',x:8,y:9,dir:'up',lock:()=>!f().argue&&'아직 할 일이 있어요. 성실호는 넉 달 기다려요.'},
    '5,12':{to:'nassau',x:6,y:11,dir:'right',lock:()=>!f().ride&&'코아가 아직 출발 준비를 안 했어요.'}},
   spots:{'8,2':'철골이 이백오십 미터 아래로 내려가요. 그 아래는 끝없는 구름.','4,4':'아래를 봐요… 흰 구름, 초록 구름, 더 아래는 안 보여요.',
-   get '7,11'(){return f().ride?'코아는 나소로 떠났어요.':'코아의 등이 무지개색으로 반짝여요. 버스만큼 커요.'},'15,11':'니에바스의 오바르, 케크. 등이 초록색으로 반짝여요.'},
+   get '7,11'(){return f().ride?'코아는 나소로 떠났어요.':'코아의 까만 등에 무지갯빛이 돌아요. 버스만큼 커요.'},'15,11':'니에바스의 오바르, 케크. 까만 등이 반짝여요.'},
+  things:{
+   '~':['아래로 끝없는 구름. 바닥이 안 보여요.','구름이 천천히 흘러가요.','바람이 아래에서 올라와요.'],
+   'P':['마이탈포트의 금속 껍질이에요.','껍질에 보라색 불빛이 깜빡여요.'],
+   'X':'철골이 아래로 길게 내려가요.',
+   'a':AIRP,
+   'K':()=>f().ride?'빈 자리예요. 코아는 나소로 떠났어요.':'코아의 큰 몸이에요. 까만 등에 무지갯빛이 돌아요.',
+   'J':'케크의 큰 몸이에요. 까만 등이 반짝여요.'},
   npcs:['gyM','finnSick','dylan','koaM','kech','nievas']},
  nassau:{name:'나소 · 오크리프',reg:'NASSAU OAKREEF',sky:['#EDF6F1','#DCEFE5','#C6E5D5','#AFDAC4','#98CEB2','#82C1A0','#6DB28F','#5AA27F'],
   legend:{'~':{tile:'sky6'},'b':{tile:'bark',walk:1},'s':{tile:'spoke',walk:1},'Y':{tile:'honey'},'H':{tile:'hut'},'h':{tile:'hut'},'m':{tile:'mat',walk:1},
@@ -432,6 +449,15 @@ const ZONES={
    '25,11':{to:'boat',x:10,y:12,dir:'up',lock:()=>!f().hired&&'아직 배를 못 빌렸어요. 흥정이 먼저예요.'}},
   spots:{'13,10':'가운데 잎에 꿀 같은 방울이 가득해요. 죽은 새하고 돌이 붙어 있어요.','16,10':'끈적끈적해요! 만지면 손이 안 떨어져요.',
    '10,6':'나소에서 제일 큰 갈대 집. 손님은 여기서 흥정해요.','9,14':'작은 갈대 집. 안에서 아이들 웃음소리가 들려요.','17,6':'주스 가게. 과일 냄새가 나요.'},
+  things:{
+   '~':['초록빛 구름이 끝없이 펼쳐져 있어요.','바람이 따뜻해요.','멀리 하얀 별빛이 구름을 비춰요.'],
+   'S':SAIL,'g':RIG,'a':AIRP,
+   'Y':['끈적한 잎에 노란 방울이 반짝여요.','작은 벌레가 잎에 붙어서 못 움직여요.'],
+   'H':['갈대로 만든 집이에요.','창문에 노란 불이 켜져 있어요.','갈대 벽 사이로 바람이 들어가요.'],
+   'h':['작은 갈대 집이에요.','창문에 노란 불이 켜져 있어요.'],
+   'f':'부채처럼 큰 잎이 바람에 흔들려요.',
+   'J':'다른 오바르가 쉬고 있어요. 등이 반짝반짝해요.',
+   't':'탁자 위에 과일 주스 잔이 있어요.'},
   npcs:['ettan','jazon','cafe']},
  boat:{name:'실버 클라우드스피어 · 갑판',reg:'SILVER CLOUDSPEAR',sky:['#5E9C88','#4E8A78','#3F7868','#326658','#26544A','#1C433C','#13332F','#0C2422'],
   legend:{'~':{tile:'sky6'},'K':{tile:'ovarKoa'},'L':{tile:'ovarKaizen'},'R':{tile:'rail'},'r':{tile:'boarding',walk:1},'.':{tile:'plank',walk:1},'S':{tile:'sail'},
@@ -459,6 +485,18 @@ const ZONES={
    '10,13':{to:'nassau',x:24,y:10,dir:'left'},'11,13':{to:'nassau',x:24,y:10,dir:'left'}},
   spots:{'6,10':'굵은 밧줄이 둥글게 감겨 있어요.','10,7':'돛대예요. 까만 돛은 바람도 받고 빛도 받아요.','5,12':'그물 대포. 막대 네 개가 튀어나와 있어요.',
    '13,11':'과일 와인 통이에요. "와인은 하늘에서 못 잡아요." 제이즌 말이에요.','6,11':'에이든의 엔진. 바람이 없을 때 팬을 돌려요.','6,7':'해먹. 블라인드를 닫으면 밤처럼 어두워요.'},
+  things:{
+   '~':['구름이 점점 어두워져요.','아래는 깊고 어두워요.'],
+   'R':['나무 난간이에요. 반질반질해요.','난간 너머로 구름이 흘러가요.'],
+   'S':SAIL,'s':RIG,
+   'K':()=>f().massacre?'빈 자리예요. 여기에 코아가 매달려 있었어요.':'배 옆에 코아가 매달려 있어요.',
+   'L':()=>f().massacre?'빈 자리예요. 이제 바람만 불어요.':'배 옆에 카이젠이 매달려 있어요.',
+   'N':'그물 대포. 막대 끝이 반짝여요.',
+   'h':'해먹이에요. 흔들흔들해요.',
+   'M':'돛대예요. 아주 굵은 나무예요.',
+   'g':'엔진 계기판이에요. 빨간 바늘이 움직여요.',
+   'b':'나무 통이에요. 달콤한 냄새가 나요.',
+   'F':'배 아래 팬이 빙글빙글 돌아요.'},
   npcs:['ayden','rylee','uemiB','jazonB','ellieB','dylanB','koaB','kaizenB']},
  factory:{name:'공장 · 에어콤부 터널',reg:'ENGINE FACTORY · DEEP',sky:['#0F2420','#0B1A18','#081311','#060D0C'],
   legend:{'~':{tile:'sky6'},'O':{tile:'mouth',walk:1},'k':{tile:'kelp'},',':{tile:'tfloor',walk:1},'V':{tile:'crystal'},'c':{tile:'cfloor',walk:1},'u':{tile:'wwall'},
@@ -487,9 +525,24 @@ const ZONES={
   rooms:[[1,1,7,5,'공장 · 수정 방'],[8,1,17,5,'공장 · 초록 불빛 방'],[19,1,28,12,'공장 · 조립 홀'],[3,13,24,17,'공장 · 아래 터널']],
   warps:{'1,8':{to:'boat',x:10,y:5,dir:'down',lock:()=>!f().massacre&&'아직 못 돌아가요. 동료들이 안에 있어요.'}},
   spots:{get '12,1'(){return f().indent?'움푹한 곳이 파랗게 빛나요. 핀의 손바닥 자국이에요.':'벽에 움푹한 곳이 많아요. 초록 불빛이 천천히 돌아요.'},
-   '1,3':'보라색 수정 벽. 안에서 빛이 천천히 움직여요.','21,4':'반쯤 만든 아르키메데스 엔진. 다 만들면 이십오 킬로미터예요.','23,6':'고스트 잔해. 머리하고 몸이 안 맞아요. 여러 고물을 붙여서 만들었어요.',
-   get '27,7'(){return '까만 연기 같은 게 움직여요… 아니, 수천 마리 나이트위드예요.'},get '7,15'(){return '거미줄이 보라색으로 빛나요. 아주 끈적끈적해요.'},
-   get '13,15'(){return f().ambush?'죽은 그로즐라미아. 노란 피가 거미줄 위에 굳었어요.':f().web?'코끼리만 한 거미가 갑옷을 입었어요. 독니가 초록색으로 빛나요.':'거미줄 너머가 너무 어두워요.'}},
+   '1,3':'보라색 수정 벽. 안에 주먹만 한 것들이 반짝여요.','21,4':'반쯤 만든 아르키메데스 엔진. 다 만들면 이십오 킬로미터예요.',get '23,6'(){return f().os?'고스트 잔해. 머리하고 몸이 안 맞아요. 여러 고물을 붙여서 만들었어요.':'고스트 부품 더미예요. 머리하고 몸이 다 달라요.'},
+   get '27,7'(){return f().os?'까만 연기 같은 게 움직여요… 아니, 수천 마리 나이트위드예요.':'어둠 속에서 이상한 울음소리가 들려요.'},get '7,15'(){return f().web?'빛나는 거미줄에 노란 방울이 맺혀 있어요.':'터널 벽에 에어콤부가 흔들려요.'},
+   get '13,15'(){return f().ambush?'죽은 그로즐라미아. 노란 피가 거미줄 위에 굳었어요.':f().web?'코끼리만 한 거미가 갑옷을 입었어요. 독니가 초록색으로 빛나요.':'터널 안쪽이 너무 어두워요.'}},
+  things:{
+   'k':['다시마 같은 풀이 빽빽해요. 천천히 흔들려요.','풀 사이가 축축하고 어두워요.'],
+   '~':'터널 밖은 깊은 어둠이에요.',
+   'u':['하얀 벽이에요. 이음새가 하나도 없어요.','벽이 아주 매끈해요.'],
+   'V':['보라색 수정이에요. 차갑고 매끈해요.','수정 벽 안에 주먹만 한 것들이 반짝여요.'],
+   'E':['반쯤 만든 엔진이에요. 큰 뼈대만 보여요.','엔진이 너무 커서 끝이 안 보여요.'],
+   'G':'까만 기둥이에요. 위가 안 보여요.',
+   'b':()=>f().os?'버섯 모양 전구예요. 지금은 조용해요.':f().cmd?'버섯 모양 전구가 빠르게 깜빡여요.':'크림색 혹 위에 버섯 모양 전구가 있어요.',
+   'i':()=>f().indent?'움푹한 곳이 파랗게 반짝여요.':'벽에 움푹한 곳이 있어요. 초록 불빛이 돌아요.',
+   'x':()=>f().os?'부서진 고스트예요. 움직이지 않아요.':'고스트 부품 더미예요. 팔다리가 다 달라요.',
+   'v':(x,y)=>f().os?vary(x,y,['까만 연기가 꿈틀거려요.','어둠 속에서 날개 소리가 들려요.']):'어둠 속에서 이상한 울음소리가 들려요.',
+   'n':(x,y)=>!f().web?'터널 벽에 에어콤부만 흔들려요.':vary(x,y,has6('거미')?['거미줄에 노란 방울이 맺혀 있어요. 끈적끈적해요.','거미줄이 천천히 흔들려요.']:['실에 노란 방울이 맺혀 있어요. 끈적끈적해요.','실이 천천히 흔들려요.']),
+   'Z':()=>f().ambush?'죽은 그로즐라미아. 다리가 다 꺾였어요.':f().web?'갑옷을 입은 큰 거미가 기다려요.':'어둠 속에 뭔가 있어요.',
+   'K':()=>f().ambush?'코아의 큰 몸이 움직이지 않아요.':f().web?'코아의 몸에 끈적한 실이 감겼어요.':'코아가 쉬고 있어요. 등이 반짝여요.',
+   'L':()=>f().ambush?'카이젠의 몸이 움직이지 않아요.':f().web?'카이젠의 몸에 끈적한 실이 감겼어요.':'카이젠이 쉬고 있어요. 조금 떨려요.'},
   npcs:['bensath','elsbeth','gyF','finnBulb','dave1','dave2','koaF','kaizenF','dylanF','ellieF','nweid']},
 };
 
@@ -725,7 +778,7 @@ const NPC={
  finnBulb:{name:'핀',zone:'factory',x:27,y:2,dir:'up',look:FINN,hide:()=>!(f().cmd&&!f().os),
   status:()=>'todo',
   talk:()=>[
-   {say:'청록색으로 빛나는 둥근 장치예요. 손을 댈게요.'},
+   {say:'크림색 혹 위의 버섯 모양 전구예요. 손을 댈게요.'},
    {say:'…생각의 바다에 떠 있는 것 같아요. 금색 실이 보여요.'},
    {who:'엘리',say:'고스트가 또 와요! 고물로 만든 고스트들이에요!'},
    {who:'기보이',say:'계속 쏴요! 핀은 건드리지 마요!'},

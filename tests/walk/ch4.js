@@ -53,5 +53,6 @@
  {check:()=>state.f.done,msg:'chapter done'},
  {clock:26*3600e3},
  {inspect:['natt',9,5]},
+ {look:true,shot:'90-look'},
  {panel:1,shot:'20-log'},
 ]

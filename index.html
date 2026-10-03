@@ -356,7 +356,7 @@ const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const ZONES={
  ship:{name:'성실호 · 선실 구역',reg:'ARK DILIGENT',
-  legend:{'#':{tile:'hull'},'.':{tile:'deck',walk:1},'=':{tile:'grate',walk:1},'w':{tile:'window'},'c':{tile:'console'},'h':{tile:'hydro'},
+  legend:{'#':{tile:'hull'},'.':{tile:'deck',walk:1},'=':{tile:'grate',walk:1},'w':{tile:'nebWin'},'c':{tile:'console'},'h':{tile:'hydro'},
    'b':{tile:'bunk'},'T':{tile:'terminal'},'e':{tile:'pipes'},'E':{tile:'engine'},'D':{tile:'airlock',walk:1}},
   map:[
 "########################",
@@ -378,10 +378,16 @@ const ZONES={
   rooms:[[1,1,4,5,'성실호 · 선실'],[6,1,17,5,'성실호 · 함교'],[19,1,22,5,'성실호 · 수경 재배실'],[1,7,22,7,'성실호 · 복도'],[1,9,10,14,'성실호 · 엔진실'],[17,9,22,14,'성실호 · 에어록']],
   dark:()=>!f().fixed?[1,9,10,14]:null,
   warps:{'18,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'},'19,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'}},
-  spots:{'7,1':'창밖에 별이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  spots:{'7,1':'창밖에 성운이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  things:{'#':['오래된 벽이에요. 고친 자국이 많아요.','차가운 쇠벽이에요. 웅웅 소리가 나요.'],
+   'w':x=>x>=9&&x<=13?'아래에 초록색, 금색 땅이 보여요.':'창밖에 성운이 빛나요. 아주 조용해요.',
+   'c':['화면에 숫자가 빠르게 지나가요.','버튼이 아주 많아요. 함부로 누르면 안 돼요.'],
+   'h':['흙이 없어요. 채소가 물에서 자라요.','작은 빨간 열매가 달렸어요. 맛있겠어요.'],
+   'e':()=>f().fixed?'파이프가 따뜻해요. 쉬익 소리가 나요.':'파이프가 차가워요. 아무 소리도 없어요.',
+   'E':()=>f().fixed?'엔진이 웅웅 돌아가요. 바닥이 떨려요.':'엔진이 조용해요. 불이 다 꺼졌어요.'},
   npcs:['ellie','dejean','finn','or','andy']},
  dock:{name:'하이 로사 · 궤도 링',reg:'HIGH ROSA GEORING',
-  legend:{'#':{tile:'ring'},'.':{tile:'plate',walk:1},'W':{tile:'planetWin'},'k':{tile:'crate'},'s':{tile:'stall',over:1},'E':{tile:'lift',walk:1},'A':{tile:'airlock',walk:1},'T':{tile:'terminal'}},
+  legend:{'#':{tile:'ring'},'.':{tile:'plate',walk:1},'W':{tile:'nebPlanetWin'},'k':{tile:'crate'},'s':{tile:'stall',over:1},'E':{tile:'lift',walk:1},'A':{tile:'airlock',walk:1},'T':{tile:'terminal'}},
   map:[
 "########################",
 "#WWWWWWWWWWWWWWWWWWWWWW#",
@@ -401,13 +407,17 @@ const ZONES={
   planet:{cx:12*16,cy:-70,r:150},base:'plate',
   warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
   spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아누샤 광산"이라고 써 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
+  things:{'#':['하이 로사의 벽이에요. 철골이 많아요.','벽의 파란 불이 천천히 깜빡여요.'],
+   'W':['창밖에 곤디아가 아주 크게 보여요.','창밖에 성운이 가득해요. 별은 잘 안 보여요.'],
+   'k':['나무 상자예요. 아주 무거워요.','상자에 숫자가 잔뜩 써 있어요.'],
+   's':['노점이에요. 반짝이는 물건이 많아요.','노점 지붕이 줄무늬예요.']},
   npcs:['customs','gyvoy','lina','trader']},
  city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',
-  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'cable'},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
+  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'stationHill'},'=':{tile:'rails',walk:1},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
   map:[
 "TTTTTTTTTTTTTTTTTTTTTTTTTT",
-"T.OO......III.......OO...T",
-"T.OO......IEI.......OO...T",
+"T.OO...===III===....OO...T",
+"T.OO...===IEI===....OO...T",
 "T.........,,,............T",
 "T.PPPPP...,,,....CCCCC...T",
 "T.PPPPP...,,,....CCCCC...T",
@@ -424,7 +434,12 @@ const ZONES={
 "TTTTTTTTTTTTTTTTTTTTTTTTTT"],
   outdoor:1,
   warps:{'11,2':{to:'dock',x:20,y:5,dir:'down'}},
-  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 써 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 양파 모양이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.','12,1':'궤도 엘리베이터 탑. 줄이 하늘까지 올라가요.'},
+  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 써 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 둥근 돔이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.','12,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.'},
+  things:{'T':['큰 나무예요. 그늘이 시원해요.','나뭇잎 사이에서 광고 홀로그램이 반짝여요.','새가 짹짹 울어요.'],
+   'P':['경찰서 벽이에요. 창문이 깨끗해요.','경찰서 안에서 전화 소리가 나요.'],
+   'C':['카페 창문에 케이크가 보여요.','줄무늬 차양이 예뻐요.'],
+   '~':['연못에 작은 물고기가 있어요.','물이 맑아요. 하늘이 비쳐요.'],
+   'O':'수정 탑이 햇빛에 반짝여요.','I':'거대한 탑이 하늘로 올라가요. 끝이 안 보여요.','n':'나무 벤치예요. 앉아서 쉬고 싶어요.'},
   npcs:['terence','josias','otylia','cafe']},
 };
 
@@ -536,7 +551,7 @@ const NPC={
  lina:{name:'천문학자 리나',zone:'dock',x:9,y:3,dir:'up',look:{hair:'#1E1E24',skin:'#E6C2A0',shirt:'#F1F1EC',pants:'#3C4A5C',style:'bun',coat:1,lashes:1,lips:'#C46A70'},badge:['관측하다','행성'],
   after:'오늘은 관측하기 좋은 날이에요.',
   talk:()=>[
-   {say:'쉿… 지금 별을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
+   {say:'쉿… 지금 성운을 보고 있어요. {망원경|망원경}이 없어도 잘 보여요.'},
    Q.lina[0],
    {say:'저 아래 큰 공 보여요? 곤디아예요. 사람들이 사는 곳이에요.'},
    Q.lina[1],
@@ -571,6 +586,39 @@ const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f
 const INTRO=[{who:'성실호',say:'삐— 삐— 궤도 진입 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
 const DONE=['1장 끝! 성실호가 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.','일지에서 단어를 다시 볼 수 있어요.'];
 
+/* ---------- this chapter's own tiles (new names only, so other chapters keep the engine's) ---------- */
+/* Kelowan sits inside the Poseidon Nebula: from orbit the windows show nebula glow, hardly any stars (c013) */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
+const TILES={
+ nebWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.35);r(X,Y,16,2,'#868C84');r(X,Y+14,16,2,'#ABB0A6');if(x%3===0)r(X,Y,1,16,'#6F756E');if(x>=9&&x<=13){const c=['#3E8E6A','#4E9E6E','#C9A64A'];r(X,Y+9,16,5,c[(x)%3]);r(X,Y+9,16,1,'#9FD7E8')}},
+ nebPlanetWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.15);const P=Z.planet;
+  g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+  const cx=P.cx-CAM.x,cy=P.cy+Math.sin(t/4000)*2;
+  g.fillStyle='#2E7A68';g.beginPath();g.arc(cx,cy+170,P.r,0,Math.PI*2);g.fill();
+  g.fillStyle='#4E9E6E';g.beginPath();g.arc(cx-40,cy+190,60,0,Math.PI*2);g.fill();
+  g.fillStyle='#C9A64A';g.beginPath();g.arc(cx+60,cy+200,40,0,Math.PI*2);g.fill();
+  g.strokeStyle='rgba(159,215,232,.7)';g.lineWidth=2;g.beginPath();g.arc(cx,cy+170,P.r,Math.PI*1.05,Math.PI*1.95);g.stroke();
+  g.restore();
+  if(y===1)r(X,Y,16,2,'#3F4650');if(y===2)r(X,Y+14,16,2,'#555D68');if(x%4===0)r(X,Y,1,16,'#2E343C')},
+ /* the orbital tower comes down on a hill turned into a hive of caverns (the station mountain), ringed by rail yards (c002, c006) */
+ stationHill:(X,Y,x,y,t)=>{const L=at(x-1,y)!=='I',R=at(x+1,y)!=='I'&&at(x+1,y)!=='E',top=at(x,y-1)!=='I';
+  lawn(X,Y,x,y);
+  for(let i=0;i<16;i++){const u=L?i/16:R?1-i/16:1,h=top?Math.round(4+10*Math.min(1,u*1.3)):16;
+   r(X+i,Y+16-h,1,h,'#A3957E');r(X+i,Y+16-h,1,1,'#C4B69C');if(top&&h>3)r(X+i,Y+17-h,1,1,'#7FB45E')}
+  const h=hash(x,y);r(X+3+h%5,Y+(top?11:4),3,1,'#8A7D68');r(X+9-(h%4),Y+(top?13:9),2,1,'#8A7D68');
+  if(!top){const ax=L?1:R?7:4;r(X+ax,Y+6,8,10,'#5E5446');r(X+ax+1,Y+5,6,1,'#5E5446');r(X+ax+1,Y+7,6,9,'#231E1A');r(X+ax+2,Y+6,4,1,'#231E1A');
+   const p=(Math.sin(t/700+x)+1)/2;r(X+ax+2,Y+9,4,1,`rgba(232,196,106,${(.4+.6*p).toFixed(2)})`);r(X+ax+1,Y+13,6,1,'#5A6068');r(X+ax+1,Y+15,6,1,'#5A6068')}
+  if(top)(L?[[9,9]]:R?[[4,9]]:[[1,7],[12,7]]).forEach(([a,b])=>{r(X+a,Y+b+1,3,3,'#231E1A');r(X+a+1,Y+b,1,1,'#231E1A');r(X+a,Y+b+3,3,1,'#E8C46A')}); // cavern openings
+  if(top&&!L&&!R){r(X+5,Y-16,6,20,'#9AA3AD');r(X+5,Y-16,1,20,'#C4CBD2');r(X+10,Y-16,1,20,'#6E7680');
+   const p=(Math.sin(t/200)+1)/2;r(X+7,Y-16,2,18,`rgba(159,215,232,${(.6+p*.4).toFixed(2)})`);r(X+7,Y-16+((Math.floor(t/60))%18),2,3,'#E8F6FA')}},
+ rails:(X,Y,x,y,t)=>{r(X,Y,16,16,'#A99F90');const h=hash(x,y);if(h<60)r(X+h%14,Y+(h>>2)%14,1,1,'#8E8576');
+  for(let i=1;i<16;i+=4)r(X+i,Y+3,2,10,'#6E5A44');r(X,Y+5,16,1,'#5A6068');r(X,Y+4,16,1,'#B9C1C9');r(X,Y+10,16,1,'#5A6068');r(X,Y+9,16,1,'#B9C1C9');
+  const end=y===1&&(at(x+1,y)==='I'||at(x-1,y)==='I');if(end){const bx=at(x+1,y)==='I'?12:1;r(X+bx,Y+2,3,12,'#B84A3A');r(X+bx,Y+5,3,2,'#F2D24A')}},
+};
+
 function questText(){
  const F=f(),b=w=>state.badges.includes(w);
  if(F.done)return '1장 끝 · 일지에서 복습해요';
@@ -583,7 +631,7 @@ function questText(){
  if(hasItem('부품')&&hasItem('연료통'))return '엔진실 · 기관장님한테 가져가요';
  return `하이 로사 · 부품 ${p} · 연료통 ${fu}`;
 }
-return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText};
+return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES};
 }});
 </script>
 <script>
@@ -743,6 +791,8 @@ const clip=(X,Y,fn)=>{g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();fn();g.r
 const big=(X,Y,x,y,ox,oy,fn)=>clip(X,Y,()=>fn(X-(x-ox)*16,Y-(y-oy)*16,X,Y));
 /* pixel disc (crisp edges); only rows inside [y0,y1] are drawn */
 const disc=(cx,cy,rd,c,y0,y1)=>{for(let dy=-rd;dy<=rd;dy++){const yy=cy+dy;if(y0!=null&&(yy<y0||yy>y1))continue;const w=Math.floor(Math.sqrt(rd*rd-dy*dy)+.35);r(cx-w,yy,2*w+1,1,c)}};
+/* pixel ellipse: the wreck's holes are oval (c013/c014) */
+const ell=(cx,cy,rx,ry,c)=>{for(let dy=-ry;dy<=ry;dy++){const w=Math.floor(rx*Math.sqrt(1-(dy/ry)**2)+.35);r(cx-w,cy+dy,2*w+1,1,c)}};
 const night=()=>ZID==='breakerville'&&!!f().mapped&&f().attack!==2;
 /* zone lighting: red alarm on the Lestari, night + sleet + plasma at Breakerville, flashes in the wreck */
 function fx(X,Y,x,y,t,lit){
@@ -757,15 +807,19 @@ function fx(X,Y,x,y,t,lit){
  if(ZID==='wreck'&&F.attack===1&&Math.floor(t/120)%23===0)r(X,Y,16,16,'rgba(180,140,255,.24)');
 }
 
-/* Lestari: beige padded tank walls, red cables, pearl lounge */
+/* Lestari: walls crowded with bolted-on modules, panels and wiring, amber ceiling lights (c013), red cables, pearl lounge */
 const wallL=c=>c==='#'||c==='r'||c==='w';
-function padTop(X,Y,x,y){r(X,Y,16,16,'#8C836C');r(X,Y,16,1,'#A1987F');r(X+(x%2?2:10),Y,1,16,'#80786A');r(X+(x%2?3:11),Y,1,16,'#98907A');const h=hash(x,y);if(h<40)r(X+4+h%5,Y+3+(h>>2)%9,3,2,'#857C67')}
-function padFace(X,Y,x,y){
- r(X,Y+5,16,11,'#BFB59A');r(X,Y+5,16,1,'#D8D0B8');
- r(X,Y+10,16,1,'#A89E83');r(X+(x%2?3:11),Y+6,1,4,'#A89E83');r(X+(x%2?11:3),Y+11,1,4,'#A89E83');
- r(X+1,Y+6,14,1,'#CEC6AD');r(X+1,Y+11,14,1,'#CEC6AD');
- const h=hash(x,y);if(h<35){r(X+3+h%7,Y+12,4,2,'#A69B7C');r(X+4+h%7,Y+14,2,1,'#A69B7C')}
- r(X,Y+15,16,1,'#7A725E');
+function padTop(X,Y,x,y){r(X,Y,16,16,'#4E5257');r(X,Y,16,1,'#62676C');const h=hash(x,y),o=x%2?4:10;
+ r(X,Y+o,16,2,'#2E3135');r(X,Y+o,16,1,'#3E4246');r(X+(x%3)*5,Y+o-1,2,4,'#7A7F84'); // hose run + clamp
+ if(h<60){const a=2+h%7,b=(o<8?8:2)+(h>>3)%3;r(X+a,Y+b,6,4,'#363A3E');r(X+a,Y+b,5,3,'#6A6F74');r(X+a,Y+b,1,1,'#A0A6AC');r(X+a+4,Y+b+2,1,1,'#A0A6AC')}}
+function padFace(X,Y,x,y){const h=hash(x,y),k=h%3;
+ r(X,Y+5,16,11,'#666B70');r(X,Y+5,16,1,'#F0B04A');r(X,Y+6,16,1,'#9A7A48'); // amber ceiling strip (c013)
+ if(x%2)r(X+6,Y+5,4,2,'#FFD27A');
+ if(k===0){r(X+2,Y+8,8,6,'#3E4246');r(X+2,Y+8,7,5,'#545A60');r(X+3,Y+9,5,3,'#1E3A34');r(X+4,Y+10,3,1,'#5EC28A');[[2,8],[8,8],[2,12],[8,12]].forEach(([a,b])=>r(X+a,Y+b,1,1,'#A0A6AC'));r(X+12,Y+7,1,9,'#B85A3A');r(X+13,Y+7,1,9,'#C8A040')}
+ else if(k===1){r(X+3,Y+7,2,9,'#2E3135');r(X+3,Y+7,1,9,'#4A4E52');r(X+10,Y+7,3,9,'#3E4246');r(X+10,Y+7,1,9,'#5A5E62');r(X+2,Y+10,12,2,'#7A7F84');r(X+2,Y+10,12,1,'#9AA0A6')}
+ else{r(X+2,Y+8,12,6,'#3E4246');r(X+3,Y+9,10,4,'#5A6066');for(let i=0;i<4;i++)r(X+4+i*2,Y+10,1,2,i===1?'#F0B04A':'#2A2E32')}
+ for(let i=0;i<16;i++){const u=((x*16+i)%20)/20,yy=Y+7+Math.round(6*u*(1-u)*(h%2?1:.6));r(X+i,yy,1,1,'#2A2622')} // sagging wire web
+ r(X,Y+15,16,1,'#3A3E42');
 }
 function pearl(X,Y,x,y,t){r(X,Y,16,16,'#D3DEE1');r(X,Y,16,7,'#DAE4E6');r(X,Y,16,1,'#BAC6CA');r(X,Y,1,16,'#BAC6CA');r(X+1,Y+1,14,1,'#E8EFF0');const p=(Math.sin(t/1300+x*.9+y*.5)+1)/2;r(X+1,Y+15,15,1,`rgba(170,215,230,${(.25+.5*p).toFixed(2)})`);if(hash(x,y)<20)r(X+5,Y+9,5,1,'#C9D4D7')}
 function mesh(X,Y,x,y){r(X,Y,16,16,'#7F7A6C');for(let i=0;i<16;i+=4){r(X+i,Y,1,16,'#726E61');r(X,Y+i,16,1,'#726E61')}r(X,Y,16,1,'#928D7E');if(hash(x,y)<14)r(X+9,Y+9,2,2,'#5E5A50')}
@@ -797,7 +851,7 @@ function tunnel(X,Y,x,y){r(X,Y,16,16,'#4C5848');const o=(x+y)%2?3:10;r(X,Y+o,16,
 function wallTop(X,Y,x,y){r(X,Y,16,16,'#283029');const h=hash(x,y);r(X+(h%12),Y+(h%9)+2,3,1,'#323B33');r(X+((h*3)%13),Y+((h*7)%12)+1,1,1,'#3E4A3A');r(X+((h*5)%11)+3,Y+((h*11)%10)+3,2,2,'#1E2420');
  if(at(x,y-1)&&at(x,y-1)!=='#'&&at(x,y-1)!=='K')r(X,Y,16,2,'#3E4A3A');if(at(x-1,y)&&at(x-1,y)!=='#')r(X,Y,1,16,'#36412F');if(at(x+1,y)&&at(x+1,y)!=='#')r(X+15,Y,1,16,'#36412F')}
 function wallFace(X,Y,x,y){const h=hash(x,y);r(X,Y+5,16,11,'#6F7F6A');r(X,Y+5,16,1,'#8A9A84');r(X,Y+15,16,1,'#46523F');r(X+(h%13),Y+8+(h%5),2,1,'#62725D');
- const k=h%4;if(k===0){disc(X+8,Y+11,3,'#56634F');disc(X+8,Y+11,2,'#141917');r(X+7,Y+13,3,1,'#4E5A4A')}
+ const k=h%4;if(k===0){ell(X+8,Y+11,2,4,'#56634F');ell(X+8,Y+11,1,3,'#141917')}
  else if(k===1){r(X+2,Y+8,9,1,'#C0703A');r(X+5,Y+10,9,1,'#D08A4A');r(X+3,Y+12,6,1,'#C0703A');r(X+9,Y+13,4,1,'#9A5A2E')}
  else if(k===2){r(X+4,Y+9,2,5,'#5A4A9A');r(X+6,Y+7,2,7,'#7A6AC8');r(X+8,Y+10,2,4,'#5A4A9A');r(X+6,Y+7,1,2,'#C8BCF4');r(X+11,Y+11,2,3,'#7A6AC8')}
  else{[[3,4],[8,6],[12,3]].forEach(([a,l])=>{r(X+a,Y+6,3,1,'#85957F');r(X+a+1,Y+7,1,l,'#85957F');r(X+a+1,Y+6+l,1,1,'#9AAA93')})}}
@@ -805,8 +859,13 @@ function wreckHull(X,Y,x,y){big(X,Y,x,y,6,2,(BX,BY)=>{r(BX,BY,192,48,'#6F7F6A');
   [7,17,29,39].forEach((k,n)=>{for(let i=0;i<192;i+=2){const yy=BY+k+Math.round(2.2*Math.sin(i/31+n));r(BX+i,yy,2,1,'#5A6956');r(BX+i,yy+1,2,1,'#8A9A84')}});
   for(let i=0;i<90;i++){const a=hash(i,7)*1.92|0,c=hash(7,i)*.47|0;r(BX+a,BY+c,1,1,i%3?'#62725D':'#86967F')}
   [[12,11,4],[40,33,3],[61,13,5],[95,35,3],[118,10,4],[149,31,5],[177,13,4],[28,22,2],[134,41,2],[82,24,3],[167,40,2],[106,21,2]].forEach(([a,c,d])=>{
-   disc(BX+a,BY+c-1,d+1,'#56634F');disc(BX+a,BY+c,d,'#141917');r(BX+a-d+1,BY+c+d-1,2*d-1,1,'#4E5A4A');r(BX+a-d+2,BY+c+d,2*d-3,1,'#9AAA93')})})}
+   ell(BX+a,BY+c-1,d,d+2,'#56634F');ell(BX+a,BY+c,d-1,d+1,'#141917');r(BX+a-d+2,BY+c+d+2,2*d-3,1,'#9AAA93')})})}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TILES={
  /* ---- Lestari ---- */
  lpad:(X,Y,x,y,t)=>{padTop(X,Y,x,y);const bl=at(x,y+1);if(bl&&!wallL(bl))padFace(X,Y,x,y);fx(X,Y,x,y,t)},
@@ -815,11 +874,11 @@ const TILES={
   else{r(X,Y+5,16,6,'#5A2420');r(X,Y+5,16,2,'#A3473A');r(X,Y+6,16,1,'#C8604F');r(X,Y+8,16,1,'#7A2F28');r(X,Y+9,16,1,'#2A2622');r(X+5,Y+4,3,8,'#6A6455');r(X+5,Y+4,3,1,'#8A8475')}fx(X,Y,x,y,t)},
  pearl:(X,Y,x,y,t)=>{pearl(X,Y,x,y,t);fx(X,Y,x,y,t)},
  mesh:(X,Y,x,y,t)=>{mesh(X,Y,x,y);if(y===7&&x%3===0){const on=(Math.floor(t/200)-x)%8===0;r(X+7,Y+7,2,2,on?'#E8962A':'#6E5A3A')}fx(X,Y,x,y,t)},
- cupola:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.2);const F=f(),PX=X-(x-1)*16,PY=Y-(y-1)*16;
+ cupola:(X,Y,x,y,t)=>{const F=f();(F.gift?stars:nebula)(X,Y,x,y,t,.2);const PX=X-(x-1)*16,PY=Y-(y-1)*16;
   clip(X,Y,()=>{
    if(!F.gift){const cx=PX+80,cy=PY+76;[[62,'#26304A'],[54,'#1C2336'],[46,'#26304A'],[38,'#1C2336'],[30,'#222B40']].forEach(([d,c])=>disc(cx,cy,d,c,Y,Y+15));
     for(let a=-2.75;a<-.35;a+=.22)for(let d=24;d<62;d+=2){const px=Math.round(cx+Math.cos(a)*d),py=Math.round(cy+Math.sin(a)*d);if(py>=Y&&py<Y+16)r(px,py,1,1,'#3A4766')}
-    disc(cx,cy,24,'#080B12',Y,Y+15);const p=(Math.sin(t/450)+1)/2;for(let a=-3.1;a<0;a+=.16){const py=Math.round(cy+Math.sin(a)*25);if(py>=Y&&py<Y+16)r(Math.round(cx+Math.cos(a)*25),py,1,1,`rgba(191,230,255,${(.35+.65*p).toFixed(2)})`)}}
+    disc(cx,cy,24,'#080B12',Y,Y+15);const NC=['#8E5C8C','#5E3C72','#7A6A9E','#9A7AA8'];for(let a=-3.1,k=0;a<0;a+=.16,k++){if(hash(k,7)%3)continue;const py=Math.round(cy+Math.sin(a)*25);const q=(Math.sin(t/2200+k*1.7)+1)/2;if(py>=Y&&py<Y+16&&q>.55)r(Math.round(cx+Math.cos(a)*25),py,1,1,NC[k%4])}}
    else if(!F.beam){disc(PX+134,PY+19,8,'#DDE7EC',Y,Y+15);r(PX+127,PY+19,15,3,'#5E9A86');r(PX+138,PY+13,4,12,'rgba(60,80,100,.35)');
     if(F.ambush)for(let i=0;i<9;i++){const ph=((t/2400)+i*.083)%1,mx=Math.round(PX+4+ph*120),my=PY+4+(i*7)%24;r(mx-8,my,8,1,'rgba(255,150,90,.45)');r(mx,my,2,1,'#FF5A4A')}}
    else{terrik(X,Y,x,y,16+120,16+52,34);if(Math.floor(t/160)%3)r(PX+28,PY+10,2,1,'#FFB060')}
@@ -836,7 +895,7 @@ const TILES={
  fusion:(X,Y,x,y,t)=>{mesh(X,Y,x,y);const [ox,oy]=org(x,y);const F=f();big(X,Y,x,y,ox,oy,(BX,BY)=>{
   r(BX,BY,64,32,'#2E2B27');r(BX,BY,64,2,'#4A453E');r(BX,BY+30,64,2,'#1E1C19');for(let i=4;i<64;i+=10)r(BX+i,BY+3,2,26,'#3A3631');
   const beam=F.beam,p=(Math.sin(t/(beam?120:400))+1)/2;r(BX+8,BY+9,48,14,OL);
-  r(BX+9,BY+10,46,12,beam?'#7A5ACF':'#A3471F');r(BX+9,BY+13,46,6,beam?`rgba(230,218,255,${(.6+.4*p).toFixed(2)})`:`rgba(255,170,80,${(.45+.4*p).toFixed(2)})`);r(BX+9,BY+15,46,2,beam?'#FFFFFF':'#FFE0A0');
+  r(BX+9,BY+10,46,12,beam?'#7A5ACF':'#7A8494');r(BX+9,BY+13,46,6,beam?`rgba(230,218,255,${(.6+.4*p).toFixed(2)})`:`rgba(232,238,248,${(.45+.4*p).toFixed(2)})`);r(BX+9,BY+15,46,2,'#FFFFFF');
   for(let i=0;i<5;i++)r(BX+14+i*9,BY+10,1,12,'rgba(0,0,0,.35)');r(BX+2,BY+4,4,4,(Math.floor(t/500)%2)?'#69CFD8':'#2C5D63');r(BX+58,BY+24,3,3,'#E8962A')});fx(X,Y,x,y,t)},
  /* ---- Bubbletown on Five ---- */
  void:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.15);terrik(X,Y,x,y,20*16,-26,46)},
@@ -912,8 +971,9 @@ const TILES={
   if(x%2===0){r(X+5,Y,4,4,'#E4E1D6');r(X+6,Y+1,2,2,'#B5653A');if(Math.floor(t/400)%2)r(X+7,Y-2,1,2,'rgba(240,240,240,.7)')}else{r(X+4,Y+1,8,3,'#3A3F46');r(X+5,Y+1,6,1,'#9AA0AA')}fx(X,Y,x,y,t)},
  hut:(X,Y,x,y,t)=>{basalt(X,Y,x,y);const [ox,oy]=org(x,y);big(X,Y,x,y,ox,oy,(BX,BY)=>{
   r(BX+1,BY+2,46,29,OL);r(BX+2,BY+3,44,11,'#5E6B4A');r(BX+2,BY+3,44,2,'#7A8A60');for(let i=6;i<46;i+=8)r(BX+i,BY+5,1,9,'#4A5638');
-  r(BX+2,BY+14,44,16,'#B9BFC5');for(let i=4;i<46;i+=3)r(BX+i,BY+14,1,16,'#A3AAB1');r(BX+4,BY+19,40,8,OL);r(BX+5,BY+20,38,6,'#6B4A2B');r(BX+5,BY+20,38,1,'#94704C');
-  r(BX+8,BY+18,4,3,'#C9A64A');r(BX+15,BY+17,3,4,'#6F7F6A');r(BX+21,BY+18,5,3,'#9FD7E8');r(BX+29,BY+16,3,5,'#5A4A9A');r(BX+35,BY+18,4,3,'#B8703A');
+  r(BX+2,BY+14,44,16,'#B9BFC5');for(let i=4;i<46;i+=3)r(BX+i,BY+14,1,16,'#A3AAB1');r(BX+4,BY+16,40,13,OL);r(BX+5,BY+17,38,11,'#141A20'); // a bank of screens and a hologram cube (c014)
+  for(let i=0;i<4;i++){const on=(Math.floor(t/600)+i)%5;r(BX+6+i*9,BY+18,8,5,'#1E3A40');r(BX+7+i*9,BY+19,5,1,on?'#69CFD8':'#2C5D63');r(BX+7+i*9,BY+21,3+(i%3),1,'#3C8E8E')}
+  const hp=(Math.sin(t/500)+1)/2;r(BX+20,BY+24,8,1,'#2C5D63');r(BX+21,BY+24,6,1,`rgba(105,207,216,${(.5+.5*hp).toFixed(2)})`);r(BX+22,BY+23,4,1,`rgba(191,239,245,${(.4+.4*hp).toFixed(2)})`);r(BX+21,BY+25,1,2,'#69CFD8');r(BX+26,BY+25,1,2,'#69CFD8');r(BX+21,BY+27,6,1,'#69CFD8');
   r(BX+38,BY+6,6,6,OL);r(BX+39,BY+7,4,4,'#E3E1D6');r(BX+43,BY+11,2,2,OL)});fx(X,Y,x,y,t)},
  scrap:(X,Y,x,y,t)=>{basalt(X,Y,x,y);r(X+1,Y+8,14,7,OL);r(X+2,Y+9,6,5,'#8A5A3A');r(X+7,Y+6,7,8,'#6A4A30');r(X+7,Y+6,7,1,'#9A6A44');r(X+3,Y+5,5,5,OL);r(X+4,Y+6,3,3,'#7A818A');r(X+10,Y+9,3,2,'#E3E1D6');r(X+2,Y+13,5,1,'#E3E1D6');fx(X,Y,x,y,t)},
  pole:(X,Y,x,y,t)=>{basalt(X,Y,x,y);r(X+6,Y+2,4,14,OL);r(X+7,Y+3,2,13,'#5A6068');r(X+4,Y+14,8,2,'#454A50');r(X+3,Y,10,4,OL);r(X+4,Y+1,8,2,'#2A2E33');r(X+5,Y+3,6,1,'#FFF6D8');fx(X,Y,x,y,t);
@@ -921,10 +981,10 @@ const TILES={
  /* ---- inside the wreck ---- */
  whull:(X,Y,x,y,t)=>{wallTop(X,Y,x,y);const bl=at(x,y+1);if(bl&&bl!=='#'&&bl!=='K')wallFace(X,Y,x,y);fx(X,Y,x,y,t)},
  tunnel:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);fx(X,Y,x,y,t)},
- node:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const top=at(x,y-1)!=='N',hot=f().attack===1,p=(Math.sin(t/(hot?90:500))+1)/2;
+ node:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const top=at(x,y-1)!=='N';
   r(X+1,Y,14,16,OL);r(X+2,Y+(top?1:0),12,top?15:16,'rgba(190,220,210,.25)');r(X+3,Y+(top?2:0),10,top?14:16,'#1E2A26');
   const gold='#E8C46A',plat='#D6DEE6';r(X+7,Y+(top?3:0),2,top?13:16,top?gold:plat);for(let i=(top?4:1);i<16;i+=3){r(X+4,Y+i,3,1,i%2?gold:plat);r(X+9,Y+i+1,3,1,i%2?plat:gold)}
-  r(X+5,Y+(top?6:8),6,1,`rgba(105,207,216,${(.3+.7*p).toFixed(2)})`);if(hot&&Math.floor(t/80)%3===0)r(X+2+hash(Math.floor(t/80),y)%11,Y+hash(y,Math.floor(t/80))%14,2,2,'#B48CFF');fx(X,Y,x,y,t)},
+  r(X+3,Y+(top?2:0),10,top?14:16,'rgba(8,12,10,.45)');fx(X,Y,x,y,t)}, /* dead node: dark, no lights (c014) */
  zpz:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const dug=f().dug;big(X,Y,x,y,9,1,(BX,BY)=>{
   const S=[[16,15,13],[47,14,13],[19,36,11],[45,36,11]];
   const inside=(px,py)=>S.some(([a,c,d])=>(px-a)**2+(py-c)**2<(d-1)**2);
@@ -933,7 +993,7 @@ const TILES={
   spike(16,15,45,36,9);spike(47,14,19,36,9);spike(16,15,47,14,8);spike(19,36,45,36,6);
   for(let i=0;i<5;i++){const k=Math.floor(t/90)+i*31;if(k%4<2){const px=BX+4+hash(k,i)%56,py=BY+2+hash(i,k)%42;r(px,py,1,1,'#E6D6FF');r(px+1,py,1,1,'#B48CFF');r(px,py+1,1,1,'#B48CFF')}}
   if(!dug){for(let i=0;i<64;i+=5){const hh=8+hash(i,3)%10;r(BX+i,BY+48-hh,6,hh,'#4E5A4A');r(BX+i+1,BY+48-hh,4,1,'#6F7F6A')}}});fx(X,Y,x,y,t)},
- rubble:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);if(f().dug){r(X+2,Y+11,4,3,'#4E5A4A');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,1,i%8?OL:'#E8B73A')}
+ rubble:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);if(f().dug){r(X+2,Y+11,4,3,'#4E5A4A');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,1,i%8?OL:'#E8762A')}
   else{const h=hash(x,y);[[0,7,8,8],[6,4,9,11],[3,10,10,6],[10,9,6,7]].forEach(([a,c,w,hh],i)=>{const sh=(h+i)%3;r(X+a+1,Y+c,w-2,hh,OL);r(X+a,Y+c+1,w,hh-2,OL);r(X+a+1,Y+c+1,w-2,hh-2,['#5F6E5B','#56634F','#6A7A64'][sh]);r(X+a+1,Y+c+1,w-2,1,'#8A9A84');r(X+a+1,Y+c+hh-2,w-2,1,'#46523F')});r(X+5+h%5,Y+8,2,1,'#7A6AC8')}fx(X,Y,x,y,t)},
  cache:(X,Y,x,y,t)=>{wallTop(X,Y,x,y);r(X,Y+5,16,11,'#6F7F6A');r(X,Y+5,16,1,'#8A9A84');if(f().mapped){r(X+3,Y+7,10,9,OL);r(X+4,Y+8,8,8,'#14181A');r(X+12,Y+7,3,9,'#5F6E5B');r(X+5,Y+14,6,1,'#C9A23A')}else{r(X+3,Y+7,10,9,'#687862');r(X+3,Y+7,10,1,'#7C8C76')}fx(X,Y,x,y,t)},
  exitHole:(X,Y,x,y,t)=>{tunnel(X,Y,x,y);const sky=night()||f().mapped&&f().attack!==2?'#1E2A44':'#9FB0B8';r(X+1,Y+2,14,14,'#2E3530');r(X+2,Y+3,12,13,sky);r(X+2,Y+3,12,2,'rgba(255,255,255,.15)');
@@ -995,6 +1055,13 @@ const ZONES={
   spots:{get '4,2'(){const F=f();return !F.gift?'창밖에 하늘의 관문이 있어요. 아주 큰 검은 돔이에요.':!F.beam?(F.ambush?'빨간 점 아홉 개가 다가와요. 미사일이에요!':'관문을 지났어요. 멀리 하얀 행성이 보여요.'):'하얀 행성 테릭 파푸안. 땅이 거의 다 얼음이에요.'},
    '17,1':'작은 제단이에요. 아스테리아 여신의 별이 있어요.',get '2,10'(){return f().beam?'핵융합 엔진이 보라색으로 빛나요. 사실은 무기예요.':'셀레스철 핵융합 엔진. 따뜻하고 조용해요.'},
    '22,2':'구명 침대예요. 관문을 지날 때 여기 누워요.','15,3':'라운지 탁자. 차가운 차하고 카드가 있어요.','8,3':'레이더 화면. 초록 점이 하나 있어요. 우리 배예요.'},
+  things:{'#':()=>f().ambush&&!f().beam?'벽의 빨간 불이 깜빡깜빡해요!':['벽에 기계와 전선이 잔뜩 붙어 있어요.','천장에 주황색 불이 줄지어 있어요.'],
+   'r':'빨간 전선이 벽에 늘어져 있어요.',
+   'w':()=>{const F=f();return !F.gift?['큰 검은 돔이 하늘을 가렸어요.','돔이 성운 빛에 희미하게 반짝여요.']:!F.beam?(F.ambush?'빨간 불빛이 빠르게 다가와요!':['멀리 하얀 행성이 보여요.','별이 아주 많아요. 조용해요.']):'하얀 행성이 아주 크게 보여요.'},
+   'c':()=>{const F=f();return F.ambush&&!F.beam?'화면에 빨간 점이 가득해요!':F.beam?'화면이 조용해요. 적의 신호가 꺼졌어요.':'조종 화면이에요. 숫자가 천천히 바뀌어요.'},
+   'h':['구명 침대. 안이 하얗고 푹신해요.','구명 침대 위에서 작은 불이 깜빡여요.'],
+   't':'라운지 탁자. 컵 몇 개가 놓여 있어요.',
+   'F':()=>f().beam?'엔진이 보라색으로 밝게 빛나요.':'엔진이 하얗게 빛나요. 아직 힘을 다 안 써요.'},
   npcs:['uzoma','ellie','basyl','tose1','grssia1','ichika1','finn','dream']},
  bubbletown:{name:'파이브 · 버블타운',reg:'FIVE · BUBBLETOWN',
   legend:{'%':{tile:'void'},'=':{tile:'disk',walk:1},'g':{tile:'gantry'},'B':{tile:'bubbleW'},'P':{tile:'plane'},'p':{tile:'pdoor',walk:1},'A':{tile:'airlock',walk:1},
@@ -1024,6 +1091,12 @@ const ZONES={
   spots:{'7,3':'부두 크레인이에요. 잔해 조각을 들어요.',get '11,4'(){return f().bubble?'버블이 다 감겼어요. 은색으로 반짝반짝해요.':'잔해를 은색 버블로 감싸고 있어요. 불꽃이 튀어요.'},
    '22,3':'삼각형 날개 우주비행기. 대기권도 날 수 있어요.','11,8':'50킬로미터 탑이에요. 꼭대기에 부두 원반이 있어요.','1,9':'반쯤 묻힌 은색 공. 사람들이 안에서 살아요.',
    '3,12':'광산 구덩이예요. 아주 깊어요.','13,12':'"레스타리 · 엔포 가문" 상자.','5,1':'하늘에 테릭 파푸안이 떠 있어요. 하얗고 커요.','20,1':'하늘에 테릭 파푸안이 떠 있어요. 초록 띠는 바다예요.'},
+  things:{'%':['까만 하늘이에요. 여기는 공기가 없어요.','별이 반짝여요. 아주 조용해요.'],
+   'o':['반쯤 묻힌 은색 공 집이에요.','은색 공 집. 둥근 문이 있어요.'],
+   'B':()=>f().bubble?'은색 버블이 잔해를 다 감쌌어요.':'용접 기계가 이음매를 따라 기어가요. 불꽃이 튀어요.',
+   '-':'공 집과 공 집을 잇는 은색 통로예요.','P':'삼각형 날개 우주비행기. 하얗고 매끈해요.',
+   '|':'탑 기둥에 빨간 불이 깜빡여요.','O':'광산 구덩이. 바닥이 안 보여요.',
+   'g':'노란 크레인이 천천히 움직여요.','k':'주황색 상자. 단단히 잠겨 있어요.'},
   npcs:['yoru','miteris','okimi','resident']},
  breakerville:{name:'테릭 파푸안 · 브레이커빌',reg:'TERRIK PAPUAN · BREAKERVILLE',base:'plate',
   legend:{'~':{tile:'algae'},'n':{tile:'rail'},'m':{tile:'beam'},'b':{tile:'rim'},'W':{tile:'wreckHull'},'H':{tile:'hole',walk:1},'=':{tile:'bridge',walk:1},
@@ -1052,8 +1125,18 @@ const ZONES={
   warps:{'13,4':{to:'wreck',x:11,y:13,dir:'up',lock:()=>!f().daves?'플렉살 팀만 들어가요. 계약이 먼저예요.':(f().mapped&&!f().attack)&&'밤이에요. 잔해 문이 닫혔어요.'},
    '23,15':{to:'bubbletown',x:23,y:5,dir:'down',lock:()=>f().attack===1&&'지금은 못 떠나요! 공격 중이에요!'}},
   spots:{'1,6':'초록색 조류가 바다를 덮었어요. 2미터 두께. 빠지면 못 나와요.','2,6':'크레인 레일 기둥. 녹이 많이 슬었어요.','12,5':'열린 버블. 잘라 낸 은색 조각들이 바다 위에 떠 있어요.',
-   '4,9':'은색 버블 조각으로 만든 집이에요.','7,11':'로지예요. 안에서 수프 냄새가 나요.','20,10':'감정사의 오두막. 옛날 물건이 가득해요.','11,8':'아크 등이에요. 밤에도 부두가 밝아요.',
-   '14,12':'녹슨 기계 조각. 소금이 하얗게 붙었어요.','22,14':'미테리스의 우주비행기예요.',get '14,5'(){return f().attack===2?'크레인 레일이 무너져서 바다에 빠졌어요.':'잔해 옆 다리예요. 아래는 조류 바다예요.'}},
+   '4,9':'은색 버블 조각으로 만든 집이에요.','7,11':'로지예요. 안에서 수프 냄새가 나요.','20,10':'감정사의 오두막. 안에 화면이 가득해요.','11,8':'아크 등이에요. 밤에도 부두가 밝아요.',
+   '14,12':'녹슨 기계 조각. 소금이 하얗게 붙었어요.',get '22,14'(){return f().dug?'미테리스의 우주비행기예요. 다시 내려왔어요.':'미테리스의 우주비행기예요. 곧 궤도로 올라가요.'},get '14,5'(){return f().attack===2?'크레인 레일이 무너져서 바다에 빠졌어요.':'잔해 옆 다리예요. 아래는 조류 바다예요.'}},
+  things:{'~':()=>f().attack===1?'조류가 깨졌어요! 바다에서 뭔가 나와요!':['초록 조류가 바다를 덮었어요.','조류가 천천히 출렁여요. 냄새가 고약해요.'],
+   'W':()=>f().attack===1?'보라색 불빛이 번쩍번쩍해요!':['아주 큰 배의 조각이에요. 회색빛 초록색이에요.','표면에 길쭉한 구멍이 많아요. 아주 오래됐어요.'],
+   'b':'잘라 낸 은색 버블 조각이에요. 차갑고 반짝여요.',
+   'm':x=>f().attack===2&&x>=8&&x<=10?'크레인 레일이 끊어져서 바다에 빠졌어요.':x%5===0?'레일에 노란 기계가 달려 있어요.':'크레인 레일이에요. 아주 길어요.',
+   'n':'크레인 기둥이에요. 녹이 슬었어요.',
+   'S':()=>f().mapped&&f().attack!==2?'창문에 노란 불이 켜져 있어요.':'은색 조각으로 만든 집. 창문이 작아요.',
+   'L':()=>f().mapped&&f().attack!==2?'로지 창문이 따뜻하게 빛나요.':'로지 지붕 위로 연기가 올라와요.',
+   'R':'감정사 오두막. 벽에 화면이 가득해요.','P':'우주비행기 날개가 젖어 있어요.',
+   'C':x=>x%2===0?'수프 그릇에서 김이 나요.':'카운터 위에 쇠 쟁반이 있어요.',
+   'i':'아크 등이에요. 하얀 불빛이 밝아요.','x':'녹슨 기계 조각이에요. 무거워요.'},
   npcs:['tabia','davrux','guard','dave','dave2','grssia','ichika','ichikaBody','tabiaBody','tose','basylB','keeper','finnB','miterisB','ghost1','ghost2','ghost3']},
  wreck:{name:'잔해 · 내부',reg:'AKTORU WRECK · PORTISHEAD',
   legend:{'#':{tile:'whull'},'.':{tile:'tunnel',walk:1},'N':{tile:'node'},'G':{tile:'zpz'},'r':{tile:'rubble'},'K':{tile:'cache'},'E':{tile:'exitHole',walk:1},'l':{tile:'alamp'}},
@@ -1076,8 +1159,13 @@ const ZONES={
   rooms:[[1,2,4,4,'잔해 · 네트워크 노드'],[6,1,15,5,'잔해 · 발생기 방'],[17,2,22,4,'잔해 · 작은 방'],[4,11,18,13,'잔해 · 입구 홀'],[1,5,22,10,'잔해 · 굴']],
   dark:()=>!f().mapped?[1,1,22,10]:null,
   warps:{'11,14':{to:'breakerville',x:13,y:6,dir:'down'}},
-  spots:{'1,2':'네트워크 노드. 벽 속에 금색, 은색 고사리 같은 선이 있어요.',get '8,3'(){return f().dug?'공 네 개가 빨간 가시에 꿰여 있어요. ZPZ 발생기!':'돌 아래에서 보라색 불꽃이 튀어요.'},
-   get '22,2'(){return f().mapped?'벽에 작은 문이 열려 있어요. 안은 비었어요.':'벽이 조금 이상해요. 문 모양이에요.'},'4,12':'아크 등이 윙윙 소리를 내요.','6,14':'벽에 동그란 구멍이 많아요. 아주 오래된 배예요.'},
+  spots:{'1,2':'네트워크 노드. 벽 속에 금색, 은색 고사리 같은 선이 있어요.',get '8,3'(){return f().dug?'공 네 개가 빨간 가시에 꿰여 있어요. ZPZ 발생기!':'잔해 속에서 보라색 빛이 보여요.'},
+   get '22,2'(){return f().mapped?'벽에 작은 문이 열려 있어요. 안은 비었어요.':'벽이 조금 이상해요. 문 모양이에요.'},'4,12':'아크 등이 윙윙 소리를 내요.','6,14':'벽에 길쭉한 구멍이 많아요. 아주 오래된 배예요.'},
+  things:{'#':['회색빛 초록 벽이에요. 차갑고 조금 까칠해요.','오래된 벽이에요. 길쭉한 구멍이 있어요.','벽을 두드리면 쿵쿵 울려요.'],
+   'G':()=>f().dug?'공 네 개가 보라색으로 반짝여요.':'벽 속에 뭔가 박혀 있어요. 틈으로 보라색 빛이 보여요.',
+   'r':()=>f().dug?'조각을 다 치웠어요. 주황색 줄이 그어져 있어요.':'잔해 조각이 높이 쌓였어요. 혼자서는 못 치워요.',
+   'N':()=>f().attack===1?'노드 안은 깜깜해요. 밖에서 쿵쿵 소리가 나요.':'투명한 벽 속에 금색, 은색 고사리가 보여요.',
+   'l':'아크 등이 눈부셔요.'},
   npcs:['davrux2','finnW']},
 };
 
@@ -1703,6 +1791,11 @@ function kid(hair,shirt,pants,girl){ // a small child, 12×12
  up:['...OOOOOO...',girl?'..OHHHHHHRO.':'..OHHHHHHO..','.OHHHHHHHHO.','.OHHHHHHHHO.','.OHHHHHHHHO.','.OHHHHHHHHO.','..OSSSSSSO..','..OCCCCCCO..','.OSCCCCCCSO.',girl?'.OCCCCCCCCO.':'..OCCCCCCO..',`..O${P}${P}OO${P}${P}O..`,'..OKKOOKKO..'],
  left:['...OOOOO....',girl?'..OHHHHHRO..':'..OHHHHHO...','.OHHHHHHHO..','.OSSHHHHHO..','OSESSSHHHO..','.OMSSSSHO...','..OSSSSO....','..OCCCCO....','..OCSCCO....',girl?'.OCCCCCCO...':'..OCCCCO....',`..O${P}${P}${P}${P}O....`,'..OKKOKKO...']}}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TL={
  /* ship · Sphere One, owner's quarters, command deck, High Rosa hangar 3 */
  moss:(X,Y,x,y)=>moss(X,Y,x,y),
@@ -1728,7 +1821,7 @@ const TL={
   if(a===1){const fl=Math.floor(t/90)%17===0;g.globalAlpha=fl?.35:.8;disc(X+8,Y+3,4,'#2E7A68');disc(X+7,Y+2,2,'#4E9E6E');g.globalAlpha=1;r(X+3,Y+7,10,1,'#69CFD8');r(X+13,Y+1,1,1,(Math.floor(t/400)%2)?'#FFFFFF':'#69CFD8')}},
  gantry:(X,Y,x,y,t)=>{r(X,Y,16,16,'#30363E');for(let i=0;i<16;i++){r(X+i,Y+i,1,1,'#B08A2E');r(X+15-i,Y+i,1,1,'#B08A2E')}r(X,Y,2,16,'#4A525C');r(X+14,Y,2,16,'#4A525C');
   if(front(x,y)&&at(x,y+1)){r(X,Y+9,16,7,'#555D68');r(X,Y+9,16,1,'#6B7480');for(let i=0;i<16;i+=4)r(X+i,Y+13,2,3,'#E8B73A')}},
- lestari:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.2);let a=0;while(at(x-a-1,y)==='L')a++;const bx=X-a*16;
+ lestari:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.2);let a=0;while(at(x-a-1,y)==='L')a++;const bx=X-a*16;
   clip(X,Y,()=>{const y0=Y+5;r(bx+10,y0,92,7,'#BFB59A');r(bx+10,y0,92,2,'#D8D0B8');r(bx+10,y0+5,92,2,'#9C937A');r(bx+6,y0+1,4,5,'#BFB59A');r(bx+4,y0+2,2,3,'#9C937A');r(bx+102,y0+1,4,5,'#9C937A');
    for(let i=18;i<100;i+=13)r(bx+i,y0,1,7,'#A3473A');r(bx+60,y0-2,8,2,'#DCE6E8');r(bx+30,y0+3,40,1,'#A3473A');r(bx+105,y0+2,2,2,(Math.floor(t/500)%2)?'#BFE6FF':'#3A4650')});
   r(X,Y,16,3,'#3F4650');r(X,Y+13,16,3,'#555D68');r(X,Y+13,16,1,'#6B7480');if(x%3===0)r(X,Y,1,16,'#2E343C')},
@@ -1801,6 +1894,15 @@ const ZONES={
    '23,1':'창밖에 레스타리가 있어요. 석 달 동안 우리 집이었어요.','16,10':'과일 나무 화분. 개스들이 매일 물을 줘요.',
    get '23,4'(){return f().zpz?'ZPZ 발생기. 공 네 개가 빨간 가시에 꽂혀 있어요. 보라색 불꽃이 튀어요.':f().swap?'ZPZ 발생기가 들어왔어요. 아직 설치 전이에요.':'상자 두 개. 안에 엔트로피 드라이브가 있어요.'},
    get '22,10'(){return f().filter?'물이 맑아요. 새 필터가 잘 돌아가요.':'물이 갈색이에요. 필터가 막혔어요.'}},
+  things:{'#':['오래된 선체 벽이에요. 고친 자국이 많아요.','벽이 조금 따뜻해요. 웅웅 소리가 나요.'],
+   'C':['원통 발코니에 덩굴이 늘어져 있어요.','발코니마다 주황색 과일이 달렸어요.'],
+   'v':['화분에 주황색 과일이 달렸어요.','흙 냄새가 좋아요. 잎이 반짝반짝해요.'],
+   'g':'격납고 벽이에요. 노란 줄무늬가 있어요.','b':'대나무 칸막이예요. 마른 풀 냄새가 나요.',
+   'S':['벽 화면에 그래프가 움직여요.','벽 화면에 숫자가 반짝여요.'],
+   'L':'창밖에 레스타리가 떠 있어요. 큰 엔진 두 개가 보여요.','c':'화면에 메시지가 가득해요. 다 못 읽겠어요.',
+   'Z':()=>f().swap?'공 네 개가 빨간 가시에 꽂혀 있어요.':'큰 상자예요. 노란 줄이 그어져 있어요.',
+   't':()=>f().filter?'탱크 물이 맑아요. 거품이 올라가요.':'탱크 물이 갈색이에요. 빨간 불이 깜빡여요.',
+   'H':'홀로그램 지도가 천천히 돌아요.','u':'푹신한 소파예요. 쿠션이 하나 있어요.','k':'격납고 상자예요. 단단히 묶여 있어요.'},
   npcs:['dejean','ellie','finn','epi','gyvoy','malvin','dave1','dave2','nglon','pablo','renata']},
  round:{name:'총독 원형 저택',reg:'ROUNDHOUSE · SANTA ROSA',outdoor:1,
   legend:{'R':{tile:'coral'},'U':{tile:'banner'},'G':{tile:'glassLawn',walk:1},'O':{tile:'tree'},'m':{tile:'maple'},'b':{tile:'birch'},'*':{tile:'flowers',walk:1},'P':{tile:'stone',walk:1},
@@ -1828,6 +1930,11 @@ const ZONES={
   warps:{'3,16':{to:'ship',x:24,y:5,dir:'up'},
    '24,16':{to:'hafnir',x:8,y:2,dir:'down',lock:()=>f().rode?false:!hasItem('화살 열차표')?'화살 열차표가 없어요.':!f().blessing?'어머니가 핀을 찾아요. 인사하고 가요.':false}},
   spots:{'13,8':'제일 큰 세쿼이아. 황후의 나무예요. 금빛 띠가 있어요.','9,8':'거대한 세쿼이아. 일곱 그루가 일곱 별을 뜻해요.','9,1':'총독의 깃발이에요.','1,1':'분홍 산호 리브스톤 벽. 금빛, 은빛 점이 반짝여요.','7,13':'연못에 하늘의 수정 돔이 비쳐요.'},
+  things:{'R':['분홍 산호 같은 벽이에요. 금빛 점이 반짝여요.','벽이 매끈해요. 돌이 살아 있는 것 같아요.'],
+   'Q':['거대한 세쿼이아예요. 고개를 들어도 끝이 안 보여요.','나무껍질이 빨갛고 부드러워요.'],
+   'O':'초록 잎이 무성한 나무예요.','m':'단풍나무예요. 잎이 빨개요.','b':'자작나무예요. 껍질이 하얘요.',
+   '~':['연못에 작은 물고기가 있어요.','연못 물이 아주 맑아요.'],'n':'나무 벤치예요. 조금 쉬어도 돼요.',
+   'U':'총독의 깃발. 금색 무늬가 있어요.'},
   npcs:['guard','josias','mother','zelinda','wynid']},
  hafnir:{name:'하프니르',reg:'HAFNIR · GONDIAR',outdoor:1,
   legend:{'J':{tile:'jaca'},'r':{tile:'guide'},'X':{tile:'train'},'x':{tile:'train',walk:1},'P':{tile:'platform',walk:1},'Y':{tile:'pillar'},'.':{tile:'lawn',walk:1},'S':{tile:'street',walk:1},
@@ -1855,6 +1962,14 @@ const ZONES={
   warps:{'8,1':{to:'round',x:24,y:15,dir:'up'}},
   spots:{'13,3':'"하프니르역 · 산타 로사행 화살 열차"','14,5':'포스터: "{리걸 민주당|리걸 민주당} · 하프니르를 위해!"','10,9':'지붕에서 폭포가 떨어지는 집. 누가 이렇게 지었을까요?',
    '20,6':'오틸리아가 디자인한 집. 버섯이 모여 있는 것 같아요.','10,15':'파도가 하얗게 부서져요.','3,4':'리브스톤 집. 집마다 모양이 달라요.'},
+  things:{'w':['바다가 파랗게 반짝여요.','멀리 바다 끝이 하늘하고 만나요.'],
+   'J':['보라색 꽃나무예요. 자카란다예요.','보라색 꽃잎이 바닥에 떨어졌어요.'],
+   'f':['하얀 거품이 모래 위로 밀려와요.','발이 젖을 것 같아요. 물이 차가워요.'],
+   'r':'화살 열차 선로예요. 반짝반짝해요.','X':'하얀 화살 열차. 아주 빠를 것 같아요.',
+   'V':['리브스톤 집이에요. 지붕이 둥글어요.','창문이 두 개 있는 크림색 집이에요.'],
+   'M':'버섯 집 창문에 노란 불이 켜져 있어요.','W':'지붕에서 물이 떨어져요. 시원한 소리가 나요.',
+   'n':'바닷가 벤치. 모래가 조금 있어요.','K':'바닷가 카페 카운터. 주스 냄새가 나요.',
+   'Y':'역 표지판이에요. 하얗고 깨끗해요.','q':'파라솔 아래는 시원해요.'},
   npcs:['station','otylia','vari','laurella','dushan','terence','cafe']},
 };
 
@@ -2527,10 +2642,11 @@ const TILES={
  counter:(X,Y,x,y,t)=>{nFloor(X,Y,x,y,t);r(X,Y+3,16,12,OL);r(X,Y+4,16,3,'#9AA2AA');r(X,Y+4,16,1,'#C2C9D0');r(X,Y+7,16,7,'#5E646B');r(X+(x%2?3:9),Y+9,4,3,'#4C5258');
   if(x===2){r(X+4,Y,7,5,OL);r(X+5,Y+1,5,3,'#3A3F45');const s=Math.floor(t/300)%4;r(X+6+(s%2),Y-1-s,1,1,'rgba(230,240,240,.7)')}
   if(x===4){r(X+5,Y+1,4,3,'#E8E1D0');r(X+6,Y+2,2,1,'#8E5A3A')}},
- footy:(X,Y,x,y,t)=>{r(X,Y,16,16,'#2A2E34');const [a]=blk(x,y);const X0=X-(x-a)*16;clipT(X,Y,()=>{r(X0+2,Y+3,28,10,OL);r(X0+3,Y+4,26,8,'#2E7A3A');
-   r(X0+16,Y+4,1,8,'#BFE6C0');r(X0+3,Y+7,2,2,'#BFE6C0');r(X0+27,Y+7,2,2,'#BFE6C0');const p=t/45;
-   const bx=X0+4+Math.round((Math.sin(p/9)+1)*10),by=Y+6+Math.round(Math.sin(p/5)*1.5);r(bx,by,1,1,'#FFFFFF');r(bx+1,by,2,1,'#BFBFBF');r(bx+3,by,1,1,'#FFFFFF');
-   r(X0+6+Math.round((Math.sin(p/11)+1)*6),Y+5,1,2,'#D2533F');r(X0+12+Math.round((Math.cos(p/13)+1)*6),Y+8,1,2,'#3A5ADF');r(X0+18+Math.round((Math.sin(p/7)+1)*3),Y+6,1,2,'#D2533F')});
+ footy:(X,Y,x,y,t)=>{r(X,Y,16,16,'#2A2E34');const [a]=blk(x,y);const X0=X-(x-a)*16;clipT(X,Y,()=>{ // canteen screen: a match on a circular pitch of blue grass (c018)
+   r(X0+1,Y+1,30,12,OL);r(X0+2,Y+2,28,10,'#0C1018');oval(X0+16,Y+7,13,5,'#3A3F48');oval(X0+16,Y+7,11,4,dy=>dy<0?'#3F6FD6':'#355FC0');
+   r(X0+16,Y+3,1,8,'#BFD8F5');r(X0+15,Y+6,3,2,'#BFD8F5');r(X0+16,Y+6,1,2,'#355FC0');r(X0+6,Y+6,1,3,'#BFD8F5');r(X0+26,Y+6,1,3,'#BFD8F5');const p=t/45;
+   const bx=X0+9+Math.round((Math.sin(p/9)+1)*6),by=Y+6+Math.round(Math.sin(p/5));r(bx,by,2,1,'#E8D6A8');r(bx+2,by,1,1,'#8E7A5A');r(bx+3,by,2,1,'#E8D6A8'); // one ball: two rugby balls stuck together
+   r(X0+8+Math.round((Math.sin(p/11)+1)*5),Y+5,1,2,'#D2533F');r(X0+12+Math.round((Math.cos(p/13)+1)*5),Y+8,1,2,'#F2D24A');r(X0+16+Math.round((Math.sin(p/7)+1)*3),Y+6,1,2,'#D2533F')});
   r(X,Y+13,16,3,'#6A7179');r(X,Y+13,16,1,'#8E969E')},
  locker:(X,Y,x,y,t)=>{nFloor(X,Y,x,y,t);r(X+1,Y,14,16,OL);r(X+2,Y+1,12,14,'#6A7179');r(X+2,Y+1,12,1,'#8A929A');r(X+4,Y+3,8,7,'#2B3238');
   r(X+5,Y+4,6,5,'#D8DCE0');r(X+6,Y+6,4,2,'#3A6E8A');r(X+6,Y+6,1,1,'#BFE6FF');r(X+2,Y+11,12,1,'#E8962A');r(X+11,Y+12,2,2,'#2B3238')},
@@ -2541,7 +2657,8 @@ const TILES={
  sky,horizon,
  ash,
  track:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);for(const tx of [2,10]){r(X+tx,Y,4,16,'#231D1B');for(let i=0;i<16;i+=3)r(X+tx,Y+i,4,1,'#1A1513')}},
- rock:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);r(X+1,Y+5,14,10,OL);r(X+2,Y+4,11,2,OL);r(X+2,Y+6,12,8,'#1E1E24');r(X+3,Y+5,9,2,'#33333C');r(X+4,Y+4,6,1,'#44444E');r(X+3,Y+12,11,2,'#141418');r(X+7,Y+7,1,4,'#2E2E36');r(X+10,Y+8,2,1,'#3A3A44')},
+ rock:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);r(X+1,Y+5,14,10,OL);r(X+2,Y+4,11,2,OL);r(X+2,Y+6,12,8,'#6E6C6A');r(X+3,Y+5,9,2,'#86837F');r(X+4,Y+4,6,1,'#9A9692');r(X+3,Y+12,11,2,'#545250'); // gray pocked pumice (c018)
+  [[4,8],[7,10],[10,7],[11,11],[5,12],[8,6]].forEach(([a,b])=>r(X+a,Y+b,1,1,'#3E3C3A'));r(X+9,Y+9,2,1,'#3E3C3A')},
  lava:(X,Y,x,y,t)=>{const o=Math.floor(t/160),h=hash(x,y);r(X,Y,16,16,'#C9360E');
   for(let j=0;j<16;j++){const s=((j*3-o+x*16+y*5)%24+24)%24;r(X+(s%16),Y+j,4,1,'#FF8A2A');r(X+((s+9)%16),Y+j,2,1,'#FFD27A');if((j+o)%5===0)r(X+((s+5)%16),Y+j,3,1,'#A82A0A')}
   const c=((o>>2)+h)%14;r(X+c,Y+3+(h%6),5,3,'#4A1608');r(X+c+1,Y+3+(h%6),3,1,'#6A2410');
@@ -2551,10 +2668,11 @@ const TILES={
  hoodoo:(X,Y,x,y,t)=>clipT(X,Y,()=>hoodoo(X,Y,x,y,t,'H')),
  topple:(X,Y,x,y,t)=>{if(!f().causeway)return clipT(X,Y,()=>hoodoo(X,Y,x,y,t,'Q'));
   under(X,Y,x,y,t);
-  if(at(x,y+1)!=='Q'){const L=at(x-1,y)!=='Q';r(X+(L?2:0),Y+6,L?14:12,10,'#6E6660');r(X+(L?2:0),Y+6,L?14:12,1,'#8E857E');r(X+(L?5:4),Y+4,4,2,'#6E6660');r(X+(L?2:10),Y+12,4,4,'#4E4844')}
+  if(at(x,y+1)!=='Q')[[1,10,5,4],[6,12,6,4],[11,9,5,5],[3,7,3,3],[9,5,3,3]].forEach(([a,b,w,hh],i)=>{r(X+a,Y+b,w,hh,OL);r(X+a,Y+b,w-1,hh-1,i%2?'#6E6660':'#7C746D');r(X+a,Y+b,w-1,1,'#958C84')}); // base burst apart: rubble, no stump (c018)
   const a=since('causeAt');if(a<5000){g.fillStyle=`rgba(200,195,190,${.5*(1-a/5000)})`;g.fillRect(X,Y,16,16)}},
  dtree:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);const c='#141110';r(X+7,Y+4,2,12,c);r(X+6,Y+14,4,2,c);r(X+4,Y+6,3,1,c);r(X+3,Y+3,1,4,c);r(X+9,Y+8,3,1,c);r(X+12,Y+5,1,4,c);r(X+8,Y+1,1,3,c);r(X+5,Y+2,1,2,c);r(X+10,Y+3,1,2,c);
-  r(X+7,Y+5,1,9,'#3A332F');r(X+3,Y+3,1,1,'#3A332F');r(X+4,Y+15,1,1,'#3A332F');r(X+11,Y+14,2,1,'#3A332F')},
+  r(X+7,Y+5,1,9,'#3A332F');r(X+3,Y+3,1,1,'#3A332F');r(X+4,Y+15,1,1,'#3A332F');r(X+11,Y+14,2,1,'#3A332F');
+  [[1,1,4,3],[7,0,4,2],[10,2,4,3],[2,5,3,2],[11,7,3,2]].forEach(([a,b,w,hh],i)=>{r(X+a,Y+b,w,hh,'#2E2018');r(X+a+1,Y+b,w-2,1,i%2?'#4A3424':'#3E2C1E')})}, // leaves kept, darkened to umber (c018)
  bison:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);const fl=hash(x,y)%2;drawArt(BISON,BISON_PAL,X,Y,!!fl);
   const k=(Math.floor(t/350)+hash(x,y))%6;r(X+(fl?15-(4+k*2):4+k*2),Y+9,1,1,'#E8F8FF');r(X+(fl?15-(10-k):10-k),Y+12,1,1,'#CFE8F2')},
  bird:(X,Y,x,y,t)=>{ash(X,Y,x,y,t);r(X+5,Y+8,8,5,OL);r(X+6,Y+9,5,3,'#6E6A66');r(X+3,Y+8,4,2,OL);r(X+4,Y+8,3,1,'#8A8580');r(X+11,Y+9,2,2,'#7A7672');r(X+13,Y+10,1,1,'#C9A23A');r(X+7,Y+12,1,2,'#C9A23A');
@@ -2635,6 +2753,10 @@ const ZONES={
   warps:{'18,3':{to:'natt',x:11,y:2,dir:'down',lock:()=>(!f().orbit||!f().boarded)&&'헤즈업 문이 닫혀 있어요. 엘리가 열어 줘요.'}},
   spots:{get '4,1'(){return f().warned?'큰 화면에 카이발이 보여요. 검은 땅, 하얀 먼지 바다, 주황색 용암 줄.':'큰 화면에 라타라잔 배가 보여요. 작은 공이 아주 많이 붙어 있어요.'},
    '2,3':'책상 화면에 숫자가 가득해요. 관문 점프 기록이에요.','10,5':'누구의 책상이에요. 커피 컵이 반쯤 남았어요.','20,2':'헤즈업. 진주색 타원형 드롭십이에요.','16,7':'상자에 "나트 선물: 커피"라고 써 있어요.'},
+  things:{'#':['오래된 선체 벽이에요. 고친 자국이 많아요.','벽이 조금 떨려요. 엔진 소리 같아요.'],
+   'S':()=>f().warned?['화면에 카이발이 가득해요. 땅이 까매요.','화면에 주황색 줄이 반짝여요.']:'화면에 작은 공이 잔뜩 붙은 배가 있어요.',
+   'd':['책상 화면에 숫자가 가득해요.','책상 위가 깨끗해요. 서류가 없어요.'],
+   'U':'진주색 드롭십이에요. 매끈하고 반짝여요.','k':'상자가 끈으로 단단히 묶여 있어요.'},
   npcs:['dejean','uemi','pablo','woiykan','gyvoy','finn','ellieS']},
  natt:{name:'나트 · 움직이는 마을',reg:'NOVECK ACTIVE TRAVEL TOWN',base:'plate',
   legend:{'#':{tile:'nWall'},'.':{tile:'nFloor',walk:1},'h':{tile:'hatch',walk:1},'w':{tile:'nWin'},'F':{tile:'footy'},'t':{tile:'table'},'c':{tile:'counter',over:1},
@@ -2659,8 +2781,14 @@ const ZONES={
   rooms:[[1,2,6,7,'나트 · 식당'],[8,2,14,14,'나트 · 중앙 홀'],[16,2,24,5,'나트 · 장비실'],[16,7,24,14,'나트 · 차고']],
   warps:{'11,1':{to:'ship',x:18,y:4,dir:'down'},
    '20,15':{to:'plain',x:10,y:16,dir:'up',lock:()=>gateLock()},'21,15':{to:'plain',x:10,y:16,dir:'up',lock:()=>gateLock()}},
-  spots:{'1,1':'축구 경기예요. 그런데 공이 두 개예요! 공 두 개가 서로 붙어 있어요. 잔디는 파란색이에요.','4,1':'창밖으로 검은 땅이 천천히 지나가요. 나트가 움직이고 있어요.','20,1':'멀리 화산이 보여요. 꼭대기가 주황색이에요.',
+  spots:{'1,1':'화면 속 축구예요. 공이 럭비공 두 개를 붙인 모양이에요.','4,1':'창밖으로 검은 땅이 천천히 지나가요. 나트가 움직이고 있어요.','20,1':'멀리 화산이 보여요. 꼭대기가 주황색이에요.',
    '18,3':'우주복 사물함. 헬멧이 줄지어 있어요.','8,9':'기계가 웅웅거려요. 바닥이 조금 흔들려요.','17,10':'엘스베스의 탱크. 아주 크고 무거워요.','22,10':'두 번째 탱크. 옆에 "미사일"이라고 써 있어요.'},
+  things:{'#':x=>x>15?['쇠벽에 보라색 불빛이 켜져 있어요.','쇠벽이 조금 흔들려요. 나트가 움직여요.']:['쇠벽에 초록 불빛이 켜져 있어요.','차가운 쇠벽이에요. 조금 흔들려요.'],
+   'K':['큰 탱크예요. 캐터필러가 아주 넓어요.','탱크 캐터필러에 검은 가루가 묻었어요.'],
+   'w':['창밖은 까만 하늘이에요. 별이 많아요.','멀리 주황색 불빛이 반짝여요.'],
+   'm':'기계 불빛이 깜빡깜빡해요.','L':'사물함이에요. 안에 헬멧이 있어요.','t':'식탁 위에 음식 봉지가 있어요.',
+   'c':x=>x===2?'냄비에서 김이 나요.':'쇠 카운터예요. 반짝반짝하게 닦여 있어요.',
+   'F':['작은 선수들이 공을 쫓아 뛰어요.','둥근 경기장이에요. 잔디가 파래요.']},
   npcs:['binopal','mique','cook','els','fomki','bensathN','gyvoyN','ellieN']},
  plain:{name:'카이발 · 후두 정원',reg:'KAJVAL · HOA QUINZU',outdoor:1,
   legend:{'v':{tile:'sky'},'V':{tile:'horizon'},'W':{tile:'rwall'},'B':{tile:'breach',walk:1},'H':{tile:'hoodoo'},'Q':{tile:'topple'},'.':{tile:'ash',walk:1},'t':{tile:'track',walk:1},
@@ -2689,11 +2817,24 @@ const ZONES={
    '13,3':{to:'bk37',x:11,y:20,dir:'up',lock:()=>!f().breach&&'높은 담이에요. 폭약 없이는 못 들어가요.'},'14,3':{to:'bk37',x:12,y:20,dir:'up',lock:()=>!f().breach&&'높은 담이에요. 폭약 없이는 못 들어가요.'}},
   spots:{'12,5':'새가 하늘에서 떨어진 그대로 있어요. 깃털에 수정이 된 공기가 반짝여요.','1,15':'작은 새. 육천 년 동안 여기 누워 있었어요.',
    '17,7':'들소예요. 쓰러진 그대로 죽었어요. 털에 하얀 수정이 반짝여요.','16,8':'들소 떼예요. 모두 같은 쪽을 보고 있어요.','17,9':'들소예요. 만지면 가루가 떨어져요.',
-   '4,5':'죽은 숲이 끝없이 이어져요. 후두 정원은 80킬로미터예요.','4,11':'검은 나무. 손을 대면 부서져서 조각이 돼요.','5,12':'죽은 숲이에요. 잎이 하나도 없어요.',
-   get '7,4'(){return f().causeway?'엘리의 작전으로 무너진 후두. 밑동만 남았어요. 밑동만 남았어요.':'후두. 1킬로미터 높이의 돌기둥이에요. 꼭대기가 안 보여요.'},
+   '4,5':'죽은 숲이 끝없이 이어져요. 후두 정원은 80킬로미터예요.','4,11':'검은 나무. 손을 대면 부서져서 조각이 돼요.','5,12':'죽은 숲이에요. 잎이 짙은 갈색으로 변했어요.',
+   get '7,4'(){return f().causeway?'엘리의 작전으로 쓰러진 후두. 돌무더기 길이 됐어요.':'후두. 1킬로미터 높이의 돌기둥이에요. 꼭대기가 안 보여요.'},
    get '20,4'(){return f().causeway?'무너진 후두. 돌 조각이 담 너머까지 날아갔어요.':'후두. 아주 높아요. 밑이 조금 부서져 있어요.'},
-   '20,10':'죽은 나무들이에요. 여기는 용암이 없어요. 화산은 멀리 있어요.','8,6':'검은 바위예요. 화산에서 날아온 돌이에요.',
+   '20,10':'죽은 나무들이에요. 여기는 용암이 없어요. 화산은 멀리 있어요.','8,6':'회색 돌이에요. 화산에서 날아온 돌이에요.',
    get '11,11'(){return f().causeway?'빈 미사일 거치대예요. 탱크는 해자 쪽으로 갔어요.':'엘스베스의 탱크. 엘리가 안에 있어요.'},'9,14':'다른 탱크예요. 뒷문으로 나트에 돌아갈 수 있어요.'},
+  things:{'v':['까만 하늘이에요. 별이 많아요.','공기가 없어서 별이 아주 또렷해요.'],
+   'V':x=>Math.abs(x-9)<=2?'멀리 산꼭대기가 주황색으로 빛나요.':'멀리 검은 산이 길게 이어져요.',
+   'W':['아주 높은 돌벽이에요. 위가 까마득해요.','돌벽이 길게 이어져요. 끝이 안 보여요.'],
+   'H':['아주 높은 돌기둥이에요. 꼭대기가 안 보여요.','울퉁불퉁한 돌기둥에 검은 구멍이 있어요.'],
+   'Q':()=>f().causeway?'쓰러진 돌기둥이 돌무더기 길이 됐어요.':'아주 높은 돌기둥이에요. 꼭대기가 안 보여요.',
+   '~':['검은 나무예요. 잎까지 그대로 굳었어요.','나뭇가지에 하얀 가루가 붙어 있어요.','검은 나무가 돌처럼 굳었어요.'],
+   'L':['검은 나무예요. 잎까지 그대로 굳었어요.','나뭇가지에 하얀 가루가 붙어 있어요.','검은 나무가 돌처럼 굳었어요.'],
+   'T':['검은 나무예요. 잎까지 그대로 굳었어요.','나뭇가지에 하얀 가루가 붙어 있어요.','검은 나무가 돌처럼 굳었어요.'],
+   'R':['회색 돌이에요. 구멍이 숭숭 나 있어요.','돌 위에 하얀 가루가 쌓였어요.'],
+   'b':['들소 한 마리. 돌처럼 굳었어요.','들소 털에 하얀 가루가 반짝여요.'],
+   'f':'작은 새가 땅에 누워 있어요. 움직이지 않아요.',
+   'E':()=>f().causeway?'탱크가 떠난 자리예요. 캐터필러 자국만 있어요.':'엘스베스의 탱크예요. 아주 커요.',
+   'K':'탱크 캐터필러에 검은 가루가 묻었어요.'},
   npcs:['pandiana','edusal','ellieP']},
  bk37:{name:'BK37 · 담 안',reg:'COMPOUND BK37 · KAJVAL',outdoor:1,
   legend:{'#':{tile:'iwall'},'T':{tile:'tower'},'A':{tile:'arch',walk:1},'.':{tile:'ash',walk:1},'R':{tile:'rock'},'~':{tile:'moat'},'c':{tile:'cause',walk:1},'X':{tile:'wreck'},
@@ -2727,7 +2868,12 @@ const ZONES={
   spots:{'10,11':'초록색으로 빛나는 그물이에요. 밟으면 끝이에요.','12,9':'땅속에서 무엇이 빙글빙글 돌아요. 칼 같아요.',
    get '5,14'(){return f().attack?'먼지 속에서 연한 회색 공들이 굴러다녀요. 수백만 개예요.':'반짝이는 수정 가루 해자. 무릎까지 빠져요.'},
    get '15,5'(){return f().causeway?'엘스베스의 탱크가 탑 앞에서 세이버스톤에 묻혔어요.':'탑 앞의 빈 땅이에요.'},
-   '8,4':'BK37 탑. 돌기둥을 깎아서 만들었어요. 발코니가 층층이 있어요.','2,3':'검은 바위예요.'},
+   '8,4':'BK37 탑. 돌기둥을 깎아서 만들었어요. 발코니가 층층이 있어요.','2,3':'회색 돌이에요. 화산에서 날아왔어요.'},
+  things:{'#':['높은 돌벽이에요. 끝이 안 보여요.','돌벽에 하얀 가루가 붙어 있어요.'],
+   'T':['돌기둥을 깎아서 만든 탑이에요.','탑에 조각된 발코니가 층층이 있어요.'],
+   '~':()=>f().attack&&!f().done?'회색 공들이 우글우글해요! 가까이 가면 안 돼요!':'반짝이는 가루 해자예요. 아주 조용해요.',
+   'g':['초록 그물이 빛나요. 밟으면 안 돼요.','초록 불빛이 줄을 따라 달려요.'],
+   'R':'회색 돌이에요. 구멍이 숭숭 나 있어요.'},
   npcs:['miqueB','gyvoyB','bensathB','fomkiB','edusalB','swarm','swarm2','elsB','ellieB']},
  tower:{name:'BK37 · 나선 계단',reg:'COMPOUND BK37 · STAIRWELL',
   legend:{'#':{tile:'twall'},'s':{tile:'stair',walk:1},'O':{tile:'shaft'},'l':{tile:'landing',walk:1},'x':{tile:'broken'},'A':{tile:'arch',walk:1},
@@ -2761,6 +2907,10 @@ const ZONES={
   spots:{'3,4':'카이발 드롭십. 홈이 세 개 있는 원뿔이에요.','16,4':'드롭십이 네 대 있어요. 모두 원뿔 모양이에요.','12,4':'이 드롭십은 육천 년 동안 기다렸어요.',
    '14,5':'카이발 셀레스철 미라. 꼬리를 몸에 감고 있어요.','3,6':'미라예요. 손이 드롭십 쪽을 향해 있어요.','17,6':'미라예요. 털이 조금 남아 있어요.',
    '8,12':'아래가 안 보여요. 아주 깊어요.','6,13':'무너진 계단이에요. 건널 수 없어요.','7,13':'계단이 부서져서 구멍이 났어요.'},
+  things:{'#':['어두운 돌벽이에요. 조각이 가득해요.','벽을 두드려도 소리가 안 나요.'],
+   'D':x=>f().woke&&x>=6&&x<=8?'드롭십에 불이 켜졌어요. 살아 있어요!':['원뿔 모양 드롭십. 홈이 세 개 있어요.','드롭십 표면이 차갑고 매끈해요.'],
+   'O':'아래가 깜깜해요. 바닥이 안 보여요.','H':'격납고 벽이에요. 매끈하고 차가워요.',
+   'a':'아치 밖에 까만 하늘과 밝은 땅이 보여요.','m':'작은 미라예요. 아이 같아요.'},
   npcs:['dave1','dave2','ghost1','ghost2','gyvoyT','mummyA','finnB','elsT']},
 };
 function gateLock(){
@@ -2831,7 +2981,7 @@ const NPC={
    {say:'{격납고|격납고}로 가요. 파블로한테 문을 열라고 했어요.',award:['멸망하다','진공'],set:()=>{f().orbit=1}}]},
  ellieS:{name:'엘리',zone:'ship',x:20,y:3,dir:'left',look:ELLIE,
   hide:()=>!!f().boarded&&ZID!=='ship',
-  talk:()=>[{say:'헤즈업 준비 끝! 엔포 가문의 강하선이에요. 진주 같죠?'},{say:'우주복 입었어요? 헤즈업에서 {나트|나트}까지 걸어가요. 탱크처럼 기어가는 마을이에요.',give:'우주복'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
+  talk:()=>[{say:'헤즈업 준비 끝! 엔포 가문의 드롭십이에요. 진주 같죠?'},{say:'우주복 입었어요? 헤즈업에서 {나트|나트}까지 걸어가요. 탱크처럼 기어가는 마을이에요.',give:'우주복'},{say:'이번 일은 기보이 씨가 대장이래요. 흠.',set:()=>{f().boarded=1}}]},
  /* ---- the Natt ---- */
  binopal:{name:'비노팔',zone:'natt',x:12,y:4,dir:'down',look:BINO,badge:['화산','용암'],
   after:'나트는 느려요. 그래도 용암보다는 빨라요. 하하.',
@@ -3247,6 +3397,7 @@ const ITEMS={'오더바이저 가면':'쓰면 지카르 타소트의 얼굴이 �
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const b=w=>state.badges.includes(w);
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
 
 /* ---------- pixel-art sprites (rows: '.' = clear; outline O) ---------- */
 const OL='#1B1E2B';
@@ -3588,6 +3739,11 @@ const BUILD={
  K:{roof:['#3A3040','#2A2230'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#1E1824','#120E16');const fl=(Math.floor(t/90)+x*3)%23===0;r(X,Y+2,16,2,fl?'#5A1A40':'#E040A0');r(X,Y+4,16,1,'#8A2A6A');
   if(x===28){r(X+5,Y+6,6,6,OL);r(X+6,Y+7,4,4,'#3A1A3A');r(X+7,Y+8,2,2,'#E040A0')}}},
 };
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const TT={
  /* --- police HQ --- */
  hqFloor:(X,Y,x,y)=>hqFloor(X,Y,x,y),
@@ -3641,40 +3797,39 @@ const TT={
    if(top){r(X+4,Y+3,6,7,'#F1EEE6');r(X+5,Y+4,4,3,x===5?'#1E1A22':'#5A3E2A');r(X+5,Y+7,4,2,x===5?'#D9A882':'#C99470');r(X+4,Y+3,2,1,OL);r(X+4,Y+3,1,2,OL)}
    [3,8,12].forEach((a,i)=>{r(X+a,Y+13,2,3,'#F1EEE6');const fl=(Math.floor(t/120)+i+x)%3;r(X+a,Y+11-(fl===0?1:0),2,2,fl?'#FFC46B':'#FFE27A')})}},
  manWall:(X,Y,x,y,t)=>{const isM=c=>c==='M'||c==='G';
-  if(!isM(at(x,y+1))){r(X,Y,16,16,'#E9B7AA');r(X,Y,16,1,'#F2C8BC');r(X,Y+2,16,1,'#E8C860');r(X,Y+13,16,3,'#C99488');for(let i=2;i<16;i+=5)r(X+i,Y+4,1,8,'#D9A296');const h=hash(x,y);r(X+h%13+1,Y+6,1,1,'#E8C860');r(X+(h*3)%13+1,Y+9,1,1,'#E4E8F0');return}
+  if(!isM(at(x,y+1))){r(X,Y,16,16,'#E2D6BC');r(X,Y,16,1,'#F2EAD8');for(let i=1;i<16;i+=5){r(X+i,Y+1,3,2,'#3A404C');r(X+i+1,Y+1,1,1,'#D2533F')}r(X,Y+13,16,3,'#C9BC9C');for(let i=2;i<16;i+=5)r(X+i,Y+4,1,8,'#D2C4A6');return}
   r(X,Y,16,16,'#3F7A4A');const h=hash(x,y);r(X+1,Y+2,9,8,'#2F6A3E');r(X+2,Y+3,5,3,'#4E9A5A');r(X+7,Y+7,8,8,'#2F6A3E');r(X+8,Y+8,4,3,'#4E9A5A');if(h<50)r(X+h%10+2,Y+11,2,2,'#5DB866');
-  const e='#D99C90',l='#F2C8BC';if(!isM(at(x,y-1))){r(X,Y,16,4,e);r(X,Y,16,1,l);r(X,Y+4,16,1,'#2A4A30')}if(!isM(at(x-1,y))){r(X,Y,4,16,e);r(X,Y,1,16,l)}if(!isM(at(x+1,y))){r(X+12,Y,4,16,e);r(X+15,Y,1,16,'#B98478')}},
+  const e='#D2C4A6',l='#F2EAD8';if(!isM(at(x,y-1))){r(X,Y,16,4,e);r(X,Y,16,1,l);r(X+3,Y+1,2,2,'#3A404C');r(X+11,Y+1,2,2,'#3A404C');r(X,Y+4,16,1,'#2A4A30')}if(!isM(at(x-1,y))){r(X,Y,4,16,e);r(X,Y,1,16,l)}if(!isM(at(x+1,y))){r(X+12,Y,4,16,e);r(X+15,Y,1,16,'#B8AA8C')}},
  manGate:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X,Y,16,3,'#E8C860');r(X,Y+1,16,1,'#F7E08A');for(let i=1;i<16;i+=3)r(X+i,Y+3,1,13,'#C9A23A');r(X,Y+8,16,1,'#C9A23A');r(X+7,Y+6,2,4,'#F7E08A')},
  tower:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A404C');r(X,Y,16,1,'#4E5666');if(at(x,y-1)!=='A'){r(X,Y,16,4,'#5A6274');r(X,Y,16,1,'#7A8494')}r(X+(x%2?14:1),Y+5,1,10,'#2E343E');
-  if(x===14||x===15){const p=(Math.sin(t/260+y)+1)/2;r(X+(x===14?13:0),Y,3,16,`rgba(159,215,232,${.5+p*.5})`)}
+  if(x===14||x===15){r(X+(x===14?13:0),Y,3,16,'#1A1E26');r(X+(x===14?13:2),Y,1,16,'#2E343E')}
   if((x+y)%4===0)r(X+7,Y+8,2,2,Math.floor(t/500+x)%3?'#D2533F':'#5A1A1A');if(y===17)r(X,Y+12,16,4,'#2A2F38')},
  /* --- High Rosa dock level three --- */
  girder:(X,Y,x,y,t)=>{r(X,Y,16,16,'#1E232D');g.strokeStyle='#3A4352';g.lineWidth=1;g.beginPath();g.moveTo(X,Y+0.5);g.lineTo(X+16,Y+0.5);g.moveTo(X+0.5,Y);g.lineTo(X+16,Y+16);g.moveTo(X+16,Y);g.lineTo(X,Y+16);g.stroke();
   r(X+1,Y+1,1,1,'#5A6474');r(X+14,Y+14,1,1,'#5A6474');if(hash(x,y)<6)r(X+7,Y+7,2,2,(Math.floor(t/800)+x)%2?'#FFD08A':'#7A5420');
   const below=at(x,y+1);if(below&&below!=='G'&&below!=='B'&&below!=='W'){r(X,Y+11,16,5,'#4A5466');r(X,Y+11,16,1,'#6B7790');for(let i=0;i<16;i+=4)r(X+i,Y+14,2,2,'#E8B73A')}},
- bay:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.3);const i=x-1;g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
-  const top=i===0?7:5,bot=i===0?11:13;r(X+(i===0?6:0),Y+top,16,bot-top,'#DCE0E6');r(X+(i===0?6:0),Y+top,16,1,'#F4F6F8');r(X+(i===0?6:0),Y+bot-2,16,2,'#AEB4BE');
-  if(i===0){r(X+3,Y+8,3,2,'#DCE0E6');r(X+2,Y+9,1,1,'#AEB4BE')}
+ bay:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.3);const i=x-1;g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+  const top=i===0?7:i%2?5:6,bot=i===0?11:i%2?13:12,hc=['#B8BEC6','#A8916A','#8A939E','#C9B89A','#7E9278','#B08A72','#9AA3AD','#8E8A9E'][i]||'#9AA3AD';
+  r(X+(i===0?6:0),Y+top,16,bot-top,hc);r(X+(i===0?6:0),Y+top,16,1,'rgba(255,255,255,.35)');r(X+(i===0?6:0),Y+bot-2,16,2,'rgba(0,0,0,.22)');if(i>0)r(X,Y+top,1,bot-top,'#4A5466');
+  if(i===0){r(X+3,Y+8,3,2,hc);r(X+2,Y+9,1,1,'#7A8494')}
   if(i>0&&i<7){r(X+3,Y+8,2,2,(i+Math.floor(t/1300))%3?'#FFE3A0':'#4A6A8A');r(X+10,Y+8,2,2,'#4A6A8A')}
-  if(i===3){r(X+4,Y+7,8,1,'#B03A2E');r(X+3,Y+8,3,1,'#B03A2E');r(X+10,Y+8,3,1,'#B03A2E');r(X+7,Y+8,2,3,'#C9A23A')}
   if(i===7){r(X+8,Y+6,8,8,'#3A404C');r(X+12,Y+7,4,6,(Math.floor(t/150))%2?'#7FD3FF':'#BFF1FF')}
   if(i===2||i===5){r(X+7,Y,2,5,'#6E7680');r(X+6,Y+4,4,1,'#8A93A0')}g.restore();
   r(X,Y,16,2,'#2A2F3A');r(X,Y+14,16,2,'#4A5466');r(X,Y+14,16,1,'#6B7790');if(x%2===0)r(X,Y,1,16,'#2A2F3A')},
  track:(X,Y,x,y,t)=>{plate(X,Y,x,y);r(X,Y+4,16,2,'#8A93A0');r(X,Y+10,16,2,'#8A93A0');r(X,Y+6,16,1,'#4A5260');r(X,Y+12,16,1,'#4A5260');
   const p=((t*0.06)+x*16)%64;if(p<16){r(X+p,Y+3,2,10,'#69CFD8');r(X+p,Y+3,2,1,'#BFF1FF')}},
  seat:(X,Y,x,y)=>{plate(X,Y,x,y);r(X+2,Y+2,12,12,OL);r(X+3,Y+3,10,6,'#8E3A44');r(X+3,Y+3,10,1,'#B04A56');r(X+3,Y+9,10,4,'#B04A56');r(X+2,Y+8,2,6,'#3A3036');r(X+12,Y+8,2,6,'#3A3036')},
- capWin:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.15);g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
+ capWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.15);g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
   const cx=12*16+8-CAM.x,top=12*16-CAM.y;
   g.fillStyle='#2E7A68';g.beginPath();g.arc(cx,top+20+300,300,0,Math.PI*2);g.fill();
   g.fillStyle='#4E9E6E';g.beginPath();g.arc(cx-70,top+20+60,50,0,Math.PI*2);g.fill();
   g.fillStyle='#C9A64A';g.beginPath();g.arc(cx+90,top+20+50,46,0,Math.PI*2);g.fill();
   g.strokeStyle='rgba(159,215,232,.75)';g.lineWidth=2;g.beginPath();g.arc(cx,top+20+300,300,Math.PI*1.2,Math.PI*1.8);g.stroke();
   r(cx,top,1,22,'#9FD7E8');
-  const s=state.f;if(s.capsule&&!s.boom){const cy=top+2+((t/260)%14);r(cx-2,cy,5,3,OL);r(cx-1,cy+1,3,1,'#FFE3A0')}
+  const s=state.f;if(s.capsule&&!s.boom){const cy=top+2;r(cx-2,cy,5,3,OL);r(cx-1,cy+1,3,1,'#FFE3A0')}
   if(s.boom){const age=Date.now()-(s.boomAt||0),ey=top+9;
    if(age<4500){const k=age/4500,rad=3+k*10;g.fillStyle=`rgba(255,240,200,${1-k})`;g.beginPath();g.arc(cx,ey,rad,0,7);g.fill();g.fillStyle=`rgba(242,154,58,${.9-k*.6})`;g.beginPath();g.arc(cx,ey,rad*.6,0,7);g.fill()}
-   g.fillStyle='rgba(150,130,120,.75)';[[0,0,5],[4,-2,3],[-4,1,4],[2,3,3]].forEach(([a,c,rr])=>{g.beginPath();g.arc(cx+a+Math.sin(t/900+a)*1,ey+c,rr,0,7);g.fill()});
-   for(let i=0;i<7;i++){const d=((t/60)+i*13)%28;r(cx+Math.round(Math.sin(i*2.3)*(3+d*.4)),ey+Math.round(d*.5),1,1,i%2?'#F29A3A':'#D8D2C8')}
+      for(let i=0;i<7;i++){const d=((t/60)+i*13)%28;r(cx+Math.round(Math.sin(i*2.3)*(3+d*.4)),ey+Math.round(d*.5),1,1,i%2?'#F29A3A':'#D8D2C8')}
    r(cx,ey+6,1,16,'#3A4A55')}
   g.restore();if(y===12){r(X,Y,16,2,'#4A5466');r(X,Y,16,1,'#6B7790')}if(x%4===0)r(X,Y,1,16,'#2A2F3A')},
  hatch:(X,Y,x,y,t)=>{TT.girder(X,Y,x,y,t);r(X+2,Y+1,12,14,'#4A5466');r(X+3,Y+2,10,12,'#6E7680');r(X+4,Y+3,8,10,'#9AA3AD');r(X+6,Y+5,4,4,'#3A4A55');r(X+7,Y+6,2,2,'#9FD7E8');
@@ -3694,12 +3849,12 @@ const TT={
  palm:(X,Y,x,y,t)=>{(ZID==='villa'?vfloor:coral)(X,Y,x,y);r(X+5,Y+11,6,5,'#C9A23A');r(X+5,Y+11,6,1,'#F7E08A');r(X+7,Y+5,2,6,'#8A6A4A');const sw=Math.round(Math.sin(t/1100+x));r(X+2+sw,Y+3,12,2,'#3F8F4A');r(X+4+sw,Y+1,8,2,'#5DB866');r(X+1+sw,Y+5,3,2,'#3F8F4A');r(X+12+sw,Y+5,3,2,'#3F8F4A')},
  manDoor:(X,Y,x,y)=>{coral(X,Y,x,y);r(X,Y,16,16,'#C9A23A');r(X+1,Y+1,14,15,'#8A3A2A');r(X+(x%2?0:15),Y,1,16,'#C9A23A');r(X+(x%2?2:12),Y+8,2,2,'#F7E08A');r(X+3,Y+3,10,1,'#A04E3A')},
  /* --- Terence's villa in Hafnir --- */
- sea:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A8EB8');const o=Math.floor(t/500+x)%4;r(X+o*3,Y+5,6,1,'#8FD0E8');r(X+((o+2)%4)*3,Y+11,5,1,'#8FD0E8');if(hash(x,y)<20)r(X+9,Y+2,2,1,'#BFE6F2')},
- sand:(X,Y,x,y,t)=>{r(X,Y,16,16,'#F2E2B8');const f2=(Math.floor(t/700)+x)%5;r(X,Y,16,2+(f2===0?1:0),'#FFFFFF');const h=hash(x,y);r(X+h%13+1,Y+8,1,1,'#D8C490');r(X+(h*3)%13+1,Y+12,1,1,'#D8C490')},
+ sea:(X,Y,x,y,t)=>{r(X,Y,16,16,'#0E1A2E');const o=Math.floor(t/500+x)%4;r(X+o*3,Y+5,6,1,'#2E4A6A');r(X+((o+2)%4)*3,Y+11,5,1,'#2E4A6A');if(hash(x,y)<20)r(X+9,Y+2,2,1,'#5A7498')},
+ sand:(X,Y,x,y,t)=>{r(X,Y,16,16,'#8A8270');const f2=(Math.floor(t/700)+x)%5;r(X,Y,16,2+(f2===0?1:0),'#B8B4A8');const h=hash(x,y);r(X+h%13+1,Y+8,1,1,'#6E6858');r(X+(h*3)%13+1,Y+12,1,1,'#6E6858')},
  vWall:(X,Y,x,y)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y,16,1,'#EDE3CC');if(at(x,y+1)!=null&&at(x,y+1)!=='V'&&at(x,y+1)!=='w'){r(X,Y+5,16,11,'#EDE3CC');r(X,Y+5,16,1,'#FFF6E4');r(X,Y+14,16,2,'#CDBF9E')}},
- vWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y+2,16,12,'#EDE3CC');r(X+1,Y+3,14,10,'#9FD4EC');r(X+1,Y+8,14,5,'#3A8EB8');const o=Math.floor(t/600+x)%3;r(X+2+o*4,Y+10,4,1,'#BFE6F2');r(X+1,Y+3,14,1,'#CFEAF6');r(X+7,Y+3,1,10,'#D9CDB2');r(X,Y+14,16,2,'#CDBF9E')},
+ vWin:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D9CDB2');r(X,Y+2,16,12,'#EDE3CC');r(X+1,Y+3,14,10,'#141C34');if(hash(x,y)<40)r(X+2+hash(x,y)%11,Y+5,1,1,'#C9D2E8');r(X+1,Y+8,14,5,'#0E1A2E');const o=Math.floor(t/600+x)%3;r(X+2+o*4,Y+10,4,1,'#2E4A6A');r(X+1,Y+3,14,1,'#1E2844');r(X+7,Y+3,1,10,'#D9CDB2');r(X,Y+14,16,2,'#CDBF9E')},
  vFloor:(X,Y,x,y)=>vfloor(X,Y,x,y),
- vDoor:(X,Y,x,y)=>{vfloor(X,Y,x,y);r(X,Y,16,16,'#CDBF9E');r(X+1,Y+1,14,15,'#8A6A4A');r(X+3,Y+3,10,4,'#9FD4EC');r(X+(x%2?1:13),Y+9,2,2,'#E8C860')},
+ vDoor:(X,Y,x,y)=>{vfloor(X,Y,x,y);r(X,Y,16,16,'#CDBF9E');r(X+1,Y+1,14,15,'#8A6A4A');r(X+3,Y+3,10,4,'#141C34');r(X+(x%2?1:13),Y+9,2,2,'#E8C860')},
  car:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X+1,Y+3,14,11,OL);r(X+2,Y+4,12,9,'#3A5A7A');r(X+3,Y+5,10,3,'#9FD4EC');r(X+2,Y+12,3,2,'#1A1A1A');r(X+11,Y+12,3,2,'#1A1A1A');r(X+2,Y+9,2,1,'#F2D54A');r(X+12,Y+9,2,1,'#F2D54A')},
  /* --- Fleesh Diamond bar --- */
  barWall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3E2A20');r(X,Y,16,1,'#4E3428');if(face(WALLC.bar,x,y)){r(X,Y+4,16,12,'#5A3A28');r(X,Y+10,16,6,'#6E4A32');r(X,Y+10,16,1,'#8A6040');if(x%4===2){const f=(Math.floor(t/1700)+x)%9===0;r(X+6,Y+5,4,3,f?'#C98A2A':'#FFC46B');r(X+5,Y+4,6,1,'#FFE2A8')}}},
@@ -3716,10 +3871,11 @@ const TT={
  /* --- Dark Paradise club basement --- */
  clubWall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#231C2B');r(X,Y,16,1,'#2E2638');if(face(WALLC.club,x,y)){r(X,Y+5,16,11,'#3A3046');r(X,Y+5,16,1,'#4E4260');const h=hash(x,y);r(X+h%12+1,Y+8,3,2,'#342A40');r(X+(h*3)%12+1,Y+12,2,1,'#463A54');r(X,Y+14,16,2,'#2A2232')}},
  clubFloor:(X,Y,x,y)=>cfloor(X,Y,x,y),
- rack:(X,Y,x,y,t)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+2,14,14,'#2A2D36');r(X+1,Y+2,14,1,'#3E424E');for(let j=0;j<4;j++){r(X+2,Y+4+j*3,12,2,'#1A1C22');for(let i=0;i<3;i++){const on=(Math.floor(t/(200+i*90))+x+j*2+i)%4;r(X+3+i*4,Y+4+j*3,1,1,on?(i===1?'#E0404A':'#5DD07A'):'#2A2D36')}}r(X+10,Y+5,3,3,'#6E7680')},
+ rack:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');const h=hash(x,y);r(X+1,Y+3,14,12,'#4A4450');r(X+1,Y+3,14,1,'#5E5866');r(X+2,Y+5,7,7,'#2A2630');r(X+3,Y+6,5,5,'#4E5A64');r(X+4,Y+7,2,2,'#7A8A94');
+  r(X+10,Y+5,4,3,['#7A4A32','#4E6A4E','#6A4A6A'][h%3]);r(X+10,Y+9,4,1,'#6E6878');r(X+10,Y+11,3,1,'#6E6878');r(X+1,Y+13,14,2,'#3A3440');r(X+2+h%10,Y+3,3,1,'#7A7480')},
  wine:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+2,14,13,'#3E2A20');g.strokeStyle='#5A3E2A';g.lineWidth=1;g.beginPath();for(let i=-16;i<16;i+=6){g.moveTo(X+1+i,Y+2);g.lineTo(X+15+i,Y+15);g.moveTo(X+15-i,Y+2);g.lineTo(X+1-i,Y+15)}g.stroke();
   for(let i=0;i<3;i++)for(let j=0;j<2;j++)r(X+3+i*4+(j?2:0),Y+5+j*5,2,2,(i+j+x)%3?'#2E5A3A':'#6A1A2A');r(X,Y+14,16,2,'#2A2232')},
- vip:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+3,14,12,'#5A2E6A');r(X+2,Y+4,12,6,'#7A3E8E');r(X+1,Y+3,14,1,'#E8C860');[4,8,12].forEach(a=>r(X+a,Y+6,1,1,'#4A2458'));r(X+1,Y+13,14,2,'#3A1E46')},
+ vip:(X,Y,x,y)=>{r(X,Y,16,16,'#231C2B');r(X+1,Y+3,14,12,'#4A3A30');r(X+2,Y+4,12,6,'#5E4A3C');r(X+1,Y+3,14,1,'#6E5A4A');[4,8,12].forEach(a=>r(X+a,Y+6,1,1,'#3A2C24'));r(X+1,Y+13,14,2,'#2E241E');const h=hash(x,y);r(X+2+h%10,Y+5,2,1,'#8A8078');r(X+3+(h*3)%9,Y+11,1,1,'#8A8078')},
  junk:(X,Y,x,y)=>{cfloor(X,Y,x,y);const h=hash(x,y)%3;if(h===0){r(X+1,Y+4,14,11,'#6A4E34');r(X+1,Y+4,14,2,'#86643E');r(X+7,Y+4,2,11,'#4A3422')}
   else if(h===1){r(X+2,Y+6,8,9,'#5A5462');r(X+2,Y+6,8,1,'#6E6878');r(X+8,Y+2,7,8,'#6A4E34');r(X+8,Y+2,7,1,'#86643E')}else{r(X+3,Y+3,10,2,'#8A93A0');r(X+3,Y+5,2,10,'#6E7680');r(X+11,Y+5,2,10,'#6E7680');r(X+3,Y+9,10,1,'#8A93A0');r(X+1,Y+12,6,3,'#3A3046')}},
  stairs:(X,Y,x,y)=>{for(let i=0;i<4;i++){r(X,Y+i*4,16,4,i%2?'#6A6272':'#827A8C');r(X,Y+i*4,16,1,'#9A92A4')}r(X,Y,1,16,'#231C2B');r(X+15,Y,1,16,'#231C2B')},
@@ -3757,6 +3913,15 @@ const ZONES={
    '8,3':'경찰 화면: "디어랙 거리 · 사망 5명"','12,3':'누가 커피를 두고 갔어요. 아직 따뜻해요.',
    '2,7':'현미경이에요.','3,7':'감식 화면: 초록 불빛이 깜빡여요.','13,8':'화분이에요. 잎이 반짝반짝해요.',
    get '18,2'(){return f().bopbeDead?'구속 의자. 바닥에 검게 탄 자국이 있어요.':'구속 의자예요. 금속 틀이 사람 몸을 잡아요.'}},
+  things:{
+   '#':['경찰서 벽이에요. 파란 줄이 그어져 있어요.','벽에 오래된 공지 자국이 남아 있어요.','차가운 벽이에요. 어디선가 전화가 울려요.'],
+   'w':(x,y)=>f().occupied?'창밖 거리가 텅 비었어요. 지금은 통금이에요.':vary(x,y,['창밖에 크림색 건물들이 보여요.','창밖 자카란다 나무에 보라색 꽃이 가득해요.']),
+   'B':['수사 보드. 사진이 빼곡해요.','빨간 실이 이리저리 이어져 있어요.','메모마다 물음표가 많아요.'],
+   'k':['취조실 벽이에요. 소리가 밖으로 안 새요.','두꺼운 벽이에요. 작은 구멍이 줄지어 있어요.'],
+   'd':['형사의 책상이에요. 일이 많아 보여요.','책상 위에 서류가 쌓여 있어요. 커피는 식었어요.'],
+   'g':['두꺼운 유리벽. 취조실 안이 다 보여요.','유리에 손자국이 조금 있어요.'],
+   'L':['감식 장비예요. 함부로 만지면 안 돼요.','하얀 책상이 아주 깨끗해요. 약 냄새가 나요.'],
+   'p':'화분이에요. 누가 매일 물을 줘요.'},
   npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','maria','feed']},
  city:{name:'산타 로사',reg:'SANTA ROSA · GONDIAR',outdoor:1,
   legend:{'L':{tile:'bld'},'H':{tile:'bld'},'Z':{tile:'bld'},'F':{tile:'bld'},'K':{tile:'bld'},'D':{tile:'cityDoor',walk:1},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
@@ -3793,11 +3958,22 @@ const ZONES={
    '19,2':'"플리시 다이아몬드". 다이아몬드 모양 간판이 깜빡여요.','28,2':'다크 파라다이스 클럽. 분홍색 불빛이 지지직거려요.',
    get '3,7'(){return f().occupied?'홀로그램: 제국 깃발. "질서와 평화."':'홀로그램 광고: "하프니르 새 빌라, 바다가 보여요!"'},
    '10,7':'벽에 "Q-I-X". 망명한 여왕을 믿는 사람들의 표시예요. 누가 지금도 그리고 있어요.','11,7':'벽에 "Q-I-X". 페인트가 아직 안 말랐어요.',
-   get '5,8'(){return f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
-   get '6,9'(){return f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
-   '24,9':'총독 원형 저택의 담. 분홍색 리브스톤에 금색 점이 반짝여요.',
+   get '5,8'(){return f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
+   get '6,9'(){return f().occupied?'꽃밭이에요. 벌이 날아다녀요.':f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
+   '24,9':'총독 원형 저택의 담. 십 미터 높이의 리브스톤이에요.',
    get '12,15'(){return f().occupied?'산타 로사 탑. 탑 꼭대기, 하이 로사에 제국 항모가 붙었어요. 밤에는 분홍색 점, 돌로드가 떠요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
    '17,15':'탑 아래쪽. 빨간 불이 깜빡여요.','14,14':'탑 캡슐 역. 하이 로사까지 올라가요.','15,14':'탑 캡슐 역. 사람들이 줄을 서 있어요.'},
+  things:{
+   'j':(x,y)=>vary(x,y,f().occupied?['자카란다 나무. 보라색 꽃이 가득해요.','나무 속 광고가 다 꺼졌어요.']:['자카란다 나무. 보라색 꽃이 가득해요.','보라색 꽃잎이 바람에 떨어져요.','나무 사이에 작은 홀로그램 광고가 있어요.']),
+   'A':(x,y)=>x===14||x===15?'검은 탑이 하늘 끝까지 곧게 올라가요.':vary(x,y,['산타 로사 탑의 아래쪽. 아주 큰 금속 벽이에요.','탑에서 낮게 웅웅 소리가 나요.']),
+   'L':['크림색 리브스톤 건물이에요.','창문 안에서 누가 커튼을 쳐요.','건물 위로 케이블카 줄이 지나가요.'],
+   'H':['산타 로사 경찰서 건물. 파란 띠가 둘러 있어요.','경찰서 창문. 안에서 형사들이 바빠요.'],
+   'Z':['진열창 안에 안디 머리들이 줄지어 있어요.','"지카르의 안디 수리" 가게예요. 기름 냄새가 나요.'],
+   'F':['플리시 다이아몬드 바. 창문 불빛이 따뜻해요.','바 안에서 잔 부딪치는 소리가 들려요.'],
+   'K':(x,y)=>f().club?'클럽이 비어 있어요. 네온만 혼자 깜빡여요.':f().occupied?'다크 파라다이스 클럽. 문이 굳게 잠겨 있어요.':vary(x,y,['다크 파라다이스 클럽. 분홍 네온이 지지직거려요.','클럽 안에서 음악이 쿵쿵 울려요.']),
+   'M':['높은 리브스톤 담이에요. 위에 센서가 줄지어 있어요.','담 너머로 정원의 나무가 보여요.'],
+   'n':['벤치예요. 빵 부스러기가 조금 있어요.','벤치에 앉으면 광장이 다 보여요.'],
+   'm':(x,y)=>f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':vary(x,y,f().boom?['꽃과 촛불이 가득해요. 사람들이 조용히 울어요.','촛불 옆에 손으로 쓴 편지가 있어요.']:['꽃밭이에요. 노란 꽃, 분홍 꽃, 하얀 꽃.','꽃밭 위로 나비가 날아요.'])},
   npcs:['zikar','snatch','aljan','vanilda','pro1','pro2','pro3','jimena','zelinda','medusaSt','general','lion1','lion2','ghost1','ghost2','ghost3']},
  tower:{name:'하이 로사 · 루치아의 영상',reg:"HIGH ROSA · LUĆIA'S FEED",base:'plate',
   legend:{'G':{tile:'girder'},'B':{tile:'bay'},'.':{tile:'plate',walk:1},'t':{tile:'track',walk:1},'E':{tile:'lift'},'s':{tile:'seat'},'W':{tile:'capWin'},'C':{tile:'hatch',walk:1}},
@@ -3818,10 +3994,15 @@ const ZONES={
 "WWWWWWWWWWWWWWWWWWWWWWWW"],
   rooms:[[1,2,9,5,'하이 로사 · 3F 정박장'],[12,2,22,5,'하이 로사 · 3층 독'],[1,7,22,11,'하이 로사 · 캡슐 역 라운지']],
   warps:{'22,7':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'},'22,8':{to:'hq',x:2,y:4,dir:'up',lock:()=>!f().capsule&&'캡슐 승강장. 토셰는 어디 있어요?'}},
-  spots:{'3,1':'시벨레스 이글호. 하얀 배가 3F 정박장에 붙어 있어요.','5,1':'배 옆에 빨간 독수리 그림이 있어요.','8,1':'배 엔진이 파랗게 빛나요.',
+  spots:{'3,1':'시벨레스 이글호. 3F 정박장에 붙어 있어요.','5,1':'통마다 색과 재료가 달라요. 여러 곳에서 만들었어요.','8,1':'배 엔진이 파랗게 빛나요.',
    '10,2':'철골 사이로 무중력 작업자들이 날아다녀요.',
    '2,3':'엘리베이터. 아래 층 정박장으로 가요.',
-   get '12,12'(){return f().boom?'창밖 아래, 탑의 줄 위에 연기가 남아 있어요.':'창밖 아래에 곤디아가 있어요. 탑의 줄이 땅까지 내려가요.'}},
+   get '12,12'(){return f().boom?'창밖 아래, 빛나는 조각들이 우주로 흩어져요.':'창밖 아래에 곤디아가 있어요. 탑의 줄이 땅까지 내려가요.'}},
+  things:{
+   'G':['철골 사이로 성운 빛이 보여요.','차가운 철골이에요. 작은 불빛이 깜빡여요.','노란 줄무늬 경고 표시가 있어요.'],
+   'W':(x,y)=>f().boom?vary(x,y,['창밖 아래, 탑 옆에서 빛나는 조각들이 흩어져요.','창밖에 곤디아가 보여요. 아무도 말이 없어요.']):f().capsule?'캡슐 문이 곧 닫혀요. 서둘러야 돼요.':vary(x,y,['창밖 아래에 초록 곤디아가 아주 커요.','유리창 너머로 성운이 가득해요.']),
+   's':['빨간 의자예요. 몸을 묶는 끈이 달려 있어요.','빈 컵 하나가 의자 위에 둥둥 떠 있어요.'],
+   'B':['여러 모양의 통을 이어 붙인 배예요.','배와 독 사이에 두꺼운 관이 이어져 있어요.']},
   npcs:['tose','cleaner']},
  mansion:{name:'총독 원형 저택',reg:'ROUNDHOUSE MANSION · SANTA ROSA',
   legend:{'p':{tile:'garden'},'R':{tile:'rail'},'c':{tile:'coralWall'},'a':{tile:'arch'},',':{tile:'balc',walk:1},'.':{tile:'manFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'manDoor',walk:1}},
@@ -3841,8 +4022,15 @@ const ZONES={
   rooms:[[4,3,15,3,'총독 저택 · 발코니']],
   warps:{'9,11':{to:'city',x:26,y:11,dir:'down'},'10,11':{to:'city',x:26,y:11,dir:'down'}},
   spots:{'6,2':'난간 아래에 정원이 있어요. 가는 야자나무들이 흔들려요.','12,2':'멀리 공원 너머에 높은 건물들이 보여요. 저 어딘가에…',
-   '2,4':'둥근 창문. 금색 틀이에요.','14,4':'둥근 창문 밖으로 정원이 보여요.',
+   '2,4':'높은 아치 창문. 금색 틀이에요.','14,4':'아치 창문 밖으로 발코니와 정원이 보여요.',
    '3,6':'작은 빨간 카펫이에요. 금색 테두리.','16,6':'작은 빨간 카펫이에요.'},
+  things:{
+   'c':['분홍색 산호 리브스톤 벽이에요.','벽에 작은 금색, 은색 점이 박혀 있어요.'],
+   'p':['아래 정원에 하얀 길이 나 있어요.','정원의 나무들이 바람에 흔들려요.'],
+   'R':(x,y)=>f().shot&&!f().occupied?'난간에 피가 튀어 있어요. 빨리 나가야 돼요.':vary(x,y,['분홍색 난간이에요. 아주 매끈해요.','난간 아래로 정원이 내려다보여요.']),
+   'a':['높은 아치 창문이에요. 밖에 넓은 발코니가 있어요.','금색 틀이 반짝반짝해요.'],
+   'u':'빨간 카펫이에요. 아주 부드러워요.',
+   'o':'금색 화분에 야자나무가 있어요.'},
   npcs:['makaio']},
  villa:{name:'하프니르 · 테렌스의 빌라',reg:'HAFNIR · RYDEMOUTH',
   legend:{'~':{tile:'sea'},'s':{tile:'sand'},'V':{tile:'vWall'},'w':{tile:'vWin'},'.':{tile:'vFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'vDoor',walk:1}},
@@ -3859,7 +4047,14 @@ const ZONES={
 "VVVVVVVVDDVVVVVVVV"],
   warps:{'8,9':{to:'city',x:21,y:3,dir:'down'},'9,9':{to:'city',x:21,y:3,dir:'down'}},
   spots:{'3,1':'하얀 모래 해변. 파도 소리가 들려요.','4,2':'창밖에 바다. 오늘은 바다도 조용해요.','12,2':'창밖에 바다. 멀리 배가 하나 지나가요.',
-   '3,4':'쿠션 위에서 아이들이 자요. 로렐라, 두샨, 에버렛의 아이들.','13,4':'담요 아래에서 아이가 잠꼬대를 해요.','2,6':'화분이에요. 야자나무 잎이 바람에 흔들려요.'},
+   '3,4':'쿠션 위에서 젊은 손님들이 자요. 로렐라, 두샨, 에버렛의 아이들.','13,4':'담요 아래에서 누가 잠꼬대를 해요.','2,6':'화분이에요. 야자나무 잎이 바람에 흔들려요.'},
+  things:{
+   'V':['하얀 벽이에요. 아주 매끈해요.','벽 옆에 손님들 가방이 쌓여 있어요.'],
+   '~':['까만 바다. 파도가 천천히 와요.','밤바다가 까매요. 파도 소리만 들려요.'],
+   's':['하얀 모래. 작은 조개껍데기가 있어요.','모래 위에 발자국이 많아요.'],
+   'w':['창밖에 바다와 하얀 모래가 보여요.','창문이 조금 열려 있어요. 바다 냄새가 나요.'],
+   'u':'담요 아래 누가 자요. 울다가 잠들었어요.',
+   'o':'야자나무 화분이에요. 잎 끝이 조금 말랐어요.'},
   npcs:['otylia','zelindaS','aljanS','haian']},
  bar:{name:'플리시 다이아몬드',reg:'FLEESH DIAMOND · BAUME AVE',
   legend:{'#':{tile:'barWall'},'h':{tile:'shelf'},'w':{tile:'barWin'},'.':{tile:'barFloor',walk:1},'b':{tile:'counter',over:1},'t':{tile:'table'},'k':{tile:'booth'},'D':{tile:'barDoor',walk:1}},
@@ -3877,6 +4072,13 @@ const ZONES={
   warps:{'7,9':{to:'city',x:20,y:3,dir:'down'},'8,9':{to:'city',x:20,y:3,dir:'down'}},
   spots:{'3,1':'술병이 가득해요. 초록, 노랑, 빨강.','11,1':'창밖은 바우메 거리. 비가 와요.','13,1':'창밖으로 노란 글로브캡이 지나가요.',
    '2,6':'가죽 소파. 오래돼서 반짝반짝해요.','10,6':'가죽 소파. 누가 신문을 두고 갔어요.'},
+  things:{
+   '#':['나무 벽이에요. 따뜻한 램프가 걸려 있어요.','오래된 나무 냄새가 나요.'],
+   'h':['술병이 줄지어 있어요.','병 하나가 램프 불빛에 반짝여요.'],
+   'b':['바 카운터. 반질반질한 나무예요.','카운터 위에 빈 잔이 있어요.'],
+   'w':'창밖 거리에 분홍 네온 불빛이 비쳐요.',
+   't':'작은 탁자 위에 촛불이 흔들려요.',
+   'k':'빨간 가죽 자리예요. 푹신해요.'},
   npcs:['barman','spirit']},
  club:{name:'다크 파라다이스 · 지하',reg:'DARK PARADISE CLUB · BASEMENT',
   legend:{'#':{tile:'clubWall'},'R':{tile:'rack'},'W':{tile:'wine'},'v':{tile:'vip'},'.':{tile:'clubFloor',walk:1},'x':{tile:'junk'},'S':{tile:'stairs',walk:1}},
@@ -3894,8 +4096,14 @@ const ZONES={
 "#................#",
 "##################"],
   warps:{'16,1':{to:'city',x:26,y:3,dir:'down'}},
-  spots:{'2,1':'녹화 장비예요. 갱들이 손님을 몰래 찍었어요.','6,1':'와인 선반… 가짜예요! 뒤에 총이 숨어 있어요.','8,1':'와인 병이 다 비어 있어요. 뒤에 무기 상자가 있어요.',
-   '13,1':'VIP 자리. 보라색 소파에 먼지가 쌓였어요.','2,4':'상자만 남았어요. 스탄바8 갱은 다 잡혀갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
+  spots:{'2,1':'낡은 무대 장비와 광고 기계예요. 먼지투성이예요.','6,1':'와인 선반… 가짜예요! 뒤에 총이 숨어 있어요.','8,1':'와인 병이 다 비어 있어요. 뒤에 무기 상자가 있어요.',
+   '13,1':'아주 낡은 가구들이에요. 소파에 먼지가 쌓였어요.','2,4':'상자만 남았어요. 스탄바8 갱은 다 잡혀갔어요.','10,8':'부서진 의자들이 쌓여 있어요.'},
+  things:{
+   '#':['어두운 지하 벽이에요. 공기가 아주 말라 있어요.','벽에 금이 가 있어요.'],
+   'x':['상자와 부서진 물건이 쌓여 있어요.','먼지투성이예요. 안은 비어 있어요.'],
+   'W':'와인 선반이에요. 이것도 뒤에 뭐가 있을까요?',
+   'R':'낡은 음료 광고 기계예요. 지금은 없는 상표예요.',
+   'v':'오래된 소파예요. 먼지가 가득 쌓였어요.'},
   npcs:['patch','jimenaC']},
 };
 
@@ -3967,7 +4175,7 @@ const NPC={
  news:{name:'뉴스 화면',zone:'hq',x:10,y:8,dir:'down',look:NEWS,still:1,
   status:()=>nextNews()?'todo':null,
   script:()=>{const e=nextNews();if(e)return e.steps.concat([{who:'뉴스 화면',say:'— 방송 끝 —',set:()=>{f()['news'+e.id]=1}}]);
-   const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 밤 열 시 이후 외출 금지.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
+   const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 모두 지금 집으로 돌아가세요.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
   talk:()=>[]},
  maria:{name:'마리아 호세 서장',zone:'hq',x:14,y:3,dir:'left',look:{hair:'#2A1E1A',skin:'#C48E66',shirt:'#2F3E5C',pants:'#22283A',belt:'#C9A64A',style:'bun',cap:'#2F3E5C',lashes:1,lips:'#9A4A4A'},badge:['폭발'],
   hide:()=>!f().boom,
@@ -4131,7 +4339,7 @@ const NPC={
  lion2:{name:'각성 사자',zone:'city',x:22,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'사자가 테렌스의 냄새를 맡아요. 이빨이 손가락만 해요.'}]},
  ghost1:{name:'고스트',zone:'city',x:3,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,
   talk:()=>[{who:'…',say:'{고스트|고스트}이에요. 키가 3미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'고스트가 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
- ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 거리를 지켜요. 밤 열 시부터 통금이에요.'}]},
+ ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 거리를 지켜요. 지금은 통금이에요.'}]},
  ghost3:{name:'고스트',zone:'city',x:17,y:10,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 광장을 지켜요. 사람들은 고개를 숙이고 지나가요.'}]},
  /* High Rosa */
  tose:{name:'토셰',zone:'tower',x:6,y:2,dir:'up',look:TOSE,still:1,
@@ -4158,7 +4366,7 @@ const NPC={
   hide:()=>!f().liliana||!!f().occupied,
   get still(){return !!f().shot},
   after:'테렌스, 조심해요.',
-  script:()=>f().rider?[{who:'…',say:'경찰 테이프가 있어요. 마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'},{who:'…',say:'테렌스는 여기 있으면 안 돼요. 아무도 그가 여기 왔던 걸 몰라요.'}]:null,
+  script:()=>f().rider?[{who:'…',say:'마카이오파라지의 몸은 아직 차가운 돌처럼 누워 있어요.'},{who:'…',say:'테렌스는 여기 있으면 안 돼요. 아무도 그가 여기 왔던 걸 몰라요.'}]:null,
   talk:()=>[
    {say:'테렌스, 왔어요? 곤디아는 처음이에요. 생각보다 아름다워요.'},
    {say:'저는 이제 아콘이 아니에요. 새 수석 아콘, 우알라나쇼이구가 저를 쫓아냈어요.'},
@@ -4495,6 +4703,10 @@ const ITEMS={'거래 물건 상자':'기보이가 준 상자. 트래블러 물�
 const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const has6=w=>state.badges.includes(w);
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
+const SAIL=(x,y)=>vary(x,y,has6('돛')?['까만 돛이 바람을 받아요.','까만 돛이 천천히 흔들려요.']:['까만 천이 바람을 받아요.','까만 천이 천천히 흔들려요.']);
+const RIG=['굵은 줄이 이리저리 묶여 있어요.','줄이 바람에 팽팽해요.'];
+const AIRP='작은 풀이 공기 속에 둥둥 떠 있어요.';
 
 /* ---------- pixel helpers (engine globals r, g, at, hash, CAM, Z, ZID, MH, walkable, front are used at draw time) ---------- */
 const O='#1B1E2B';
@@ -4518,7 +4730,7 @@ function sky(X,Y,x,y,t){
  if(hash(x,y)%13===0){const d=Math.floor(t/500+hash(y,x))%14;r(X+(hash(y,x)%12)+2,Y+1+d,1,1,shc(S[k],.62))}
 }
 /* Ovar body: a bus-sized Atlas beetle shell seen from above, head toward the bottom (the head is the NPC sprite) */
-const OV={koa:{b:'#2A2236',m:'#4A3E60',p:'#1E1A28',s:['#7A4FC0','#4F86D0','#3FB8A6']},kech:{b:'#1E2A30',m:'#36505A',p:'#16222A',s:['#2E9C8C','#6CC79A','#C6D86A']},
+const OV={koa:{b:'#17151D',m:'#33303E',p:'#110F16',s:['#6A4FA0','#3F76B0','#3F9C8A']},kech:{b:'#15181C',m:'#30343C',p:'#0F1216',s:['#3F8C7C','#9A5A8A','#A89A4A']},
  kaizen:{b:'#2A2818',m:'#4A4630',p:'#201E14',s:['#9CA83E','#D0A23E','#D0683E']},gen:{b:'#22223A',m:'#3A3A5A',p:'#1A1A2A',s:['#4F6ED0','#8A4FC0','#D04F9C']}};
 function ovarCanvas(nm,dead,fr){return cvs(`ov-${nm}-${dead?1:0}-${fr}`,48,32,(R,L)=>{const P=OV[nm];
  const ell=(cy,rx,ry,v)=>{const e=(v-cy)/ry;return Math.abs(e)<=1?Math.floor(rx*Math.sqrt(1-e*e)):0};
@@ -4677,7 +4889,7 @@ const TILES={
  tfloor:(X,Y,x,y,t)=>{r(X,Y,16,16,'#232823');const h=hash(x,y);r(X+h%13,Y+(h*3)%13,3,2,'#2C332B');r(X+(h*7)%14,Y+(h*5)%14,2,1,'#2C332B');if(h%9===0){const on=(Math.floor(t/700)+h)%3;r(X+(h%10)+3,Y+(h%8)+4,1,1,on?'#3E8B5A':'#2A4A34')}},
  mouth:(X,Y,x,y,t)=>{sky(X,Y,x,y,t);r(X,Y,16,2,'#2C352B');r(X,Y+14,16,2,'#2C352B');for(let i=0;i<16;i+=3)r(X+i,Y+2,2,2+(i%2),'#566652')},
  crystal:(X,Y,x,y,t)=>{r(X,Y,16,16,'#4A3380');const h=hash(x,y);for(let i=0;i<3;i++){const cx=X+1+i*5,hh=8+((h+i*3)%6);r(cx,Y+16-hh,4,hh,'#8C6BD1');r(cx+1,Y+16-hh-1,2,1,'#B79CF0');r(cx,Y+16-hh,1,hh,'#B79CF0');r(cx+3,Y+16-hh,1,hh,'#5A3F96')}
-  const s=((Math.floor(t/90)+x*5+y*3)%40);if(s<12)r(X+s%16,Y+2+s%6,1,3,'#E6DBFF')},
+  const k=hash(y,x),ox=3+k%8,oy=5+k%6;r(X+ox,Y+oy,3,3,'#3A2870');r(X+ox,Y+oy,3,1,'#5A44A0');if((Math.floor(t/600)+k)%6===0)r(X+ox+1,Y+oy,1,1,'#F4EEFF')},
  cfloor:(X,Y,x,y,t)=>{r(X,Y,16,16,'#2C2443');r(X,Y,16,1,'#241D38');const h=hash(x,y);if(h%3===0){const on=(Math.floor(t/500)+h)%4===0;r(X+h%13+1,Y+(h*7)%13+1,1,1,on?'#E6DBFF':'#6B52A8')}},
  wwall:(X,Y,x,y)=>{r(X,Y,16,16,'#E3E9EB');r(X,Y,16,2,'#F4F8F9');r(X,Y+12,16,4,'#CDD6D9');if(front(x,y)&&walkable(x,y+1)){r(X,Y+12,16,4,'#F7FAFB');r(X,Y+15,16,1,'#B9C4C8')}},
  speck:(X,Y,x,y,t)=>{r(X,Y,16,16,'#D6E1DF');r(X,Y,16,1,'#C9D5D3');for(let i=0;i<3;i++){const h=hash(x+i*7,y);const px=(h+Math.floor(t/90)+i*5)%16,py=(h*3-Math.floor(t/140)+i*40)%16;r(X+((px%16)+16)%16,Y+((py%16)+16)%16,2,2,i?'#4BE38A':'#B8F5CF')}},
@@ -4690,20 +4902,22 @@ const TILES={
   for(let v=-14;v<=14;v++){const w=Math.floor(22*Math.sqrt(1-(v/14.6)**2));R(cx-w,cy+v,w,1,v<-8?'#6E7480':'#4E5560');if(v%4===0)R(cx-w,cy+v,w,1,'#3A4048')}
   for(let a=0;a<12;a++){const an=a/12*Math.PI*2;L(cx,cy,Math.round(cx+Math.cos(an)*21),Math.round(cy+Math.sin(an)*13.5),1,a<6&&a>0?'#8A7E66':'#2C313B')}
   for(let a=0;a<64;a++){const an=a/64*Math.PI*2;R(Math.round(cx+Math.cos(an)*22),Math.round(cy+Math.sin(an)*14),1,1,an>Math.PI*.5&&an<Math.PI*1.5?'#8A939E':'#5E6670')}
-  for(let a=0;a<32;a++){const an=a/32*Math.PI*2;R(Math.round(cx+Math.cos(an)*7),Math.round(cy+Math.sin(an)*4.5),2,1,(a+bl*8)%32<6?'#B8FFF6':'#3FD1C1')}
-  R(cx-2,cy-1,4,2,'#0B0D10');[[8,12],[14,22],[11,6]].forEach(([a,b],k)=>R(a,b,2,1,(bl+k)%4?'#69CFD8':'#1E3A40'));
+  for(let a=0;a<32;a++){const an=a/32*Math.PI*2;R(Math.round(cx+Math.cos(an)*7),Math.round(cy+Math.sin(an)*4.5),2,1,a%4?'#3A4048':'#5E6670')}
+  R(cx-2,cy-1,4,2,'#0B0D10');[[8,12],[14,22],[11,6]].forEach(([a,b])=>R(a,b,2,1,'#2C313B'));
   R(30,3,1,26,'#2A2F38');R(38,6,1,20,'#2A2F38');R(29,3,10,1,'#2A2F38');R(29,28,10,1,'#2A2F38');R(41,9,3,2,'#E8962A')}),X,Y,x,y)},
  ghost:(X,Y,x,y,t)=>{TILES.hall(X,Y,x,y,t);r(X+3,Y+6,10,7,O);r(X+4,Y+7,8,5,'#7A808A');r(X+4,Y+7,8,1,'#A0A6B0');r(X+1,Y+10,4,3,'#9A6A3A');r(X+11,Y+4,3,6,'#5A6070');r(X+6,Y+13,2,3,'#5A6070');r(X+10,Y+13,3,2,'#9A6A3A');if(Math.floor(t/130+x)%9===0)r(X+7,Y+5,2,2,'#FFD27A')},
- smoke:(X,Y,x,y,t)=>{r(X,Y,16,16,'#060709');for(let i=0;i<4;i++){const ph=t/900+i*1.7+y*.6;const cx=X+8+Math.round(Math.sin(ph)*5),cy=Y+((i*4+Math.floor(t/120))%16);r(cx-3,cy,6,2,i%2?'#24232A':'#1A191F');r(cx-1,cy+2,3,1,'#2E2D35')}if((Math.floor(t/90)+hash(x,y))%23===0)r(X+hash(x,y)%14+1,Y+hash(y,x)%14+1,1,1,'#C06BFF')},
+ smoke:(X,Y,x,y,t)=>{r(X,Y,16,16,'#060709');if(!f().os)return;for(let i=0;i<4;i++){const ph=t/900+i*1.7+y*.6;const cx=X+8+Math.round(Math.sin(ph)*5),cy=Y+((i*4+Math.floor(t/120))%16);r(cx-3,cy,6,2,i%2?'#24232A':'#1A191F');r(cx-1,cy+2,3,1,'#2E2D35')}if((Math.floor(t/90)+hash(x,y))%23===0)r(X+hash(x,y)%14+1,Y+hash(y,x)%14+1,1,1,'#C06BFF')},
  bulb:(X,Y,x,y,t)=>{TILES.hall(X,Y,x,y,t);r(X,Y,16,4,'#0B0D10');const on=f().cmd&&!f().os;const p=(Math.sin(t/(on?160:500))+1)/2;
-  r(X+1,Y+9,14,6,'#2C313B');r(X+2,Y+8,12,1,'#3E4450');for(let v=-4;v<=4;v++){const w=Math.floor(5*Math.sqrt(1-(v/4.6)**2));r(X+8-w,Y+6+v,2*w,1,`rgba(63,209,193,${.55+p*.45})`)}r(X+5,Y+3,2,2,'#B8FFF6')},
- web:(X,Y,x,y,t)=>{webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t)},
+  for(let v=-6;v<=5;v++){const w=Math.floor(7*Math.sqrt(1-(v/6.6)**2));r(X+8-w,Y+10+v,2*w,1,v<-2?'#F2E6C8':v<3?'#E2D4B0':'#C9B994')}r(X+8,Y+6,4,1,'#FFF6E0');
+  const a=f().os?.35:.55+p*.45;r(X+7,Y+3,2,3,'#D8CBA8');r(X+4,Y+1,8,2,`rgba(255,236,190,${a})`);r(X+5,Y,6,1,`rgba(255,236,190,${a})`);r(X+4,Y+3,8,1,'#B8A884');r(X+6,Y+1,2,1,'#FFFFFF')},
+ web:(X,Y,x,y,t)=>{if(!f().web){TILES.kelp(X,Y,x,y,t);return}webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t)},
  groz:(X,Y,x,y,t)=>{webBase(X,Y,x,y,t);webThreads(X,Y,x,y,t);if(!f().web)return;blit(grozCanvas(!!f().ambush,f().ambush?0:Math.floor(t/260)%4),X,Y,x,y)},
 };
 function webBase(X,Y,x,y,t){TILES.tfloor(X,Y,x,y,t)}
-function webThreads(X,Y,x,y,t){const p=(Math.sin(t/700+x)+1)/2,c=p>.5?'#C9A8FF':'#9B78E8';
+function webThreads(X,Y,x,y,t){if(!f().web)return;const p=(Math.sin(t/700+x)+1)/2,c=p>.5?'#E4ECF8':'#B4C2DA';
  const ey=(a,b)=>hash(a,b)%12+2,ex=(a,b)=>hash(b+31,a)%12+2;
- line(X,Y+ey(x,y),X+15,Y+ey(x+1,y),1,c);line(X+ex(x,y),Y,X+ex(x,y+1),Y+15,1,c);if(hash(x,y)%2)line(X,Y,X+15,Y+15,1,'#7A5AC0');else line(X+15,Y,X,Y+15,1,'#7A5AC0')}
+ line(X,Y+ey(x,y),X+15,Y+ey(x+1,y),1,c);line(X+ex(x,y),Y,X+ex(x,y+1),Y+15,1,c);if(hash(x,y)%2)line(X,Y,X+15,Y+15,1,'#8A9AB8');else line(X+15,Y,X,Y+15,1,'#8A9AB8');
+ r(X+ex(x,y)-1,Y+ey(x,y)-1,2,2,'#F2A93A');r(X+4+hash(y,x)%8,Y+4+hash(x+5,y)%8,1,1,'#F2A93A')}
 
 /* ---------- zones ---------- */
 const ZONES={
@@ -4725,6 +4939,10 @@ const ZONES={
   spots:{get '6,2'(){return f().argue?'켈로완 행성들이 반짝여요. 포세이돈 성운이 보라색으로 빛나요.':'흰 별 두 개 사이에 투명한 공. 킹스네스트예요.'},
    get '13,2'(){return f().argue?'작은 빨간 점이 깜빡여요. 우리 배 근처에 다른 배가 있어요.':'공 안에 구름이 층층이 쌓여 있어요. 가운데는 까매요.'},
    '1,3':'항해 화면: "키유세로 쌍성 · 거리 20킬로미터"','18,3':'화면: "성실호 · 기다리는 시간 넉 달"'},
+  things:{
+   '#':['성실호의 벽이에요. 여기저기 고친 자국이 있어요.','벽 안에서 낮게 웅웅 소리가 나요.'],
+   'S':(x,y)=>vary(x,y,f().argue?['켈로완의 행성들이 작은 점처럼 반짝여요.','보라색 성운이 화면에 퍼져 있어요.']:['화면에 하얀 별 두 개가 아주 밝아요.','화면 가운데에 투명한 공이 떠 있어요.']),
+   'c':['콘솔이에요. 작은 불빛이 깜빡여요.','콘솔 화면의 숫자가 천천히 바뀌어요.']},
   npcs:['dejean','uemi','ellieS','gyShip','otylia']},
  mytal:{name:'마이탈포트 · 철골 기둥',reg:'MYTALPORT · KINGSNEST',sky:['#F1F7F5','#E4F2EC','#D2EADF','#BFE2D0','#A9D8C1','#93CDB2','#7DC0A3','#68B294'],
   legend:{'P':{tile:'port'},'H':{tile:'airlock',walk:1},'~':{tile:'sky6'},'X':{tile:'truss'},'=':{tile:'girder',walk:1},'p':{tile:'gplate',walk:1},
@@ -4750,7 +4968,14 @@ const ZONES={
   warps:{'10,1':{to:'ship',x:8,y:9,dir:'up',lock:()=>!f().argue&&'아직 할 일이 있어요. 성실호는 넉 달 기다려요.'},'11,1':{to:'ship',x:8,y:9,dir:'up',lock:()=>!f().argue&&'아직 할 일이 있어요. 성실호는 넉 달 기다려요.'},
    '5,12':{to:'nassau',x:6,y:11,dir:'right',lock:()=>!f().ride&&'코아가 아직 출발 준비를 안 했어요.'}},
   spots:{'8,2':'철골이 이백오십 미터 아래로 내려가요. 그 아래는 끝없는 구름.','4,4':'아래를 봐요… 흰 구름, 초록 구름, 더 아래는 안 보여요.',
-   get '7,11'(){return f().ride?'코아는 나소로 떠났어요.':'코아의 등이 무지개색으로 반짝여요. 버스만큼 커요.'},'15,11':'니에바스의 오바르, 케크. 등이 초록색으로 반짝여요.'},
+   get '7,11'(){return f().ride?'코아는 나소로 떠났어요.':'코아의 까만 등에 무지갯빛이 돌아요. 버스만큼 커요.'},'15,11':'니에바스의 오바르, 케크. 까만 등이 반짝여요.'},
+  things:{
+   '~':['아래로 끝없는 구름. 바닥이 안 보여요.','구름이 천천히 흘러가요.','바람이 아래에서 올라와요.'],
+   'P':['마이탈포트의 금속 껍질이에요.','껍질에 보라색 불빛이 깜빡여요.'],
+   'X':'철골이 아래로 길게 내려가요.',
+   'a':AIRP,
+   'K':()=>f().ride?'빈 자리예요. 코아는 나소로 떠났어요.':'코아의 큰 몸이에요. 까만 등에 무지갯빛이 돌아요.',
+   'J':'케크의 큰 몸이에요. 까만 등이 반짝여요.'},
   npcs:['gyM','finnSick','dylan','koaM','kech','nievas']},
  nassau:{name:'나소 · 오크리프',reg:'NASSAU OAKREEF',sky:['#EDF6F1','#DCEFE5','#C6E5D5','#AFDAC4','#98CEB2','#82C1A0','#6DB28F','#5AA27F'],
   legend:{'~':{tile:'sky6'},'b':{tile:'bark',walk:1},'s':{tile:'spoke',walk:1},'Y':{tile:'honey'},'H':{tile:'hut'},'h':{tile:'hut'},'m':{tile:'mat',walk:1},
@@ -4783,6 +5008,15 @@ const ZONES={
    '25,11':{to:'boat',x:10,y:12,dir:'up',lock:()=>!f().hired&&'아직 배를 못 빌렸어요. 흥정이 먼저예요.'}},
   spots:{'13,10':'가운데 잎에 꿀 같은 방울이 가득해요. 죽은 새하고 돌이 붙어 있어요.','16,10':'끈적끈적해요! 만지면 손이 안 떨어져요.',
    '10,6':'나소에서 제일 큰 갈대 집. 손님은 여기서 흥정해요.','9,14':'작은 갈대 집. 안에서 아이들 웃음소리가 들려요.','17,6':'주스 가게. 과일 냄새가 나요.'},
+  things:{
+   '~':['초록빛 구름이 끝없이 펼쳐져 있어요.','바람이 따뜻해요.','멀리 하얀 별빛이 구름을 비춰요.'],
+   'S':SAIL,'g':RIG,'a':AIRP,
+   'Y':['끈적한 잎에 노란 방울이 반짝여요.','작은 벌레가 잎에 붙어서 못 움직여요.'],
+   'H':['갈대로 만든 집이에요.','창문에 노란 불이 켜져 있어요.','갈대 벽 사이로 바람이 들어가요.'],
+   'h':['작은 갈대 집이에요.','창문에 노란 불이 켜져 있어요.'],
+   'f':'부채처럼 큰 잎이 바람에 흔들려요.',
+   'J':'다른 오바르가 쉬고 있어요. 등이 반짝반짝해요.',
+   't':'탁자 위에 과일 주스 잔이 있어요.'},
   npcs:['ettan','jazon','cafe']},
  boat:{name:'실버 클라우드스피어 · 갑판',reg:'SILVER CLOUDSPEAR',sky:['#5E9C88','#4E8A78','#3F7868','#326658','#26544A','#1C433C','#13332F','#0C2422'],
   legend:{'~':{tile:'sky6'},'K':{tile:'ovarKoa'},'L':{tile:'ovarKaizen'},'R':{tile:'rail'},'r':{tile:'boarding',walk:1},'.':{tile:'plank',walk:1},'S':{tile:'sail'},
@@ -4810,6 +5044,18 @@ const ZONES={
    '10,13':{to:'nassau',x:24,y:10,dir:'left'},'11,13':{to:'nassau',x:24,y:10,dir:'left'}},
   spots:{'6,10':'굵은 밧줄이 둥글게 감겨 있어요.','10,7':'돛대예요. 까만 돛은 바람도 받고 빛도 받아요.','5,12':'그물 대포. 막대 네 개가 튀어나와 있어요.',
    '13,11':'과일 와인 통이에요. "와인은 하늘에서 못 잡아요." 제이즌 말이에요.','6,11':'에이든의 엔진. 바람이 없을 때 팬을 돌려요.','6,7':'해먹. 블라인드를 닫으면 밤처럼 어두워요.'},
+  things:{
+   '~':['구름이 점점 어두워져요.','아래는 깊고 어두워요.'],
+   'R':['나무 난간이에요. 반질반질해요.','난간 너머로 구름이 흘러가요.'],
+   'S':SAIL,'s':RIG,
+   'K':()=>f().massacre?'빈 자리예요. 여기에 코아가 매달려 있었어요.':'배 옆에 코아가 매달려 있어요.',
+   'L':()=>f().massacre?'빈 자리예요. 이제 바람만 불어요.':'배 옆에 카이젠이 매달려 있어요.',
+   'N':'그물 대포. 막대 끝이 반짝여요.',
+   'h':'해먹이에요. 흔들흔들해요.',
+   'M':'돛대예요. 아주 굵은 나무예요.',
+   'g':'엔진 계기판이에요. 빨간 바늘이 움직여요.',
+   'b':'나무 통이에요. 달콤한 냄새가 나요.',
+   'F':'배 아래 팬이 빙글빙글 돌아요.'},
   npcs:['ayden','rylee','uemiB','jazonB','ellieB','dylanB','koaB','kaizenB']},
  factory:{name:'공장 · 에어콤부 터널',reg:'ENGINE FACTORY · DEEP',sky:['#0F2420','#0B1A18','#081311','#060D0C'],
   legend:{'~':{tile:'sky6'},'O':{tile:'mouth',walk:1},'k':{tile:'kelp'},',':{tile:'tfloor',walk:1},'V':{tile:'crystal'},'c':{tile:'cfloor',walk:1},'u':{tile:'wwall'},
@@ -4838,9 +5084,24 @@ const ZONES={
   rooms:[[1,1,7,5,'공장 · 수정 방'],[8,1,17,5,'공장 · 초록 불빛 방'],[19,1,28,12,'공장 · 조립 홀'],[3,13,24,17,'공장 · 아래 터널']],
   warps:{'1,8':{to:'boat',x:10,y:5,dir:'down',lock:()=>!f().massacre&&'아직 못 돌아가요. 동료들이 안에 있어요.'}},
   spots:{get '12,1'(){return f().indent?'움푹한 곳이 파랗게 빛나요. 핀의 손바닥 자국이에요.':'벽에 움푹한 곳이 많아요. 초록 불빛이 천천히 돌아요.'},
-   '1,3':'보라색 수정 벽. 안에서 빛이 천천히 움직여요.','21,4':'반쯤 만든 아르키메데스 엔진. 다 만들면 이십오 킬로미터예요.','23,6':'고스트 잔해. 머리하고 몸이 안 맞아요. 여러 고물을 붙여서 만들었어요.',
-   get '27,7'(){return '까만 연기 같은 게 움직여요… 아니, 수천 마리 나이트위드예요.'},get '7,15'(){return '거미줄이 보라색으로 빛나요. 아주 끈적끈적해요.'},
-   get '13,15'(){return f().ambush?'죽은 그로즐라미아. 노란 피가 거미줄 위에 굳었어요.':f().web?'코끼리만 한 거미가 갑옷을 입었어요. 독니가 초록색으로 빛나요.':'거미줄 너머가 너무 어두워요.'}},
+   '1,3':'보라색 수정 벽. 안에 주먹만 한 것들이 반짝여요.','21,4':'반쯤 만든 아르키메데스 엔진. 다 만들면 이십오 킬로미터예요.',get '23,6'(){return f().os?'고스트 잔해. 머리하고 몸이 안 맞아요. 여러 고물을 붙여서 만들었어요.':'고스트 부품 더미예요. 머리하고 몸이 다 달라요.'},
+   get '27,7'(){return f().os?'까만 연기 같은 게 움직여요… 아니, 수천 마리 나이트위드예요.':'어둠 속에서 이상한 울음소리가 들려요.'},get '7,15'(){return f().web?'빛나는 거미줄에 노란 방울이 맺혀 있어요.':'터널 벽에 에어콤부가 흔들려요.'},
+   get '13,15'(){return f().ambush?'죽은 그로즐라미아. 노란 피가 거미줄 위에 굳었어요.':f().web?'코끼리만 한 거미가 갑옷을 입었어요. 독니가 초록색으로 빛나요.':'터널 안쪽이 너무 어두워요.'}},
+  things:{
+   'k':['다시마 같은 풀이 빽빽해요. 천천히 흔들려요.','풀 사이가 축축하고 어두워요.'],
+   '~':'터널 밖은 깊은 어둠이에요.',
+   'u':['하얀 벽이에요. 이음새가 하나도 없어요.','벽이 아주 매끈해요.'],
+   'V':['보라색 수정이에요. 차갑고 매끈해요.','수정 벽 안에 주먹만 한 것들이 반짝여요.'],
+   'E':['반쯤 만든 엔진이에요. 큰 뼈대만 보여요.','엔진이 너무 커서 끝이 안 보여요.'],
+   'G':'까만 기둥이에요. 위가 안 보여요.',
+   'b':()=>f().os?'버섯 모양 전구예요. 지금은 조용해요.':f().cmd?'버섯 모양 전구가 빠르게 깜빡여요.':'크림색 혹 위에 버섯 모양 전구가 있어요.',
+   'i':()=>f().indent?'움푹한 곳이 파랗게 반짝여요.':'벽에 움푹한 곳이 있어요. 초록 불빛이 돌아요.',
+   'x':()=>f().os?'부서진 고스트예요. 움직이지 않아요.':'고스트 부품 더미예요. 팔다리가 다 달라요.',
+   'v':(x,y)=>f().os?vary(x,y,['까만 연기가 꿈틀거려요.','어둠 속에서 날개 소리가 들려요.']):'어둠 속에서 이상한 울음소리가 들려요.',
+   'n':(x,y)=>!f().web?'터널 벽에 에어콤부만 흔들려요.':vary(x,y,has6('거미')?['거미줄에 노란 방울이 맺혀 있어요. 끈적끈적해요.','거미줄이 천천히 흔들려요.']:['실에 노란 방울이 맺혀 있어요. 끈적끈적해요.','실이 천천히 흔들려요.']),
+   'Z':()=>f().ambush?'죽은 그로즐라미아. 다리가 다 꺾였어요.':f().web?'갑옷을 입은 큰 거미가 기다려요.':'어둠 속에 뭔가 있어요.',
+   'K':()=>f().ambush?'코아의 큰 몸이 움직이지 않아요.':f().web?'코아의 몸에 끈적한 실이 감겼어요.':'코아가 쉬고 있어요. 등이 반짝여요.',
+   'L':()=>f().ambush?'카이젠의 몸이 움직이지 않아요.':f().web?'카이젠의 몸에 끈적한 실이 감겼어요.':'카이젠이 쉬고 있어요. 조금 떨려요.'},
   npcs:['bensath','elsbeth','gyF','finnBulb','dave1','dave2','koaF','kaizenF','dylanF','ellieF','nweid']},
 };
 
@@ -5076,7 +5337,7 @@ const NPC={
  finnBulb:{name:'핀',zone:'factory',x:27,y:2,dir:'up',look:FINN,hide:()=>!(f().cmd&&!f().os),
   status:()=>'todo',
   talk:()=>[
-   {say:'청록색으로 빛나는 둥근 장치예요. 손을 댈게요.'},
+   {say:'크림색 혹 위의 버섯 모양 전구예요. 손을 댈게요.'},
    {say:'…생각의 바다에 떠 있는 것 같아요. 금색 실이 보여요.'},
    {who:'엘리',say:'고스트가 또 와요! 고물로 만든 고스트들이에요!'},
    {who:'기보이',say:'계속 쏴요! 핀은 건드리지 마요!'},
@@ -5350,6 +5611,8 @@ const f=()=>state.f;
 const hasItem=i=>state.items.includes(i);
 const got=w=>state.badges.includes(w);
 const acc=()=>!!(state&&state.f.woke&&!state.f.jump); // red alert: frigates 5 hours out, until the 10,000 g flight
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length]; // things: same position pick as the engine, for lines that depend on flags
+const WALL7=(x,y)=>acc()?vary(x,y,['벽의 경보등이 빨갛게 깜빡여요.','빨간 불빛 때문에 벽이 붉어요.']):vary(x,y,['성실호의 벽이에요. 매끈하고 조용해요.','벽 등불이 따뜻하게 비춰요.']);
 
 /* ---------- pixel helpers for this chapter ---------- */
 const M=rows=>rows.map(s=>s+[...s].reverse().join('')); // mirror a half sprite into a symmetric one
@@ -5373,7 +5636,7 @@ const anchorShip=()=>spr('anchor',64,48,d=>{ // the 120 m tri-delta anchor ship,
  d(32,8,1,32,'#7E878F');d(23,30,19,1,'#8E979F');d(18,37,29,1,'#8E979F');d(30,11,5,3,'#47D6C2');d(31,11,2,1,'#BFF5EA');
  d(13,17,1,2,'#47D6C2');d(51,17,1,2,'#47D6C2');d(25,41,4,2,'#FFB86A');d(35,41,4,2,'#FFB86A');d(8,46,4,1,'#FFB86A');d(52,46,4,1,'#FFB86A')});
 /* Dolod's storm: banded purple-orange layers that drift and braid, with lightning */
-const STORM=['#2A2140','#3E3160','#5B4A7A','#7A4F6E','#A35A4E','#C76A3A','#E39A55','#C76A3A','#7A4F6E','#5B4A7A','#3E3160'];
+const STORM=['#2E2228','#43303A','#5A3A40','#7A4A4E','#9A5E5A','#B87468','#D08A78','#B87468','#9A5E5A','#7A4A4E','#5A3A40'];
 function storm(X,Y,x,y,t,x0,y0,w,h){
  for(let i=x0;i<x0+w;i+=2)for(let j=y0;j<y0+h;j+=2){const wx=x*16+i,wy=y*16+j;
   const v=wy*.2+2.4*Math.sin((wx+t*.03)/21)+1.3*Math.sin((wx*.7-t*.05)/9);const n=STORM.length;r(X+i,Y+j,2,2,STORM[((Math.floor(v)%n)+n)%n])}
@@ -5390,7 +5653,7 @@ function sfloor(X,Y,x,y,t){ // the station's dull-silver floor with scalloped se
  r(X,Y,16,16,'#8E949A');r(X,Y,16,1,'#A3A9AF');r(X+2,Y+11,4,1,'#7C8288');r(X+1,Y+10,1,1,'#7C8288');r(X+6,Y+10,1,1,'#7C8288');r(X+10,Y+11,4,1,'#7C8288');r(X+9,Y+10,1,1,'#7C8288');r(X+14,Y+10,1,1,'#7C8288');
  if(hash(x,y)<14)r(X+5+hash(y,x)%6,Y+4,2,1,'#9AA0A6');
  if(ZID==='dolod'&&x>=8&&x<=19&&y>=10&&y<=15){
-  const F=state.f,cx=14*16,cy=12*16,sp=F.linked?.05:.02,col=F.woke?'rgba(255,255,255,.55)':F.linked?'rgba(120,255,230,.55)':'rgba(71,214,194,.35)';
+  const F=state.f,cx=14*16,cy=12*16,sp=.05,col='rgba(120,255,230,.55)';if(!F.linked||F.woke)return;
   g.fillStyle=col;for(let i=0;i<16;i+=2)for(let j=0;j<16;j+=2){const d=Math.hypot(x*16+i-cx,y*16+j-cy);if(((d-t*sp)%22+22)%22<1.6)g.fillRect(X+i,Y+j,2,2)}}
 }
 function pad(X,Y,x,y,t){
@@ -5405,6 +5668,11 @@ function holoFloor(cx,cy,rr,t,body){ // round projection glow used by the tactic
  g.fillStyle='rgba(105,207,216,.13)';g.beginPath();g.arc(cx,cy,rr,0,Math.PI*2);g.fill();body()}
 function ball(cx,cy,R,cols){for(let dy=-R;dy<=R;dy++){const hw=Math.floor(Math.sqrt(R*R-dy*dy));const i=Math.floor((dy+R)/(2*R+1)*cols.length);r(cx-hw,cy+dy,hw*2+1,1,cols[Math.min(cols.length-1,i)])}}
 
+/* Kelowan sits inside the Poseidon Nebula: views inside the system show nebula glow, hardly any stars (c013, c032, c034); same look as ch1's nebula() */
+function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=CAM.y*depth;
+ for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
+  if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
+ if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
 const T7={
  /* ---- 성실호 ---- */
  swall:(X,Y,x,y,t)=>{r(X,Y,16,16,'#7B8079');r(X,Y,16,1,'#959A92');
@@ -5414,9 +5682,9 @@ const T7={
  carpet:(X,Y,x,y,t)=>{carpet(X,Y,x,y);alertTint(X,Y,t)},
  sdeck:(X,Y,x,y,t)=>{deck(X,Y,x,y);alertTint(X,Y,t)},
  sgrate:(X,Y,x,y,t)=>{TILES.grate(X,Y,x,y,t);alertTint(X,Y,t)},
- accWin:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.35);
-  if(acc()){g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();for(let i=0;i<3;i++){const sx=(hash(x,i)*7+i*5)%16,sp=(t*.22+hash(i,x)*13)%40-14;r(X+sx,Y+sp,1,7,i?'#BFE6FF':'#FFFFFF')}g.restore()}
-  else if(ZID==='ship'&&!state.f.jump&&(x===3||x===4)){g.save();g.beginPath();g.rect(X,Y+2,16,12);g.clip();ball(4*16-CAM.x,16+8-CAM.y,6,['#5B4A7A','#C76A3A','#7A4F6E','#E39A55','#5B4A7A','#3E3160']);g.restore()}
+ accWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.35);
+  if(acc()){if(hash(x,7)<45){const fx=X+3+hash(x,3)%10,fy=Y+4+hash(3,x)%7,p=(Math.sin(t/400+x)+1)/2;r(fx-2,fy,2,1,'#B85A3A');r(fx,fy,2,1,p>.5?'#FFE7A0':'#FFB86A');r(fx+1,fy,1,1,'#FFFFFF')}}
+  else if(ZID==='ship'&&!state.f.jump&&(x===3||x===4)){g.save();g.beginPath();g.rect(X,Y+2,16,12);g.clip();ball(4*16-CAM.x,16+8-CAM.y,6,['#7A4A4E','#E3A08A','#9A5E5A','#F0B8A0','#B87468','#5A3A40']);g.restore()}
   r(X,Y,16,2,'#7B8079');r(X,Y+14,16,2,'#A3A89E');if(x%3===0)r(X,Y,1,16,'#646A63')},
  newsV:(X,Y,x,y,t)=>{r(X,Y,16,16,'#7B8079');r(X+1,Y+2,14,11,OL);r(X+2,Y+3,12,9,'#2A1E24');const k=Math.floor(t/120);
   for(let i=0;i<4;i++)r(X+2+hash(i,k)%11,Y+3+hash(k,i)%8,2,1,'#5A4A54');
@@ -5454,7 +5722,7 @@ const T7={
    if(F.jump){g.strokeStyle='#69CFD8';g.lineWidth=1;g.beginPath();g.arc(cx,cy,6,0,Math.PI*2);g.stroke();r(cx-1,cy-1,2,2,'#BFE6FF')}
    else if(acc()){r(cx-1,cy,3,2,'#FFFFFF');const k=(t/60)%14;for(let i=0;i<4;i++){const fx=cx+20-k+(i%2)*3,fy=cy-6+i*4;r(fx,fy,2,1,'#FF5A44');r(fx-1,fy+1,4,1,'#D2533F')}
     r(cx-18+k/2,cy-5,2,2,'#FFB86A');r(cx-17+k/2,cy+5,2,2,'#FFB86A');if(Math.floor(t/300)%2){r(oX+2,oY+14,44,1,'#D2533F')}}
-   else{ball(cx-4,cy,6,['#5B4A7A','#C76A3A','#7A4F6E','#E39A55','#5B4A7A']);r(cx+10,cy-6,3,3,'#4E9E6E');r(cx+7,cy+5,2,2,'#B5653A')}});
+   else{ball(cx-4,cy,6,['#7A4A4E','#E3A08A','#9A5E5A','#F0B8A0','#B87468','#5A3A40']);r(cx+10,cy-6,3,3,'#4E9E6E');r(cx+7,cy+5,2,2,'#B5653A')}});
   for(let i=0;i<w;i++)for(let j=0;j<h;j++)alertTint(oX+i*16,oY+j*16,t)}),
  /* ---- 돌로드 엔진 기지 ---- */
  storm:(X,Y,x,y,t)=>storm(X,Y,x,y,t,0,0,16,16),
@@ -5475,9 +5743,9 @@ const T7={
   if(Math.floor(t/700+x*3+y)%6===0)r(X+8,Y+4+Math.floor(t/110)%11,1,2,'#BFF5EA')},
  bulb:(X,Y,x,y,t)=>blockOnce(X,Y,x,y,(oX,oY,w,h,ox,oy)=>{
   for(let i=0;i<w;i++)sfloor(oX+i*16,oY,ox+i,oy,t);
-  const F=state.f,cx=oX+16,cy=oY+8,p=(Math.sin(t/(F.linked?140:420))+1)/2;
-  const core=F.woke?['#FFFFFF','#FFFFFF','#F4FFFC','#DFFBF6']:F.linked?['#E8FFFB','#9FF5E6','#5FE3CF','#2FB5A4']:['#9FF5E6','#5FE3CF','#47D6C2','#2A9C8C'];
-  g.fillStyle=F.woke?`rgba(255,255,255,${.25+p*.3})`:`rgba(71,214,194,${.15+p*.25})`;g.beginPath();g.arc(cx,cy,11+p*(F.linked?6:3),0,Math.PI*2);g.fill();
+  const F=state.f,cx=oX+16,cy=oY+8,p=(Math.sin(t/420)+1)/2,lit=F.linked&&!F.woke;
+  const core=lit?['#E8FFFB','#9FF5E6','#5FE3CF','#2FB5A4']:['#E4EAEC','#C8D2D6','#AEBAC0','#97A4AA'];
+  if(lit){g.fillStyle=`rgba(71,214,194,${.15+p*.25})`;g.beginPath();g.arc(cx,cy,11+p*4,0,Math.PI*2);g.fill()}
   ball(cx,cy+1,7,[OL]);ball(cx,cy+1,6,core);r(cx-3,cy-3,2,2,'#FFFFFF')}),
  cone:(X,Y,x,y,t)=>blockOnce(X,Y,x,y,(oX,oY,w,h,ox,oy)=>{
   for(let i=0;i<w;i++)sfloor(oX+i*16,oY,ox+i,oy,t);
@@ -5487,16 +5755,14 @@ const T7={
   for(let i=0;i<w;i++)for(let j=0;j<h;j++)pad(oX+i*16,oY+j*16,ox+i,oy+j,t);g.drawImage(anchorShip(),oX+(w*16-64)/2,oY+(h*16-48)/2);
   if(state.f.woke){const on=Math.floor(t/250)%2;r(oX+(w*16-64)/2+25,oY+(h*16-48)/2+41,4,2,on?'#FFE7A0':'#FFB86A');r(oX+(w*16-64)/2+35,oY+(h*16-48)/2+41,4,2,on?'#FFE7A0':'#FFB86A')}}),
  /* ---- 카포 프로이스 ---- */
- gateView:(X,Y,x,y,t)=>{stars(X,Y,x,y,t,.1);const G=Z.gate;
+ gateView:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.1);const G=Z.gate;
   g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();
   const cx=G.cx-CAM.x,cy=G.cy-CAM.y,R=G.R;
-  g.fillStyle='rgba(120,170,255,.10)';g.beginPath();g.arc(cx,cy,R+9,0,Math.PI*2);g.fill();
   g.fillStyle='#161A22';g.beginPath();g.arc(cx,cy,R,0,Math.PI*2);g.fill();
-  g.strokeStyle='#2B3240';g.lineWidth=2;for(let i=0;i<16;i++){const a=i/16*Math.PI*2;g.beginPath();g.moveTo(cx+Math.cos(a)*15,cy+Math.sin(a)*15);g.lineTo(cx+Math.cos(a)*(R-2),cy+Math.sin(a)*(R-2));g.stroke()}
-  g.strokeStyle='#3A4456';g.beginPath();g.arc(cx,cy,R-1,0,Math.PI*2);g.stroke();
-  const p=(Math.sin(t/500)+1)/2;g.fillStyle='#22304A';g.beginPath();g.arc(cx,cy,15,0,Math.PI*2);g.fill();g.fillStyle='#2F4F86';g.beginPath();g.arc(cx,cy,9,0,Math.PI*2);g.fill();
-  g.fillStyle='#BFE6FF';g.beginPath();g.arc(cx,cy,3+p*2,0,Math.PI*2);g.fill();r(cx-1,cy-1,2,2,'#FFFFFF');
-  const ph=(t%5200)/5200;if(ph<.18){g.strokeStyle=`rgba(191,230,255,${1-ph/.18})`;g.lineWidth=2;g.beginPath();g.arc(cx,cy,9+ph/.18*44,0,Math.PI*2);g.stroke()}
+  g.lineWidth=2;[R-1,R-9,R-17,R-25,R-33].forEach((rr,i)=>{g.strokeStyle=i%2?'#232A36':'#2E3644';g.beginPath();g.arc(cx,cy,rr,0,Math.PI*2);g.stroke()});
+  g.fillStyle='#0C0F14';g.beginPath();g.arc(cx,cy,7,0,Math.PI*2);g.fill();
+  const ph=(t%5200)/5200;if(ph<.06){g.strokeStyle=`rgba(230,244,255,${1-ph/.06*.3})`;g.lineWidth=3;g.beginPath();g.arc(cx,cy,R-1,0,Math.PI*2);g.stroke()}
+  else if(ph<.2){const k=(ph-.06)/.14;g.strokeStyle=`rgba(191,230,255,${1-k})`;g.lineWidth=2;g.beginPath();g.arc(cx,cy,Math.max(1,(R-1)*(1-k)),0,Math.PI*2);g.stroke()}
   g.restore();
   if(y===1)r(X,Y,16,2,'#7B8079');if(y===4)r(X,Y+14,16,2,'#A3A89E');if(x%4===0)r(X,Y,1,16,'#5E635C')},
  rail:(X,Y,x,y)=>{deck(X,Y,x,y);g.fillStyle='rgba(159,215,232,.28)';g.fillRect(X,Y,16,9);r(X,Y,16,1,'#BFE6FF');r(X,Y+9,16,2,'#8A929A');r(X,Y+9,16,1,'#C0C6CC');if(x%2===0)r(X+7,Y+11,2,4,'#6E767E')},
@@ -5561,13 +5827,25 @@ const ZONES={
    '5,16':{to:'capo',x:10,y:9,dir:'up',lock:()=>!f().jump&&'관측 갑판 문이에요. 비상이라서 잠겨 있어요.'}},
   spots:{
    '8,1':['해적 방송이에요. 점령군에게 잡힌 사람들이 나와요.','{유버스터|유버스터}로 기억을 다 지웠어요. 아기처럼 됐어요.','사람들을 차에 싣고 집 앞에 버려요.','보고 있으면 분노가 끓어요.'],
-   get '2,1'(){return f().jump?'관문이 아주 가까워요. 아직 켈로완 성계예요.':acc()?'빨간 경보예요. 프리깃들이 점점 가까워져요.':'창밖에 보라색 줄무늬 행성. 돌로드예요.'},
+   get '2,1'(){return f().jump?'관문이 아주 가까워요. 아직 켈로완 성계예요.':acc()?'빨간 경보예요. 프리깃들이 점점 가까워져요.':'창밖에 분홍빛 줄무늬 행성. 돌로드예요.'},
    '13,2':'엘리의 침대예요. 베개가 조금 젖어 있어요.',
    '17,2':'따뜻한 등불이에요. 주인 숙소는 늘 이 색이에요.',
    '19,3':'필터 구예요. 공기가 보글보글 지나가요.',
    get '4,11'(){return f().jump?'홀로그램 지도: 카포 프로이스 관문. 건너가면 관문이 다섯 개 더 있어요.':acc()?'홀로그램 지도: 빨간 세모는 프리깃이에요. 점점 가까워져요.':'홀로그램 지도: 돌로드하고 곤디아가 보여요.'},
    '12,10':'진료실 침대예요. 깨끗한 냄새가 나요.',
    get '21,12'(){return !f().launch?'강하선이에요. 카이발에서 훔친 배예요.':f().woke?'앵커선이에요. 세모 날개가 세 개예요.':'빈 자리예요.'}},
+  things:{
+   '#':WALL7,
+   'W':(x,y)=>acc()?'창밖 멀리 밝은 불꽃들이 다가와요.':!f().jump&&(x===3||x===4)?'창밖에 분홍빛 줄무늬 행성이 보여요.':vary(x,y,['창밖에 성운이 가득해요.','창밖이 아주 조용해요.']),
+   'X':()=>!f().launch?'강하선이에요. 문이 꼭 닫혀 있어요.':f().woke?'앵커선이에요. 크고 조용해요.':'빈 자리예요. 바닥에 노란 표시만 있어요.',
+   'c':()=>acc()?'콘솔에 빨간 경고가 깜빡여요.':'콘솔 화면에 파란 숫자가 떠 있어요.',
+   'p':['관이 벽을 따라 지나가요. 물소리가 나요.','관이 조금 따뜻해요.'],
+   'F':'둥근 필터 통이에요. 작은 거품이 올라가요.',
+   'H':()=>f().jump?'홀로그램 지도에 관문이 떠 있어요.':acc()?'홀로그램 지도에 빨간 점이 가까워져요.':'홀로그램 지도에 분홍빛 행성이 떠 있어요.',
+   'L':'등불 빛이 따뜻해요.',
+   's':'빨간 소파예요. 아주 푹신해요.',
+   'B':'큰 침대예요. 보라색 이불이 있어요.',
+   'k':'진료실 침대예요. 작은 초록 불이 깜빡여요.'},
   npcs:['otylia','gath','laurella','zelinda','everett','finn','ellie','pablo','holo1','aljan','dejean','gyvoy','bensath','daveS']},
  dolod:{name:'돌로드 · 엔진 기지',reg:'DOLOD · ARCHIMEDES ENGINE',slow:1.6,
   legend:{'S':{tile:'storm'},'d':{tile:'stormDoor'},'#':{tile:'fossil'},'w':{tile:'stormWin'},'.':{tile:'sfloor',walk:1},'P':{tile:'pad',walk:1},
@@ -5593,11 +5871,21 @@ const ZONES={
   rooms:[[1,3,12,6,'엔진 기지 · 격납고'],[14,3,26,6,'엔진 기지 · 폭풍 전망대'],[1,8,26,8,'엔진 기지 · 물결 복도'],[8,10,19,15,'엔진 기지 · 꽃 방'],[21,10,26,15,'엔진 기지 · 앵커선 격납고'],[1,10,6,15,'엔진 기지 · 작은 방']],
   warps:{'23,14':{to:'ship',x:22,y:14,dir:'down',lock:()=>!f().woke&&'앵커선 문이 잠겼어요. 엔진만 열 수 있어요.'}},
   spots:{
-   '1,12':'작은 창이에요. 밖은 보라색, 주황색 폭풍뿐이에요.',
+   '1,12':'작은 창이에요. 밖은 폭풍 구름뿐이에요.',
    '9,2':'폭풍 문이에요. 아주 두껍고 무거워요.',
-   get '17,2'(){return f().woke?'구름이 하얗게 빛나요. 엔진이 돌로드의 힘을 쓰고 있어요.':'구름이 층층이 흘러요. 바람이 소리보다 빨라요.'},
-   get '13,11'(){return f().woke?'전구가 눈부시게 하얘요.':'청록색 전구예요. 4미터 원뿔 위에서 빛나요.'},
+   get '17,2'(){return f().woke?'창밖은 아직 어두워요. 곧 엔진이 깨어나요.':'구름이 층층이 흘러요. 바람이 아주 세요.'},
+   get '13,11'(){return f().woke?'전구가 조용해요. 핀의 명령이 끝났어요.':f().linked?'전구가 부드러운 청록색으로 빛나요.':'투명한 전구예요. 4미터 원뿔 꼭대기에 있어요.'},
    '8,10':'거대한 꽃잎이에요. 이 방은 꽃 두 송이 같아요.'},
+  things:{
+   '#':(x,y)=>x===0||x===27||y===16?'두꺼운 바깥 벽이에요. 차갑고 단단해요.':vary(x,y,['크림색 벽이에요. 뼈 같은 무늬가 있어요.','벽 무늬에서 희미한 빛이 나와요.']),
+   'S':'두꺼운 구름 띠가 끝없이 돌아요. 번개가 쳐요.',
+   'w':(x,y)=>f().woke?'창밖은 아직 어두워요. 곧 엔진이 깨어나요.':vary(x,y,['창밖은 폭풍 구름뿐이에요.','창밖 구름이 아주 빠르게 흘러가요.']),
+   'd':(x,y)=>x===6?(f().stranded?'문 옆에 빨간 불이 깜빡여요.':'문 옆에 청록색 불이 켜져 있어요.'):'두꺼운 문이에요. 노란 줄무늬가 있어요.',
+   'X':()=>f().linked?'강하선이 없어요. 빈 자리만 남았어요.':'강하선이에요. 여기까지 타고 왔어요.',
+   'e':['거대한 꽃잎이에요. 가운데 청록색 줄이 있어요.','꽃잎이 돌처럼 단단해요.'],
+   'U':()=>f().woke?'전구가 조용해요. 핀의 명령이 끝났어요.':f().linked?'전구가 부드러운 청록색으로 빛나요.':'투명한 전구예요. 원뿔 꼭대기에 있어요.',
+   'C':'하얀 원뿔이에요. 아주 매끈해요.',
+   'A':()=>f().woke?'앵커선이에요. 노란 불이 깜빡여요.':'앵커선이에요. 세모 날개가 세 개예요.'},
   npcs:['dave1','dave2','bensathD','finnD','gyvoyD','holo2']},
  capo:{name:'카포 프로이스 관문',reg:'CAPO FROIS INGRESS GATE',gate:{cx:12*16,cy:3*16+20,R:44},
   legend:{'#':{tile:'swall'},'G':{tile:'gateView'},'l':{tile:'rail'},'.':{tile:'sdeck',walk:1},'s':{tile:'sofa'},'c':{tile:'alertCon'},'O':{tile:'airlock',walk:1}},
@@ -5615,14 +5903,20 @@ const ZONES={
 "##########O#############"],
   rooms:[[1,5,22,9,'성실호 · 관측 갑판']],
   warps:{'10,10':{to:'ship',x:5,y:15,dir:'up'}},
-  spots:{'13,5':'카포 프로이스 관문. 검은 돔 가운데가 파랗게 빛나요.','4,5':'관문 너머 카포 프로이스에는 관문이 다섯 개 더 있대요.','20,5':'창밖은 조용해요. 아직은요.'},
+  spots:{'13,5':'카포 프로이스 관문. 고리 무늬가 있는 검은 돔이에요.','4,5':'관문 너머 카포 프로이스에는 관문이 다섯 개 더 있대요.','20,5':'창밖은 조용해요. 아직은요.'},
+  things:{
+   'G':['검은 돔이에요. 고리 무늬가 겹겹이 있어요.','관문 뒤로 성운이 빛나요.','가끔 테두리가 번쩍하고 빛이 안으로 밀려가요.'],
+   '#':WALL7,
+   'l':['유리 난간이에요. 차갑고 깨끗해요.','난간에 손자국이 조금 있어요.'],
+   's':'빨간 소파예요. 여기서 관문이 잘 보여요.',
+   'c':'콘솔이 조용해요. 파란 숫자만 깜빡여요.'},
   npcs:['zelindaC','finnC','ellieC','dejeanC','holo3']},
 };
 
 /* ---------- scenes ---------- */
 const LINK=()=>[
  {say:'접속할게요. 엔진이 저한테 말을 걸어요.'},
- {who:'…',say:'핀이 청록색 전구에 손을 대요. 빛이 커져요.'},
+ {who:'…',say:'핀이 투명한 전구에 손을 대요. 청록색 빛이 켜져요.'},
  {say:'원래 계획은 돌로드를 별에 떨어뜨리는 거였어요.'},
  {who:'기보이',say:'핀 엔진이에요. 핀 마음대로 해요.'},
  {say:'아니… 여제가 곤디아를 점령했어요. 우리 부모님도…'},
@@ -5801,7 +6095,7 @@ const NPC={
   after:'폭풍이 점점 세져요.',
   talk:()=>[
    {say:'밖을 봐요. 저게 돌로드예요.'},
-   {say:'보라색, 주황색 구름이 층층이 돌아요. 바람이 소리보다 빨라요.'},
+   {say:'두꺼운 구름 띠가 층층이 돌아요. 바람이 아주 세요.'},
    Q.bensath[0],
    {who:'…',say:'번쩍! 구름 사이로 하얀 빛이 갈라져요.'},
    Q.bensath[1],
@@ -6430,6 +6724,9 @@ function facing(){
  if(Z.legend[at(tx,ty)]?.tile==='terminal')return {term:1};
  if(Z.spots&&Z.spots[key])return {spot:Z.spots[key]};
  const w=warpAt(tx,ty);if(w&&w.lock&&w.lock())return {spot:w.lock()};
+ /* things: a line for every tile of a kind (Z.things[char] = text | [variants, picked by position] | fn(x,y) → either) */
+ const th=Z.things&&Z.things[at(tx,ty)],tv=typeof th==='function'?th(tx,ty):th;
+ if(tv)return {spot:Array.isArray(tv)?tv[(tx*7+ty*13)%tv.length]:tv};
  return null;
 }
 function interact(){

@@ -514,6 +514,9 @@ function facing(){
  if(Z.legend[at(tx,ty)]?.tile==='terminal')return {term:1};
  if(Z.spots&&Z.spots[key])return {spot:Z.spots[key]};
  const w=warpAt(tx,ty);if(w&&w.lock&&w.lock())return {spot:w.lock()};
+ /* things: a line for every tile of a kind (Z.things[char] = text | [variants, picked by position] | fn(x,y) → either) */
+ const th=Z.things&&Z.things[at(tx,ty)],tv=typeof th==='function'?th(tx,ty):th;
+ if(tv)return {spot:Array.isArray(tv)?tv[(tx*7+ty*13)%tv.length]:tv};
  return null;
 }
 function interact(){

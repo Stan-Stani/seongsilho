@@ -19,6 +19,11 @@ for(const CH of ctx.CHAPTERS){
   if(Z.map.length<10||W<11)E(`${id} map smaller than the 11x10 view`);
   for(const L of Object.values(Z.legend))if(!(L.tile in (C.TILES||{}))&&!['hull','deck','grate','window','console','hydro','bunk','terminal','pipes','engine','airlock','ring','plate','planetWin','crate','stall','lift','tree','lawn','stone','dome','cable','police','cafe','flowers','pond','bench'].includes(L.tile))E(`${id} tile fn missing: ${L.tile}`);
   for(const [k,w] of Object.entries(Z.warps||{})){const [x,y]=k.split(',').map(Number);if(!walk(Z,x,y))E(`${id} warp ${k} not walkable`);const T=C.ZONES[w.to];if(!T){E(`${id} warp to unknown ${w.to}`);continue}if(!walk(T,w.x,w.y)||(T.warps||{})[w.x+','+w.y])E(`${id} warp ${k} lands on bad tile ${w.to} ${w.x},${w.y}`)}
+  for(const [c,th] of Object.entries(Z.things||{})){ // a line for every tile of a kind
+   if(!Z.legend[c])E(`${id} things key "${c}" is not a tile in its legend`);else if(Z.legend[c].walk)E(`${id} things "${c}" is a walkable tile`);
+   if(!Z.map.some(r=>r.includes(c)))E(`${id} things "${c}" is not on the map`);
+   const vs=[].concat(typeof th==='function'?th(0,0):th).filter(Boolean);
+   for(const v of vs){if(typeof v!=='string')E(`${id} things "${c}" gives a non-string`);else if(/[A-Za-z]/.test(v)||v.length>60)E(`${id} things "${c}" line is English or too long: ${v}`)}}
   for(const k of Object.keys(Z.spots||{})){const [x,y]=k.split(',').map(Number);if(walk(Z,x,y))E(`${id} spot ${k} is on a walkable tile`)}
   for(const k of Z.npcs){const n=C.NPC[k];if(!n){E('no npc '+k);continue}if(n.zone!==id)E(`npc ${k} zone ${n.zone}≠${id}`);if(!walk(Z,n.x,n.y))E(`npc ${k} on unwalkable ${n.x},${n.y}`)}
  }

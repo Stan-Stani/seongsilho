@@ -109,6 +109,13 @@ window.__play=async function(steps){
    else if(s.talk)await talk(s.talk,s);
    else if(s.inspect)await inspect(...s.inspect,s);
    else if(s.bump)await bump(...s.bump);
+   else if(s.look){ // walk to the nearest object that says something (things or spots) in that zone, A → its blurb
+     if(s.look!==true)await goZone(s.look);const T=Z.things||{},S=Z.spots||{};
+     const hit=(x,y)=>!npcAt(x,y)&&at(x,y)!=null&&!(Z.legend[at(x,y)]||{}).walk&&(T[at(x,y)]||S[x+','+y]);let tx,ty;
+     const p=bfs((x,y)=>{for(const [dx,dy] of Object.values(D))if(hit(x+dx,y+dy)&&!warpAt(x,y)){tx=x+dx;ty=y+dy;return true}return false});
+     check(!!p,"no reachable thing in "+ZID);if(p){await walk(p);await face(dirTo(tx,ty));await wait(80);
+      check($('btnA').classList.contains('ready'),'A glows facing a thing');await key(' ');await until(()=>!!dlg,800);
+      check(!!dlg,'inspecting a thing opens a blurb');log(`== look ${ZID} ${tx},${ty}`);if(s.shot)await shot(s.shot);await finishDialog()}}
    else if(s.walkTo){await goZone(s.walkTo[0]);await reach((x,y)=>x===s.walkTo[1]&&y===s.walkTo[2],'walkTo');if(s.then)await shot(s.then)}
    else if(s.clock){skew+=s.clock;log(`clock +${s.clock/3600e3}h · due ${dueWords().length}`)}
    else if(s.check){check(s.check(),s.msg)}
