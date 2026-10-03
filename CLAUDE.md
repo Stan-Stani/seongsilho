@@ -26,6 +26,7 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
 - Only one playtest runs at a time (lock in play.mjs); never run more than 2 agents that playtest in parallel —
   6 parallel Chrome runs froze this 7 GB machine (2026-10-01).
 - Publish only audited chapters: `python3 build.py --chapters ch1,ch3,…`.
+- After ANY change to game text (dialogue, spots, things, words): `python3 lexicon/extract.py .` must report `0 without a definition` (add entries to lexicon/defs.json, analyzer misreads to lexicon/fixes.json), else tapping new words says 사전에 없는 말이에요.
 - `node tests/coverage.mjs chN`: every object tile should say something when inspected (zone `things:{char:line}` for a tile kind, `spots` for one tile); keep it at 100%. Inspect lines are lore claims too — they go through the audit.
 - `python3 tests/sheet.py chN` → contact sheets; LOOK at every sheet (layout, overlaps, readability, markers, lighting).
 
