@@ -240,7 +240,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden||!$('tapPanel').hidden;
+const panelOpen=()=>!$('startPanel').hidden||!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden||!$('tapPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -364,8 +364,8 @@ function lexLookup(w){ // word as written → [[lemma,{k,e}],…]; falls back to
 function popGloss(rows){ // rows: [[headword,{k,e}],…] — Korean first; English only behind the ? button
  if(!rows.length){hideGloss();toast('사전에 없는 말이에요.');return}
  const el=$('gloss');
- el.innerHTML=rows.map(([h,d])=>`<div class="gr"><b>${h}</b>${d.k}<span class="en" hidden>${d.e||''}</span></div>`).join('')+'<button class="q" type="button" aria-label="영어로 보기">?</button>';
- el.hidden=false;el.querySelector('.q').addEventListener('click',e=>{e.stopPropagation();el.querySelectorAll('.en').forEach(x=>x.hidden=!x.hidden);clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,8000)});
+ el.innerHTML=rows.map(([h,d])=>`<div class="gr"><b>${h}</b>${d.k}<span class="en" hidden>${d.e||''}</span></div>`).join('')+'<button class="q" type="button" aria-label="영어로 보기">?</button><button class="gx" type="button" aria-label="닫기">×</button>';
+ el.classList.remove('pinned');el.hidden=false;el.querySelector('.q').addEventListener('click',e=>{e.stopPropagation();el.querySelectorAll('.en').forEach(x=>x.hidden=!x.hidden);if(!el.classList.contains('pinned')){clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,8000)}});
  clearTimeout(popGloss.t);popGloss.t=setTimeout(hideGloss,6000);
 }
 function typeText(text,done){
@@ -491,6 +491,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
+ if(!$('startPanel').hidden){$('startPanel').hidden=true;return}
  if(!$('tapPanel').hidden){closeTaps();return}
  if(!$('talkPanel').hidden){if(!$('gloss').hidden)hideGloss();else closeTalk();return}
  if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
@@ -625,10 +626,17 @@ $('btnA').addEventListener('pointerdown',e=>{e.preventDefault();interact()});
 $('btnB').addEventListener('pointerdown',e=>{e.preventDefault();cancel()});
 $('dlg').addEventListener('click',e=>{const gl=e.target.closest('.gl');if(gl){e.stopPropagation();showGloss(gl.dataset.k);return}const w=e.target.closest('.txt .w');if(w){e.stopPropagation();showWord(w.textContent);return}if(e.target.closest('#spk'))return;advance()});
 $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.listen||dlg.cur.say||dlg.cur.ask||'')});
-$('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
+$('gloss').addEventListener('click',e=>{ // tap the definition to keep it (× closes); B closes too
+ if(e.target.closest('.gx')){hideGloss();return}if(e.target.closest('.q'))return;
+ clearTimeout(popGloss.t);$('gloss').classList.add('pinned')});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
 $('talkBtn').addEventListener('click',openTalk);
+/* START: everything that isn't the game itself (logs, dictionary, chapters, reading aloud, sound) */
+function toggleStart(){const P=$('startPanel');if(P.hidden&&panelOpen())return;P.hidden=!P.hidden;hideGloss()}
+$('startBtn').addEventListener('click',toggleStart);$('startClose').addEventListener('click',()=>$('startPanel').hidden=true);
+$('startPanel').addEventListener('click',e=>{if(e.target.id==='startPanel'){$('startPanel').hidden=true;return}
+ const mi=e.target.closest('.mi');if(mi&&!mi.classList.contains('toggle'))$('startPanel').hidden=true},true);  // capture: close the menu before the item opens its panel
 $('tapBtn').addEventListener('click',openTaps);$('tapClose').addEventListener('click',closeTaps);
 $('tapSortT').addEventListener('click',()=>{tapSort='t';openTaps()});$('tapSortN').addEventListener('click',()=>{tapSort='n';openTaps()});
 $('tapPanel').addEventListener('click',e=>{if(e.target.id==='tapPanel'){closeTaps();return}const p=e.target.closest('.tp');if(p){const en=p.querySelector('.tpe');en.hidden=!en.hidden}});$('talkClose').addEventListener('click',closeTalk);
@@ -654,7 +662,8 @@ addEventListener('keydown',e=>{
  if(KEYS[e.key]){e.preventDefault();if(dirPress(KEYS[e.key]))return;held=KEYS[e.key];return}
  if(choosing()&&/^[1-4]$/.test(e.key)){const b=choiceBtns()[+e.key-1];if(b){e.preventDefault();b.click()}return}
  if([' ','Enter','z','Z'].includes(e.key)){e.preventDefault();if(!e.repeat)interact();return}
- if(['x','X','Escape'].includes(e.key)){e.preventDefault();cancel()}
+ if(['x','X','Escape'].includes(e.key)){e.preventDefault();cancel();return}
+ if(['m','M'].includes(e.key)&&!e.repeat){e.preventDefault();toggleStart()}
 });
 addEventListener('keyup',e=>{if(KEYS[e.key]===held)held=null});
 
@@ -670,7 +679,7 @@ function boot(id){
  store.set('seongsilho-chapter',CH.id);
  loadState();loadTalk();
  loadZone(state.zone,state.x,state.y,state.dir);
- $('chBtn').textContent=CH.n;
+ $('chName').textContent=CH.n;
  updateHud();updateQuest();
  if(!state.seenIntro){state.seenIntro=true;save();setTimeout(()=>openDialog(CH.introWho||'성실호',C.INTRO),300)}
 }

@@ -30,6 +30,7 @@
  {inspect:['ship',1,4]},
  {look:true,shot:'12-look'},
  {talklog:1,shot:'10a-talk-log'},
+ {start:1,shot:'10b-start'},
  {taps:1,shot:'10c-taps'},
  {panel:1,shot:'10-log'},
  {chapters:1,shot:'11-chapters'},
