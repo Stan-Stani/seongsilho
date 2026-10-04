@@ -35,3 +35,5 @@ The epub and `claude-export/` are gitignored (copyright / personal data).
 ## Public mirror
 After every publish run `tools/sync_public.sh`: it force-pushes this repo to the public twin (see tools/public-remote) with `notes/`
 filtered out of all history (book summaries stay private). GitHub Pages serves `index.html` from the public twin.
+
+**Engine:** `src/engine.js` is GENERATED from the shared `../walk-engine/engine.js` (one engine for 성실호, 형제, 방과 후). Edit it there and run `walk-engine/sync.sh`. This game's settings (storage prefix, names, default player) are in `src/game.js`. `validate.mjs` fails if the copy is out of sync.
