@@ -240,7 +240,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden;
+const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden||!$('tapPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -377,8 +377,23 @@ function typeText(text,done){
  if(reduce)return fin();
  typing.id=setInterval(()=>{i++;el.textContent=p.slice(0,i);if(i>=p.length)fin()},26);
 }
-function showGloss(k){const d=C.DICT[k];if(d)popGloss([[k,d]])}
-function showWord(w){popGloss(lexLookup(w))}
+function showGloss(k){const d=C.DICT[k];if(d){noteTap([[k,d]]);popGloss([[k,d]])}}
+function showWord(w){const rows=lexLookup(w);noteTap(rows);popGloss(rows)}
+/* ---------- 찾아본 말: every tap that finds a definition — how many times, and when last (all chapters, one list) ---------- */
+const TAPS_KEY='seongsilho-taps';let taps={},tapSort='t';
+try{taps=JSON.parse(store.get(TAPS_KEY)||'{}')||{}}catch(e){taps={}}
+function noteTap(rows){const [h,d]=rows[0]||[];if(!h)return;const r=taps[h]||(taps[h]={n:0,t:0});r.n++;r.t=Date.now();r.k=d.k;r.e=d.e;store.set(TAPS_KEY,JSON.stringify(taps))}
+function ago(t){const m=Math.floor((Date.now()-t)/60000);if(m<1)return '방금';if(m<60)return m+'분 전';const h=Math.floor(m/60);if(h<24)return h+'시간 전';const d=Math.floor(h/24);return d===1?'어제':d+'일 전'}
+function openTaps(){
+ const esc=x=>String(x||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const rows=Object.entries(taps).sort((a,b)=>tapSort==='n'?(b[1].n-a[1].n||b[1].t-a[1].t):b[1].t-a[1].t);
+ $('tapCount').textContent=rows.length?rows.length+'개':'';
+ $('tapList').innerHTML=rows.length?rows.map(([h,r])=>`<div class="tp"><div class="tph"><b>${esc(h)}</b><span class="tpm">${r.n}번 · ${ago(r.t)}</span></div><div class="tpk">${esc(r.k)}</div><div class="tpe" hidden>${esc(r.e)}</div></div>`).join('')
+  :'<p class="tl-empty">아직 찾아본 말이 없어요.</p>';
+ $('tapSortT').classList.toggle('on',tapSort==='t');$('tapSortN').classList.toggle('on',tapSort==='n');
+ $('tapPanel').hidden=false;document.body.classList.add('talkopen');$('tapList').scrollTop=0;
+}
+function closeTaps(){$('tapPanel').hidden=true;document.body.classList.remove('talkopen')}
 function hideGloss(){$('gloss').hidden=true}
 /* ---------- conversation log: every line shown, scrollable, words tappable like in the dialogue box ---------- */
 let talk=[];
@@ -476,6 +491,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
+ if(!$('tapPanel').hidden){closeTaps();return}
  if(!$('talkPanel').hidden){if(!$('gloss').hidden)hideGloss();else closeTalk();return}
  if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
  if(!$('gloss').hidden){hideGloss();return}
@@ -612,7 +628,10 @@ $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.l
 $('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
-$('talkBtn').addEventListener('click',openTalk);$('talkClose').addEventListener('click',closeTalk);
+$('talkBtn').addEventListener('click',openTalk);
+$('tapBtn').addEventListener('click',openTaps);$('tapClose').addEventListener('click',closeTaps);
+$('tapSortT').addEventListener('click',()=>{tapSort='t';openTaps()});$('tapSortN').addEventListener('click',()=>{tapSort='n';openTaps()});
+$('tapPanel').addEventListener('click',e=>{if(e.target.id==='tapPanel'){closeTaps();return}const p=e.target.closest('.tp');if(p){const en=p.querySelector('.tpe');en.hidden=!en.hidden}});$('talkClose').addEventListener('click',closeTalk);
 $('talkPanel').addEventListener('click',e=>{if(e.target.id==='talkPanel'){closeTalk();return}const gl=e.target.closest('.gl');if(gl){showGloss(gl.dataset.k);return}const w=e.target.closest('.w');if(w)showWord(w.textContent)});
 $('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});
 $('readBtn').addEventListener('click',()=>{

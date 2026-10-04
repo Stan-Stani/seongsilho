@@ -145,6 +145,12 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .tl{display:flex;flex-direction:column;gap:1px}
 .tl .tw{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--amber)}
 .tl .tt{font-weight:600;font-size:1rem;word-break:keep-all}
+.talkbtn+.talkbtn{margin-left:6px}
+.tapsort{justify-content:flex-start;gap:6px}.tapsort .btn{padding:4px 12px;font-size:.85rem}.tapsort .btn.on{background:var(--ink);color:var(--amber-soft)}
+.tp{display:flex;flex-direction:column;gap:2px;cursor:pointer;padding-bottom:8px;border-bottom:1px solid rgba(127,127,127,.25)}
+.tph{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.tph b{font-size:1.1rem}
+.tpm{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--amber);white-space:nowrap}
+.tpk{font-size:.95rem;word-break:keep-all}.tpe{font-size:.85rem;color:var(--glass-muted)}
 .tl-empty{color:var(--glass-muted);margin:0}
 body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 32px));z-index:20;box-sizing:border-box}
 @media (max-width:370px){.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}.ab button{width:56px;height:56px}.wlist{grid-template-columns:repeat(3,1fr)}h1{font-size:1.35rem}}
@@ -161,7 +167,7 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
       <button class="pill log" id="logBtn">일지 0/16</button>
     </div>
   </header>
-  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span><button class="talkbtn" id="talkBtn" aria-label="대화 기록">대화</button></div>
+  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span><button class="talkbtn" id="tapBtn" aria-label="찾아본 말">사전</button><button class="talkbtn" id="talkBtn" aria-label="대화 기록">대화</button></div>
   <div class="screen" id="screen">
     <canvas id="cv" width="176" height="160"></canvas>
     <div class="zone" id="zone"></div>
@@ -195,6 +201,13 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
   <div class="sheet" role="dialog" aria-label="장 고르기">
     <h2>항해 기록 <button class="btn" id="chClose">닫기</button></h2>
     <div class="chlist" id="chList"></div>
+  </div>
+</div>
+<div class="panel" id="tapPanel" hidden>
+  <div class="sheet talksheet" role="dialog" aria-label="찾아본 말">
+    <h2><span>찾아본 말 <small id="tapCount"></small></span><button class="btn" id="tapClose">닫기</button></h2>
+    <div class="row tapsort"><button class="btn" id="tapSortT">최근</button><button class="btn" id="tapSortN">많이</button></div>
+    <div class="talklog" id="tapList"></div>
   </div>
 </div>
 <div class="panel" id="talkPanel" hidden>

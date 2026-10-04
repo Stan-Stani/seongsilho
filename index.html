@@ -145,6 +145,12 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .tl{display:flex;flex-direction:column;gap:1px}
 .tl .tw{font-family:var(--mono);font-size:.68rem;letter-spacing:.1em;color:var(--amber)}
 .tl .tt{font-weight:600;font-size:1rem;word-break:keep-all}
+.talkbtn+.talkbtn{margin-left:6px}
+.tapsort{justify-content:flex-start;gap:6px}.tapsort .btn{padding:4px 12px;font-size:.85rem}.tapsort .btn.on{background:var(--ink);color:var(--amber-soft)}
+.tp{display:flex;flex-direction:column;gap:2px;cursor:pointer;padding-bottom:8px;border-bottom:1px solid rgba(127,127,127,.25)}
+.tph{display:flex;justify-content:space-between;align-items:baseline;gap:8px}.tph b{font-size:1.1rem}
+.tpm{font-family:var(--mono);font-size:.7rem;letter-spacing:.04em;color:var(--amber);white-space:nowrap}
+.tpk{font-size:.95rem;word-break:keep-all}.tpe{font-size:.85rem;color:var(--glass-muted)}
 .tl-empty{color:var(--glass-muted);margin:0}
 body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px);left:50%;transform:translateX(-50%);width:min(440px,calc(100% - 32px));z-index:20;box-sizing:border-box}
 @media (max-width:370px){.dpad{grid-template-columns:repeat(3,48px);grid-template-rows:repeat(3,48px)}.ab button{width:56px;height:56px}.wlist{grid-template-columns:repeat(3,1fr)}h1{font-size:1.35rem}}
@@ -161,7 +167,7 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
       <button class="pill log" id="logBtn">일지 0/16</button>
     </div>
   </header>
-  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span><button class="talkbtn" id="talkBtn" aria-label="대화 기록">대화</button></div>
+  <div class="quest" id="quest"><b>목표</b><span id="questTxt"></span><button class="talkbtn" id="tapBtn" aria-label="찾아본 말">사전</button><button class="talkbtn" id="talkBtn" aria-label="대화 기록">대화</button></div>
   <div class="screen" id="screen">
     <canvas id="cv" width="176" height="160"></canvas>
     <div class="zone" id="zone"></div>
@@ -195,6 +201,13 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
   <div class="sheet" role="dialog" aria-label="장 고르기">
     <h2>항해 기록 <button class="btn" id="chClose">닫기</button></h2>
     <div class="chlist" id="chList"></div>
+  </div>
+</div>
+<div class="panel" id="tapPanel" hidden>
+  <div class="sheet talksheet" role="dialog" aria-label="찾아본 말">
+    <h2><span>찾아본 말 <small id="tapCount"></small></span><button class="btn" id="tapClose">닫기</button></h2>
+    <div class="row tapsort"><button class="btn" id="tapSortT">최근</button><button class="btn" id="tapSortN">많이</button></div>
+    <div class="talklog" id="tapList"></div>
   </div>
 </div>
 <div class="panel" id="talkPanel" hidden>
@@ -6450,7 +6463,7 @@ const npcAt=(x,y)=>live().find(n=>{const [a,b]=npcPos(n);return a===x&&b===y});
 const warpAt=(x,y)=>Z.warps&&Z.warps[x+','+y];
 const walkable=(x,y)=>{const c=at(x,y);return c!=null&&!!(Z.legend[c]||{}).walk};
 const blocked=(x,y)=>!walkable(x,y)||!!npcAt(x,y);
-const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden;
+const panelOpen=()=>!$('panel').hidden||!$('chPanel').hidden||!$('talkPanel').hidden||!$('tapPanel').hidden;
 
 function tryMove(){
  if(player.moving||!held||dlg||panelOpen()||warping)return;
@@ -6587,8 +6600,23 @@ function typeText(text,done){
  if(reduce)return fin();
  typing.id=setInterval(()=>{i++;el.textContent=p.slice(0,i);if(i>=p.length)fin()},26);
 }
-function showGloss(k){const d=C.DICT[k];if(d)popGloss([[k,d]])}
-function showWord(w){popGloss(lexLookup(w))}
+function showGloss(k){const d=C.DICT[k];if(d){noteTap([[k,d]]);popGloss([[k,d]])}}
+function showWord(w){const rows=lexLookup(w);noteTap(rows);popGloss(rows)}
+/* ---------- 찾아본 말: every tap that finds a definition — how many times, and when last (all chapters, one list) ---------- */
+const TAPS_KEY='seongsilho-taps';let taps={},tapSort='t';
+try{taps=JSON.parse(store.get(TAPS_KEY)||'{}')||{}}catch(e){taps={}}
+function noteTap(rows){const [h,d]=rows[0]||[];if(!h)return;const r=taps[h]||(taps[h]={n:0,t:0});r.n++;r.t=Date.now();r.k=d.k;r.e=d.e;store.set(TAPS_KEY,JSON.stringify(taps))}
+function ago(t){const m=Math.floor((Date.now()-t)/60000);if(m<1)return '방금';if(m<60)return m+'분 전';const h=Math.floor(m/60);if(h<24)return h+'시간 전';const d=Math.floor(h/24);return d===1?'어제':d+'일 전'}
+function openTaps(){
+ const esc=x=>String(x||'').replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]));
+ const rows=Object.entries(taps).sort((a,b)=>tapSort==='n'?(b[1].n-a[1].n||b[1].t-a[1].t):b[1].t-a[1].t);
+ $('tapCount').textContent=rows.length?rows.length+'개':'';
+ $('tapList').innerHTML=rows.length?rows.map(([h,r])=>`<div class="tp"><div class="tph"><b>${esc(h)}</b><span class="tpm">${r.n}번 · ${ago(r.t)}</span></div><div class="tpk">${esc(r.k)}</div><div class="tpe" hidden>${esc(r.e)}</div></div>`).join('')
+  :'<p class="tl-empty">아직 찾아본 말이 없어요.</p>';
+ $('tapSortT').classList.toggle('on',tapSort==='t');$('tapSortN').classList.toggle('on',tapSort==='n');
+ $('tapPanel').hidden=false;document.body.classList.add('talkopen');$('tapList').scrollTop=0;
+}
+function closeTaps(){$('tapPanel').hidden=true;document.body.classList.remove('talkopen')}
 function hideGloss(){$('gloss').hidden=true}
 /* ---------- conversation log: every line shown, scrollable, words tappable like in the dialogue box ---------- */
 let talk=[];
@@ -6686,6 +6714,7 @@ function closeDialog(){
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog('항해 일지',c)},400)}
 }
 function cancel(){
+ if(!$('tapPanel').hidden){closeTaps();return}
  if(!$('talkPanel').hidden){if(!$('gloss').hidden)hideGloss();else closeTalk();return}
  if(panelOpen()){$('panel').hidden=true;$('chPanel').hidden=true;return}
  if(!$('gloss').hidden){hideGloss();return}
@@ -6822,7 +6851,10 @@ $('spk').addEventListener('click',e=>{e.stopPropagation();if(dlg)speak(dlg.cur.l
 $('gloss').addEventListener('click',e=>{if(!e.target.closest('.q'))hideGloss()});
 $('choices').addEventListener('pointerdown',e=>{const b=e.target.closest('.choice');if(b){sel=choiceBtns().indexOf(b);markSel()}});
 $('logBtn').addEventListener('click',()=>{showEn=false;openPanel()});
-$('talkBtn').addEventListener('click',openTalk);$('talkClose').addEventListener('click',closeTalk);
+$('talkBtn').addEventListener('click',openTalk);
+$('tapBtn').addEventListener('click',openTaps);$('tapClose').addEventListener('click',closeTaps);
+$('tapSortT').addEventListener('click',()=>{tapSort='t';openTaps()});$('tapSortN').addEventListener('click',()=>{tapSort='n';openTaps()});
+$('tapPanel').addEventListener('click',e=>{if(e.target.id==='tapPanel'){closeTaps();return}const p=e.target.closest('.tp');if(p){const en=p.querySelector('.tpe');en.hidden=!en.hidden}});$('talkClose').addEventListener('click',closeTalk);
 $('talkPanel').addEventListener('click',e=>{if(e.target.id==='talkPanel'){closeTalk();return}const gl=e.target.closest('.gl');if(gl){showGloss(gl.dataset.k);return}const w=e.target.closest('.w');if(w)showWord(w.textContent)});
 $('sndBtn').addEventListener('click',()=>{soundOn=!soundOn;store.set('seongsilho-sound',soundOn?'1':'0');updateSound();sfx('ok')});
 $('readBtn').addEventListener('click',()=>{

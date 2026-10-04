@@ -124,6 +124,11 @@ window.__play=async function(steps){
    else if(s.talklog){$('talkBtn').click();await wait(250);const n=$('talkList').querySelectorAll('.tl').length;check(!$('talkPanel').hidden&&n>5,'conversation log lists '+n+' lines');
      if(s.shot)await shot(s.shot);const w=[...$('talkList').querySelectorAll('.w')].sort((a,b)=>b.textContent.length-a.textContent.length)[0];w.click();await wait(150);
      check(!$('gloss').hidden,'tapping a word in the log opens the dictionary: '+w.textContent);if(s.shot)await shot(s.shot+'-tap');await key('x');await key('x');check($('talkPanel').hidden,'B closes the log')}
+   else if(s.taps){$('tapBtn').click();await wait(250);const rows=[...$('tapList').querySelectorAll('.tp')];
+     check(!$('tapPanel').hidden&&rows.length>0,'찾아본 말 lists '+rows.length+' tapped words');log('taps: '+rows.map(r=>r.querySelector('.tph').textContent).join(' | '));
+     if(rows[0]){rows[0].click();await wait(80);check(!rows[0].querySelector('.tpe').hidden,'tapping a looked-up word shows its English')}
+     if(s.shot)await shot(s.shot);$('tapSortN').click();await wait(120);check($('tapSortN').classList.contains('on'),'sort by count');
+     await key('x');check($('tapPanel').hidden,'B closes 찾아본 말')}
    else if(s.chapters){$('chBtn').click();await wait(200);if(s.shot)await shot(s.shot);await key('x')}
    else if(s.shot)await shot(s.shot);
   }catch(e){ERR.push('driver: '+e.message)}
