@@ -150,6 +150,7 @@ canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rend
 .startrow{display:flex;justify-content:center;padding-top:10px}
 .start{font-family:var(--mono);font-size:.7rem;letter-spacing:.14em;background:var(--b);color:#DCE3DF;border:0;border-radius:999px;padding:7px 18px;cursor:pointer;transform:rotate(-16deg);box-shadow:0 3px 0 rgba(0,0,0,.28)}
 .start:active{transform:rotate(-16deg) translateY(2px);box-shadow:0 1px 0 rgba(0,0,0,.28)}
+.games{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:4px}.games span{font-size:.8rem;opacity:.7;width:100%}.games a{font-weight:700;font-size:.92rem;color:inherit;border:2px dashed currentColor;border-radius:8px;padding:5px 10px;text-decoration:none;opacity:.85}
 .mgrid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
 .mi{font-family:var(--body);font-weight:700;font-size:1.05rem;padding:14px 10px;border-radius:8px;border:2px solid var(--ink);background:transparent;color:var(--ink);cursor:pointer}
 .mi.wide{grid-column:1/-1}.mi small{font-weight:400;opacity:.75;margin-left:6px}
@@ -214,6 +215,7 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
       <button class="mi toggle" id="readBtn" aria-pressed="false">읽기</button>
       <button class="mi toggle" id="sndBtn" aria-pressed="true">소리</button>
     </div>
+    <div class="games"><span>다른 게임</span><a href="https://stan-stani.github.io/hyeongje/" target="_blank" rel="noopener">형제</a><a href="https://stan-stani.github.io/daneo-maul/" target="_blank" rel="noopener">단어 마을</a><a href="https://stan-stani.github.io/dogam-yeohaeng/" target="_blank" rel="noopener">도감 여행</a><a href="https://stan-stani.github.io/banghu/" target="_blank" rel="noopener">방과 후</a></div>
   </div>
 </div>
 <div class="panel" id="chPanel" hidden>
