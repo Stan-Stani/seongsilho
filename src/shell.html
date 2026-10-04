@@ -41,11 +41,14 @@ h1 .lamp{display:inline-block;width:.42em;height:.42em;border-radius:50%;backgro
 
 .screen{position:relative;border-radius:14px;overflow:hidden;background:var(--glass);line-height:0;border:3px solid #7F867D;box-shadow:inset 0 0 0 3px var(--glass),0 2px 0 #A9AEA4}
 canvas{display:block;width:100%;height:auto;image-rendering:pixelated;image-rendering:crisp-edges;max-width:100%}
+.zone{transition:opacity .6s;}.zone.dim{opacity:0}
 .zone{position:absolute;left:8px;top:8px;line-height:1.2;font-family:var(--mono);font-size:.7rem;letter-spacing:.12em;color:var(--glass-ink);background:rgba(15,20,26,.72);border:1px solid var(--glass-edge);padding:3px 7px;border-radius:4px;pointer-events:none;transition:opacity .4s}
 .fade{position:absolute;inset:0;background:#000;opacity:0;pointer-events:none;transition:opacity .22s}
 .fade.on{opacity:1}
 
 .dlg{position:absolute;left:6px;right:6px;bottom:6px;line-height:1.5;background:rgba(15,20,26,.96);color:var(--glass-ink);border:2px solid var(--glass-edge);border-top:3px solid var(--amber);border-radius:6px;padding:9px 12px 11px;display:flex;flex-direction:column;gap:7px;max-height:calc(100% - 12px);box-sizing:border-box;overflow:auto}
+.face{position:absolute;left:8px;top:8px;width:84px;height:84px;image-rendering:pixelated;image-rendering:crisp-edges;pointer-events:none;background:rgba(255,255,255,.06);border-radius:6px}
+.dlg.hasface{padding-left:100px;min-height:100px}
 .who{display:flex;gap:8px;align-items:center;justify-content:space-between}
 .who .nm{font-family:var(--mono);font-size:.74rem;letter-spacing:.12em;color:var(--amber)}
 .who .tag{font-family:var(--mono);font-size:.66rem;letter-spacing:.1em;color:var(--glass);background:var(--cyan);border-radius:3px;padding:0 6px;margin-left:6px}
@@ -181,6 +184,7 @@ body.talkopen .gloss{position:fixed;top:calc(env(safe-area-inset-top,0px) + 14px
     <div class="fade" id="fade"></div>
     <div class="gloss" id="gloss" hidden></div>
     <div class="dlg" id="dlg" hidden>
+      <canvas class="face" id="face" width="48" height="48" hidden></canvas>
       <div class="who"><span><span class="nm" id="who"></span><span class="tag" id="tag" hidden>복습</span></span>
         <button class="spk" id="spk" aria-label="다시 듣기"><svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true"><path d="M2 6h3l4-3v10l-4-3H2z"/><path d="M11 5.5c1 .8 1 4.2 0 5" stroke="currentColor" fill="none" stroke-width="1.4"/><path d="M12.8 3.8c2 1.8 2 6.6 0 8.4" stroke="currentColor" fill="none" stroke-width="1.4"/></svg></button></div>
       <div class="txt" id="txt"></div>
