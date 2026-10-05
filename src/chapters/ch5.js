@@ -885,7 +885,7 @@ const NPC={
    Q.lucia[1],
    {say:'곤디아에 정보원 조직이 적어도 세 개 있는 것 같아요.'},
    {who:'테렌스',say:'하나는 우리 조직이고요. 나머지 두 개를 찾아요.'},
-   {say:'제가 취조실에 들어갈게요. 국장님은 모니터실에서 보세요. 봅베가 국장님 얼굴을 보면 안 돼요.',award:['수사','정보원']}]},
+   {say:'제가 취조실에 들어갈게요. 국장님은 모니터실에서 보세요. 봅베가 국장님 얼굴을 보면 안 돼요.',award:['수사','정보원'],walk:{npc:'luciaCell',from:[10,4]}}]},
  luciaCell:{name:'루치아',zone:'hq',x:17,y:3,dir:'right',look:L_LUCIA,still:1,hide:()=>!b('정보원')||!!f().bopbeDead,talk:()=>[{say:'…'}]},
  bopbe:{name:'봅베',zone:'hq',x:18,y:3,dir:'down',badge:['체포하다'],
   get look(){return f().burn&&!f().bopbeDead?FIRE[Math.floor(performance.now()/140)%2]:L_BOPBE},

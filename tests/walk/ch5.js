@@ -2,6 +2,10 @@
 [
  {intro:1,shot:'01-intro'},
  {talk:'lucia',wrong:true,shotBefore:'02-hq'},
+ {check:()=>!!C.NPC.luciaCell.walk,msg:'루치아 walks to the interrogation room'},
+ {pause:0,shot:'02a-lucia-walks'},
+ {pause:3500},
+ {check:()=>!C.NPC.luciaCell.walk,msg:'…and arrives'},
  {talk:'bopbe',wrong:true,shotBefore:'03-monitor-room',shotSay:{text:'봅베의 몸에서 불이',name:'04-bopbe-fire'}},
  {check:()=>state.f.bopbeDead&&!state.badges.includes('처형'),msg:'Bopbe burned; lab next'},
  {talk:'lucia'},
