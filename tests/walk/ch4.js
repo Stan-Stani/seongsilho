@@ -26,7 +26,7 @@
  {inspect:['plain',17,7]},
  {walkTo:['plain',15,9],then:'10b-dead-herd'},
  {walkTo:['plain',5,10],then:'10c-dust-ocean'},
- {talk:'ellieP'},
+ {inspect:['plain',12,12]},  // Ellie answers from inside the tank
  {talk:'miqueB',wrong:true,shotBefore:'11-trap-field'},
  {talk:'bensathB',shotSay:{text:'파도처럼',name:'12-saberstones'}},
  {check:()=>state.f.attack,msg:'the moat attack happened'},
