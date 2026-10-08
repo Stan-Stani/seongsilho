@@ -1,4 +1,4 @@
-/* GENERATED from walk-engine/engine.js (8ce7400) — do not edit here; edit walk-engine and run its sync.sh. */
+/* GENERATED from walk-engine/engine.js (d80aede) — do not edit here; edit walk-engine and run its sync.sh. */
 /* =====================================================================
    Engine: tiles, movement, zones, dialogue, spaced review, speech, saving.
    ===================================================================== */
@@ -408,7 +408,7 @@ function arrive(){
 }
 function goZone(id,x,y,dir){
  warping=true;sfx('door');$('fade').classList.add('on');
- setTimeout(()=>{loadZone(id,x,y,dir);save();$('fade').classList.remove('on');if(held&&held!==dir)held=null;setTimeout(()=>{warping=false;tryMove()},120)},230);  // turned around by the warp: let go of the held direction
+ setTimeout(()=>{loadZone(id,x,y,dir);save();$('fade').classList.remove('on');if(held&&held!==dir)held=null;setTimeout(()=>{warping=false;if(!greet())tryMove()},120)},230);  // turned around by the warp: let go of the held direction
 }
 function loadZone(id,x,y,dir){
  ZID=id;Z=C.ZONES[id];state.zone=id;
@@ -416,7 +416,7 @@ function loadZone(id,x,y,dir){
  NPCS=Z.npcs.map(k=>C.NPC[k]);NPCS.forEach(n=>{n.home=n.home||n.dir;n.turnAt=performance.now()+2000+Math.random()*3000});
  Object.assign(player,{x,y,dir,moving:false,t:0,sit:null});camT=null;camF=null;state.x=x;state.y=y;state.dir=dir;
  petReset();pet.on=false;ghosts=[];
- $('reg').textContent=`${Z.reg} · ${CH.n} ${CH.title}`;showRoom(true);
+ $('reg').textContent=`${Z.reg} · ${CH.n} ${CH.title}`;fitReg();showRoom(true);
 }
 let roomName='';
 function showRoom(force){
@@ -439,26 +439,26 @@ let camT=null,camF=null,camLast=0,talkCy=null,talkAt=0,talkExtra=0;
    are. It only ever moves further (never back and forth as the box grows and shrinks line to line) until the conversation ends.
    Near the bottom of a map it may scroll past the edge by as much as the box covers: that strip is behind the box. */
 /* canvas px where the plain dialogue box starts (choices and word tiles don't count), with air for one more line; null when no box */
-function boxTop(){const box=$('dlg');if(!dlg||box.hidden)return null;const k=cv.clientHeight/cv.height;if(!k)return null;
- let extra=0;for(const id of ['choices','build']){const e=$(id);if(e&&!e.hidden)extra+=e.offsetHeight+7}return (box.offsetTop+extra)/k-6-14}
-function talkLift(cy,py){
- const box=$('dlg');if(!dlg||box.hidden)return null;
- if(dlg.atTop)return null;  // the box went to the top for this conversation: the camera stays put
- const k=cv.clientHeight/cv.height;if(!k)return null;
- /* the plain box: answer choices and word tiles make it taller only for a moment, and following them would leave the camera
-    high (off the map) once they close */
- let extra=0;for(const id of ['choices','build']){const e=$(id);if(e&&!e.hidden)extra+=e.offsetHeight+7}
- const top=(box.offsetTop+extra)/k-6-14;  // canvas px where the plain box starts, with air for one more line (so it doesn't creep line by line)
- talkExtra=Math.max(talkExtra,Math.round(VH*TS-top));
- const rows=[py],n=dlg.npc;if(n&&NPCS.includes(n)&&(!n.hide||!n.hide()))rows.push(npcPos(n)[1]);
- const y0=Math.min(...rows)*TS-10,y1=Math.max(...rows)*TS+16;  // the marker above the heads … the feet
- if(y1-cy<=top)return null;
- const lift=y1-y0>top?y0:(y0+y1)/2-top/2;  // centred in the space above the box (or, if they don't fit, the top of them)
- /* lifting that far would scroll past the bottom of the map (a black band under the room): instead the box moves to the top of the
-    screen for this conversation and the camera stays in the room, as Undertale does. The shell styles .dlg.attop. */
- if(lift>MH*TS-VH*TS+.5){dlg.atTop=true;box.classList.add('attop');talkExtra=0;return null}
- return lift;
+/* ---------- the dialogue box: as tall as its line (typing lays the whole line out first, so it never grows mid-line), its side
+   chosen once per conversation when it opens, as Undertale's dialogue code does (box at the top when you stand low on the screen):
+   at the bottom unless the tallest box (three lines, the most linecheck allows) would cover you or whoever you're talking to, then
+   at the top. The camera doesn't move for talk. A scene's camera cut (step cam:[x,y]) chooses again, for the tile it shows, and
+   frames that tile in the space the tallest box would leave free, so shorter and longer lines don't nudge the view. ---------- */
+function boxSpan(){const box=$('dlg'),k=cv.clientHeight/cv.height;if(!dlg||box.hidden||!k)return null;
+ return [box.offsetTop/k,(box.offsetTop+box.offsetHeight)/k]}  // canvas px the box covers (choices and tiles included)
+function boxReserve(){const box=$('dlg'),t=$('txt'),k=cv.clientHeight/cv.height,m=t.style.minHeight;  // canvas px of the box with three full lines
+ t.style.minHeight=3*(parseFloat(getComputedStyle(t).lineHeight)||parseFloat(getComputedStyle(t).fontSize)*1.5)+'px';const h=box.offsetHeight/k;t.style.minHeight=m;return h}
+function freeBand(){const b=boxSpan();if(!b)return [0,VH*TS];const h=Math.max(b[1]-b[0],dlg.boxH||0);  // the view's part the tallest box leaves free
+ return dlg.atTop?[b[0]+h+4,VH*TS]:[0,b[1]-h-4]}
+function placeBox(rows,camY){
+ const box=$('dlg'),k=cv.clientHeight/cv.height;if(!dlg||!k)return;
+ box.classList.remove('attop');dlg.atTop=false;
+ dlg.boxH=Math.max(box.offsetHeight/k,boxReserve());const h=dlg.boxH+6,cy=camY??CAM.y;
+ const feet=Math.max(...rows)*TS+16-cy;  // the lowest feet on screen
+ if(feet>VH*TS-h){box.classList.add('attop');dlg.atTop=true}
 }
+function talkRows(){const rows=[player.y],n=dlg&&dlg.npc;if(n&&NPCS.includes(n)&&(!n.hide||!n.hide()))rows.push(npcPos(n)[1]);return rows}
+function talkLift(){return null}  // talk never moves the camera (the box chooses its side instead)
 function render(t){
  const px=player.moving?player.fx+(player.x-player.fx)*player.t:player.x;
  const py=player.moving?player.fy+(player.y-player.fy)*player.t:player.y;
@@ -467,8 +467,8 @@ function render(t){
  if(dlg)talkAt=t;else if(talkCy!=null&&t-talkAt>700){talkCy=null;talkExtra=0;camF={...CAM}}  // glide back, never snap  /* held a moment after it ends: a follow-up note (단어 일지) doesn't make it dip and rise */
  const cyMap=Math.max(0,Math.min(cy,MH*TS-VH*TS));  // where the camera would be without a conversation (inside the map)
  if(!camT&&talkCy!=null||!camT&&dlg){const l=dlg?talkLift(cyMap,py):null;if(l!=null)talkCy=Math.max(talkCy??-1e9,l);if(talkCy!=null)cy=Math.max(cyMap,talkCy)}
- let camLift=false;if(camT&&dlg){const top=boxTop();if(top!=null){talkExtra=Math.max(talkExtra,Math.round(VH*TS-top));cy=fy*TS+8-top/2;camLift=true}}  // a scene's camera target sits in the space above the dialogue box, not behind it
- cx=Math.max(0,Math.min(cx,MW*TS-VW*TS));cy=Math.max(0,Math.min(cy,MH*TS-VH*TS+(talkCy!=null||camLift?talkExtra:0)));
+ let camLift=false;if(camT&&dlg){const [b0,b1]=freeBand();cy=fy*TS+8-(b0+b1)/2;camLift=true}  // a scene's camera target sits in the space above the dialogue box, not behind it
+ cx=Math.max(0,Math.min(cx,MW*TS-VW*TS));cy=Math.max(0,Math.min(cy,MH*TS-VH*TS));
  const dt=Math.min(50,t-camLast);camLast=t;
  if(camT||camF||talkCy!=null){if(!camF)camF={...CAM};const k=1-Math.exp(-dt/(camT?180:260));  /* talk shifts glide a little slower */camF.x+=(cx-camF.x)*k;camF.y+=(cy-camF.y)*k;
   if(!camT&&Math.abs(cx-camF.x)<.5&&Math.abs(cy-camF.y)<.5)camF=null;else{cx=camF.x;cy=camF.y}}
@@ -487,7 +487,7 @@ function render(t){
  ghosts=ghosts.filter(gh=>{const wk=walkAt(gh,t);if(!wk)return false;const [wx,wy,wd,wf]=wk;ents.push({y:wy,f:()=>drawChar(gh.look,Math.round(wx*TS-cx),Math.round(wy*TS-cy-2),wd,wf)});return true});
  const walk=player.moving?(player.t<.5?player.step:0):0;
  if(petOn()){
-  if(!pet.on){petReset();pet.on=true}
+  if(!pet.on){petReset();const n=dlg&&dlg.npc;if(n&&n.name===C.FOLLOW.name){const [x,y]=npcPos(n);pet.x=pet.fx=x;pet.y=pet.fy=y;pet.dir=n.dir}pet.on=true}  // joining you in a talk ("앞장서"): from where they stood, not from your square
   const qx=player.moving?pet.fx+(pet.x-pet.fx)*player.t:pet.x,qy=player.moving?pet.fy+(pet.y-pet.fy)*player.t:pet.y;
   if(player.moving||pet.x!==player.x||pet.y!==player.y)ents.push({y:qy-.01,f:()=>drawChar(C.FOLLOW.look,Math.round(qx*TS-cx),Math.round(qy*TS-cy-2),pet.dir,walk?3-walk:0)});  // not while it shares your square
  }else pet.on=false;
@@ -594,10 +594,18 @@ if($('notes')){
  for(const id of ['closePanel','panel'])$(id).addEventListener('click',e=>{if(id==='closePanel'||e.target.id==='panel')document.body.classList.remove('talkopen')});
 }
 
+/* a room's greeting: zone greet:'npcId' (or a function returning one, or null) — whoever is there talks to you the moment you walk
+   in, before you can move (찬 at the gym door), so a scene can't be met in the wrong order. Also on loading a save in that room, so
+   a reload in the middle of it starts it over (its flag is only set on its last line). */
+function greet(){
+ const g=typeof Z.greet==='function'?Z.greet():Z.greet,n=g&&C.NPC[g];if(!n||!NPCS.includes(n)||(n.hide&&n.hide())||dlg)return false;
+ const [nx,ny]=npcPos(n),dx=nx-player.x,dy=ny-player.y;held=null;
+ player.dir=Math.abs(dx)>=Math.abs(dy)&&dx?(dx>0?'right':'left'):(dy>0?'down':'up');state.dir=player.dir;  // look at them
+ talkWith(n);return true}
 function openDialog(name,steps,opts={}){
  steps=steps.filter(s=>!s.when||s.when());
  dlg={name,steps:steps.map(s=>({...s})),i:0,cur:null,next:null,missed:new Set(),npc:opts.npc||null,review:!!opts.review};
- $('tag').hidden=!opts.review;$('dlg').hidden=false;show(dlg.steps[0]);
+ $('tag').hidden=!opts.review;$('dlg').hidden=false;show(dlg.steps[0]);placeBox(talkRows());
 }
 function show(s){
  dlg.cur=s;hideGloss();
@@ -609,8 +617,8 @@ function show(s){
  if(s.culture)unlockCulture(s.culture);
  if(s.sit)sitDown(s.sit);
  [].concat(s.turn||[]).forEach(o=>{const n=C.NPC[o.npc];if(n){n.dir=o.dir;n.turnAt=performance.now()+60000}});
- if('cam' in s)camT=s.cam||null;
- if(s.go){const [z,x,y,d]=s.go;loadZone(z,x,y,d||'down');talkCy=null;talkExtra=0;save()}  // a scene that moves you ("다음 날 아침, 학교")
+ if('cam' in s){camT=s.cam||null;if(camT){const cyc=Math.max(0,Math.min(camT[1]*TS+8-VH*TS/2,MH*TS-VH*TS));placeBox([camT[1]],cyc)}else placeBox(talkRows())}
+ if(s.go){const [z,x,y,d]=s.go;loadZone(z,x,y,d||'down');talkCy=null;talkExtra=0;save();placeBox(talkRows())}  // a scene that moves you ("다음 날 아침, 학교")
  if(s.sfx||/딩동댕동/.test(s.say||''))sfx(s.sfx||'bell');  /* a step can play a sound; the school bell rings on its own */
  if(s.give){state.items.push(s.give);save();sfx('item');setTimeout(()=>toast('받았어요: '+s.give),200)}
  if(s.take){state.items=state.items.filter(i=>!s.take.includes(i));save()}
@@ -656,14 +664,15 @@ function popGloss(rows){ // rows: [[headword,{k,e}],…] — Korean first; Engli
  el.hidden=false;el.querySelector('.q').addEventListener('click',e=>{e.stopPropagation();el.querySelectorAll('.en').forEach(x=>x.hidden=!x.hidden)});
 }
 function typeText(text,done){
- clearInterval(typing?.id);const el=$('txt');const p=plain(text);el.textContent='';let i=0;
+ clearInterval(typing?.id);const el=$('txt');const p=plain(text);el.innerHTML='<span style="visibility:hidden">'+p.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]))+'</span>';let i=0;
  const reduce=matchMedia('(prefers-reduced-motion: reduce)').matches;
  typing={id:null,finished:false};
  const fin=()=>{clearInterval(typing.id);el.innerHTML=glossHTML(text);typing.finished=true;done()};
  typing.fin=fin;
  if(reduce)return fin();
  const seg=(()=>{try{return [...new Intl.Segmenter('ko',{granularity:'grapheme'}).segment(p)].map(x=>x.segment)}catch(e){return Array.from(p)}})();  // whole characters: never half an emoji (it shows as ? for a tick)
- typing.id=setInterval(()=>{i++;el.textContent=seg.slice(0,i).join('');if(i>=seg.length)fin()},26);
+ const esc=x=>x.replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));  // the whole line is laid out from the start: words never jump down a line
+ typing.id=setInterval(()=>{i++;el.innerHTML=esc(seg.slice(0,i).join(''))+'<span style="visibility:hidden">'+esc(seg.slice(i).join(''))+'</span>';if(i>=seg.length)fin()},26);
 }
 function showGloss(k){const d=C.DICT[k];if(d){noteTap([[k,d]]);popGloss([[k,d]])}}
 function showWord(w){const rows=lexLookup(w);noteTap(rows);popGloss(rows);lastWord=(w+(rows.length?' → '+rows.map(([h,d])=>h+': '+d.k).join(' / '):' (사전에 없음)')).slice(0,400)}
@@ -890,6 +899,19 @@ function chatPair(n){
  const L=live(),o=n.chat?C.NPC[n.chat]:L.find(m=>m.chat&&C.NPC[m.chat]===n);
  return o&&L.includes(o)&&!(o.badge&&o.badge.length)?(n.chat?[o,n]:[n,o]):null;
 }
+/* a conversation with n, as when you press A facing them (also a room's greeting) */
+function talkWith(n){
+ if(n.proxy){const p=n.proxy();if(p)n=p}
+ const pair=chatPair(n);  // two people talking to each other: they keep facing each other, and the one who started speaks first
+ if(!pair&&!n.pos&&!sitting(n)&&!n.fixed){n.dir=OPP[player.dir];n.turnAt=performance.now()+6000}  // fixed: furniture (a chair) never turns to face you
+ let steps=n.script?n.script():null,isReview=false;
+ if(!steps){
+  if(n.badge&&n.badge.every(has)){steps=[...says(n.after),reviewFor(n.badge)];isReview=true}
+  else steps=n.talk();
+ }
+ if(pair&&!isReview){const said=m=>(m===n?steps:(m.script&&m.script())||m.talk()).map(s=>s.who?s:{...s,who:m.name,look:m.look});steps=[...said(pair[0]),...said(pair[1])]}
+ openDialog(n.name,steps,{npc:n,review:isReview});
+}
 function interact(){
  if(phoneOpen){if(!$('gloss').hidden){hideGloss();return}if(typing&&!typing.finished){typing.fin();return}closePhone();return}  // A finishes the line, then puts the phone away
  if(!$('gloss').hidden){hideGloss();return}  // A closes the definition first, without advancing
@@ -899,18 +921,7 @@ function interact(){
  if(performance.now()-closedAt<650)return;  // the tap that closed a talk, doubled, doesn't reopen it
  if(player.moving||warping)return;
  const F=facing();if(!F)return;
- if(F.n){
-  let n=F.n;if(n.proxy){const p=n.proxy();if(p)n=p}
-  const pair=chatPair(n);  // two people talking to each other: they keep facing each other, and the one who started speaks first
-  if(!pair&&!n.pos&&!sitting(n)&&!n.fixed){n.dir=OPP[player.dir];n.turnAt=performance.now()+6000}  // fixed: furniture (a chair) never turns to face you
-  let steps=n.script?n.script():null,isReview=false;
-  if(!steps){
-   if(n.badge&&n.badge.every(has)){steps=[...says(n.after),reviewFor(n.badge)];isReview=true}
-   else steps=n.talk();
-  }
-  if(pair&&!isReview){const said=m=>(m===n?steps:(m.script&&m.script())||m.talk()).map(s=>s.who?s:{...s,who:m.name,look:m.look});steps=[...said(pair[0]),...said(pair[1])]}
-  openDialog(n.name,steps,{npc:n,review:isReview});return;
- }
+ if(F.n){talkWith(F.n);return}
  if(F.pet){openDialog(C.FOLLOW.name,C.FOLLOW.talk());return}
  if(F.term){openDialog(TERM.name,terminal(),{review:true});return}
  if(F.spot){openDialog('…',F.spot.steps||says(F.spot))}
@@ -936,7 +947,11 @@ function finish(pre){
 let toastT;function toast(t){const el=$('toast');el.textContent=t;el.hidden=false;clearTimeout(toastT);toastT=setTimeout(()=>el.hidden=true,2400)}
 
 /* ---------- HUD + log ---------- */
-function updateHud(){const n=state.badges.length,st=C.WORDS.filter(w=>has(w)&&lv(w).b>=3).length;$('logBtn').textContent=`일지 ${n}/${C.WORDS.length}`+(st?` ★${st}`:'')}
+function updateHud(){const n=state.badges.length,st=C.WORDS.filter(w=>has(w)&&lv(w).b>=3).length;$('logBtn').textContent=`일지 ${n}/${C.WORDS.length}`+(st?` ★${st}`:'');fitReg()}
+/* the header label (room · 교시 title): tighten its letter spacing, then its size, before it would be cut off (…) next to a wide 일지 badge */
+function fitReg(){const e=$('reg');if(!e)return;e.style.letterSpacing=e.style.fontSize='';const f0=parseFloat(getComputedStyle(e).fontSize);
+ for(const [ls,k] of [['.08em',1],['.03em',1],['.02em',.92],['0',.86]]){if(e.scrollWidth<=e.clientWidth)return;e.style.letterSpacing=ls;e.style.fontSize=k<1?f0*k+'px':''}}
+addEventListener('resize',()=>fitReg());
 function updateQuest(){$('questTxt').textContent=C.questText()}
 function updateRead(){$('readBtn').setAttribute('aria-pressed',readOn&&canSpeak()?'true':'false');$('spk').hidden=!canSpeak()}
 function updateSound(){$('sndBtn').setAttribute('aria-pressed',soundOn?'true':'false')}
@@ -1132,6 +1147,7 @@ function boot(id){
  $('chName').textContent=CH.n;
  updateHud();updateQuest();
  if(!state.seenIntro){state.seenIntro=true;save();const intro=()=>setTimeout(()=>openDialog(CH.introWho||G.title||'이야기',C.INTRO),300);if(me||!CREATOR)intro();else openMe(intro)}  // first time ever: make your character first
+ else setTimeout(()=>{if(!dlg&&!panelOpen())greet()},400);  // loaded in a room whose greeting hasn't happened (reloaded mid-scene): it starts over
 }
 function chapterProgress(c){try{const s=JSON.parse(store.get(c.save)||'null');return s?{got:(s.badges||[]).length,done:!!(s.f&&s.f.done)}:{got:0,done:false}}catch(e){return {got:0,done:false}}}
 function openChapters(){
