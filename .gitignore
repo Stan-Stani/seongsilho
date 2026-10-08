@@ -2,3 +2,4 @@ claude-export/
 *.epub
 tests/shots/
 src/lexicon-missing.txt
+src/lexicon-empty.txt
