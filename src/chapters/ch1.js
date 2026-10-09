@@ -123,7 +123,7 @@ const Q={ // NPC questions, kept here so review can reuse them
 };
 
 /* In-character review lines. Canon used: Ellie was born in the Diligent and had never been on a planet before Anoosha, and calls
-   Josias "Grandpa" (c001); Gondiar is endless farmland with 4x Earth's area; Anoosha is a mining world; High Rosa is the city at the
+   Josias "Grandpa" (c001, c003, c009); Gondiar is endless farmland with 4x Earth's area; Anoosha is a mining world; High Rosa is the city at the
    top of the orbital tower; Octain is nearly 100; Dejean stays captain under owner Finn; Josias stays for Hafnir; no ZPZ generator yet.
    Gyvoy is already the impostor: kept to a trader's curiosity, no hints beyond the chapter's own.
    Invented (small, harmless): Ellie can't sleep in on arrival day, is bored while the ship only orbits, thinks Finn will like the map;
@@ -131,27 +131,27 @@ const Q={ // NPC questions, kept here so review can reuse them
    the 98% oxygen (the bridge screen) and her vegetables will go along; Octain is the best at engine repair and can be called at night;
    customs seized someone's dangerous knife yesterday, many ships arrived today; Gyvoy would buy the navigation map and asks when the
    ship leaves; Lina never tires of the nebula, hopes to discover a star, draws sky maps, is afraid of far exploration; the miner reached
-   High Rosa yesterday (first time at Gondiar) and will buy food supplies, dear on Anoosha; Josias calls it a good deal and Dejean a good
-   captain; the marchioness sighs about Finn's ship; Otylia told Finn the ship was old.
+   High Rosa yesterday (first time at Gondiar) and will buy food supplies (Gondiar has plenty, c005); Josias calls it a good deal
+   (c009 "Best deal") and Dejean a good captain; the marchioness sighs about Finn's ship. Audit: notes/audit-review-ch1.md.
    Times: the ship stays docked at High Rosa all chapter (even after the finale). Octain only talks after the repair (his script until
    then); Dejean's finale script runs between the repair and the end; Finn hides once he has taught (no lines). */
 // people reuse learned words in their own voice: asked when the word is due, else said once as ordinary talk
 const REVIEW=[
  // 엘리: the cabin, all chapter
  {w:'도착하다',by:'ellie',ask:'곤디아에 ___ 날인데 늦잠도 못 자요!',opts:[['도착한',1],['출발한',0,'출발은 떠나는 거예요. 우리는 오늘 왔어요 → "도착한" 날!'],['착한',0,'착하다는 마음이 좋은 거예요. 하하. 여기 온 날은 "도착한" 날.']]},
- {w:'궤도',by:'ellie',ask:'___만 도니까 조종사는 심심해요. 빨리 날고 싶어요!',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 배가 도는 길은 "궤도".'],['기도',0,'기도는 아스테리아 여신님한테 하는 거예요. 도는 길은 "궤도".']]},
+ {w:'궤도',by:'ellie',ask:'___만 도니까 조종사는 심심해요. 빨리 날고 싶어요!',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 배가 도는 길은 "궤도".'],['기도',0,'기도는 신한테 하는 말이에요. 도는 길은 "궤도".']]},
  {w:'우주선',by:'ellie',ask:'저는 이 ___에서 태어났어요. 진짜예요!',opts:[['우주선',1],['우체국',0,'하하, 우체국에서 태어났어요? 아니에요. 이 배, "우주선"이에요.'],['비행선',0,'비행선은 하늘에 뜨는 풍선 배예요. 이 배는 "우주선".']]},
  {w:'선장',by:'ellie',ask:'배에서는 ___님 말을 꼭 들어요. 저도… 거의요.',opts:[['선장',1],['선생',0,'선생님은 학교에 있어요. 배에서는 "선장"님!'],['심판',0,'심판은 시합에서 결정하는 사람이에요. 배에서 제일 높은 사람은 "선장"님.']]},
- {w:'고장 나다',by:'ellie',when:()=>!f().fixed,ask:'엔진실이 ___ 배가 너무 조용해요.',opts:[['고장 나서',1],['고쳐서',0,'고쳤으면 시끄럽겠죠! 조용한 건 "고장 나서".'],['출발해서',0,'엔진실은 아무 데도 안 가요. 망가져서 조용해요 → "고장 나서".']]},
+ {w:'고장 나다',by:'ellie',when:()=>!f().fixed,ask:'엔진실 기계가 ___ 배가 너무 조용해요.',opts:[['고장 나서',1],['고쳐서',0,'고쳤으면 시끄럽겠죠! 조용한 건 "고장 나서".'],['출발해서',0,'엔진실은 아무 데도 안 가요. 망가져서 조용해요 → "고장 나서".']]},
  {w:'행성',by:'ellie',ask:'아누샤 전에는 ___에 가 본 적이 없었어요. 배에서만 살았어요.',opts:[['행성',1],['항상',0,'항상은 "언제나"예요. 아누샤 같은 큰 땅은 "행성".'],['학생',0,'학생은 공부하는 사람이에요. 아누샤는 "행성".']]},
  {w:'지도',by:'ellie',ask:'할아버지 ___, 잘 챙겨요. 핀이 좋아할 거예요.',opts:[['지도',1],['지구',0,'지구는 아주 먼 행성이에요! 할아버지가 준 건 "지도".'],['기도',0,'기도는 말로 하는 거예요. 길이 그려진 건 "지도".']]},
  // 드장 선장: the bridge; her finale script talks between the repair and the end
  {w:'선장',by:'dejean',ask:'핀 씨가 주인이지만, 배에서는 제가 ___이에요.',opts:[['선장',1],['승객',0,'승객은 배를 타고 가는 손님이에요. 배를 책임지는 사람은 "선장".'],['선생',0,'선생님은 학교에 있어요. 배에서 제일 높은 사람은 "선장".']]},
- {w:'우주선',by:'dejean',ask:'이 ___은 저보다 나이가 훨씬 많아요. 그래도 아직 날아요.',opts:[['우주선',1],['비행선',0,'비행선은 하늘에 뜨는 풍선 배예요. 우리 배는 우주를 나는 "우주선".'],['우체국',0,'우체국이 날아요? 이 배는 "우주선"이에요.']]},
+ {w:'우주선',by:'dejean',ask:'이 ___은 저보다 나이가 훨씬 많아요. 그래도 여기까지 왔어요.',opts:[['우주선',1],['비행선',0,'비행선은 하늘에 뜨는 풍선 배예요. 우리 배는 우주를 나는 "우주선".'],['우체국',0,'우체국이 여기까지 와요? 이 배는 "우주선"이에요.']]},
  {w:'도착하다',by:'dejean',ask:'곤디아에 ___하자마자 일이 산더미예요.',opts:[['도착',1],['출발',0,'출발은 떠나는 거예요. 우리는 막 왔어요. "도착"하자마자!'],['도전',0,'도전은 어려운 걸 해 보는 거예요. 막 왔으면 "도착".']]},
  {w:'산소',by:'dejean',ask:'___ 걱정은 없어요. 오르가 있으니까요.',opts:[['산소',1],['연료',0,'연료는 엔진이 먹어요. 오르의 채소가 만드는 건 "산소".'],['산수',0,'산수는 숫자 공부예요. 숨 쉬는 공기는 "산소".']]},
- {w:'고장 나다',by:'dejean',when:()=>!f().fixed,ask:'엔진실은 ___ 제 팔은 멀쩡해요. 웃기죠?',opts:[['고장 났는데',1],['고쳤는데',0,'엔진실은 아직 못 고쳤어요. 망가졌으니까 "고장 났는데".'],['출발했는데',0,'엔진실은 아무 데도 안 가요. 망가졌어요 → "고장 났는데".']]},
- {w:'수리하다',by:'dejean',when:()=>!f().fixed,ask:'부품하고 연료만 있으면 기관장이 바로 ___할 거예요.',opts:[['수리',1],['회복',0,'회복은 사람이 다시 건강해지는 거예요. 엔진은 "수리".'],['구경',0,'구경만 하면 안 고쳐져요. 고치는 건 "수리".']]},
+ {w:'고장 나다',by:'dejean',when:()=>!f().fixed,ask:'엔진실 기계는 ___ 제 팔은 멀쩡해요. 웃기죠?',opts:[['고장 났는데',1],['고쳤는데',0,'엔진실은 아직 못 고쳤어요. 망가졌으니까 "고장 났는데".'],['출발했는데',0,'엔진실은 아무 데도 안 가요. 망가졌어요 → "고장 났는데".']]},
+ {w:'수리하다',by:'dejean',when:()=>!f().fixed,ask:'부품하고 연료만 있으면 기관장이 ___할 수 있어요.',opts:[['수리',1],['회복',0,'회복은 사람이 다시 건강해지는 거예요. 엔진은 "수리".'],['구경',0,'구경만 하면 안 고쳐져요. 고치는 건 "수리".']]},
  {w:'수리하다',by:'dejean',when:()=>!!f().done,ask:'한 달 걸린다더니, 기관장이 금방 ___했네요.',opts:[['수리',1],['회복',0,'회복은 사람이 나을 때예요. 엔진은 "수리".'],['구경',0,'구경은 보기만 하는 거예요. 고쳤으니까 "수리".']]},
  {w:'출발하다',by:'dejean',when:()=>!!f().done,ask:'이제 언제든 ___할 수 있어요. 관문만 빼고요.',opts:[['출발',1],['반납',0,'반납은 빌린 걸 돌려주는 거예요. 떠나는 건 "출발".'],['연습',0,'연습은 여러 번 해 보는 거예요. 떠나는 건 "출발".']]},
  // 오르: the hydroponics bay, all chapter
@@ -183,7 +183,7 @@ const REVIEW=[
  {w:'탐험',by:'lina',ask:'먼 곳 ___은 무서워요. 저는 여기서 보기만 해요.',opts:[['탐험',1],['시험',0,'시험은 학교에서 봐요. 먼 곳에 직접 가는 건 "탐험".'],['탐정',0,'탐정은 범인을 찾는 사람이에요. 먼 곳에 가 보는 건 "탐험".']]},
  // 광부: the georing, all chapter (no badge, so these can be the first thing he says)
  {w:'행성',by:'trader',ask:'제 고향 아누샤는 광산 ___이에요. 파고 또 파요.',opts:[['행성',1],['항상',0,'항상은 "언제나"예요. 아누샤는 광산 "행성".'],['학생',0,'저는 학생 아니에요. 하하. 아누샤는 "행성".']]},
- {w:'식량',by:'trader',ask:'곤디아에서 ___을 잔뜩 사 갈 거예요. 아누샤는 비싸요.',opts:[['식량',1],['시력',0,'시력은 살 수 없어요. 눈이 보는 힘이에요. 먹을 건 "식량".'],['심장',0,'심장을 사요? 무서워요! 먹을 건 "식량".']]},
+ {w:'식량',by:'trader',ask:'곤디아에서 ___을 잔뜩 사 갈 거예요. 여기는 먹을 게 많아요.',opts:[['식량',1],['시력',0,'시력은 살 수 없어요. 눈이 보는 힘이에요. 먹을 건 "식량".'],['심장',0,'심장을 사요? 무서워요! 먹을 건 "식량".']]},
  {w:'도착하다',by:'trader',ask:'저는 어제 하이 로사에 ___. 곤디아는 처음이에요.',opts:[['도착했어요',1],['출발했어요',0,'출발은 떠나는 거예요. 저는 여기 왔어요 → "도착했어요".'],['돌아왔어요',0,'처음이라고 했잖아요. 처음 온 거니까 "도착했어요".']]},
  // 테렌스 형사: the street by the police station
  {w:'발견하다',by:'terence',ask:'공원에서 또 이상한 걸 ___하면 저한테 말해요.',opts:[['발견',1],['결정',0,'결정은 고르는 거예요. 처음 찾으면 "발견".'],['연습',0,'흠, 연습이요? 처음 찾으면 "발견".']]},
@@ -197,7 +197,7 @@ const REVIEW=[
  {w:'행성',by:'otylia',ask:'제 쌍둥이 핀은 곤디아가 지겹대요. 이렇게 큰 ___인데요!',opts:[['행성',1],['항상',0,'항상은 "언제나"예요. 곤디아는 큰 "행성"!'],['학생',0,'학생? 하하, 곤디아는 사람이 아니에요. "행성"이에요.']]},
  {w:'위험',by:'otylia',ask:'핀이 또 ___한 짓 하면 저한테 바로 말해요.',opts:[['위험',1],['안전',0,'안전한 짓은 걱정 안 해요. 걱정되는 건 "위험"한 짓!'],['조용',0,'핀이 조용한 짓을? 하하, 그럼 좋죠. 걱정되는 건 "위험"한 짓.']]},
  {w:'우주선',by:'otylia',ask:'우리 엄마는 핀의 ___ 얘기만 나오면 한숨이에요.',opts:[['우주선',1],['우체국',0,'우체국 얘기에 한숨을 왜 쉬어요? 핀이 받은 건 "우주선".'],['우유',0,'우유는 마시는 거예요. 핀이 땅을 주고 받은 건 "우주선".']]},
- {w:'고장 나다',by:'otylia',when:()=>!f().fixed,ask:'핀 배가 벌써 ___? 낡았다고 했잖아요.',opts:[['고장 났어요',1],['고쳤어요',0,'고쳤으면 좋은 소식이죠! 낡아서 망가졌으면 "고장 났어요".'],['지었어요',0,'짓다는 집이나 밥이에요. 배가 망가지면 "고장 났어요".']]},
+ {w:'고장 나다',by:'otylia',when:()=>!f().fixed,ask:'핀 배가 벌써 ___? 정말 낡은 배예요.',opts:[['고장 났어요',1],['고쳤어요',0,'고쳤으면 좋은 소식이죠! 낡아서 망가졌으면 "고장 났어요".'],['지었어요',0,'짓다는 집이나 밥이에요. 배가 망가지면 "고장 났어요".']]},
 ];
 
 const ITEMS={'지구 씨앗 상자':'지구에서 가져온 씨앗이에요. 여기서는 아주 귀해요.','연료통':'헬륨3 연료가 들어 있어요.','부품':'엔진에 들어가는 은색 부품.','성실호 항해 지도':'조사이어스가 준 지도. 지구에서 여기까지 온 길이 그려져 있어요.','세관 도장':'하이 로사 세관 도장. 쾅!'};
