@@ -150,19 +150,27 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
 };
 
-/* Invented details in REVIEW / CLASS (small, harmless, not in the book): Lućia's team has an informant inside Eleven Toxix (the lab
-   says so in its scene); the lab tech watches Dolod through a telescope, re-checks the drone blueprint, keeps the lab dust-free, works
-   late after the bombing; Zikar fixed a High Rosa worker's spacesuit, has an andy to finish today; Bersche got only half his pay from
-   Medusa; Vanilda went to Lućia's funeral and cried, her next protest will be bigger, a later one ended quietly; Aljan's med school
-   has many stairs, a broken-down train made him late, he means to marry Laurella some day, Terence smiles less since the funeral;
-   Maria José put new cameras in the interrogation room, has bomb checks at the tower capsules, keeps an eye on Terence; Jimena saw
-   the white cloud above the tower, it rained on the funeral day; the governor's office lights stay on at night; Medusa offers her
-   information for help, finds the helmet too tight; the dream bar's glasses don't break; Finn liked exploring as a child; the
-   sea breeze smells of salt and the children have just fallen asleep; Haian packs the food, they take the arrow train from Hafnir
-   station (outline 5장 step 7: train to Santa Rosa); the police seal on the club was intact.
-   Everything else is canon or the chapter's own story: Everett raged and was sedated, the Jalgori-Tobus' expulsion from Zetian Palace, the
-   empress (not Wynid) sent the general because the archon was killed, the YouBuster instead of executions, Toše probably planted
-   the capsule bomb (c026), the 10 m mansion wall (c027), Stanvar8 all arrested (c030). */
+/* Invented details in REVIEW / CLASS (small, harmless, not in the book): the lab tech watches Dolod through a telescope, re-checks
+   the drone blueprint, keeps the lab dust-free, works late after the bombing; Zikar fixed a High Rosa worker's spacesuit, has an andy
+   to finish today; Bersche got only half his pay from Medusa; Vanilda went to Lućia's funeral and cried, her next protest will be
+   bigger (only until the Liliana find); Aljan's med school has many stairs, a broken-down train made him late, he means to marry
+   Laurella some day, Terence smiles less since the funeral; Maria José put new cameras in the interrogation room, has bomb checks at
+   the tower capsules; it rained on the funeral day; the governor's office lights stay on at night; Medusa finds the helmet too tight;
+   the dream bar's glasses don't break; the sea breeze smells of salt and the children have just fallen asleep; Haian packs the food.
+   Everything else is canon or the chapter's own story: Lućia's team has an informant inside Eleven Toxix (c024); Zikar hid while
+   Terence wore his face (c024: he left with the ATD squad); Maria José turns down Terence's help and wants his intel shared with the
+   force (c026); the blast threw the capsule wreckage out into space, kilometres below High Rosa, seen on a georing feed, not from the
+   ground (c026); Zelinda had Terence hand over his gang files (c026; the police use them, c027); the face match on the old footage
+   (c027); after the crackdown Vanilda is arrested once, freed by Terence, and protests dwindle (c027); Medusa trades information to
+   stay in the system (c027); Makaio had never been on Gondiar and found it pleasant (c027); the park's 10 m wall, Makaio shot on the
+   balcony (c027; where Toše fired from is never said); the empress (not Wynid) sent the general because the archon was killed (c028);
+   the general: the archon's murder has "only one punishment: death" (c028; no executions are shown, YouBusters are for the overflow
+   of petty criminals, c032); the Jalgori-Tobus are thrown out of the Zetian Palace the morning the general arrives (c028); the
+   marchioness and her husband were on the back terrace when the missile hit (c029); the marchioness blessed Finn on leaving (c016);
+   Finn explored the Fridale islands with Otylia as a youth (c006); Otylia: "He'll be back soon. He will!" (c029; waiting at the Gate
+   is decided only aboard the Polkadav, c030); Everett raged, Aljan sedated him (c030); Hafnir's station, then the train to Santa Rosa
+   (c030; the maglev, c029; "the new arrow train", c016, 3장's 화살 열차); Toše planted the capsule bomb (c026, c027); the police seal
+   on the club (c030); Stanvar8 all arrested (c029, c030). */
 const REVIEW=[ // in-character review: people use a learned word again, in their own voice and moment (engine: linesFor/reviewPick)
  /* 루치아 (after Bopbe, until she goes up to High Rosa). Her script (reminders) always plays first while she's here, so these are
     never asked in the current flow; kept as the teacher's own lines */
@@ -177,10 +185,10 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'변장하다',by:'lab',when:()=>!!f().sting,ask:'그 가면 어땠어요? 지카르로 완벽하게 ___?',opts:[['변장했어요',1],['변했어요',0,'변하다는 저절로 달라지는 거예요. 일부러 남의 얼굴이 되면 "변장했어요".'],['화장했어요',0,'화장은 얼굴을 예쁘게 하는 거예요. 남의 얼굴이 되면 "변장했어요".']]},
  {w:'단서',by:'lab',when:()=>!f().helmet,ask:'드론 설계도에서 ___를 더 찾고 있어요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요. 범인을 찾는 힌트는 "단서".'],['순서',0,'순서는 1, 2, 3이에요. 범인을 찾는 힌트는 "단서".']]},
  {w:'폭발',by:'lab',when:()=>!f().liliana,ask:'캡슐 ___ 뒤로 우리 팀은 집에 못 가요.',opts:[['폭발',1],['출발',0,'출발은 떠나는 거예요. 터지는 건 "폭발".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터지는 건 "폭발".']]},
- {w:'발견하다',by:'lab',when:()=>!!f().liliana,ask:'옛날 영상에서 그 여자 얼굴을 ___. 제가요!',opts:[['발견했어요',1],['발표했어요',0,'발표는 사람들 앞에서 말하는 거예요. 처음 찾았으면 "발견했어요".']]},
+ {w:'발견하다',by:'lab',when:()=>!!f().liliana,ask:'얼굴 검색으로 옛날 영상에서 그 여자를 ___.',opts:[['발견했어요',1],['발표했어요',0,'발표는 사람들 앞에서 말하는 거예요. 처음 찾았으면 "발견했어요".']]},
  {w:'관측하다',by:'lab',when:()=>!!f().occupied,ask:'저는 밤마다 망원경으로 돌로드를 ___.',opts:[['관측해요',1],['정리해요',0,'정리는 방을 치우는 거예요. 망원경으로 별을 자세히 보면 "관측해요".']]},
  /* 지카르 (after the sting, until the occupation) */
- {w:'변장하다',by:'zikar',ask:'형사님이 저로 ___ 날, 저는 가게 안에 숨었어요.',opts:[['변장한',1],['변한',0,'변하다는 저절로 달라지는 거예요. 일부러 제 얼굴을 쓰면 "변장한".'],['화장한',0,'화장은 얼굴을 예쁘게 하는 거예요. 제 얼굴이 되면 "변장한".']]},
+ {w:'변장하다',by:'zikar',ask:'형사님이 저로 ___ 날, 저는 숨어 있었어요.',opts:[['변장한',1],['변한',0,'변하다는 저절로 달라지는 거예요. 일부러 제 얼굴을 쓰면 "변장한".'],['화장한',0,'화장은 얼굴을 예쁘게 하는 거예요. 제 얼굴이 되면 "변장한".']]},
  {w:'단서',by:'zikar',ask:'형사님, 저 말고 다른 ___를 찾아요. 제발요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요! 범인을 찾는 힌트는 "단서".'],['간식',0,'간식은 먹는 거예요! 범인을 찾는 힌트는 "단서".']]},
  {w:'우주복',by:'zikar',ask:'어제는 하이 로사 작업자 ___을 고쳤어요.',opts:[['우주복',1],['우주선',0,'우주선은 타는 거예요. 제가 고친 건 입는 거, "우주복".'],['우체국',0,'우체국은 편지를 보내는 곳이에요. 입는 건 "우주복".']]},
  {w:'수리하다',by:'zikar',ask:'이 안디는 오늘 안에 ___ 돼요. 바빠요.',opts:[['수리해야',1],['수업해야',0,'수업은 학교 이야기예요. 기계를 고치면 "수리해야".']]},
@@ -193,7 +201,7 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'체포하다',by:'시위대',ask:'아저씨, 경찰이에요? 우리를 ___ 거예요?',opts:[['체포할',1],['초대할',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포할".']]},
  {w:'위험',by:'시위대',ask:'걱정 마요. 앉아서 하는 시위는 ___하지 않아요.',opts:[['위험',1],['위성',0,'위성은 행성 주위를 도는 달이에요! 다칠 수 있으면 "위험".'],['위치',0,'위치는 있는 곳이에요. 다칠 수 있으면 "위험".']]},
  /* 바닐다 (after the protest, until the occupation) */
- {w:'시위',by:'vanilda',ask:'다음 ___에는 친구들이 더 많이 와요!',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 거리에서 목소리를 내는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 하는 건 "시위".']]},
+ {w:'시위',by:'vanilda',when:()=>!f().liliana,ask:'다음 ___에는 친구들이 더 많이 와요!',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 거리에서 목소리를 내는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 하는 건 "시위".']]},
  {w:'경호원',by:'vanilda',pre:['아빠, 또 저 따라왔어요?'],ask:'아빠는 경찰이지 제 ___이 아니에요!',opts:[['경호원',1],['정보원',0,'정보원은 비밀을 모으는 사람이에요. 저를 옆에서 지키는 사람은 "경호원".'],['회원',0,'회원은 모임에 든 사람이에요. 저를 옆에서 지키는 사람은 "경호원".']]},
  {w:'정당',by:'vanilda',ask:'돈키는 ___이 아니에요. 사람들의 운동이에요.',opts:[['정당',1],['정원',0,'정원은 꽃밭이에요! 정치를 하는 모임은 "정당".'],['식당',0,'식당은 밥 먹는 곳이에요! 정치를 하는 모임은 "정당".']]},
  {w:'장례식',by:'vanilda',when:()=>!!f().liliana,ask:'루치아 언니 ___에 저도 갔어요. 많이 울었어요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 마지막 인사를 하는 날은 "장례식".']]},
@@ -201,11 +209,11 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'계단',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'의대 건물은 ___이 너무 많아요. 매일 운동해요!',opts:[['계단',1],['계산',0,'계산은 숫자 문제예요. 걸어서 올라가는 건 "계단".'],['계란',0,'계란은 먹는 거예요! 걸어서 올라가는 건 "계단".']]},
  {w:'고장 나다',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'아침에 기차가 ___ 수업에 늦었어요.',opts:[['고장 나서',1],['고생해서',0,'고생은 힘든 일을 겪는 거예요. 기계가 망가지면 "고장 나서".']]},
  {w:'결혼하다',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'저는 나중에 로렐라하고 ___ 거예요!',opts:[['결혼할',1],['결석할',0,'결석은 학교에 안 가는 거예요! 부부가 되면 "결혼할".']]},
- {w:'시위',by:'aljan',ask:'바닐다가 또 ___ 맨 앞에 섰어요. 엄마가 걱정해요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 바닐다가 맨 앞에 서는 건 "시위".'],['시합',0,'시합은 경기예요. 거리에서 목소리를 내는 건 "시위".']]},
+ {w:'시위',by:'aljan',when:()=>!f().liliana,ask:'바닐다가 또 ___ 맨 앞에 섰어요. 엄마가 걱정해요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 바닐다가 맨 앞에 서는 건 "시위".'],['시합',0,'시합은 경기예요. 거리에서 목소리를 내는 건 "시위".']]},
  {w:'장례식',by:'aljan',when:()=>!!f().liliana,ask:'루치아 누나 ___ 뒤로 아빠가 잘 안 웃어요.',opts:[['장례식',1],['결혼식',0,'결혼식 뒤에는 다 웃어요. 마지막 인사를 하는 날은 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사를 하는 날은 "장례식".']]},
  {w:'변하다',by:'aljan',when:()=>!!f().rider,ask:'아빠, 요즘 많이 ___. 가끔 혼자 말해요.',opts:[['변했어요',1],['편했어요',0,'편하다는 쉽고 좋은 거예요. 전하고 달라지면 "변했어요".'],['변장했어요',0,'변장은 일부러 다른 사람처럼 보이는 거예요. 저절로 달라지면 "변했어요".']]},
  /* 마리아 호세 서장 (after the bombing; her occupation script plays first after that) */
- {w:'폭발',by:'maria',ask:'___ 사건 서류가 너무 많아요. 국장님도 도와요.',opts:[['폭발',1],['출발',0,'출발은 떠나는 거예요. 캡슐이 터진 건 "폭발".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터진 건 "폭발".']]},
+ {w:'폭발',by:'maria',ask:'___ 사건 서류가 많아요. 그래도 국장님 도움은 필요 없어요.',opts:[['폭발',1],['출발',0,'출발은 떠나는 거예요. 캡슐이 터진 건 "폭발".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터진 건 "폭발".']]},
  {w:'수사',by:'maria',ask:'이 테러 ___는 이제 제가 맡아요. 보고는 매일 해요.',opts:[['수사',1],['수술',0,'수술은 병원 일이에요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]},
  {w:'증거',by:'maria',ask:'___ 없이는 아무도 못 잡아요. 그게 법이에요.',opts:[['증거',1],['증상',0,'증상은 병원에서 말하는 거예요. 범인을 보여 주는 건 "증거".']]},
  {w:'진공',by:'maria',ask:'캡슐 조각은 ___ 속으로 흩어졌어요. 찾기 어려워요.',opts:[['진공',1],['공기',0,'공기가 있으면 숨을 쉬죠. 공기가 하나도 없는 곳은 "진공".'],['진짜',0,'진짜는 real이에요. 공기가 없는 우주는 "진공".']]},
@@ -215,16 +223,16 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'체포하다',by:'maria',when:()=>!!f().medusa,ask:'메두사를 ___ 건 잘했어요. 다음엔 혼자 가지 마요.',opts:[['체포한',1],['초대한',0,'초대는 파티에 부르는 거예요. 수갑을 채웠으면 "체포한".'],['포기한',0,'포기는 그만두는 거예요. 경찰이 잡아 가면 "체포한".']]},
  {w:'폭탄',by:'maria',ask:'이제 탑 캡슐마다 ___ 검사를 해요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 찾아야 하는 물건은 "폭탄".'],['폭포',0,'폭포는 물이에요! 터지는 물건은 "폭탄".']]},
  /* 히메나 in the square (after the memorial, until the occupation) */
- {w:'폭발',by:'jimena',ask:'그날 탑 위의 ___, 저도 봤어요. 하얀 구름이었어요.',opts:[['폭발',1],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 하늘에서 터진 건 "폭발".'],['출발',0,'출발은 떠나는 거예요. 터진 건 "폭발".']]},
+ {w:'폭발',by:'jimena',ask:'그날 탑 위의 ___, 뉴스에서 봤어요. 하얀 구름이었어요.',opts:[['폭발',1],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 하늘에서 터진 건 "폭발".'],['출발',0,'출발은 떠나는 거예요. 터진 건 "폭발".']]},
  {w:'희생',by:'jimena',ask:'루치아하고 아이들 스무 명도 ___됐어요.',opts:[['희생',1],['휴식',0,'휴식은 쉬는 거예요. 목숨을 잃었으면 "희생".'],['회의',0,'회의는 모여서 이야기하는 거예요. 목숨을 잃었으면 "희생".']]},
  {w:'장례식',by:'jimena',when:()=>!!f().liliana,ask:'루치아 ___ 날, 비가 많이 왔어요. 기억나요?',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 마지막 인사를 하는 날은 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사를 하는 날은 "장례식".']]},
  /* 젤린다 in the square (after the crackdown, until the occupation) */
  {w:'테러',by:'zelinda',ask:'___ 뒤로 총독 사무실은 밤에도 불이 켜져 있어요.',opts:[['테러',1],['테니스',0,'테니스는 운동이에요! 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 기계예요. 일부러 한 공격은 "테러".']]},
- {w:'정보원',by:'zelinda',when:()=>!f().shot,pre:['쉿, 작게 말해요.'],ask:'저도 마카이오 님의 ___이에요. 잊지 마세요.',opts:[['정보원',1],['정원',0,'정원은 꽃밭이에요. 몰래 비밀을 모으는 사람은 "정보원".'],['공원',0,'공원은 산책하는 곳이에요. 몰래 비밀을 모으는 사람은 "정보원".']]},
+ {w:'정보원',by:'zelinda',pre:['쉿, 작게 말해요.'],ask:'국장님 ___들이 모은 갱 파일, 잘 받았어요.',opts:[['정보원',1],['정원',0,'정원은 꽃밭이에요. 몰래 비밀을 모으는 사람은 "정보원".'],['공원',0,'공원은 산책하는 곳이에요. 몰래 비밀을 모으는 사람은 "정보원".']]},
  {w:'범인',by:'zelinda',ask:'총독님은 ___을 빨리 잡고 싶어 해요.',opts:[['범인',1],['범죄',0,'범죄는 나쁜 일이에요. 나쁜 일을 한 사람은 "범인".']]},
  /* 메두사 in the interrogation room (after the helmet, until the occupation) */
  {w:'체포하다',by:'medusa',ask:'형사님이 직접 저를 ___. 그날 정말 용감했어요.',opts:[['체포했어요',1],['초대했어요',0,'초대요? 하하, 파티는 아니었어요. 수갑을 채웠으면 "체포했어요".'],['포기했어요',0,'포기는 그만두는 거예요. 저를 잡아 왔으면 "체포했어요".']]},
- {w:'테러',by:'medusa',ask:'제가 ___를 했으면 벌써 곤디아를 떠났어요.',opts:[['테러',1],['테니스',0,'테니스요? 하하. 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 거예요. 일부러 한 공격은 "테러".']]},
+ {w:'테러',by:'medusa',ask:'제가 ___를 했으면 벌써 곤디아를 떠났을 거예요.',opts:[['테러',1],['테니스',0,'테니스요? 하하. 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 거예요. 일부러 한 공격은 "테러".']]},
  {w:'폭탄',by:'medusa',ask:'제 머리카락이 무기였어요. ___은 필요 없었어요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 터지는 물건은 "폭탄".'],['폭포',0,'폭포는 물이에요! 터지는 물건은 "폭탄".']]},
  {w:'질식하다',by:'medusa',ask:'이 헬멧 너무 꽉 껴요. ___ 것 같아요.',opts:[['질식할',1],['질문할',0,'질문은 묻는 거예요. 숨을 못 쉬면 "질식할".'],['실망할',0,'실망은 마음이 아픈 거예요. 숨을 못 쉬면 "질식할".']]},
  {w:'거짓말하다',by:'medusa',ask:'이 헬멧 앞에서는 ___ 수 없어요. 알잖아요.',opts:[['거짓말할',1],['걱정할',0,'걱정은 마음이 불안한 거예요. 사실이 아닌 말을 하면 "거짓말할".']]},
@@ -236,7 +244,7 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'단서',by:'spirit',ask:'제 기억 속에도 ___가 있을 거예요. 같이 찾아요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요. 범인을 찾는 작은 힌트는 "단서".'],['순서',0,'순서는 1, 2, 3이에요. 범인을 찾는 작은 힌트는 "단서".']]},
  {w:'폭탄',by:'spirit',ask:'캡슐에 ___을 놓은 사람도 토셰일 거예요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 놓을 수 있는 물건은 "폭탄".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터지는 물건은 "폭탄".']]},
  {w:'점령하다',by:'spirit',ask:'와이니드가 아니라 여제가 곤디아를 ___.',opts:[['점령했어요',1],['정리했어요',0,'정리는 방을 치우는 거예요. 군대로 땅을 차지하면 "점령했어요".'],['점심했어요',0,'점심은 낮에 먹는 밥이에요! 군대로 차지하면 "점령했어요".']]},
- {w:'담',by:'spirit',ask:'저택의 높은 ___도 저를 못 지켰어요. 토셰는 멀리 있었어요.',opts:[['담',1],['땀',0,'땀은 더울 때 나요. 저택을 둘러싼 벽은 "담".'],['담요',0,'담요는 덮는 거예요. 저택을 둘러싼 벽은 "담".']]},
+ {w:'담',by:'spirit',ask:'저택의 ___은 십 미터나 돼요. 그래도 저는 발코니에서 죽었어요.',opts:[['담',1],['땀',0,'땀은 더울 때 나요. 저택을 둘러싼 벽은 "담".'],['담요',0,'담요는 덮는 거예요. 저택을 둘러싼 벽은 "담".']]},
  {w:'죽이다',by:'spirit',ask:'토셰가 저를 ___. 그래도 저는 아직 여기 있어요.',opts:[['죽였어요',1],['죽었어요',0,'"죽다"는 제가 한 거예요. 토셰가 한 일은 "죽였어요".'],['주웠어요',0,'줍다는 바닥의 물건을 드는 거예요. 토셰가 한 일은 "죽였어요".']]},
  {w:'위험',by:'spirit',ask:'토셰는 아주 ___한 사람이에요. 혼자 쫓지 마요.',opts:[['위험',1],['위생',0,'위생은 깨끗하게 하는 거예요. 다칠 수 있으면 "위험".'],['유명',0,'유명하다는 모두 아는 거예요. 다칠 수 있으면 "위험".']]},
  {w:'행성',by:'spirit',ask:'곤디아는 생각보다 아름다운 ___이었어요.',opts:[['행성',1],['행사',0,'행사는 축제나 파티예요. 별 주위를 도는 큰 공은 "행성".'],['행복',0,'행복은 기쁜 마음이에요. 별 주위를 도는 큰 공은 "행성".']]},
@@ -250,27 +258,27 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'암살',by:'general',ask:'와이니드 아콘이 여기서 ___당했어요. 그래서 제가 왔어요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이면 "암살".'],['안심',0,'안심? 여기서는 아무도 안심 못 해요. 몰래 죽이면 "암살".']]},
  {w:'물리다',by:'general',ask:'제 사자한테 ___ 싫으면 저리 가요.',opts:[['물리기',1],['물기',0,'"물다"는 사자가 하는 거예요. 당신은 "물리기".']]},
  {w:'도착하다',by:'general',ask:'제 항모가 하이 로사에 ___ 날, 다 끝났어요.',opts:[['도착한',1],['출발한',0,'출발은 떠나는 거예요. 와서 닿으면 "도착한".'],['도전한',0,'도전은 어려운 일을 해 보는 거예요. 와서 닿으면 "도착한".']]},
- {w:'처형',by:'general',when:()=>!!f().news8,ask:'저는 ___하지 않아요. 기억만 지워요. 착하죠?',opts:[['처형',1],['체포',0,'체포는 매일 해요. 벌로 죽이는 건 "처형".'],['처음',0,'처음은 first예요. 작은 경찰, 공부 좀 해요. 벌로 죽이는 건 "처형".']]},
+ {w:'처형',by:'general',ask:'아콘을 죽이면 벌은 하나뿐이에요. ___이에요.',opts:[['처형',1],['체포',0,'체포는 매일 해요. 벌로 죽이는 건 "처형".'],['처음',0,'처음은 first예요. 작은 경찰, 공부 좀 해요. 벌로 죽이는 건 "처형".']]},
  /* the villa at Hafnir after the missile: 오틸리아 (after she tells it), 젤린다, 하이안, 알잔 */
  {w:'저격',by:'otylia',ask:'그 ___ 때문에 미사일이 왔어요.',opts:[['저격',1],['저녁',0,'저녁은 밥 먹는 때예요. 멀리서 숨어 쏜 총은 "저격".'],['자격',0,'자격은 할 수 있는 권리예요. 멀리서 숨어 쏜 총은 "저격".']]},
  {w:'잔해',by:'otylia',ask:'우리 집은 이제 ___만 남았어요.',opts:[['잔해',1],['잔치',0,'잔치는 즐거운 파티예요. 부서지고 남은 조각은 "잔해".']]},
  {w:'세월',by:'otylia',ask:'___이 많이 흘렀어요. 핀은 아직 젊을 거예요.',opts:[['세월',1],['세상',0,'세상은 world예요. 흘러간 긴 시간은 "세월".'],['세탁',0,'세탁은 빨래예요. 흘러간 긴 시간은 "세월".']]},
  {w:'선장',by:'otylia',ask:'성실호에는 드장 ___님이 있어요. 핀은 괜찮을 거예요.',opts:[['선장',1],['사장',0,'사장님은 회사에 있어요. 배에서 제일 높은 사람은 "선장".'],['시장',0,'시장님은 도시를 맡아요. 배에서 제일 높은 사람은 "선장".']]},
  {w:'탐험',by:'otylia',ask:'핀은 어릴 때부터 ___을 좋아했어요. 여기저기 다 가 봤어요.',opts:[['탐험',1],['시험',0,'시험은 학교에서 봐요. 모르는 곳에 가 보는 건 "탐험".']]},
- {w:'출발하다',by:'otylia',ask:'폴카다브호는 곧 ___. 우리는 관문에서 핀을 기다려요.',opts:[['출발해요',1],['도착해요',0,'도착은 와서 닿는 거예요. 떠나면 "출발해요".']]},
- {w:'무너지다',by:'zelindaS',ask:'오틸리아 집이 다 ___. 엄마 아빠는 그 안에 있었어요.',opts:[['무너졌어요',1],['무서웠어요',0,'무섭다는 겁이 나는 거예요. 집이 쓰러져 부서지면 "무너졌어요".'],['무거웠어요',0,'무겁다는 무게 이야기예요. 집이 쓰러져 부서지면 "무너졌어요".']]},
+ {w:'출발하다',by:'otylia',ask:'폴카다브호는 곧 하이 로사에서 ___. 핀은 곧 돌아올 거예요. 꼭이요!',opts:[['출발해요',1],['도착해요',0,'도착은 와서 닿는 거예요. 하이 로사를 떠나면 "출발해요".']]},
+ {w:'무너지다',by:'zelindaS',ask:'오틸리아 집이 다 ___. 엄마 아빠는 집 뒤쪽에 있었어요.',opts:[['무너졌어요',1],['무서웠어요',0,'무섭다는 겁이 나는 거예요. 집이 쓰러져 부서지면 "무너졌어요".'],['무거웠어요',0,'무겁다는 무게 이야기예요. 집이 쓰러져 부서지면 "무너졌어요".']]},
  {w:'조카',by:'zelindaS',ask:'로렐라하고 두샨은 제 ___예요. 제가 지켜야 돼요.',opts:[['조카',1],['삼촌',0,'삼촌은 아빠의 남자 형제예요. 동생의 아이는 "조카".'],['조수',0,'조수는 일을 돕는 사람이에요. 동생의 아이는 "조카".']]},
  {w:'축복',by:'zelindaS',ask:'엄마는 떠나는 핀을 ___해 줬어요. 사랑한다고요.',opts:[['축복',1],['축구',0,'축구는 공 차는 운동이에요. 좋은 일을 비는 마음은 "축복".'],['축제',0,'축제는 큰 잔치예요. 좋은 일을 비는 마음은 "축복".']]},
  {w:'암살',by:'zelindaS',ask:'아콘 ___ 뒤로 모든 게 나빠졌어요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이면 "암살".'],['안심',0,'안심은 걱정이 없는 거예요. 지금은 아니에요. 몰래 죽이면 "암살".']]},
- {w:'점령하다',by:'zelindaS',ask:'군대가 도시를 ___ 뒤로 우리는 궁전에서 쫓겨났어요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대가 땅을 차지하면 "점령한".']]},
- {w:'화산',by:'haian',ask:'처남이 ___처럼 화를 냈어요. 그래서 약을 먹었어요.',opts:[['화산',1],['화분',0,'화분은 꽃을 심는 거예요. 불이 터지는 산은 "화산".'],['화살',0,'화살은 활로 쏘는 거예요. 불이 터지는 산은 "화산".']]},
+ {w:'점령하다',by:'zelindaS',ask:'군대가 도시를 ___ 날, 우리는 궁전에서 쫓겨났어요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대가 땅을 차지하면 "점령한".']]},
+ {w:'화산',by:'haian',ask:'처남이 ___처럼 화를 냈어요. 그래서 알잔이 약을 줬어요.',opts:[['화산',1],['화분',0,'화분은 꽃을 심는 거예요. 불이 터지는 산은 "화산".'],['화살',0,'화살은 활로 쏘는 거예요. 불이 터지는 산은 "화산".']]},
  {w:'파도',by:'haian',ask:'오늘 밤은 ___도 조용해요. 아이들이 이제 잠들었어요.',opts:[['파도',1],['포도',0,'포도는 과일이에요. 바다에서 밀려오는 물결은 "파도".'],['파티',0,'파티는 즐거운 모임이에요. 바다의 물결은 "파도".']]},
  {w:'소금',by:'haian',ask:'바닷바람에서 짠 ___ 냄새가 나요.',opts:[['소금',1],['소리',0,'소리는 귀로 듣는 거예요. 짠 바다 냄새는 "소금".'],['소문',0,'소문은 사람들이 하는 말이에요. 짠 건 "소금".']]},
  {w:'식량',by:'haian',when:()=>!!f().rescued,ask:'폴카다브호에 실을 ___은 제가 가져갈게요.',opts:[['식량',1],['식당',0,'식당은 밥 먹는 곳이에요. 오래 먹을 음식은 "식량".']]},
  {w:'기차역',by:'haian',when:()=>!!f().rescued,ask:'하프니르 ___에서 화살 열차를 타요.',opts:[['기차역',1],['공항',0,'공항은 비행기를 타는 곳이에요. 열차를 타는 곳은 "기차역".']]},
  {w:'산소',by:'aljanS',ask:'연기를 많이 마신 사람은 ___가 필요해요.',opts:[['산소',1],['상자',0,'상자는 물건을 넣는 거예요. 숨 쉴 때 필요한 건 "산소".']]},
  {w:'얼음',by:'aljanS',ask:'화상에는 ___ 말고 시원한 물을 써요.',opts:[['얼음',1],['얼굴',0,'얼굴은 눈, 코, 입이 있는 곳이에요. 차갑고 딱딱한 물은 "얼음".'],['어른',0,'어른은 다 큰 사람이에요. 차갑고 딱딱한 물은 "얼음".']]},
- {w:'약물',by:'aljanS',ask:'에버렛 아저씨는 ___을 먹고 잠들었어요.',opts:[['약물',1],['약국',0,'약국은 약을 사는 곳이에요. 먹는 건 "약물".'],['약속',0,'약속은 꼭 하겠다는 말이에요. 먹는 건 "약물".']]},
+ {w:'약물',by:'aljanS',ask:'에버렛 아저씨한테 제가 ___을 줬어요. 이제 좀 조용해요.',opts:[['약물',1],['약국',0,'약국은 약을 사는 곳이에요. 제가 준 건 "약물".'],['약속',0,'약속은 꼭 하겠다는 말이에요. 제가 준 건 "약물".']]},
  {w:'우주선',by:'aljanS',when:()=>!!f().club,ask:'폴카다브호는 작은 ___이에요. 그래도 다 탈 수 있어요.',opts:[['우주선',1],['우주복',0,'우주복은 입는 옷이에요. 타는 건 "우주선".'],['우체국',0,'우체국은 편지를 보내는 곳이에요. 우주를 나는 배는 "우주선".']]},
  {w:'약속하다',by:'aljanS',when:()=>!!f().club,ask:'아빠, ___. 꼭 다시 만나요.',opts:[['약속해요',1],['약혼해요',0,'약혼하다는 결혼하기로 약속하는 거예요! 아빠하고는 그냥 "약속해요".'],['예약해요',0,'예약은 자리를 미리 잡는 거예요. 꼭 하겠다고 말하면 "약속해요".']]},
  /* 히메나 in the club basement (after the DNA result) */
@@ -283,14 +291,14 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
 ];
 /* class time: the two years between Makaio's death and the occupation (the rider's talk, just before "그리고 2년이 지났어요") */
 const CLASS={
- '경찰서':{say:'그 뒤로, 낮에는 경찰서. 마리아 호세 서장이 테렌스를 늘 지켜봐요.',lines:[
-  {w:'감시하다',who:'마리아 호세 서장',ask:'국장님, 저는 국장님을 계속 ___ 있어요.',opts:[['감시하고',1],['감사하고',0,'감사요? 아니에요. 계속 지켜보면 "감시하고".'],['구경하고',0,'구경은 재미로 보는 거예요. 계속 지켜보면 "감시하고".']]},
+ '경찰서':{say:'그 뒤로, 낮에는 경찰서. 마리아 호세 서장은 아콘 이야기를 싫어해요.',lines:[
+  {w:'감시하다',who:'마리아 호세 서장',ask:'이제 우리 경찰이 갱들을 직접 ___ 있어요. 아콘은 필요 없어요.',opts:[['감시하고',1],['감사하고',0,'감사요? 아니에요. 계속 지켜보면 "감시하고".'],['구경하고',0,'구경은 재미로 보는 거예요. 계속 지켜보면 "감시하고".']]},
   {w:'테러',who:'마리아 호세 서장',ask:'캡슐 ___ 수사는 아직 안 끝났어요.',opts:[['테러',1],['테니스',0,'테니스는 운동이에요! 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 기계예요. 일부러 한 공격은 "테러".']]},
-  {w:'증거',who:'마리아 호세 서장',ask:'___ 없이 아콘 이야기는 하지 마세요.',opts:[['증거',1],['증상',0,'증상은 아플 때 나타나는 거예요. 사실을 보여 주는 건 "증거".']]},
+  {w:'증거',who:'마리아 호세 서장',ask:'국장님이 가진 ___, 이제 우리 경찰하고 나눠요.',opts:[['증거',1],['증상',0,'증상은 아플 때 나타나는 거예요. 사실을 보여 주는 건 "증거".']]},
   {w:'수사',who:'감식 요원',ask:'국장님, 오늘도 ___ 서류가 책상에 가득해요.',opts:[['수사',1],['수술',0,'수술은 병원 일이에요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]}]},
- '집':{say:'저녁에는 집. 알잔은 의사가 되고, 바닐다는 돈키 일을 계속해요.',lines:[
-  {w:'시위',who:'바닐다',ask:'아빠, 오늘 ___는 조용히 끝났어요. 걱정 마요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 우리가 거리에서 하는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 거리에서 하는 건 "시위".']]},
-  {w:'체포하다',who:'바닐다',ask:'오늘은 경찰이 아무도 ___ 않았어요. 진짜예요.',opts:[['체포하지',1],['초대하지',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포하지".']]},
+ '집':{say:'저녁에는 집. 알잔은 의사가 되고, 바닐다는 이제 시위에 잘 안 가요.',lines:[
+  {w:'시위',who:'바닐다',ask:'요즘은 ___가 거의 없어요. 친구들이 많이 잡혀갔어요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 우리가 거리에서 하는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 거리에서 하는 건 "시위".']]},
+  {w:'체포하다',who:'바닐다',ask:'그때 경찰이 저를 ___. 아빠가 경찰서에서 데리고 나왔죠.',opts:[['체포했어요',1],['초대했어요',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포했어요".']]},
   {w:'장례식',who:'히메나',ask:'루치아 ___ 뒤로 벌써 일 년이 넘었어요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 마지막 인사를 한 날은 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사를 한 날은 "장례식".']]}]},
 };
 
