@@ -3642,7 +3642,7 @@ const NPC={
   after:'제 발자국만 밟아요. 한 줄로요.',
   talk:()=>[
    {say:'해자를 건넜어요. 여기부터 {함정|함정} 밭이에요. 초록 그물 보여요?'},
-   {say:'제가 앞에서 걸을게요. 땅에 제 발 모양이 남아요.'},
+   {say:'제가 앞에서 걸을게요. 땅이 검은 먼지라서 잘 보일 거예요.'},  // not a definition of 발자국 before its blank; the blast left "fine black dust" inside the wall (c018)
    Q.miqueB[0],
    Q.miqueB[1],
    {say:'한 줄로 따라와요. 천천히.',award:['발자국'],set:()=>{f().prints=1}}]},
@@ -3760,7 +3760,7 @@ const NPC={
     {w:'멸망하다',build:['멸망한','세계를','떠나요']},
     {who:'엘스베스',say:'잠깐. 제 탱크는 없어졌어요. 당신들은 저한테 탱크 한 대를 {빚|빚}졌어요.'},
     {who:'엘스베스',say:'그러니까 저도 성실호에 타요. 뭘 인양하든, 제 몫도 똑같이 줘요.'},
-    {who:'기보이',say:'좋아요. 거래예요.',set:()=>{f().done=1}},
+    {who:'기보이',say:'좋아요. 거래예요.'},
     {say:'출발해요!'},
     {who:'…',say:'드롭십이 불을 뿜어요. 바닥이 녹아요. 천장을 긁으면서 아치 밖으로 날아가요.',black:1},
     {who:'기보이',say:'핀, 이제 최대 출력!',finale:1}]},
@@ -3806,7 +3806,7 @@ const FOLLOW={name:'엘리',look:ELLIE_H,when:()=>!!f().bitten&&!f().done,
 const INTRO=[{who:'성실호',say:'프레임 해제. 관문 통과 완료.'},{who:'성실호',say:'성실호의 첫 번째 관문 점프예요.'},{who:'성실호',say:'현재 위치: 호아 퀸주 성계.'}];
 /* the ending plays over black (the drop ship has left the hangar). Pandiana: last seen leading two of her team up the slope against the
    Ghosts; the book never names the twelve at the causeway or tells her fate (c018), so the list says only that. */
-const DONE=[{say:'4장 끝! 드롭십이 카이발을 떠나서 성실호로 날아가요.',black:1},'미크, 에두살, 폼키 팀, 벤사스 팀 몇 명은 돌아오지 못했어요.',
+const DONE=[{say:'4장 끝! 드롭십이 카이발을 떠나서 성실호로 날아가요.',black:1,set:()=>{f().done=1}},  // done when the ending starts: a departure talk closed early (B) replays from Finn, ending included'미크, 에두살, 폼키 팀, 벤사스 팀 몇 명은 돌아오지 못했어요.',
  '판디아나는 고스트를 막으러 간 뒤로 다시 보지 못했어요.','핀, 엘리, 기보이, 데이브 두 명, 벤사스 하사, 그리고 당신도 살아서 돌아왔어요.',
  '엘스베스도 같이 와서 성실호 승무원이 됐어요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
