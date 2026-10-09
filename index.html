@@ -633,7 +633,7 @@ const NPC={
 const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f().fixed?'엔진 소리 들려요? 가슴이 뛰어요!':ZID==='city'?'여기는 제 고향이에요. 예쁘지만 좀 {지겨워요|지겹다}.':'엔진을 고치면 이 배가 다시 살아나요!'}]};
 
 const INTRO=[{who:'성실호',say:'삐— 삐— 궤도 진입 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
-const DONE=['엔진이 켜졌어요! 성실호는 하이 로사에 그대로 있어요.','1장 끝! 성실호 엔진이 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['엔진이 켜졌어요! 성실호는 하이 로사에 그대로 있어요.','1장 끝! 성실호 엔진이 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 /* ---------- this chapter's own tiles (new names only, so other chapters keep the engine's) ---------- */
 /* Kelowan sits inside the Poseidon Nebula: from orbit the windows show nebula glow, hardly any stars (c013) */
@@ -1560,7 +1560,7 @@ const FOLLOW={name:'엘리',look:ELLIE,when:()=>!!f().ambush,talk:()=>{const F=f
  return [{say:s}]}};
 
 const INTRO=[{who:'레스타리',say:'하늘의 관문까지 한 시간.'},{who:'레스타리',say:'모든 승객은 큐폴라로 오세요.'}];
-const DONE=['2장 끝! ZPZ 발생기가 화물기에 실렸어요.','데이브와 데이브가 성실호의 경호원이 돼요.','우리를 쫓던 배에 마르첼루가 있었어요. 몸의 많은 곳이 기계가 됐지만 살아 있어요.','"끝까지 추격할 거예요."','토셰의 비밀은 아직 아무도 몰라요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['2장 끝! ZPZ 발생기가 화물기에 실렸어요.','데이브와 데이브가 성실호의 경호원이 돼요.','우리를 쫓던 배에 마르첼루가 있었어요. 몸의 많은 곳이 기계가 됐지만 살아 있어요.','"끝까지 추격할 거예요."','토셰의 비밀은 아직 아무도 몰라요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f();
@@ -2313,7 +2313,7 @@ const FOLLOW={name:'핀',look:LOOK.finn,when:()=>!!f().finn&&!f().night,talk:()=
  f().swap?'저 발생기만 있으면 관문을 지날 수 있어요.':!f().filter?'1번 구가 이렇게 초록색이었어요?':'팔 년… 다들 너무 많이 변했어요.'}]};
 
 const INTRO=[{who:'하이 로사',say:'하이 로사 도킹 완료. 레스타리, 환영해요.'},{who:'엘리',say:'(통신) 석 달 만에 돌아왔어요. 그런데 여기는… 팔 년이 지났대요.'}];
-const DONE=['3장 끝! 성실호가 호아 퀸주 관문으로 떠나요.','곤디아에서는 또 긴 세월이 흐를 거예요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['3장 끝! 성실호가 호아 퀸주 관문으로 떠나요.','곤디아에서는 또 긴 세월이 흐를 거예요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f();
@@ -3271,7 +3271,7 @@ const FOLLOW={name:'엘리',look:ELLIE_H,when:()=>!!f().bitten&&!f().done,
   :ZID==='bk37'?'물린 다리가 좀 아파요. 그래도 괜찮아요.':'탱크가 없으니까 이상해요.'}]};
 
 const INTRO=[{who:'성실호',say:'프레임 해제. 관문 통과 완료.'},{who:'성실호',say:'성실호의 첫 번째 관문 점프예요.'},{who:'성실호',say:'현재 위치: 호아 퀸주 성계.'}];
-const DONE=['4장 끝! 드롭십이 카이발을 떠나요.','미크, 에두살, 폼키 팀, 벤사스 팀 몇 명이 돌아오지 못했어요.','핀, 엘리, 기보이, 데이브 두 명, 벤사스 하사는 살아서 돌아왔어요.','엘스베스도 같이 와서 성실호 승무원이 됐어요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['4장 끝! 드롭십이 카이발을 떠나요.','미크, 에두살, 폼키 팀, 벤사스 팀 몇 명이 돌아오지 못했어요.','핀, 엘리, 기보이, 데이브 두 명, 벤사스 하사는 살아서 돌아왔어요.','엘스베스도 같이 와서 성실호 승무원이 됐어요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f(),b=w=>state.badges.includes(w);
@@ -4580,7 +4580,7 @@ const INTRO=[
  {who:'테렌스',say:'그리고 몰래 와이니드의 아콘, 마카이오파라지 님을 위해 일해요.'},
  {who:'테렌스',say:'어젯밤 디어랙 거리에서 총격전이 있었어요. 다섯 명이 죽었어요.'},
  {who:'테렌스',say:'우리는 봅베라는 남자를 잡았어요. 새 얼굴로 곤디아를 떠나려고 했어요.'}];
-const DONE=['5장 끝! 진짜 기보이는 수십 년 전에 죽었어요.','그럼 성실호에 탄 "기보이"는 누구일까요?','테렌스는 이 증거를 들고 곧 곤디아를 떠나요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['5장 끝! 진짜 기보이는 수십 년 전에 죽었어요.','그럼 성실호에 탄 "기보이"는 누구일까요?','테렌스는 이 증거를 들고 곧 곤디아를 떠나요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f();
@@ -5495,7 +5495,7 @@ const FOLLOW={name:'핀',look:FINN,when:()=>!!f().finnOk&&!(f().cmd&&!f().os),ta
  '아래는 안 볼 거예요. 절대로.'}]};
 
 const INTRO=[{who:'성실호',say:'삐— 킹스네스트 도착. 거리 이십 킬로미터.'},{who:'성실호',say:'흰 별 두 개 사이에 투명한 공이 떠 있어요.'},{who:'성실호',say:'원정대는 지휘 통제실로 모이세요.'}];
-const DONE=['6장 끝! 핀의 머릿속에 엔진 운영 체제가 있어요.','그런데 곤디아에서는 31년 8개월이 지났어요.','다음 장, 돌로드. 오틸리아는 왜 관문 옆에 있을까요?','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['6장 끝! 핀의 머릿속에 엔진 운영 체제가 있어요.','그런데 곤디아에서는 31년 8개월이 지났어요.','다음 장, 돌로드. 오틸리아는 왜 관문 옆에 있을까요?',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
  const F=f(),b=has6;
@@ -6250,7 +6250,7 @@ const FOLLOW=null;
 
 const INTRO=[{who:'오틸리아 (통신)',say:'핀, 도와줘. 제발.'},{who:'성실호',say:'폴카다브 도킹 완료.'},
  {who:'성실호',say:'떠난 지 31년 8개월. 고향은 많이 변했어요.'},{who:'성실호',say:'손님들이 주인 숙소로 와요.'}];
-const DONE=['7장 끝! 성실호는 카포 프로이스 관문 앞에 있어요.','기보이는 반물질 폭탄을 싣고 같은 곳으로 와요.','이야기는 계속돼요. 일지에서 단어를 복습해요.'];
+const DONE=['7장 끝! 성실호는 카포 프로이스 관문 앞에 있어요.','기보이는 반물질 폭탄을 싣고 같은 곳으로 와요.',{expand:()=>wrapUp()},'이야기는 계속돼요. 일지에서 단어를 복습해요.'];
 
 function questText(){
  const F=f(),m=c=>c?'✓':'✗';
@@ -6273,11 +6273,15 @@ return {WORDS,DICT,CONFUSE,BANK,Q,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TI
 <script>
 /* Settings for the shared engine (walk-engine): this game's names, storage prefix and default player. */
 var GAME={prefix:'seongsilho',title:'성실호',log:'항해 일지',
- term:{name:'신호 단말기',empty:'신호 없음. 아직 일지가 비어 있어요.',idle:'새 신호가 없어요.',next:'다음 신호',due:(n,k)=>`신호가 왔어요. 단어 ${n}개가 기다려요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'신호 끝. 다음에 또 와요.'},
+ term:{carry:'지난 항해에서 배운 말도 다시 나와요.',wrap:'이번 장에서 배운 말, 한 번 더 떠올려요.',name:'신호 단말기',empty:'신호 없음. 아직 일지가 비어 있어요.',idle:'새 신호가 없어요.',next:'다음 신호',due:(n,k)=>`신호가 왔어요. 단어 ${n}개가 기다려요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'신호 끝. 다음에 또 와요.'},
+
+ /* spaced review: due again after 2 story beats or 5 minutes, then 5 beats or 20 minutes; later levels are hours and days, and one
+    shared record lets later chapters bring earlier words back (people's lines, the 신호 단말기 and the last round of each chapter) */
+ srs:{gap:[0,5*60e3,20*60e3,4*3600e3,24*3600e3,3*24*3600e3],beats:[0,2,5],shared:1},
  player:{hair:'#2A2F4A',skin:'#F1C9A5',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A'}};
 </script>
 <script>
-/* GENERATED from walk-engine/engine.js (0c302d7) — do not edit here; edit walk-engine and run its sync.sh. */
+/* GENERATED from walk-engine/engine.js (b9d2b40) — do not edit here; edit walk-engine and run its sync.sh. */
 /* =====================================================================
    Engine: tiles, movement, zones, dialogue, spaced review, speech, saving.
    ===================================================================== */
@@ -6288,15 +6292,74 @@ const has=w=>!!state&&state.badges.includes(w);
 const now=()=>Date.now();
 
 /* ---------- spaced review: each word has a level 0..5 and a due time ---------- */
+/* GAME.srs (optional, 방과 후):
+   gap:[…ms]  the wait after reaching each level (default below).
+   beats:[…]  a word is also due again after that many story beats (talks that move the story: a flag, a word, an item, a scene
+              change), whichever comes first, so a fast player and a slow one both get their reviews within one chapter.
+              Beats count game-wide (KEY('beats')).
+   shared:1   one review record for the whole game (KEY('lv')), and words learned in other chapters (their saves' badges) come
+              back here when due: in the notebook, class time and the end-of-chapter round, asked with their own chapter's
+              BANK sentences. */
 const GAP=[0,5*60e3,30*60e3,4*3600e3,24*3600e3,3*24*3600e3];
+const SRS=()=>G.srs||{},gapAt=b=>(SRS().gap||GAP)[b];
+let beatsN=null;const beats=()=>beatsN??(beatsN=+(store.get(KEY('beats'))||0));
+function beat(){if(!SRS().beats)return;beatsN=beats()+1;store.set(KEY('beats'),String(beatsN))}
 const lv=w=>state.lv[w]||{b:0,due:0};
-const isDue=w=>has(w)&&lv(w).due<=now();
+const dueL=L=>L.due<=now()||(L.beat!=null&&beats()>=L.beat);
+let carrySet=new Set(),carryQs=null;  // words learned in other chapters (shared), and their BANK questions (made once, on demand)
+const known=w=>has(w)||(!!SRS().shared&&carrySet.has(w)&&!C.WORDS.includes(w));
+const isDue=w=>known(w)&&dueL(lv(w));
+function spaced(b){const bg=SRS().beats;return {b,due:now()+gapAt(b),beat:bg&&bg[b]!=null?beats()+bg[b]:null}}
 function grade(w,ok){
- const L={...lv(w)};
- if(!ok){L.b=0;L.due=now()}else if(L.due<=now()){L.b=Math.min(5,L.b+1);L.due=now()+GAP[L.b]}  // a right answer before the word is due doesn't level it up (asking again and again can't max a word)
+ let L={...lv(w)};
+ if(!ok)L={b:0,due:now(),beat:null};else if(dueL(L))L=spaced(Math.min(5,L.b+1));  // a right answer before the word is due doesn't level it up (asking again and again can't max a word)
  state.lv[w]=L;save();return L.b;
 }
-const dueWords=()=>C.WORDS.filter(isDue);
+let carryDs=null;
+function carryBank(){  // other chapters' BANK questions by word, and their DICT entries (a carried word taps to the sense you learned)
+ if(carryQs)return carryQs;carryQs={};carryDs={};
+ for(const ch of CHAPTERS)if(ch!==CH)try{const c=ch.make();(c.BANK||[]).forEach(q=>{if(q.w&&!q.scene&&!q.gram)(carryQs[q.w]=carryQs[q.w]||[]).push(q)});
+  (c.WORDS||[]).forEach(w=>{if(c.DICT&&c.DICT[w])carryDs[w]=c.DICT[w]})}catch(e){}
+ return carryQs;
+}
+const carryDict=w=>{if(!SRS().shared||!carrySet.has(w))return null;carryBank();return carryDs[w]||null};
+function refreshCarry(){  // other chapters' saves: their words, and their levels merged into the shared record (the higher level wins)
+ carrySet=new Set();carryQs=null;if(!SRS().shared)return;
+ let all={};try{all=JSON.parse(store.get(KEY('lv'))||'{}')||{}}catch(e){}
+ const take=(w,L)=>{const A=all[w];if(!A||L.b>A.b||(L.b===A.b&&L.due>A.due))all[w]=L};
+ for(const ch of CHAPTERS){let sv=null;try{sv=ch===CH?state:JSON.parse(store.get(ch.save)||'null')}catch(e){}if(!sv)continue;
+  if(ch!==CH)(sv.badges||[]).forEach(w=>carrySet.add(w));Object.entries(sv.lv||{}).forEach(([w,L])=>take(w,L))}
+ state.lv=all;store.set(KEY('lv'),JSON.stringify(all));
+}
+const carryWords=()=>[...carrySet].filter(w=>!C.WORDS.includes(w)&&(carryBank()[w]||[]).length);
+const dueWords=()=>[...C.WORDS,...(SRS().shared?carryWords():[])].filter(isDue);
+const carryDue=()=>SRS().shared?carryWords().filter(isDue).sort((a,b)=>lv(a).b-lv(b).b):[];  // other chapters' words that are due, weakest first
+const carryQ=w=>{const qs=carryBank()[w]||[];return qs[Math.random()*qs.length|0]};
+/* ---------- practice while time passes (opt-in content) ----------
+   classTime(CLASS,parts): a stretch of time passing (classes between the bells, a shift, a journey). Each part narrates a beat, then
+   someone says one of its lines with a word you've learned, graded like a review: a due word of this chapter (weakest first), else a
+   due word from another chapter (srs.shared: its own BANK sentence, after TERM.carry), else any of yours at random.
+   CLASS={part:{say, lines:[{w, who, ask, opts}]}}. Use it as a step that expands when it's reached, so words taught just before count:
+   {expand:()=>classTime(CLASS,['국어','영어'])}.
+   wrapUp(): the end of a chapter: one more go at this chapter's words not yet ★ (weakest first) and due words from other chapters, at
+   most four, in BANK sentences, after TERM.wrap, so a word taught late isn't left at one review. {expand:()=>wrapUp()} in DONE. */
+function classTime(CLASS,parts){
+ const out=[],used=new Set();
+ for(const k of parts){const c=CLASS[k];if(!c)continue;out.push({who:'…',say:c.say});
+  const ok=c.lines.filter(l=>has(l.w)&&!used.has(l.w)),due=ok.filter(l=>isDue(l.w));
+  if(due.length){const lo=Math.min(...due.map(l=>lv(l.w).b)),p=due.filter(l=>lv(l.w).b===lo),l=p[Math.random()*p.length|0];used.add(l.w);out.push({...l,review:true});continue}
+  const cw=carryDue().find(w=>!used.has(w)),q=cw&&carryQ(cw);
+  if(q){used.add(cw);out.push({who:'…',say:TERM.carry},{...q,who:'…',review:true});continue}
+  if(ok.length){const l=ok[Math.random()*ok.length|0];used.add(l.w);out.push({...l,review:true})}}
+ return out;
+}
+function wrapUp(){
+ const bank=w=>(C.BANK||[]).filter(q=>q.w===w&&!q.scene&&!q.gram);
+ const qs=C.WORDS.filter(w=>has(w)&&lv(w).b<3&&bank(w).length).sort((a,b)=>lv(a).b-lv(b).b).slice(0,4)
+  .map(w=>{const b=bank(w);return {...b[Math.random()*b.length|0],who:'…',review:true}});
+ carryDue().slice(0,Math.max(0,4-qs.length)).forEach(w=>{const q=carryQ(w);if(q)qs.push({...q,who:'…',review:true})});
+ return qs.length?[{who:'…',say:TERM.wrap},...qs]:[];
+}
 function nextDue(){const t=C.WORDS.filter(has).map(w=>lv(w).due).filter(d=>d>now());return t.length?Math.min(...t):null}
 function fmtWait(ms){const m=Math.ceil(ms/60e3);return m<60?`${m}분`:m<1440?`${Math.round(m/60)}시간`:`${Math.round(m/1440)}일`}
 
@@ -6304,7 +6367,7 @@ function fmtWait(ms){const m=Math.ceil(ms/60e3);return m<60?`${m}분`:m<1440?`${
 /* Per-game settings come from src/game.js (`var GAME={…}`), so one engine serves 성실호, 형제 and 방과 후. */
 const G=typeof GAME!=='undefined'?GAME:{};
 const KEY=k=>(G.prefix||'walk')+'-'+k;
-const TERM_BASE=Object.assign({allWords:n=>[`단어 ${n}개를 다 모았어요!`,`이제 ${TERM.name}에서 복습하면 ★가 생겨요.`],name:'복습 노트',empty:'아직 노트가 비어 있어요.',idle:'지금은 복습할 단어가 없어요.',next:'다음 복습',due:(n,k)=>`복습할 단어가 ${n}개 있어요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'복습 끝! 다음에 또 봐요.'},G.term||{});
+const TERM_BASE=Object.assign({allWords:n=>[`단어 ${n}개를 다 모았어요!`,`이제 ${TERM.name}에서 복습하면 ★가 생겨요.`],name:'복습 노트',empty:'아직 노트가 비어 있어요.',idle:'지금은 복습할 단어가 없어요.',next:'다음 복습',due:(n,k)=>`복습할 단어가 ${n}개 있어요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'복습 끝! 다음에 또 봐요.',carry:'지난번에 배운 말도 다시 나와요.',wrap:'오늘 배운 말, 한 번 더 떠올려요.'},G.term||{});
 const TERM=new Proxy(TERM_BASE,{get:(o,k)=>(typeof C!=='undefined'&&C&&C.term&&k in C.term)?C.term[k]:o[k]});  // a chapter's term:{name,…} overrides the game's (one 교시 reviews on paper, the next on a laptop)
 const LOGNAME=G.log||LOGNAME;
 const store={get:k=>{try{return localStorage.getItem(k)}catch(e){return null}},set:(k,v)=>{try{localStorage.setItem(k,v)}catch(e){}}};
@@ -6916,6 +6979,8 @@ function openDialog(name,steps,opts={}){
  $('tag').hidden=!opts.review;$('dlg').hidden=false;$('zone').classList.add('dim');show(dlg.steps[0]);placeBox(talkRows());  // the room label never shows through a box at the top
 }
 function show(s){
+ if(s&&(s.set||s.award||s.give||s.take||s.go)&&dlg)dlg.moved=1;  // a story beat (spaced review counts them)
+ if(s&&s.expand){const more=says(s.expand()||[]);dlg.steps.splice(dlg.i,1,...more);if(dlg.i>=dlg.steps.length){closeDialog();return}return show(dlg.steps[dlg.i])}  // expand:()=>steps, made when it's reached (class time picks words you have by then)
  dlg.cur=s;hideGloss();
  lastLines.push(((s.who||dlg.name||'')+': '+plain(s.say||s.ask||'')).slice(0,300));if(lastLines.length>3)lastLines.shift();
  if(s.set){s.set();save()}
@@ -6962,7 +7027,7 @@ function glossHTML(t){
  return out+words(t.slice(last));
 }
 function lexLookup(w){ // word as written → [[lemma,{k,e}],…]; falls back to the longest known prefix (우주선이 → 우주선)
- const L=window.LEX||{map:{},defs:{}},hit=l=>C.DICT[l]?[l,C.DICT[l]]:L.defs[l]?[l,L.defs[l]]:null;
+ const L=window.LEX||{map:{},defs:{}},hit=l=>C.DICT[l]?[l,C.DICT[l]]:carryDict(l)?[l,carryDict(l)]:L.defs[l]?[l,L.defs[l]]:null;
  let ls=L.map[w];
  if(!ls)for(let n=w.length;n>0&&!ls;n--){const pre=w.slice(0,n); // longest known prefix, also as a verb/adjective stem (강해서 → 강하다)
   const tries=[pre,pre+'다',/[해했]$/.test(pre)?pre.slice(0,-1)+'하다':null].filter(Boolean);
@@ -7153,7 +7218,7 @@ function advance(){
 let closedAt=0;
 function closeDialog(){
  const wasBlack=dlg&&dlg.black;if(wasBlack)$('fade').classList.remove('on');
- closedAt=performance.now();dlg=null;camT=null;startWalks();clearInterval(typing?.id);$('dlg').hidden=true;$('dlg').classList.remove('attop');closePhone();hideGloss();if(TTS)try{speechSynthesis.cancel()}catch(e){}
+ closedAt=performance.now();if(dlg&&dlg.moved)beat();dlg=null;camT=null;startWalks();clearInterval(typing?.id);$('dlg').hidden=true;$('dlg').classList.remove('attop');closePhone();hideGloss();if(TTS)try{speechSynthesis.cancel()}catch(e){}
  updateQuest();
  if(C.afterTalk)C.afterTalk();  // a chapter's own check after every conversation (단어 마을: the cartridge is complete, every word is ★)
  if(pending){const c=pending;pending=null;setTimeout(()=>{if(!dlg)openDialog(LOGNAME,c)},400)}
@@ -7180,17 +7245,27 @@ function allQuestions(){
    asks it in their own voice (a friend, a teacher, a passer-by), and the answer grades the word as any review does.
    A chapter without C.REVIEW keeps the narrator's review of the person's own badge words. */
 const npcId=n=>Object.keys(C.NPC).find(k=>C.NPC[k]===n);
-function reviewLines(n){
+function linesFor(n){  // their lines for words you have, true right now (when), due or not
  if(!C.REVIEW||(n.badge&&!n.badge.every(has)))return [];  // someone still teaching teaches first
  const id=npcId(n);
- return C.REVIEW.filter(r=>[].concat(r.by).some(b=>b===id||b===n.name)&&isDue(r.w)&&(!r.when||r.when()));
+ return C.REVIEW.filter(r=>[].concat(r.by).some(b=>b===id||b===n.name)&&known(r.w)&&(!r.when||r.when()));  // known: this chapter's word you have, or one from another chapter (srs.shared)
+}
+const reviewLines=n=>linesFor(n).filter(r=>isDue(r.w));
+/* Spaced review decides when a line is a question, not whether you hear it: with nothing of theirs due, a person says one of
+   their lines you haven't heard yet, the word filled in, as ordinary talk (state.heard keeps which), then their usual chatter. */
+const rKey=r=>r.w+'|'+r.ask,heard=()=>state.heard||(state.heard=[]),unheard=r=>!heard().includes(rKey(r));
+function hear(r){if(unheard(r)){heard().push(rKey(r));save()}}
+function sayLine(n){
+ const L=linesFor(n).filter(unheard);if(!L.length)return null;
+ const r=L[Math.random()*L.length|0],ok=(r.opts||[]).find(o=>o[1]);hear(r);
+ return [...says(r.pre||[]),{...(r.who?{who:r.who}:{}),say:answered(r.ask,ok?ok[0]:r.w)}];
 }
 const usual=n=>n.badge?(n.badge.every(has)?says(n.after):null):n.talk();  // what they'd say anyway (null: still teaching)
 const moves=s=>['set','give','take','award','go','walk','leave','move','phone','culture','sit','choose','finale'].some(k=>k in s);
 function reviewPick(n){
  const L=reviewLines(n);if(!L.length)return null;
  const rank=r=>lv(r.w).b*2+((n.badge||[]).includes(r.w)?0:1);  // the weakest word first; their own word before someone else's
- const lo=Math.min(...L.map(rank)),best=L.filter(r=>rank(r)===lo),r=best[Math.random()*best.length|0];
+ const lo=Math.min(...L.map(rank)),best0=L.filter(r=>rank(r)===lo),fresh=best0.filter(unheard),best=fresh.length?fresh:best0,r=best[Math.random()*best.length|0];hear(r);  // a line you haven't heard first
  const q={...r,review:true};delete q.by;delete q.pre;delete q.when;
  if(q.who!=='나'&&canSpeak()&&soundOn&&listenOn&&Math.random()<.35){const ok=(q.opts||[]).find(o=>o[1]);q.listen=q.w;q.listenLine=answered(q.ask,ok?ok[0]:q.w)}  // they say it aloud (the answer as it fits the line: 주워, not 줍다); you pick the word you heard
  return [...says(r.pre||[]),q];
@@ -7199,6 +7274,7 @@ function reviewFor(words){ // pick a question for the weakest of these words
  const ws=[...words].sort((a,b)=>(isDue(b)-isDue(a))||(lv(a).b-lv(b).b));
  const w=ws[0];
  let pool=allQuestions().filter(q=>q.w===w);
+ if(!pool.length&&SRS().shared)pool=carryBank()[w]||[];  // a word from another chapter: its own chapter's sentences
  if(C.REVIEW){const g=(C.BANK||[]).filter(q=>q.w===w&&!q.scene);if(g.length)pool=g}  // with in-character review, the notebook asks the generic example sentences, not lines from someone's scene
  const gen=pool.filter(q=>!q.scene),all=gen.length?gen:pool;  // scene:1 quotes its own scene: never asked in review (it would play the scene before it happens)
  const own=all.filter(q=>!q.gram),qs=own.length?own:all;  // gram:1 tests a pattern, not the word: no star for the word from it
@@ -7244,7 +7320,8 @@ function talkWith(n){
  let steps=n.script?n.script():null,isReview=false;
  if(!steps&&C.REVIEW){const own=usual(n),rv=own&&!own.some(moves)?reviewPick(n):null;  // a talk that moves the story goes first; the review waits for the next talk
   if(rv){const q=rv[rv.length-1],stem=q.w.replace(/다$/,''),gives=t=>(t.say||'').includes(stem);  // their usual line goes first, unless it says the very word they're about to ask
-   steps=[...(n.badge?own.filter(t=>!gives(t)):[]),...rv];isReview=true}else steps=own||n.talk()}
+   steps=[...(n.badge?own.filter(t=>!gives(t)):[]),...rv];isReview=true}
+  else{const sl=own&&!own.some(moves)?sayLine(n):null;steps=sl?[...(n.badge?own:[]),...sl]:own||n.talk()}}
  if(!steps){
   if(n.badge&&n.badge.every(has)){const due=n.badge.some(isDue);steps=due?[...says(n.after),reviewFor(n.badge)]:says(n.after);isReview=due}  // a review question only when one of their words is due
   else steps=n.talk();
@@ -7271,7 +7348,7 @@ function award(words){
  const nw=words.filter(w=>!has(w));if(!nw.length)return;
  state.badges.push(...nw);
  const perfect=nw.filter(w=>!dlg.missed.has(w));
- nw.forEach(w=>{state.lv[w]=perfect.includes(w)?{b:2,due:now()+GAP[2]}:{b:0,due:now()}});
+ nw.forEach(w=>{state.lv[w]=perfect.includes(w)?spaced(2):{b:0,due:now()}});
  save();updateHud();sfx('badge');
  toast((G.gotToast||'일지에 추가')+': '+nw.join(', '));  // GAME.gotToast: the game's word for it (단어 마을: 배지 획득)
  const note=perfect.length===nw.length
@@ -7323,12 +7400,13 @@ function openPanel(){
 
 /* ---------- saving ---------- */
 function fresh(){const st=CH.start;return {v:1,zone:st.zone,x:st.x,y:st.y,dir:st.dir,badges:[],lv:{},items:[],f:{},seenIntro:false}}
-function save(){store.set(CH.save,JSON.stringify(state))}
+function save(){store.set(CH.save,JSON.stringify(state));if(SRS().shared)store.set(KEY('lv'),JSON.stringify(state.lv))}
 function loadState(){
  state=fresh();
  try{const s=JSON.parse(store.get(CH.save)||'null');if(s)Object.assign(state,s)}catch(e){}
  if(!C.ZONES[state.zone]){const st=CH.start;Object.assign(state,{zone:st.zone,x:st.x,y:st.y,dir:st.dir})}
  if(CH.migrate)CH.migrate(state);
+ refreshCarry();
  const Zs=C.ZONES[state.zone],c=Zs&&Zs.map[state.y]&&Zs.map[state.y][state.x];  /* a map changed under an old save: back to the start */
  if(!c||!(Zs.legend[c]||{}).walk||(Zs.warps||{})[state.x+','+state.y]){const st=CH.start;Object.assign(state,{zone:st.zone,x:st.x,y:st.y,dir:st.dir})}
 }

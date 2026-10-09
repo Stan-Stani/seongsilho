@@ -126,6 +126,32 @@ window.__play=async function(steps){
       check(!!dlg,'inspecting a thing opens a blurb');log(`== look ${ZID} ${tx},${ty}`);if(s.shot)await shot(s.shot);await finishDialog()}}
    else if(s.walkTo){await goZone(s.walkTo[0]);await reach((x,y)=>x===s.walkTo[1]&&y===s.walkTo[2],'walkTo');if(s.then)await shot(s.then)}
    else if(s.clock){skew+=s.clock;log(`clock +${s.clock/3600e3}h · due ${dueWords().length}`)}
+   else if(s.reviewTour){ // in-character review (C.REVIEW): with every word due, each person here who has a line asks it in their own voice, and it grades
+     if(s.carry){for(const ch of CHAPTERS){if(ch===CH)break;const ws=ch.make().WORDS;store.set(ch.save,JSON.stringify({badges:ws,lv:Object.fromEntries(ws.map(w=>[w,{b:1,due:0}]))}))}refreshCarry()}  // carry:1 — as if the earlier 교시 were played: their words come along
+     skew+=40*24*3600e3;const zones=s.reviewTour===true?[ZID]:[].concat(s.reviewTour);let asked=null,n=0;
+     const real=window.reviewPick;window.reviewPick=p=>(asked=real(p));
+     for(const z of zones)for(const [k,p] of Object.entries(C.NPC)){
+      if(p.zone!==z||(p.hide&&p.hide())||!reviewLines(p).length)continue;
+      const own=usual(p);if(!own||own.some(moves)||(p.script&&p.script()))continue;
+      check(status(p)==='review',`${k} has a due line, so shows the review mark`);
+      asked=null;const lvBefore=JSON.stringify(state.lv);await talk(k,s);
+      const q=asked&&asked[asked.length-1];
+      check(!!q,`${k} (${p.name}) asks a review line`);if(!q)continue;n++;
+      check(!q.who||q.who==='나',`${k}: the line is theirs (or yours), not the narrator's`);
+      check(JSON.stringify(state.lv)!==lvBefore,`${k}: answering "${q.w}" grades it`);
+      log(`   review by ${p.name}: ${q.w} · ${q.ask}`)}
+     window.reviewPick=real;check(n>0||s.none,'review tour: somebody reviewed');log(`review tour: ${n} people`)}
+   else if(s.hearTour){ // nothing due: people with a line you haven't heard say it as plain talk, the word filled in, ungraded
+     for(const L of Object.values(state.lv)){L.due=Date.now()+1e12;L.beat=null}save();  // nothing due: plain talk, not reviews
+     const zones=[].concat(s.hearTour);let n=0;
+     for(const z of zones)for(const [k,p] of Object.entries(C.NPC)){
+      if(p.zone!==z||(p.hide&&p.hide())||reviewLines(p).length||!linesFor(p).some(unheard))continue;
+      const own=usual(p);if(!own||own.some(moves)||(p.script&&p.script()))continue;
+      const h=heard().length,lvBefore=JSON.stringify(state.lv);await talk(k);n++;
+      check(heard().length===h+1,`${k} (${p.name}) says a line you hadn't heard`);
+      check(JSON.stringify(state.lv)===lvBefore,`${k}: plain talk doesn't grade anything`);
+      log(`   heard from ${p.name}: ${heard()[heard().length-1]}`)}
+     check(n>0||s.none,'hear tour: somebody had a line you hadn\'t heard');log(`hear tour: ${n} people`)}
    else if(s.pause){await wait(s.pause);if(s.shot)await shot(s.shot)}
    else if(s.check){check(s.check(),s.msg)}
    else if(s.log){log(s.log())}

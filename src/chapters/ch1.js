@@ -357,7 +357,7 @@ const NPC={
 const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f().fixed?'엔진 소리 들려요? 가슴이 뛰어요!':ZID==='city'?'여기는 제 고향이에요. 예쁘지만 좀 {지겨워요|지겹다}.':'엔진을 고치면 이 배가 다시 살아나요!'}]};
 
 const INTRO=[{who:'성실호',say:'삐— 삐— 궤도 진입 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
-const DONE=['엔진이 켜졌어요! 성실호는 하이 로사에 그대로 있어요.','1장 끝! 성실호 엔진이 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.','일지에서 단어를 다시 볼 수 있어요.'];
+const DONE=['엔진이 켜졌어요! 성실호는 하이 로사에 그대로 있어요.','1장 끝! 성실호 엔진이 다시 움직여요.','다음 장에서는 관문을 지날 기계를 찾으러 가요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 /* ---------- this chapter's own tiles (new names only, so other chapters keep the engine's) ---------- */
 /* Kelowan sits inside the Poseidon Nebula: from orbit the windows show nebula glow, hardly any stars (c013) */
