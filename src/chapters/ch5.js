@@ -1,14 +1,18 @@
 CHAPTERS.push({id:'ch5',n:'5장',title:'산타 로사',place:'경찰서 · 하이 로사 · 산타 로사',words:16,save:'seongsilho-ch5',color:'#7A4FA0',
- start:{zone:'hq',x:3,y:3,dir:'down'},introWho:'테렌스',
+ start:{zone:'hq',x:3,y:3,dir:'down'},introWho:'…',
  make:()=>{
 /* =====================================================================
    5장 · 산타 로사 — Terence's chapter, the Diligent's 31-year absence.
    Book pin: c019 (Bopbe, three networks), c024 (Zikar sting, Dawnkey protest, Hafnir party), c026 (Bersche, Toše at High Rosa,
    capsule bomb: 237 dead incl. Lućia; crackdown; Medusa captured + truth helmet), c027 (Antoinette-2burg = Liliana; Makaio-Faraji
    sniped on the Roundhouse balcony → rider "Makaio-Spirit"), c028 (two years later: Avone-Valerio occupies Gondiar), c029 (Medusa hidden
-   in the Penacova hospice; Josias's "Go for the Seven"; Léonie killed; missile kills the marchioness, her husband and Variaka),
-   c030 (Jalgori-Tobus + Aljan leave on the Polkadav; the real Gyvoy's stabbed corpse under the Dark Paradise club).
-   Wynid interludes on the news screen: c019/c020, c021, c023, c025, c028.
+   in the Penacova hospice; Josias's "Go for the Seven" broadcast; Dolod's closest approach; Terence hears Ghosts are sent to arrest
+   Otylia and warns Zelinda he's coming; the Ghosts are sniped and the missile kills the marchioness, her husband and Variaka; his
+   globecab picks up Otylia, Zelinda and Haian at the burning house and takes them to his villa; the game has him come from Santa Rosa,
+   by globecab to the station and the train, as in c024), c030 (Jalgori-Tobus + Aljan leave on the Polkadav; Terence, Jimena and Vanilda search the Dark Paradise club for three
+   weeks and find the real Gyvoy's stabbed corpse in the lowest basement; Jimena's sequencer gives the DNA in minutes).
+   Wynid interludes (막간) on a floating crystal in the HQ, never on the public news screen: c019/c020, c021, c023, c025, c028.
+   The news screen shows only what was public: the Custodian's bulletins, Josias's illegal broadcast, the YouBustered (c031).
    True now: Finn & the Diligent are away (Kingsnest); Gyvoy left with them 12 years before the start; Terence (Director of Special
    Operations) works secretly for Makaio-Faraji; c019 Lućia questions Bopbe while Terence watches from the monitor room; c026 Terence
    follows Lućia at High Rosa through her feed from his Santa Rosa office (the player sees through her sensors); c029 the survivors go
@@ -43,10 +47,10 @@ const DICT={
  '일레븐 톡식스':{k:'산타 로사의 무서운 갱 이름.',e:'Eleven Toxix (a gang)'},
  '표적 드론':{k:'총이 멀리 있는 목표를 맞히게 도와주는 작은 드론.',e:'targeting drone'},
  '안디':{k:'일하는 로봇.',e:'andy (robot)'},
- '돈키':{k:'사람들의 권리를 위한 시위 운동.',e:'Dawnkey (protest movement)'},
- '에어릴':{k:'3cm쯤 되는 아주 작은 감시 드론. 실처럼 생겼어요.',e:'aireel (tiny surveillance thread)'},
+ '돈키':{k:'사람들의 권리를 위해 거리에 모이는 젊은 사람들의 운동.',e:'Dawnkey (protest movement)'},  // no 시위 here: it's tapped just before 바닐다 asks that word
+ '에어릴':{k:'삼 센티미터쯤 되는 아주 작은 감시 드론. 실처럼 생겼어요.',e:'aireel (tiny surveillance thread)'},
  '라이더':{k:'다른 사람 머릿속에 사는 기억과 성격의 복사본.',e:'rider (stored personality)'},
- '관리관':{k:'점령한 땅을 다스리는 사람.',e:'Custodian'},
+ '관리관':{k:'군대가 차지한 땅을 다스리는 사람.',e:'Custodian'},
  '고스트':{k:'셀레스철이 만든 전투 기계. 이번 고스트는 머리가 없어요.',e:'Ghost (Celestial combat machine)'},
  '체렌코프 칼':{k:'푸르게 빛나는 아주 드문 에너지 칼.',e:'Cherenkov blade'},
  '아콘':{k:'셀레스철 여왕을 위해 일하는 귀족. 대사이자 스파이 대장.',e:'archon'},
@@ -55,23 +59,25 @@ const DICT={
  '총파업':{k:'모든 사람이 같이 일을 멈추는 것.',e:'general strike'},
  '리브스톤':{k:'살아 있는 돌. 우라닉이 마음으로 모양을 바꿔요.',e:'livestone'},
  '미사일':{k:'멀리 날아가서 터지는 큰 폭탄.',e:'missile'},
+ '글로브캡':{k:'산타 로사의 둥근 차. 기계가 스스로 운전해요.',e:'globecab (self-driving cab)'},
 };
-/* sounds-alike / looks-alike words, used when a listening question is built */
-const CONFUSE={'수사':['수술','수업'],'정보원':['정원','공원'],'체포하다':['체육','포기하다'],'처형':['처음','형사'],'증거':['증상','거리'],'변장하다':['변하다','화장하다'],
- '단서':['단어','순서'],'시위':['시외','시합'],'감시하다':['감사하다','감기'],'폭발':['폭탄','출발'],'장례식':['결혼식','장래'],'테러':['테니스','텔레비전'],
- '폭탄':['폭발','폭포'],'암살':['암산','안심'],'저격':['저녁','자격'],'점령하다':['점심','정리하다']};
+/* sounds-alike / looks-alike words, used when a listening question is built; each ends like its word (final consonant or none),
+   so the particle after a blank (___를/을, ___예요/이에요) never rules one out */
+const CONFUSE={'수사':['수리','수다'],'정보원':['정원','공원'],'체포하다':['체육','포기하다'],'처형':['처음','처방'],'증거':['증세','거리'],'변장하다':['변하다','화장하다'],
+ '단서':['단어','순서'],'시위':['시외','시계'],'감시하다':['감사하다','감기'],'폭발':['폭탄','출발'],'장례식':['결혼식','졸업식'],'테러':['테니스','텐트'],
+ '폭탄':['폭발','폭풍'],'암살':['암산','안심'],'저격':['저녁','자격'],'점령하다':['점심','정리하다']};
 
 /* extra review questions (the terminal uses these too, alongside every NPC question) */
 const BANK=[
  {w:'수사',ask:'형사들이 그 사건을 ___하고 있어요.',opts:[['수사',1],['수술',0,'수술은 병원에서 의사가 해요. 형사는 "수사".']]},
  {w:'정보원',ask:'그 남자는 경찰 ___이었어요. 갱의 비밀을 알려 줬어요.',opts:[['정보원',1],['정원',0,'정원은 꽃과 나무가 있는 곳이에요. 비밀을 주는 사람은 "정보원".']]},
- {w:'체포하다',ask:'경찰이 도둑을 ___.',opts:[['체포했어요',1],['체육했어요',0,'체육은 학교 운동 수업이에요. 범인을 잡으면 "체포했어요".']]},
+ {w:'체포하다',ask:'경찰이 도둑을 ___.',opts:[['체포했어요',1],['초대했어요',0,'초대는 손님을 부르는 거예요. 범인을 잡아 가면 "체포했어요".']]},
  {w:'처형',ask:'옛날 그 나라에서는 반역자를 ___했어요.',opts:[['처형',1],['처음',0,'처음은 first예요. 벌로 죽이는 건 "처형".']]},
  {w:'증거',ask:'___ 없이는 범인을 체포할 수 없어요.',opts:[['증거',1],['증상',0,'증상은 아플 때 몸에 나타나는 거예요. 범인을 보여 주는 건 "증거".']]},
  {w:'변장하다',ask:'형사가 할머니로 ___. 아무도 몰랐어요.',opts:[['변장했어요',1],['변했어요',0,'변하다는 저절로 달라지는 거예요. 일부러 다른 사람처럼 보이면 "변장했어요".']]},
  {w:'단서',ask:'바닥의 발자국이 중요한 ___예요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요. 범인을 찾는 힌트는 "단서".']]},
  {w:'시위',ask:'학생들이 광장에서 ___를 했어요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 거리에서 반대 목소리를 내는 건 "시위".']]},
- {w:'감시하다',ask:'카메라가 은행 문을 24시간 ___.',opts:[['감시해요',1],['감사해요',0,'감사하다는 고마워하는 거예요! 계속 지켜보는 건 "감시해요".']]},
+ {w:'감시하다',ask:'카메라가 은행 문을 하루 종일 ___.',opts:[['감시해요',1],['감사해요',0,'감사하다는 고마워하는 거예요! 계속 지켜보는 건 "감시해요".']]},
  {w:'폭발',ask:'가스 ___ 때문에 건물이 무너졌어요.',opts:[['폭발',1],['출발',0,'출발은 떠나는 거예요. 發은 같아요! 터지는 건 "폭발".']]},
  {w:'장례식',ask:'할아버지가 돌아가셔서 ___에 갔어요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 돌아가신 분과 인사하는 건 "장례식".']]},
  {w:'테러',ask:'광장에서 ___ 사건이 있었어요. 폭탄이 터져서 사람들이 다쳤어요.',opts:[['테러',1],['텔레비전',0,'텔레비전은 보는 기계예요. 일부러 사람들을 다치게 하는 공격은 "테러".']]},
@@ -83,7 +89,7 @@ const BANK=[
 
 const Q={ // NPC questions, kept here so review can reuse them
  lucia:[
-  {who:'…',w:'수사',ask:'경찰이 사건을 자세히 알아봐요. 그걸 ___라고 해요.',opts:[['수사',1],['수술',0,'수술은 병원에서 의사가 해요. 경찰은 "수사".'],['수업',0,'수업은 학교에서 들어요. 경찰이 사건을 알아보는 건 "수사".']]},
+  {who:'…',w:'수사',ask:'경찰이 사건을 자세히 알아봐요. 그걸 ___라고 해요.',opts:[['수사',1],['수리',0,'수리는 기계를 고치는 거예요. 경찰이 사건을 알아보는 건 "수사".'],['수다',0,'수다는 친구하고 하는 가벼운 이야기예요. 경찰이 사건을 알아보는 건 "수사".']]},
   {who:'…',w:'정보원',ask:'몰래 비밀을 모아서 아콘한테 주는 사람. ___이에요.',opts:[['정보원',1],['공원',0,'공원은 산책하는 곳이에요! 비밀을 모으는 사람은 "정보원".'],['선생님',0,'선생님은 가르쳐요. 몰래 비밀을 모으는 사람은 "정보원".']]},
  ],
  bopbe:[
@@ -91,8 +97,8 @@ const Q={ // NPC questions, kept here so review can reuse them
   {who:'루치아',w:'체포하다',gram:1,ask:'어젯밤 총을 ___ 사람들도 곧 다 체포할 거예요.',opts:[['쐈던',1],['쏠',0,'어젯밤 일이에요. "쏠"은 앞으로의 일이에요. 지난 일은 "-았/었던" → "쐈던".']]},
  ],
  lab:[
-  {w:'증거',ask:'이 나노 기계가 바로 ___예요. 누군가 봅베를 죽였어요.',opts:[['증거',1],['증상',0,'증상은 아플 때 몸에 나타나는 거예요. 범인을 보여 주는 건 "증거".'],['거리',0,'거리는 길이에요. 범인을 보여 주는 건 "증거".']]},
-  {w:'처형',ask:'조직이 자기 사람을 벌로 죽였어요. 이건 ___이에요.',opts:[['처형',1],['처음',0,'처음은 first예요. 벌로 죽이는 건 "처형".'],['형사',0,'형사는 테렌스 같은 경찰이에요. 刑이 같아요! 벌로 죽이는 건 "처형".']]},
+  {w:'증거',ask:'이 나노 기계가 바로 ___예요. 누군가 봅베를 죽였어요.',opts:[['증거',1],['증세',0,'증세는 아플 때 몸에 나타나는 거예요. 범인을 보여 주는 건 "증거".'],['거리',0,'거리는 길이에요. 범인을 보여 주는 건 "증거".']]},
+  {w:'처형',ask:'조직이 자기 사람을 벌로 죽였어요. 이건 ___이에요.',opts:[['처형',1],['처음',0,'처음은 first예요. 벌로 죽이는 건 "처형".'],['처방',0,'처방은 의사가 약을 정해 주는 거예요. 벌로 죽이는 건 "처형". 刑은 형사의 형!']]},
  ],
  zikar:[
   {w:'변장하다',ask:'형사님이 제 얼굴 가면을 쓰고 ___? 와, 진짜 저 같아요!',opts:[['변장했어요',1],['변했어요',0,'변하다는 저절로 달라지는 거예요. 일부러 다른 사람처럼 보이면 "변장했어요".'],['화장했어요',0,'화장은 얼굴을 예쁘게 하는 거예요. 다른 사람이 되면 "변장".']]},
@@ -100,10 +106,10 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  zikar2:[
   {who:'테렌스',w:'단서',ask:'토셰라는 이름이 첫 ___예요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요. 범인을 찾는 힌트는 "단서".'],['순서',0,'순서는 1, 2, 3이에요. 범인을 찾는 힌트는 "단서".']]},
-  {who:'…',w:'단서',ask:'형사는 작은 ___를 모아서 범인을 찾아요.',opts:[['단서',1],['간식',0,'간식은 먹는 거예요! 범인을 찾는 힌트는 "단서".']]},
+  {who:'…',w:'단서',ask:'형사는 작은 ___를 모아서 범인을 찾아요.',opts:[['단서',1],['과자',0,'과자는 먹는 거예요! 범인을 찾는 힌트는 "단서".']]},
  ],
  vanilda:[
-  {w:'시위',ask:'오늘 우리는 길에서 ___를 해요. 차가 못 지나가요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 길에서 목소리를 내는 건 "시위".'],['시합',0,'시합은 경기예요. 반대 목소리를 내는 건 "시위".']]},
+  {w:'시위',ask:'오늘 우리는 길에서 ___를 해요. 차가 못 지나가요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 길에서 목소리를 내는 건 "시위".'],['시계',0,'시계는 시간을 보는 거예요. 반대 목소리를 내는 건 "시위".']]},
   {w:'시위',build:['시위가','곧','끝날','것 같아요'],alts:[['곧','시위가','끝날','것 같아요']]},
  ],
  bersche:[
@@ -111,24 +117,24 @@ const Q={ // NPC questions, kept here so review can reuse them
   {who:'테렌스',w:'감시하다',ask:'메두사도 토셰를 ___ 것 같아요.',opts:[['감시하는',1],['감시한다',0,'"것 같아요" 앞에는 "-는"을 써요 → "감시하는 것 같아요".']]},
  ],
  maria:[
-  {w:'폭발',ask:'캡슐에서 큰 ___이 있었어요. 빛이 번쩍했어요.',opts:[['폭발',1],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터지는 건 "폭발".'],['출발',0,'출발은 떠나는 거예요. 發은 같아요! 터지는 건 "폭발".']]},
+  {w:'폭발',ask:'캡슐에서 큰 ___이 있었어요. 빛이 번쩍했어요.',opts:[['폭발',1],['폭설',0,'폭설은 눈이 아주 많이 오는 거예요. 터지는 건 "폭발".'],['출발',0,'출발은 떠나는 거예요. 發은 같아요! 터지는 건 "폭발".']]},
   {who:'…',w:'폭발',ask:'___한 캡슐에 탔던 사람은 아무도 살지 못했어요.',opts:[['폭발',1],['폭탄',0,'폭탄은 물건이에요. "폭탄한"은 없어요. 터진 캡슐 → "폭발한".']]},
  ],
  jimena:[
-  {who:'…',w:'장례식',ask:'죽은 사람에게 마지막 인사를 하는 날. ___이에요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 式은 같지만 마지막 인사는 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사는 "장례식".']]},
+  {who:'…',w:'장례식',ask:'죽은 사람에게 마지막 인사를 하는 날. ___이에요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 式은 같지만 마지막 인사는 "장례식".'],['졸업식',0,'졸업식은 학교를 마치는 날이에요. 마지막 인사는 "장례식".']]},
   {who:'…',w:'장례식',gram:1,ask:'테렌스는 루치아와 같이 ___ 날들을 생각해요.',opts:[['일했던',1],['일하러',0,'"-러"는 목적이에요. "날들" 앞에는 꾸미는 말 → 지난 일은 "일했던".']]},
  ],
  zelinda:[
   {who:'…',w:'테러',ask:'사람들을 무섭게 하려고 일부러 공격해요. 그건 ___예요.',opts:[['테러',1],['테니스',0,'테니스는 운동이에요! 일부러 하는 공격은 "테러".'],['사고',0,'사고는 일부러 하지 않아요. 일부러 하면 "테러".']]},
-  {who:'테렌스',gram:1,w:'테러',ask:'이 테러 뒤에 큰 조직이 ___.',opts:[['있는 것 같아요',1],['있는 것 같다요',0,'"같다요"는 없어요. "있는 것 같아요".']]},
+  {who:'테렌스',gram:1,w:'테러',ask:'이 테러 뒤에 큰 조직이 ___.',opts:[['있는 것 같아요',1],['있는 척해요',0,'"-는 척하다"는 거짓으로 그런 것처럼 하는 거예요. 추측은 "있는 것 같아요".']]},
  ],
  medusa:[
-  {w:'폭탄',ask:'캡슐 안에 ___이 있었어요. 우리는 안 놨어요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 터지는 물건은 "폭탄".'],['폭포',0,'폭포는 물이에요! 터지는 물건은 "폭탄".']]},
-  {who:'테렌스 (생각)',gram:1,w:'폭탄',ask:'그날 그 여자가 토셰한테 폭탄을 ___ 것 같아요.',opts:[['준',1],['주다',0,'"주다 것 같아요"는 없어요. 지난 일 추측은 "-(으)ㄴ 것 같아요" → "준 것 같아요".']]},
+  {w:'폭탄',ask:'캡슐 안에 ___이 있었어요. 우리는 안 놨어요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 터지는 물건은 "폭탄".'],['폭풍',0,'폭풍은 바람이 아주 센 날씨예요! 터지는 물건은 "폭탄".']]},
+  {who:'테렌스 (생각)',gram:1,w:'폭탄',ask:'그날 그 여자가 토셰한테 폭탄을 ___ 것 같아요.',opts:[['준',1],['주는',0,'"그날"은 지난 일이에요. "주는"은 지금 일이에요. 지난 일 추측은 "-(으)ㄴ 것 같아요" → "준 것 같아요".']]},
  ],
  makaio:[
   {who:'…',w:'암살',ask:'중요한 사람을 몰래 죽이는 것. ___이에요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요! 몰래 죽이는 건 "암살".'],['안심',0,'안심은 걱정이 없는 거예요. 몰래 죽이는 건 "암살".']]},
-  {w:'암살',ask:'저를 ___하려는 사람이 있는 것 같아요.',opts:[['암살',1],['체육',0,'체육은 운동 수업이에요. 몰래 죽이려는 건 "암살".']]},
+  {w:'암살',ask:'저를 ___하려는 사람이 있는 것 같아요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이려는 건 "암살".']]},
  ],
  spirit:[
   {who:'…',w:'저격',ask:'멀리 숨어서 총으로 한 사람을 쏴요. 그건 ___이에요.',opts:[['저격',1],['저녁',0,'저녁은 밤 전이에요! 멀리서 쏘는 건 "저격".'],['자격',0,'자격은 할 수 있는 권리예요. 멀리서 쏘는 건 "저격". 擊은 공격의 격!']]},
@@ -136,12 +142,12 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  general:[
   {w:'점령하다',ask:'제국 군대가 곤디아를 ___. 이제 이 행성은 제 거예요.',opts:[['점령했어요',1],['정리했어요',0,'정리는 방을 깨끗하게 하는 거예요. 군대가 땅을 차지하면 "점령".'],['점심했어요',0,'점심은 낮에 먹는 밥이에요! 군대는 "점령했어요".']]},
-  {who:'테렌스',w:'점령하다',ask:'저 군대는 도시를 오래 ___ 것 같아요.',opts:[['점령할',1],['점령하는다',0,'"-는다"는 "것 같아요" 앞에 안 와요. 앞으로의 추측은 "점령할 것 같아요".']]},
+  {who:'테렌스',w:'점령하다',ask:'저 군대는 도시를 오래 ___ 것 같아요.',opts:[['점령할',1],['점령하고',0,'"것 같아요" 앞에는 꾸미는 말이 와요. 앞으로의 추측은 "점령할 것 같아요".']]},
  ],
  cafe:[ // earlier chapters' words, no badges
   {ask:'어제 공원에서 작은 고양이를 ___.',opts:[['발견했어요',1],['발표했어요',0,'발표는 사람들 앞에서 말하는 거예요. 처음 찾았으면 "발견했어요".']]},
   {ask:'우주선에 ___가 없으면 출발할 수 없어요.',opts:[['연료',1],['연체료',0,'연체료는 책을 늦게 반납하면 내요! 엔진은 "연료".']]},
-  {ask:'그 남자는 경찰한테 ___. 진실이 아니었어요.',opts:[['거짓말했어요',1],['거짓말됐어요',0,'"거짓말되다"는 없어요. "거짓말했어요".']]},
+  {ask:'그 남자는 경찰한테 ___. 진실이 아니었어요.',opts:[['거짓말했어요',1],['거절했어요',0,'거절은 "싫어요" 하는 거예요. 진실이 아닌 말을 하면 "거짓말했어요".']]},
   {ask:'친구가 제 비밀을 다른 사람한테 말했어요. 저를 ___.',opts:[['배신했어요',1],['배웠어요',0,'배우다는 공부하는 거예요. 믿음을 깨면 "배신했어요".']]},
   {ask:'지진 때문에 오래된 건물이 ___.',opts:[['무너졌어요',1],['무거웠어요',0,'무겁다는 무게 이야기예요. 건물이 쓰러지면 "무너졌어요".']]},
   {ask:'연기가 너무 많아요. 이러다가 ___할 것 같아요.',opts:[['질식',1],['질문',0,'질문은 묻는 거예요. 숨을 못 쉬면 "질식".']]},
@@ -151,15 +157,16 @@ const Q={ // NPC questions, kept here so review can reuse them
 };
 
 /* Invented details in REVIEW / CLASS (small, harmless, not in the book): the lab tech watches Dolod through a telescope, re-checks
-   the drone blueprint, keeps the lab dust-free, works late after the bombing; Zikar fixed a High Rosa worker's spacesuit, has an andy
+   the drone blueprint, keeps the lab dust-free, works late after the bombing (and, as small talk: hands still shaking after it, Liliana's
+   face on their mind, nothing to examine under the curfew); Zikar fixed a High Rosa worker's spacesuit, has an andy
    to finish today; Bersche got only half his pay from Medusa; Vanilda went to Lućia's funeral and cried, her next protest will be
    bigger (only until the Liliana find); Aljan's med school has many stairs, a broken-down train made him late, he means to marry
-   Laurella some day, Terence smiles less since the funeral; Maria José put new cameras in the interrogation room, has bomb checks at
-   the tower capsules; it rained on the funeral day; the governor's office lights stay on at night; Medusa finds the helmet too tight;
+   Laurella some day, Terence smiles less since the funeral; Maria José
+   put new cameras in the interrogation room, has bomb checks at the tower capsules; it rained on the funeral day; the governor's office lights stay on at night; Medusa found the cell's air stuffy;
    the dream bar's glasses don't break; the sea breeze smells of salt and the children have just fallen asleep; Haian packs the food;
    Jimena saw the blast on the news.
-   Everything else is canon or the chapter's own story: Lućia's team has an informant inside Eleven Toxix (c024); Zikar hid while
-   Terence wore his face (c024: he left with the ATD squad); Maria José turns down Terence's help and wants his intel shared with the
+   Everything else is canon or the chapter's own story: Lućia's team has an informant inside Eleven Toxix (c024); Zikar leaves with
+   the police squad while Terence wears his face (c024: he left with the ATD squad); Maria José turns down Terence's help and wants his intel shared with the
    force (c026); the blast threw the capsule wreckage out into space, kilometres below High Rosa, seen on a georing feed, not from the
    ground (c026); Zelinda had Terence hand over his gang files (c026; the police use them, c027); the face match on the old footage
    (c027); after the crackdown Vanilda is arrested once, freed by Terence, and protests dwindle (c027); Medusa trades information to
@@ -176,11 +183,11 @@ const Q={ // NPC questions, kept here so review can reuse them
 const REVIEW=[ // in-character review: people use a learned word again, in their own voice and moment (engine: linesFor/reviewPick)
  /* 루치아 (after Bopbe, until she goes up to High Rosa). Her script (reminders) always plays first while she's here, so these are
     never asked in the current flow; kept as the teacher's own lines */
- {w:'수사',by:'lucia',ask:'제 손은 괜찮아요. 봅베 사건 ___는 계속할 수 있어요.',opts:[['수사',1],['수술',0,'수술요? 하하, 그 정도는 아니에요. 사건을 알아보는 건 "수사".'],['수업',0,'수업은 학교에서 들어요. 경찰이 사건을 알아보는 건 "수사".']]},
+ {w:'수사',by:'lucia',ask:'제 손은 괜찮아요. 봅베 사건 ___도 계속할 수 있어요.',opts:[['수사',1],['수술',0,'수술요? 하하, 그 정도는 아니에요. 사건을 알아보는 건 "수사".'],['수업',0,'수업은 학교에서 들어요. 경찰이 사건을 알아보는 건 "수사".']]},
  {w:'정보원',by:'lucia',ask:'일레븐 톡식스 안에도 우리 ___이 있어요.',opts:[['정보원',1],['정원',0,'정원은 꽃이 있는 곳이에요. 몰래 비밀을 알려 주는 사람은 "정보원".'],['공원',0,'공원은 산책하는 곳이에요! 몰래 비밀을 알려 주는 사람은 "정보원".']]},
  /* the lab tech (from the othervisor mask to the end; the Liliana footage plays first while it's due) */
  {w:'수사',by:'lab',ask:'감식은 ___의 시작이에요. 작은 것부터 봐요.',opts:[['수사',1],['수술',0,'수술은 병원에서 의사가 해요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]},
- {w:'처형',by:'lab',ask:'나노 기계로 ___이라니. 그 조직은 정말 무서워요.',opts:[['처형',1],['처음',0,'처음은 first예요. 조직이 벌로 죽였으면 "처형".'],['치료',0,'치료는 아픈 사람을 낫게 하는 거예요. 벌로 죽이면 "처형".']]},
+ {w:'처형',by:'lab',ask:'나노 기계로 ___이라니. 그 조직은 정말 무서워요.',opts:[['처형',1],['처음',0,'처음은 first예요. 조직이 벌로 죽였으면 "처형".'],['수술',0,'수술은 아픈 사람을 낫게 하는 거예요. 벌로 죽이면 "처형".']]},
  {w:'증거',by:'lab',ask:'작은 ___ 하나가 사건을 바꿔요. 장갑 끼세요.',opts:[['증거',1],['증상',0,'증상은 아플 때 몸에 나타나는 거예요. 범인을 보여 주는 건 "증거".'],['거리',0,'거리는 길이에요. 범인을 보여 주는 건 "증거".']]},
  {w:'용암',by:'lab',ask:'봅베 몸 안은 ___처럼 뜨거웠을 거예요.',opts:[['용암',1],['얼음',0,'얼음은 차가워요! 화산에서 나오는 뜨거운 돌은 "용암".'],['용기',0,'용기는 무서워도 하는 마음이에요. 아주 뜨거운 건 "용암".']]},
  {w:'먼지',by:'lab',ask:'감식실에는 ___ 하나 없어야 돼요. 매일 닦아요.',opts:[['먼지',1],['먼저',0,'먼저는 순서예요. 아주 작고 가벼운 가루는 "먼지".']]},
@@ -190,8 +197,8 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'발견하다',by:'lab',when:()=>!!f().liliana,ask:'얼굴 검색으로 옛날 영상에서 그 여자를 ___.',opts:[['발견했어요',1],['발표했어요',0,'발표는 사람들 앞에서 말하는 거예요. 처음 찾았으면 "발견했어요".']]},
  {w:'관측하다',by:'lab',when:()=>!!f().occupied,ask:'저는 밤마다 망원경으로 돌로드를 ___.',opts:[['관측해요',1],['정리해요',0,'정리는 방을 치우는 거예요. 망원경으로 별을 자세히 보면 "관측해요".']]},
  /* 지카르 (after the sting, until the occupation) */
- {w:'변장하다',by:'zikar',ask:'형사님이 저로 ___ 날, 저는 숨어 있었어요.',opts:[['변장한',1],['변한',0,'변하다는 저절로 달라지는 거예요. 일부러 제 얼굴을 쓰면 "변장한".'],['화장한',0,'화장은 얼굴을 예쁘게 하는 거예요. 제 얼굴이 되면 "변장한".']]},
- {w:'단서',by:'zikar',ask:'형사님, 저 말고 다른 ___를 찾아요. 제발요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요! 범인을 찾는 힌트는 "단서".'],['간식',0,'간식은 먹는 거예요! 범인을 찾는 힌트는 "단서".']]},
+ {w:'변장하다',by:'zikar',ask:'형사님이 저로 ___ 날, 저는 경찰하고 안전한 곳에 있었어요.',opts:[['변장한',1],['변한',0,'변하다는 저절로 달라지는 거예요. 일부러 제 얼굴을 쓰면 "변장한".'],['화장한',0,'화장은 얼굴을 예쁘게 하는 거예요. 제 얼굴이 되면 "변장한".']]},
+ {w:'단서',by:'zikar',ask:'형사님, 저 말고 다른 ___를 찾아요. 제발요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요! 범인을 찾는 힌트는 "단서".'],['과자',0,'과자는 먹는 거예요! 범인을 찾는 힌트는 "단서".']]},
  {w:'우주복',by:'zikar',ask:'어제는 하이 로사 작업자 ___을 고쳤어요.',opts:[['우주복',1],['우주선',0,'우주선은 타는 거예요. 제가 고친 건 입는 거, "우주복".'],['우체국',0,'우체국은 편지를 보내는 곳이에요. 입는 건 "우주복".']]},
  {w:'수리하다',by:'zikar',ask:'이 안디는 오늘 안에 ___ 돼요. 바빠요.',opts:[['수리해야',1],['수업해야',0,'수업은 학교 이야기예요. 기계를 고치면 "수리해야".']]},
  /* 베르셰 in the interrogation room (after he talks, until Medusa is brought in) */
@@ -200,8 +207,8 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'공격하다',by:'bersche',ask:'지카르를 ___ 않았어요. 데려오라고만 했어요.',opts:[['공격하지',1],['공부하지',0,'공부는 학교에서 해요. 싸움을 걸고 때리면 "공격하지".']]},
  {w:'배신하다',by:'bersche',ask:'제 부하들이 저를 ___? 진짜 다 말했어요?',opts:[['배신했어요',1],['배달했어요',0,'배달은 음식을 가져다주는 거예요. 믿음을 깨면 "배신했어요".']]},
  /* the protesters (all three, until the road opens) */
- {w:'체포하다',by:'시위대',ask:'아저씨, 경찰이에요? 우리를 ___ 거예요?',opts:[['체포할',1],['초대할',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포할".']]},
- {w:'위험',by:'시위대',ask:'걱정 마요. 앉아서 하는 시위는 ___하지 않아요.',opts:[['위험',1],['위성',0,'위성은 행성 주위를 도는 달이에요! 다칠 수 있으면 "위험".'],['위치',0,'위치는 있는 곳이에요. 다칠 수 있으면 "위험".']]},
+ {w:'체포하다',by:'돈키',ask:'아저씨, 경찰이에요? 우리를 ___ 거예요?',opts:[['체포할',1],['초대할',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포할".']]},
+ {w:'위험',by:'돈키',ask:'걱정 마요. 앉아서 하는 시위는 ___하지 않아요.',opts:[['위험',1],['위성',0,'위성은 행성 주위를 도는 달이에요! 다칠 수 있으면 "위험".'],['위치',0,'위치는 있는 곳이에요. 다칠 수 있으면 "위험".']]},
  /* 바닐다 (after the protest, until the occupation) */
  {w:'시위',by:'vanilda',when:()=>!f().liliana,ask:'다음 ___에는 친구들이 더 많이 와요!',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 거리에서 목소리를 내는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 하는 건 "시위".']]},
  {w:'경호원',by:'vanilda',pre:['아빠, 또 저 따라왔어요?'],ask:'아빠는 경찰이지 제 ___이 아니에요!',opts:[['경호원',1],['정보원',0,'정보원은 비밀을 모으는 사람이에요. 저를 옆에서 지키는 사람은 "경호원".'],['회원',0,'회원은 모임에 든 사람이에요. 저를 옆에서 지키는 사람은 "경호원".']]},
@@ -211,12 +218,12 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'계단',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'의대 건물은 ___이 너무 많아요. 매일 운동해요!',opts:[['계단',1],['계산',0,'계산은 숫자 문제예요. 걸어서 올라가는 건 "계단".'],['계란',0,'계란은 먹는 거예요! 걸어서 올라가는 건 "계단".']]},
  {w:'고장 나다',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'아침에 기차가 ___ 수업에 늦었어요.',opts:[['고장 나서',1],['고생해서',0,'고생은 힘든 일을 겪는 거예요. 기계가 망가지면 "고장 나서".']]},
  {w:'결혼하다',by:'aljan',when:()=>!!f().protest&&!f().boom,ask:'저는 나중에 로렐라하고 ___ 거예요!',opts:[['결혼할',1],['결석할',0,'결석은 학교에 안 가는 거예요! 부부가 되면 "결혼할".']]},
- {w:'시위',by:'aljan',when:()=>!f().liliana,ask:'바닐다가 또 ___ 맨 앞에 섰어요. 엄마가 걱정해요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 바닐다가 맨 앞에 서는 건 "시위".'],['시합',0,'시합은 경기예요. 거리에서 목소리를 내는 건 "시위".']]},
+ {w:'시위',by:'aljan',when:()=>!f().liliana,ask:'바닐다가 ___에 갔던 날, 엄마가 많이 걱정했어요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 바닐다가 간 건 "시위".'],['시합',0,'시합은 경기예요. 거리에서 목소리를 내는 건 "시위".']]},
  {w:'장례식',by:'aljan',when:()=>!!f().liliana,ask:'루치아 누나 ___ 뒤로 아빠가 잘 안 웃어요.',opts:[['장례식',1],['결혼식',0,'결혼식 뒤에는 다 웃어요. 마지막 인사를 하는 날은 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사를 하는 날은 "장례식".']]},
  {w:'변하다',by:'aljan',when:()=>!!f().rider,ask:'아빠, 요즘 많이 ___. 가끔 혼자 말해요.',opts:[['변했어요',1],['편했어요',0,'편하다는 쉽고 좋은 거예요. 전하고 달라지면 "변했어요".'],['변장했어요',0,'변장은 일부러 다른 사람처럼 보이는 거예요. 저절로 달라지면 "변했어요".']]},
  /* 마리아 호세 서장 (after the bombing; her occupation script plays first after that) */
  {w:'폭발',by:'maria',ask:'___ 사건 서류가 많아요. 그래도 국장님 도움은 필요 없어요.',opts:[['폭발',1],['출발',0,'출발은 떠나는 거예요. 캡슐이 터진 건 "폭발".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터진 건 "폭발".']]},
- {w:'수사',by:'maria',ask:'이 테러 ___는 이제 제가 맡아요. 보고는 매일 해요.',opts:[['수사',1],['수술',0,'수술은 병원 일이에요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]},
+ {w:'수사',by:'maria',ask:'이 테러 ___는 이제 제가 맡아요. 보고는 매일 해요.',opts:[['수사',1],['수다',0,'수다는 친구하고 하는 가벼운 이야기예요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]},
  {w:'증거',by:'maria',ask:'___ 없이는 아무도 못 잡아요. 그게 법이에요.',opts:[['증거',1],['증상',0,'증상은 병원에서 말하는 거예요. 범인을 보여 주는 건 "증거".']]},
  {w:'진공',by:'maria',ask:'캡슐 조각은 ___ 속으로 흩어졌어요. 찾기 어려워요.',opts:[['진공',1],['공기',0,'공기가 있으면 숨을 쉬죠. 공기가 하나도 없는 곳은 "진공".'],['진짜',0,'진짜는 real이에요. 공기가 없는 우주는 "진공".']]},
  {w:'추격하다',by:'maria',ask:'범인을 ___ 건 경찰 일이에요. 아콘 일이 아니에요.',opts:[['추격하는',1],['출근하는',0,'출근은 일하러 가는 거예요. 범인을 쫓아가면 "추격하는".']]},
@@ -231,27 +238,27 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  /* 젤린다 in the square (after the crackdown, until the occupation) */
  {w:'테러',by:'zelinda',ask:'___ 뒤로 총독 사무실은 밤에도 불이 켜져 있어요.',opts:[['테러',1],['테니스',0,'테니스는 운동이에요! 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 기계예요. 일부러 한 공격은 "테러".']]},
  {w:'정보원',by:'zelinda',pre:['쉿, 작게 말해요.'],ask:'국장님 ___들이 모은 갱 파일, 잘 받았어요.',opts:[['정보원',1],['정원',0,'정원은 꽃밭이에요. 몰래 비밀을 모으는 사람은 "정보원".'],['공원',0,'공원은 산책하는 곳이에요. 몰래 비밀을 모으는 사람은 "정보원".']]},
- {w:'범인',by:'zelinda',ask:'총독님은 ___을 빨리 잡고 싶어 해요.',opts:[['범인',1],['범죄',0,'범죄는 나쁜 일이에요. 나쁜 일을 한 사람은 "범인".']]},
- /* 메두사 in the interrogation room (after the helmet, until the occupation) */
+ {w:'범인',by:'zelinda',ask:'총독님은 ___들을 빨리 잡고 싶어 해요.',opts:[['범인',1],['범죄',0,'범죄는 나쁜 일이에요. 나쁜 일을 한 사람은 "범인".']]},
+ /* 메두사: released right after the helmet (c027), so only the end round quotes these — said as memories of the cell */
  {w:'체포하다',by:'medusa',ask:'형사님이 직접 저를 ___. 그날 정말 용감했어요.',opts:[['체포했어요',1],['초대했어요',0,'초대요? 하하, 파티는 아니었어요. 수갑을 채웠으면 "체포했어요".'],['포기했어요',0,'포기는 그만두는 거예요. 저를 잡아 왔으면 "체포했어요".']]},
- {w:'테러',by:'medusa',ask:'제가 ___를 했으면 벌써 곤디아를 떠났을 거예요.',opts:[['테러',1],['테니스',0,'테니스요? 하하. 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 거예요. 일부러 한 공격은 "테러".']]},
- {w:'폭탄',by:'medusa',ask:'제 머리카락이 무기였어요. ___은 필요 없었어요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 터지는 물건은 "폭탄".'],['폭포',0,'폭포는 물이에요! 터지는 물건은 "폭탄".']]},
- {w:'질식하다',by:'medusa',ask:'이 헬멧 너무 꽉 껴요. ___ 것 같아요.',opts:[['질식할',1],['질문할',0,'질문은 묻는 거예요. 숨을 못 쉬면 "질식할".'],['실망할',0,'실망은 마음이 아픈 거예요. 숨을 못 쉬면 "질식할".']]},
- {w:'거짓말하다',by:'medusa',ask:'이 헬멧 앞에서는 ___ 수 없어요. 알잖아요.',opts:[['거짓말할',1],['걱정할',0,'걱정은 마음이 불안한 거예요. 사실이 아닌 말을 하면 "거짓말할".']]},
+ {w:'테러',by:'medusa',ask:'제가 ___를 했으면 벌써 곤디아를 떠났을 거예요.',opts:[['테러',1],['테니스',0,'테니스요? 하하. 사람들을 겁주는 공격은 "테러".'],['텐트',0,'텐트는 밖에서 자는 천 집이에요. 일부러 한 공격은 "테러".']]},
+ {w:'폭탄',by:'medusa',ask:'제 머리카락이 무기였어요. ___은 필요 없었어요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 터지는 물건은 "폭탄".'],['폭풍',0,'폭풍은 바람이 아주 센 날씨예요! 터지는 물건은 "폭탄".']]},
+ {w:'질식하다',by:'medusa',ask:'그 취조실 공기는 너무 답답했어요. ___ 것 같았어요.',opts:[['질식할',1],['질문할',0,'질문은 묻는 거예요. 숨을 못 쉬면 "질식할".'],['실망할',0,'실망은 마음이 아픈 거예요. 숨을 못 쉬면 "질식할".']]},
+ {w:'거짓말하다',by:'medusa',ask:'그 헬멧 앞에서는 ___ 수 없었어요. 알잖아요.',opts:[['거짓말할',1],['걱정할',0,'걱정은 마음이 불안한 거예요. 사실이 아닌 말을 하면 "거짓말할".']]},
  {w:'교환하다',by:'medusa',ask:'제 정보하고 형사님 도움을 ___. 어때요?',opts:[['교환해요',1],['환영해요',0,'환영은 반갑게 맞는 거예요. 서로 주고받으면 "교환해요".']]},
  /* 마카이오 (라이더) in the dream bar (after 저격, to the end) */
  {w:'저격',by:'spirit',ask:'발코니에서는 ___ 조심해요. 저처럼 되지 말고요.',opts:[['저격',1],['저녁',0,'저녁은 밤 전이에요! 멀리 숨어서 쏘는 건 "저격".'],['자격',0,'자격은 할 수 있는 권리예요. 멀리 숨어서 쏘는 건 "저격".']]},
  {w:'암살',by:'spirit',ask:'저는 ___당했어요. 그래도 이야기는 계속해요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요! 몰래 죽이는 건 "암살".'],['안심',0,'안심은 걱정이 없는 거예요. 몰래 죽이는 건 "암살".']]},
  {w:'정보원',by:'spirit',ask:'테렌스, 당신은 제 제일 좋은 ___이었어요.',opts:[['정보원',1],['정원',0,'정원은 꽃밭이에요. 비밀을 모아 준 사람은 "정보원".'],['경호원',0,'경호원은 가까이에서 지키는 사람이에요. 비밀을 모아 준 사람은 "정보원".']]},
  {w:'단서',by:'spirit',ask:'제 기억 속에도 ___가 있을 거예요. 같이 찾아요.',opts:[['단서',1],['단어',0,'단어는 사전에 있어요. 범인을 찾는 작은 힌트는 "단서".'],['순서',0,'순서는 1, 2, 3이에요. 범인을 찾는 작은 힌트는 "단서".']]},
- {w:'폭탄',by:'spirit',ask:'캡슐에 ___을 놓은 사람도 토셰일 거예요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 놓을 수 있는 물건은 "폭탄".'],['폭포',0,'폭포는 물이 떨어지는 곳이에요. 터지는 물건은 "폭탄".']]},
+ {w:'폭탄',by:'spirit',ask:'캡슐에 ___을 놓은 사람도 토셰일 거예요.',opts:[['폭탄',1],['폭발',0,'폭발은 터지는 일이에요. 놓을 수 있는 물건은 "폭탄".'],['폭풍',0,'폭풍은 바람이 아주 센 날씨예요. 놓을 수 있는 물건은 "폭탄".']]},
  {w:'점령하다',by:'spirit',ask:'와이니드가 아니라 여제가 곤디아를 ___.',opts:[['점령했어요',1],['정리했어요',0,'정리는 방을 치우는 거예요. 군대로 땅을 차지하면 "점령했어요".'],['점심했어요',0,'점심은 낮에 먹는 밥이에요! 군대로 차지하면 "점령했어요".']]},
- {w:'담',by:'spirit',ask:'저택의 ___은 십 미터나 돼요. 그래도 저는 발코니에서 죽었어요.',opts:[['담',1],['땀',0,'땀은 더울 때 나요. 저택을 둘러싼 벽은 "담".'],['담요',0,'담요는 덮는 거예요. 저택을 둘러싼 벽은 "담".']]},
+ {w:'담',by:'spirit',ask:'저택 ___ 높이가 십 미터나 돼요. 그래도 저는 발코니에서 죽었어요.',opts:[['담',1],['땀',0,'땀은 더울 때 나요. 저택을 둘러싼 벽은 "담".'],['담요',0,'담요는 덮는 거예요. 저택을 둘러싼 벽은 "담".']]},
  {w:'죽이다',by:'spirit',ask:'토셰가 저를 ___. 그래도 저는 아직 여기 있어요.',opts:[['죽였어요',1],['죽었어요',0,'"죽다"는 제가 한 거예요. 토셰가 한 일은 "죽였어요".'],['주웠어요',0,'줍다는 바닥의 물건을 드는 거예요. 토셰가 한 일은 "죽였어요".']]},
  {w:'위험',by:'spirit',ask:'토셰는 아주 ___한 사람이에요. 혼자 쫓지 마요.',opts:[['위험',1],['위생',0,'위생은 깨끗하게 하는 거예요. 다칠 수 있으면 "위험".'],['유명',0,'유명하다는 모두 아는 거예요. 다칠 수 있으면 "위험".']]},
- {w:'행성',by:'spirit',ask:'곤디아는 생각보다 아름다운 ___이었어요.',opts:[['행성',1],['행사',0,'행사는 축제나 파티예요. 별 주위를 도는 큰 공은 "행성".'],['행복',0,'행복은 기쁜 마음이에요. 별 주위를 도는 큰 공은 "행성".']]},
+ {w:'행성',by:'spirit',ask:'곤디아는 생각보다 아름다운 ___이었어요.',opts:[['행성',1],['행진',0,'행진은 사람들이 줄지어 걷는 거예요. 별 주위를 도는 큰 공은 "행성".'],['행복',0,'행복은 기쁜 마음이에요. 별 주위를 도는 큰 공은 "행성".']]},
  {w:'구르다',by:'spirit',ask:'꿈에서는 잔이 탁자에서 ___떨어져도 안 깨져요. 재밌죠?',opts:[['굴러',1],['그려',0,'그리다는 그림이에요. 잔이 빙글빙글 돌면서 떨어지면 "굴러떨어져요".'],['구워',0,'굽다는 고기를 익히는 거예요. 잔이 빙글빙글 돌면서 떨어지면 "굴러떨어져요".']]},
- {w:'시체',by:'spirit',when:()=>!!f().done,ask:'그 ___는 수십 년 동안 바닥 밑에 있었어요.',opts:[['시체',1],['시청',0,'시청은 시장님이 일하는 곳이에요. 죽은 사람의 몸은 "시체".'],['시합',0,'시합은 경기예요. 죽은 사람의 몸은 "시체".']]},
+ {w:'시체',by:'spirit',when:()=>!!f().done,ask:'___ 하나가 수십 년 동안 바닥 밑에 있었어요.',opts:[['시체',1],['시청',0,'시청은 시장님이 일하는 곳이에요. 죽은 사람의 몸은 "시체".'],['시합',0,'시합은 경기예요. 죽은 사람의 몸은 "시체".']]},
  /* 아보네발레리오 장군 in the square (after 점령하다, to the end) */
  {w:'점령하다',by:'general',ask:'이 행성을 ___ 건 쉬웠어요. 인간은 약해요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대로 땅을 차지하면 "점령한".']]},
  {w:'체포하다',by:'general',ask:'반란자들을 벌써 많이 ___. 다음은 누구일까요?',opts:[['체포했어요',1],['초대했어요',0,'초대? 하하. 저는 손님을 안 불러요. 잡아 가면 "체포했어요".']]},
@@ -260,7 +267,7 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'암살',by:'general',ask:'와이니드 아콘이 여기서 ___당했어요. 그래서 제가 왔어요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이면 "암살".'],['안심',0,'안심? 여기서는 아무도 안심 못 해요. 몰래 죽이면 "암살".']]},
  {w:'물리다',by:'general',ask:'제 사자한테 ___ 싫으면 저리 가요.',opts:[['물리기',1],['물기',0,'"물다"는 사자가 하는 거예요. 당신은 "물리기".']]},
  {w:'도착하다',by:'general',ask:'제 항모가 하이 로사에 ___ 날, 다 끝났어요.',opts:[['도착한',1],['출발한',0,'출발은 떠나는 거예요. 와서 닿으면 "도착한".'],['도전한',0,'도전은 어려운 일을 해 보는 거예요. 와서 닿으면 "도착한".']]},
- {w:'처형',by:'general',ask:'아콘을 죽이면 벌은 하나뿐이에요. ___이에요.',opts:[['처형',1],['체포',0,'체포는 매일 해요. 벌로 죽이는 건 "처형".'],['처음',0,'처음은 first예요. 작은 경찰, 공부 좀 해요. 벌로 죽이는 건 "처형".']]},
+ {w:'처형',by:'general',ask:'아콘을 죽이면 벌은 하나뿐이에요. ___이에요.',opts:[['처형',1],['처방',0,'처방? 저는 의사가 아니에요. 벌로 죽이는 건 "처형".'],['처음',0,'처음은 first예요. 작은 경찰, 공부 좀 해요. 벌로 죽이는 건 "처형".']]},
  /* the villa at Hafnir after the missile: 오틸리아 (after she tells it), 젤린다, 하이안, 알잔 */
  {w:'저격',by:'otylia',ask:'그 ___ 때문에 미사일이 왔어요.',opts:[['저격',1],['저녁',0,'저녁은 밥 먹는 때예요. 멀리서 숨어 쏜 총은 "저격".'],['자격',0,'자격은 할 수 있는 권리예요. 멀리서 숨어 쏜 총은 "저격".']]},
  {w:'잔해',by:'otylia',ask:'우리 집은 이제 ___만 남았어요.',opts:[['잔해',1],['잔치',0,'잔치는 즐거운 파티예요. 부서지고 남은 조각은 "잔해".']]},
@@ -269,7 +276,7 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'탐험',by:'otylia',ask:'핀은 어릴 때부터 ___을 좋아했어요. 여기저기 다 가 봤어요.',opts:[['탐험',1],['시험',0,'시험은 학교에서 봐요. 모르는 곳에 가 보는 건 "탐험".']]},
  {w:'출발하다',by:'otylia',ask:'폴카다브호는 곧 하이 로사에서 ___. 핀은 곧 돌아올 거예요. 꼭이요!',opts:[['출발해요',1],['도착해요',0,'도착은 와서 닿는 거예요. 하이 로사를 떠나면 "출발해요".']]},
  {w:'무너지다',by:'zelindaS',ask:'오틸리아 집이 다 ___. 엄마 아빠는 집 뒤쪽에 있었어요.',opts:[['무너졌어요',1],['무서웠어요',0,'무섭다는 겁이 나는 거예요. 집이 쓰러져 부서지면 "무너졌어요".'],['무거웠어요',0,'무겁다는 무게 이야기예요. 집이 쓰러져 부서지면 "무너졌어요".']]},
- {w:'조카',by:'zelindaS',ask:'로렐라하고 두샨은 제 ___예요. 제가 지켜야 돼요.',opts:[['조카',1],['삼촌',0,'삼촌은 아빠의 남자 형제예요. 동생의 아이는 "조카".'],['조수',0,'조수는 일을 돕는 사람이에요. 동생의 아이는 "조카".']]},
+ {w:'조카',by:'zelindaS',ask:'로렐라하고 두샨은 제 ___예요. 제가 지켜야 돼요.',opts:[['조카',1],['이모',0,'이모는 엄마의 여자 형제예요. 동생의 아이는 "조카".'],['조수',0,'조수는 일을 돕는 사람이에요. 동생의 아이는 "조카".']]},
  {w:'축복',by:'zelindaS',ask:'엄마는 떠나는 핀을 ___해 줬어요. 사랑한다고요.',opts:[['축복',1],['축구',0,'축구는 공 차는 운동이에요. 좋은 일을 비는 마음은 "축복".'],['축제',0,'축제는 큰 잔치예요. 좋은 일을 비는 마음은 "축복".']]},
  {w:'암살',by:'zelindaS',ask:'아콘 ___ 뒤로 모든 게 나빠졌어요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이면 "암살".'],['안심',0,'안심은 걱정이 없는 거예요. 지금은 아니에요. 몰래 죽이면 "암살".']]},
  {w:'점령하다',by:'zelindaS',ask:'군대가 도시를 ___ 날, 우리는 궁전에서 쫓겨났어요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대가 땅을 차지하면 "점령한".']]},
@@ -284,11 +291,11 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'우주선',by:'aljanS',when:()=>!!f().club,ask:'폴카다브호는 작은 ___이에요. 그래도 다 탈 수 있어요.',opts:[['우주선',1],['우주복',0,'우주복은 입는 옷이에요. 타는 건 "우주선".'],['우체국',0,'우체국은 편지를 보내는 곳이에요. 우주를 나는 배는 "우주선".']]},
  {w:'약속하다',by:'aljanS',when:()=>!!f().club,ask:'아빠, ___. 꼭 다시 만나요.',opts:[['약속해요',1],['약혼해요',0,'약혼하다는 결혼하기로 약속하는 거예요! 아빠하고는 그냥 "약속해요".'],['예약해요',0,'예약은 자리를 미리 잡는 거예요. 꼭 하겠다고 말하면 "약속해요".']]},
  /* 히메나 in the club basement (after the DNA result) */
- {w:'증거',by:'jimenaC',when:()=>!!f().done,ask:'이 뼈가 ___예요. 잘 숨겨야 돼요.',opts:[['증거',1],['증상',0,'증상은 아플 때 몸에 나타나는 거예요. 사실을 보여 주는 건 "증거".'],['거리',0,'거리는 길이에요. 사실을 보여 주는 건 "증거".']]},
+ {w:'증거',by:'jimenaC',when:()=>!!f().done,ask:'이 뼈가 ___예요. 잘 숨겨야 돼요.',opts:[['증거',1],['증세',0,'증세는 아플 때 몸에 나타나는 거예요. 사실을 보여 주는 건 "증거".'],['거리',0,'거리는 길이에요. 사실을 보여 주는 건 "증거".']]},
  {w:'발견하다',by:'jimenaC',when:()=>!!f().done,ask:'기보이의 뼈를 ___ 사람은 우리뿐이에요. 조심해요.',opts:[['발견한',1],['발표한',0,'발표는 사람들 앞에서 말하는 거예요. 처음 찾았으면 "발견한".']]},
  {w:'파다',by:'jimenaC',when:()=>!!f().done,ask:'우리 셋이 손으로 돌을 ___. 손이 다 아파요.',opts:[['팠어요',1],['팔았어요',0,'팔다는 돈을 받고 주는 거예요. 구멍을 만들면 "팠어요".']]},
  {w:'침입하다',by:'jimenaC',when:()=>!!f().done,ask:'경찰 봉인이 그대로였어요. 아무도 ___ 않았어요.',opts:[['침입하지',1],['입학하지',0,'입학은 학교에 들어가는 거예요. 몰래 들어오면 "침입하지".']]},
- {w:'발자국',by:'jimenaC',when:()=>!!f().done,ask:'먼지 위에 ___ 남기지 마요. 다 증거예요.',opts:[['발자국',1],['발가락',0,'발가락은 발끝에 있어요. 걸은 뒤 남는 건 "발자국".'],['발표',0,'발표는 사람들 앞에서 말하는 거예요. 걸은 뒤 남는 건 "발자국".']]},
+ {w:'발자국',by:'jimenaC',when:()=>!!f().done,ask:'먼지 위에 ___을 남기지 마요. 다 증거예요.',opts:[['발자국',1],['발가락',0,'발가락은 발끝에 있어요. 걸은 뒤 남는 건 "발자국".'],['발음',0,'발음은 말소리예요. 걸은 뒤 남는 건 "발자국".']]},
  {w:'전멸',by:'jimenaC',when:()=>!!f().done,ask:'스탄바8 갱은 ___했어요. 한 명도 안 남고 잡혀갔어요.',opts:[['전멸',1],['전화',0,'전화는 거는 거예요. 한 명도 안 남으면 "전멸".']]},
 ];
 /* class time: the two years between Makaio's death and the occupation (the rider's talk, just before "그리고 2년이 지났어요") */
@@ -298,8 +305,7 @@ const CLASS={
   {w:'테러',who:'마리아 호세 서장',ask:'캡슐 ___ 수사는 아직 안 끝났어요.',opts:[['테러',1],['테니스',0,'테니스는 운동이에요! 사람들을 겁주는 공격은 "테러".'],['텔레비전',0,'텔레비전은 보는 기계예요. 일부러 한 공격은 "테러".']]},
   {w:'증거',who:'마리아 호세 서장',ask:'국장님이 가진 ___, 이제 우리 경찰하고 나눠요.',opts:[['증거',1],['증상',0,'증상은 아플 때 나타나는 거예요. 사실을 보여 주는 건 "증거".']]},
   {w:'수사',who:'감식 요원',ask:'국장님, 오늘도 ___ 서류가 책상에 가득해요.',opts:[['수사',1],['수술',0,'수술은 병원 일이에요. 경찰이 사건을 알아보는 건 "수사".'],['수리',0,'수리는 기계를 고치는 거예요. 사건을 알아보는 건 "수사".']]}]},
- '집':{say:'저녁에는 집. 알잔은 의사가 되고, 바닐다는 이제 시위에 잘 안 가요.',lines:[
-  {w:'시위',who:'바닐다',ask:'요즘은 ___가 거의 없어요. 친구들이 많이 잡혀갔어요.',opts:[['시위',1],['시외',0,'시외는 도시 밖이에요. 우리가 거리에서 하는 건 "시위".'],['시합',0,'시합은 경기예요. 우리가 거리에서 하는 건 "시위".']]},
+ '집':{say:'저녁에는 하프니르 집. 알잔은 병원에서 일하고, 바닐다는 이제 시위에 잘 안 가요.',lines:[
   {w:'체포하다',who:'바닐다',ask:'그때 경찰이 저를 ___. 아빠가 경찰서에서 데리고 나왔죠.',opts:[['체포했어요',1],['초대했어요',0,'초대는 파티에 부르는 거예요. 경찰이 잡아 가면 "체포했어요".']]},
   {w:'장례식',who:'히메나',ask:'루치아 ___ 뒤로 벌써 일 년이 넘었어요.',opts:[['장례식',1],['결혼식',0,'결혼식은 기쁜 날이에요. 마지막 인사를 한 날은 "장례식".'],['장래',0,'장래는 미래예요. 마지막 인사를 한 날은 "장례식".']]}]},
 };
@@ -413,6 +419,13 @@ const GHOST={art:{pal:{O:OL,a:'#8C93A6',b:'#5D6478',c:'#B8C0D2',g:'#5FD0FF',G:'#
  '.OaOaO....OaOaO.',
  '.OOOOO....OOOOO.']}};
 
+/* floating interlude crystal (막간), as in 3장: the Wynid scenes play here, not on the public news screen */
+const CRYSTAL={art:{pal:{O:OL,W:'#EBDDFF',V:'#B48CFF',v:'#7E5CC9',d:'#4E3488'},down:[
+ '.......OO.......','......OWVO......','.....OWVVvO.....','....OWVVVvvO....','...OWWVVVvvdO...','...OWVVVVvvdO...','...OVVVVvvvdO...','....OVVvvvdO....',
+ '.....OVvvdO.....','......OvdO......','.......OO.......','................','................','....OddddddO....','...OdVVVVVVdO...','...OddddddddO...']}};
+/* the console at Terence's desk: the tile draws it, the NPC on it is only what you talk to */
+const BLANK={art:{pal:{},down:['................']}};
+
 /* armour of tiny silver spheres: '*' becomes a dotted pattern */
 const dots=rows=>rows.map((row,y)=>row.replace(/\*/g,(m,x)=>'abc'[(x+2*y)%3]));
 const GEN_DOWN=dots([
@@ -484,8 +497,6 @@ const TOSE={art:{pal:{O:OL,H:'#2A2420',h:'#1E1A18',S:'#C8A080',M:'#9A7258',Y:'#C
  '...OPPO..OPPO...',
  '...OKKO..OKKO...'].map(r=>r.replace('E','O'))}};
 
-const MONITOR={art:{pal:{O:OL,c:'#3E4658',B:'#1E3A52',g:'#69CFD8',r:'#E0404A',k:'#2B3238'},down:[
- '................','................','..OOOOOOOOOOOO..','..OccccccccccO..','..OcBBBBBBBBcO..','..OcBggBBBBBcO..','..OcBBBgggBBcO..','..OcBBBBBBrBcO..','..OccccccccccO..','..OOOOOOOOOOOO..','.......OO.......','......OkkO......','....OOOOOOOO....','....OkkkkkkO....','....OOOOOOOO....','................']}};
 const NEWS={art:{pal:{O:OL,c:'#5D667A',B:'#2A6AA8',w:'#DCEBFA',r:'#E0404A',p:'#6E7680',P:'#8A93A0'},down:[
  '..OOOOOOOOOOOO..',
  '.OccccccccccccO.',
@@ -684,6 +695,8 @@ const TT={
   if(h===0){r(X+4,Y+1,3,8,'#3C4450');r(X+3,Y+8,6,2,'#3C4450');r(X+9,Y+6,2,4,'#69CFD8');r(X+12,Y+6,2,4,'#E86D8A')}else if(h===1){r(X+3,Y+5,10,5,'#2B3238');r(X+4,Y+6,8,3,(Math.floor(t/300)+x)%4?'#5DD07A':'#2E6E3E')}else{[3,6,9,12].forEach((a,i)=>{r(X+a,Y+5,2,5,'#CFE3E8');r(X+a,Y+7,2,3,['#E86D8A','#69CFD8','#F2D154','#5DD07A'][i])})}},
  plant:(X,Y,x,y)=>{hqFloor(X,Y,x,y);r(X+5,Y+10,6,5,'#9A6A3C');r(X+5,Y+10,6,1,'#B8844A');r(X+3,Y+3,10,7,'#3F8F4A');r(X+5,Y+1,6,4,'#5DB866');r(X+2,Y+6,3,2,'#5DB866');r(X+11,Y+5,3,2,'#5DB866')},
  mirror:(X,Y,x,y,t)=>{TT.cellFloor(X,Y,x,y);r(X,Y+1,16,2,'#5D667A');g.fillStyle='rgba(120,150,170,.45)';g.fillRect(X,Y+3,16,11);r(X,Y+14,16,2,'#5D667A');r(X+3,Y+5,1,6,'#E4F4FA');r(X+11,Y+4,1,3,'#E4F4FA')},
+ cellDoor:(X,Y,x,y)=>{TT.cellFloor(X,Y,x,y);r(X,Y+1,16,2,'#5D667A');r(X,Y+14,16,2,'#5D667A');  // the interrogation room's door: shut while Bopbe is in there
+  if(state.f.bopbeDead){r(X,Y+3,2,11,'#6A7084');r(X+14,Y+3,2,11,'#6A7084')}else{r(X+1,Y+3,14,11,'#6A7084');r(X+1,Y+3,14,1,'#8A93A0');r(X+7,Y+3,1,11,'#4F5466');r(X+10,Y+8,2,2,'#D2533F')}},
  console2:(X,Y,x,y,t)=>{hqFloor(X,Y,x,y);r(X+1,Y+2,14,12,'#2B3238');r(X+2,Y+3,12,6,'#1E3A52');const on=state.f.tail&&!state.f.capsule;r(X+3,Y+4,10,4,on?((Math.floor(t/300)%2)?'#69CFD8':'#3C8E96'):'#24303A');r(X+4,Y+11,8,2,'#5F6B72')},
  hqDoor:(X,Y,x,y)=>{hqFloor(X,Y,x,y);r(X,Y,16,16,'#5D667A');r(X+1,Y+1,14,15,'#A8D4E6');r(X+(x%2?0:15),Y,1,16,'#3E4658');r(X+3,Y+3,1,8,'#E4F4FA');r(X+(x%2?1:13),Y+8,2,2,'#3E4658')},
  /* --- Santa Rosa streets --- */
@@ -798,13 +811,13 @@ const TT={
 const ZONES={
  hq:{name:'산타 로사 경찰서',reg:'SANTA ROSA POLICE HQ',
   legend:{'#':{tile:'hqWall'},'w':{tile:'hqWin'},'B':{tile:'board'},'k':{tile:'cellWall'},'.':{tile:'hqFloor',walk:1},'c':{tile:'cellFloor',walk:1},'d':{tile:'desk'},
-   'g':{tile:'glass'},'X':{tile:'exo'},'m':{tile:'mirror',walk:1},'V':{tile:'console2',walk:1},'L':{tile:'lab'},'p':{tile:'plant'},'T':{tile:'terminal'},'D':{tile:'hqDoor',walk:1}},
+   'g':{tile:'glass'},'X':{tile:'exo'},'m':{tile:'mirror',over:1},'e':{tile:'cellDoor',get walk(){return !!f().bopbeDead}},'V':{tile:'console2',walk:1},'L':{tile:'lab'},'p':{tile:'plant'},'T':{tile:'terminal'},'D':{tile:'hqDoor',walk:1}},
   map:[
 "######################",
 "#wwww#BBBBBBBBB#kkkkk#",
 "#T...#.........#ccXcc#",
 "#d...#..dd.dd..#ccccc#",
-"#d.............#ggmgg#",
+"#d.............#gemgg#",
 "#V...#.........#.....#",
 "###.##..dd.dd........#",
 "#LLL.#...............#",
@@ -814,16 +827,15 @@ const ZONES={
 "#..L.#..p.........p..#",
 "##########DD##########"],
   rooms:[[1,1,4,5,'경찰서 · 국장실'],[6,1,14,11,'경찰서 · 수사과'],[16,1,20,4,'경찰서 · 취조실'],[15,4,20,7,'경찰서 · 모니터실'],[1,7,4,11,'경찰서 · 감식실']],
-  warps:{'10,12':{to:'city',x:5,y:3,dir:'down'},'11,12':{to:'city',x:5,y:3,dir:'down'},
-   '1,5':{to:'tower',x:3,y:3,dir:'right',lock:()=>!f().tail?'루치아의 영상 콘솔. 지금은 신호가 없어요.':f().capsule?'영상이 끊겼어요. 신호 없음.':false}},
+  warps:{'10,12':{to:'city',x:5,y:3,dir:'down'},'11,12':{to:'city',x:5,y:3,dir:'down'}},  // Lućia's feed: the console NPC (feed) takes you up
   spots:{
    '1,1':'창밖에 보라색 자카란다 나무가 보여요.','3,1':'창밖으로 케이블카가 지나가요.',
    get '7,1'(){return f().liliana?'수사 보드. 세 조직: 하나는 우리. 둘은 릴리아나와 토셰. 셋은 메두사와 사디아.':f().sting?'수사 보드. 세 조직. 둘: 토셰? 셋: 사디아 — 메두사?':'수사 보드. 곤디아에 정보원 조직이 적어도 세 개.'},
-   get '9,1'(){return f().boom?'루치아의 사진. 검은 리본이 있어요.':'수사 보드. 디어랙 거리 총격전 사진. 다섯 명이 죽었어요.'},
+   get '9,1'(){return f().boom?'루치아의 사진. 검은 리본이 있어요.':'수사 보드. 디어랙 거리 총격전 사진. 납치 팀이 다 죽었어요.'},
    '11,1':'수사 보드. 빨간 실이 사진과 사진을 이어요.',
    get '13,1'(){return f().liliana?'"앙투아네트-2버그" 사진 위에 빨간 글씨: 릴리아나.':'수사 보드. 아직 빈 자리가 있어요.'},
    '1,3':'테렌스의 책상. 가족사진이 있어요. 히메나, 알잔, 바닐다.','1,4':'책상 위에 서류가 많아요. 다 "기밀"이에요.',
-   '8,3':'경찰 화면: "디어랙 거리 · 사망 5명"','12,3':'누가 커피를 두고 갔어요. 아직 따뜻해요.',
+   '8,3':'경찰 화면: "디어랙 거리 총격전 · 납치 팀 모두 사망"','12,3':'누가 커피를 두고 갔어요. 아직 따뜻해요.',
    '2,7':'현미경이에요.','3,7':'감식 화면: 초록 불빛이 깜빡여요.','13,8':'화분이에요. 잎이 반짝반짝해요.',
    get '18,2'(){return f().bopbeDead?'구속 의자. 바닥에 검게 탄 자국이 있어요.':'구속 의자예요. 금속 틀이 사람 몸을 잡아요.'}},
   things:{
@@ -833,6 +845,8 @@ const ZONES={
    'k':['취조실 벽이에요. 소리가 밖으로 안 새요.','두꺼운 벽이에요. 작은 구멍이 줄지어 있어요.'],
    'd':['형사의 책상이에요. 일이 많아 보여요.','책상 위에 서류가 쌓여 있어요. 커피는 식었어요.'],
    'g':['두꺼운 유리벽. 취조실 안이 다 보여요.','유리에 손자국이 조금 있어요.'],
+   'm':'한쪽만 보이는 거울이에요. 취조실에서는 그냥 거울로 보여요.',
+   'e':()=>f().bopbeDead?null:'취조실 문이에요. 루치아만 들어가요. 봅베가 국장님 얼굴을 보면 안 돼요.',
    'L':['감식 장비예요. 함부로 만지면 안 돼요.','하얀 책상이 아주 깨끗해요. 약 냄새가 나요.'],
    'p':'화분이에요. 누가 매일 물을 줘요.'},
   npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','maria','feed']},
@@ -859,13 +873,13 @@ const ZONES={
 "j.........AAAAAAAAAA.........j",
 "j...j.....AAAAAAAAAA.....j...j",
 "jjjjjjjjjjAAAAAAAAAAjjjjjjjjjj"],
-  rooms:[[0,0,29,6,'산타 로사 · 디어랙 거리'],[24,5,29,6,'산타 로사 · 소노마 거리'],[0,7,23,11,'산타 로사 · 광장'],[24,7,29,11,'산타 로사 · 총독 저택 앞'],[0,12,29,17,'산타 로사 · 탑 언덕']],
+  rooms:[[0,0,29,6,'산타 로사 · 디어랙 거리'],[24,4,29,6,'산타 로사 · 소노마 거리'],[0,7,23,11,'산타 로사 · 광장'],[24,7,29,11,'산타 로사 · 총독 저택 앞'],[0,12,29,17,'산타 로사 · 탑 언덕']],
   warps:{
    '5,2':{to:'hq',x:10,y:11,dir:'up'},
    '20,2':{to:'bar',x:7,y:8,dir:'up'},
    '26,2':{to:'club',x:16,y:2,dir:'down',lock:()=>!f().club&&'다크 파라다이스 클럽. 갱들의 클럽이에요. 지금은 들어갈 이유가 없어요.'},
    '26,10':{to:'mansion',x:9,y:10,dir:'up',lock:()=>!f().liliana&&'총독 원형 저택이에요. 경비가 막아요. "오늘은 손님이 없어요."'},
-   '22,3':{to:'villa',x:8,y:8,dir:'up',lock:()=>!f().missile&&'테렌스의 차예요. 하프니르의 집까지 구백 킬로미터예요.'}},
+   '22,3':{to:'villa',x:8,y:8,dir:'up',lock:()=>!f().missile&&'테렌스의 글로브캡이에요. 스스로 운전해서 기차역까지 가요. 거기서 하프니르로 가는 기차를 타요.'}},  // his globecab and its drive manager to Hovey station, the train to Hafnir (c024)
   spots:{
    '3,2':'산타 로사 경찰서. 파란 간판에 금색 별이 있어요.','13,2':'"지카르의 안디 수리". 창문에 로봇 머리가 가득해요.',
    '19,2':'"플리시 다이아몬드". 다이아몬드 모양 간판이 깜빡여요.','28,2':'다크 파라다이스 클럽. 분홍색 불빛이 지지직거려요.',
@@ -874,7 +888,7 @@ const ZONES={
    get '5,8'(){return f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':f().boom?'꽃과 촛불. 캡슐 테러로 죽은 이백삼십칠 명의 사진이 있어요. 루치아도 있어요.':'꽃밭이에요. 자카란다 꽃잎이 떨어져요.'},
    get '6,9'(){return f().occupied?'꽃밭이에요. 벌이 날아다녀요.':f().boom?'작은 신발이 있어요. 아이들도 스무 명 죽었어요.':'꽃밭이에요. 벌이 날아다녀요.'},
    '24,9':'총독 원형 저택의 담. 십 미터 높이의 리브스톤이에요.',
-   get '12,15'(){return f().occupied?'산타 로사 탑. 탑 꼭대기, 하이 로사에 제국 항모가 붙었어요. 밤에는 분홍색 점, 돌로드가 떠요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
+   get '12,15'(){return f().occupied?'산타 로사 탑. 탑 꼭대기, 하이 로사에 제국 항모가 붙었어요. 밤에는 떠돌이 행성 돌로드가 분홍색 점으로 떠요.':'산타 로사 탑. 줄이 하늘 끝, 하이 로사까지 올라가요.'},
    '17,15':'탑 아래쪽. 빨간 불이 깜빡여요.','14,14':'탑 캡슐 역. 하이 로사까지 올라가요.','15,14':'탑 캡슐 역. 사람들이 줄을 서 있어요.'},
   things:{
    'j':(x,y)=>vary(x,y,f().occupied?['자카란다 나무. 보라색 꽃이 가득해요.','나무 속 광고가 다 꺼졌어요.']:['자카란다 나무. 보라색 꽃이 가득해요.','보라색 꽃잎이 바람에 떨어져요.','나무 사이에 작은 홀로그램 광고가 있어요.']),
@@ -888,7 +902,7 @@ const ZONES={
    'n':['벤치예요. 빵 부스러기가 조금 있어요.','벤치에 앉으면 광장이 다 보여요.'],
    'm':(x,y)=>f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':vary(x,y,f().boom?['꽃과 촛불이 가득해요. 사람들이 조용히 울어요.','촛불 옆에 손으로 쓴 편지가 있어요.']:['꽃밭이에요. 노란 꽃, 분홍 꽃, 하얀 꽃.','꽃밭 위로 나비가 날아요.'])},
   npcs:['zikar','snatch','aljan','vanilda','pro1','pro2','pro3','jimena','zelinda','medusaSt','general','lion1','lion2','ghost1','ghost2','ghost3']},
- tower:{name:'하이 로사 · 루치아의 영상',reg:"HIGH ROSA · LUĆIA'S FEED",base:'plate',
+ tower:{name:'하이 로사 · 루치아의 영상',reg:'HIGH ROSA · DOCK LEVEL THREE',base:'plate',
   legend:{'G':{tile:'girder'},'B':{tile:'bay'},'.':{tile:'plate',walk:1},'t':{tile:'track',walk:1},'E':{tile:'lift'},'s':{tile:'seat'},'W':{tile:'capWin'},'C':{tile:'hatch',walk:1}},
   map:[
 "GGGGGGGGGGGGGGGGGGGGGGGG",
@@ -946,6 +960,7 @@ const ZONES={
    'o':'금색 화분에 야자나무가 있어요.'},
   npcs:['makaio']},
  villa:{name:'하프니르 · 테렌스의 빌라',reg:'HAFNIR · RYDEMOUTH',
+  greet:()=>f().missile&&!f().rescued?'otylia':null,  // arriving by globecab: the ride is told, then Otylia speaks
   legend:{'~':{tile:'sea'},'s':{tile:'sand'},'V':{tile:'vWall'},'w':{tile:'vWin'},'.':{tile:'vFloor',walk:1},'u':{tile:'cushion'},'o':{tile:'palm'},'D':{tile:'vDoor',walk:1}},
   map:[
 "~~~~~~~~~~~~~~~~~~",
@@ -1027,8 +1042,9 @@ const NPC={
   after:'수사는 천천히, 정확하게. 국장님이 가르쳐 줬어요.',
   script:()=>{
    if(!b('정보원'))return null;
-   if(!b('처형'))return [{say:'봅베가… 불에 탔어요. 제 손도 조금 데었어요.'},{say:'괜찮아요. 일주일만 쉬면 돼요. {감식실|감식실}에 가 봐요.'}];
+   if(!b('처형'))return [{say:'봅베가… 제 눈앞에서 불에 탔어요. 제 손도 조금 데었어요.'},{say:'국장님 말대로 일주일 쉴게요. 그 전에 {감식실|감식실}에 가 봐요.'}];
    if(!f().sting)return [{say:'지카르 가게는 경찰서 앞 거리에 있어요.'},{say:'가면 쓰는 거 잊지 마세요. 국장님이 지카르예요!'}];
+   if(!b('시위'))return [{say:'일레븐 톡식스 부두목을 잡으러 갔어요. 곧 데려올 거예요.'},{say:'그런데 광장에 {돈키|돈키} 시위가 있어요. 길을 다 막았대요.'}];
    if(!b('감시하다'))return [{say:'베르셰가 취조실에 있어요. 지카르를 납치하려고 했던 사람이에요.'}];
    return null},
   talk:()=>[
@@ -1045,7 +1061,7 @@ const NPC={
   get look(){return f().burn&&!f().bopbeDead?FIRE[Math.floor(performance.now()/140)%2]:L_BOPBE},
   hide:()=>!!f().bopbeDead,
   status:()=>b('수사')?'todo':null,
-  script:()=>!b('수사')?[{say:'…형사님은 누구예요? 저는 높은 사람하고만 말해요.'}]:null,
+  script:()=>!b('수사')?[{who:'…',say:'거울 너머 취조실에 봅베가 있어요. 금속 틀에 묶여서 고개만 돌려요.'}]:null,
   talk:()=>[
    {who:'…',say:'테렌스는 모니터실, 거울 뒤에 있어요. 취조실에는 루치아가 들어가요.'},
    {say:'오, 형사님. 제 새 얼굴 어때요? 멋있죠?'},
@@ -1061,18 +1077,25 @@ const NPC={
    {who:'…',say:'루치아가 뛰어나와요. 손을 조금 데었어요. 의자에는 검은 재만 남았어요.',award:['체포하다'],set:()=>{f().bopbeDead=1}}]},
  lab:{name:'감식 요원',zone:'hq',x:2,y:8,dir:'up',look:{hair:'#3A2A22',skin:'#C99470',shirt:'#F1F1EC',pants:'#3C4A5C',style:'short',coat:1},badge:['처형','증거'],
   status:()=>{if(!f().bopbeDead)return null;if(b('처형')&&f().helmet&&!f().liliana)return 'todo'},
-  after:'증거는 거짓말을 안 해요. 사람은 해요.',
+  get after(){const F=f();return F.occupied?'통금이라 감식할 사건도 없어요. 다들 집에만 있어요.':F.liliana?'릴리아나… 그 얼굴이 계속 생각나요.':F.boom?'루치아 일… 아직도 손이 떨려요. 그래도 일해야죠.':'증거는 거짓말을 안 해요. 사람은 해요.'},
   script:()=>{
    if(!f().bopbeDead)return [{say:'요즘은 조용해요. 감식할 게 없어요.'}];
    if(b('처형')&&f().helmet&&!f().liliana)return [
-    {who:'…',say:'석 달 후. 테렌스는 3F 독 영상을 백 번째로 다시 봐요.'},
+    {who:'…',say:'석 달이 지났어요. 경찰은 돈키와 갱들을 계속 잡아가요. 테렌스 가족은 하프니르로 이사했어요.'},
+    {who:'…',say:'테렌스는 3F 독 영상을 백 번째로 다시 봐요.'},
     {who:'테렌스',say:'이 여자 보세요. "앙투아네트-2버그". 시벨레스 이글호에 들어갔어요. 그런데 다시 안 나왔어요.'},
     {say:'얼굴 검색 결과가 나왔어요. 옛날 영상에도 있어요. 경제 심포지엄에서 기보이 엔포하고 이야기해요.'},
     {who:'테렌스',say:'메두사가 말한 그 여자… {체렌코프 칼|체렌코프 칼}을 가진 여자. 릴리아나예요.'},
     {w:'증거',build:['이 영상이','중요한','증거예요']},
-    {who:'메두사 (통신)',say:'사진 봤어요. 그 여자예요? 그리고 토셰는 아르카디아의 달하고 간스부트호를 빌리려고 했어요.'},
-    {who:'메두사 (통신)',say:'이 정보, 몇 점이에요? 저는 이 별에 남고 싶어요.',give:'캡슐 역 영상'},
-    {who:'…',say:'열 달 후, 비밀 통신이 와요.'},
+    {who:'…',say:'몇 주 뒤, 테렌스가 메두사한테 사진을 보내요.'},
+    {who:'메두사 (통신)',say:'사진 봤어요. 이 여자가 그 대장이에요?'},
+    {who:'테렌스',say:'확실하지는 않아요. 하지만 그런 것 같아요.'},
+    {who:'메두사 (통신)',say:'저는 이 성계에 남고 싶어요. 대신 정보를 줄게요.'},
+    {who:'테렌스',say:'정보에 점수를 줄게요. 십 점 중에 칠 점이 넘으면 남아도 돼요.'},
+    {who:'메두사 (통신)',say:'토셰는 트래블러 우주선을 빌리려고 했어요. "아르카디아의 달", 그리고 "간스부트"요.'},
+    {who:'테렌스',say:'…팔 점이에요.',give:'캡슐 역 영상'},
+    {who:'…',say:'열 달이 더 지났어요. 알잔은 의대를 졸업하고 병원에서 일해요.'},
+    {who:'…',say:'테렌스는 일을 쉬어요. 하프니르 바다에서 카약을 탈 때, 비밀 통신이 와요.'},
     {who:'테렌스 (비밀 통신)',say:'…마카이오 님? 곤디아에 오셨어요? 총독 저택이요?',set:()=>{f().liliana=1}}];
    return null},
   talk:()=>[
@@ -1081,18 +1104,24 @@ const NPC={
    Q.lab[0],
    {say:'봅베가 잡히면 나노 기계가 몸을 태워요. 조직이 그렇게 만들었어요.'},
    Q.lab[1],
-   {say:'그리고 루치아 팀의 정보원이 연락했어요. 일레븐 톡식스 안에 있는 사람이에요.'},
+   {who:'…',say:'일주일 뒤, 루치아가 다시 일하러 왔어요.'},
+   {say:'국장님, 루치아 팀의 정보원이 연락했어요. 일레븐 톡식스 안에 있는 사람이에요.'},
    {say:'부두목 베르셰가 부하 셋을 보내요. 지카르 타소트를 잡아서 질문하려고요. 봅베 일하고 비슷해요.'},
    {who:'테렌스',say:'그럼 제가 지카르가 될게요.'},
    {say:'이건 {오더바이저|오더바이저} 가면이에요. 쓰면 지카르 얼굴이 돼요.',give:'오더바이저 가면',award:['처형','증거'],set:()=>{f().lead=1}}]},
  news:{name:'뉴스 화면',zone:'hq',x:10,y:8,dir:'down',look:NEWS,still:1,
   status:()=>nextNews()?'todo':null,
-  script:()=>{const e=nextNews();if(e)return e.steps.concat([{who:'뉴스 화면',say:'— 방송 끝 —',set:()=>{f()['news'+e.id]=1}}]);
+  script:()=>{const e=nextNews();if(e)return seen(e);
    const F=f();return [{who:'뉴스 화면',say:F.occupied?'관리관 명령: 모두 지금 집으로 돌아가세요.':F.boom?'캡슐 테러 희생자 이백삼십칠 명. 범인은 아직 몰라요.':'오늘 산타 로사 날씨는 맑아요. 자카란다 꽃이 피었어요.'}]},
+  talk:()=>[]},
+ interlude:{name:'막간',zone:'hq',x:7,y:9,dir:'down',look:CRYSTAL,still:1,
+  hide:()=>!nextInterlude(),  // only while a scene waits
+  status:()=>'todo',
+  script:()=>{const e=nextInterlude();return e?seen(e):[{who:'막간',say:'지금은 아무것도 안 보여요.'}]},
   talk:()=>[]},
  maria:{name:'마리아 호세 서장',zone:'hq',x:14,y:3,dir:'left',look:{hair:'#2A1E1A',skin:'#C48E66',shirt:'#2F3E5C',pants:'#22283A',belt:'#C9A64A',style:'bun',cap:'#2F3E5C',lashes:1,lips:'#9A4A4A'},badge:['폭발'],
   hide:()=>!f().boom,
-  after:'여기는 경찰서예요. 아콘의 놀이터가 아니에요.',
+  get after(){return f().medusa?'국장님 갱 파일, 잘 쓰고 있어요. 그래도 아콘 일은 경찰서 밖에서 해요.':'여기는 경찰서예요. 아콘의 놀이터가 아니에요.'},
   script:()=>f().occupied?[
    {say:'국장님, 메두사 어디 있어요? 국장님이 데려갔죠?'},
    {who:'테렌스',say:'모르겠어요.'},
@@ -1105,8 +1134,8 @@ const NPC={
    {say:'이백삼십칠 명이 타고 있었어요. 그중 스무 명은 아이들이었어요.'},
    Q.maria[1],
    {say:'그리고 하나 더. 아콘 놀이는 이제 끝이에요, 국장님.',award:['폭발']}]},
- feed:{name:'루치아의 영상',zone:'hq',x:4,y:2,dir:'down',look:MONITOR,still:1,
-  status:()=>f().capsule&&!f().boom?'todo':null,
+ feed:{name:'영상 콘솔',zone:'hq',x:1,y:5,dir:'down',look:BLANK,still:1,
+  status:()=>{const F=f();return (F.tail&&!F.aireel)||(F.capsule&&!F.boom)?'todo':null},
   script:()=>{const F=f();
    if(F.capsule&&!F.boom)return [
     {who:'루치아 (통신)',say:'국장님… 토셰가 안 보여요. 캡슐에서 내린 것 같아요.'},
@@ -1115,11 +1144,13 @@ const NPC={
     {who:'…',say:'테렌스가 사무실 창문에 손을 대요. 탑 위에 하얀 구름이 퍼져요.'},
     {who:'테렌스',say:'루치아… 루치아!'}];
    if(F.boom)return [{who:'…',say:'화면에는 "신호 없음"만 있어요.'}];
-   if(F.tail)return [{who:'루치아 (통신)',say:'국장님, 저 하이 로사 3층 독이에요. 벽의 큰 콘솔에서 제 영상을 보세요.'}];
-   return [{who:'…',say:'루치아의 영상 화면이에요. 지금은 꺼져 있어요.'}]},
+   if(F.tail)return [{who:'…',say:'테렌스가 책상 옆 큰 콘솔 앞에 앉아요. 화면이 켜져요.'},
+    {who:'루치아 (통신)',say:'국장님, 보여요? 저 하이 로사 3층 독이에요.',go:['tower',3,3,'right']},
+    {who:'…',say:'이제 루치아의 눈으로 봐요.'}];
+   return [{who:'…',say:'루치아의 영상을 보는 큰 콘솔이에요. 지금은 꺼져 있어요.'}]},
   talk:()=>[]},
  bersche:{name:'베르셰',zone:'hq',x:18,y:3,dir:'down',look:{hair:'#8A2A2A',skin:'#C48E66',shirt:'#2A2A2A',pants:'#3A3A40',belt:'#B8B8C0',style:'spiky'},badge:['감시하다'],
-  hide:()=>!f().sting||!!f().medusa,
+  hide:()=>!b('시위')||!!f().medusa,
   after:'메두사는 무서운 여자예요. 저는 이제 끝났어요.',
   talk:()=>[
    {say:'변호사 불러요. 저는 아무 말도 안 해요.'},
@@ -1130,10 +1161,10 @@ const NPC={
    {say:'메두사요. 머리가 무지개색인 여자요.'},
    {who:'테렌스',say:'메두사… 세 번째 조직, 사디아의 사람이에요.'},
    Q.bersche[1],
-   {who:'루치아',say:'국장님! 토셰가 시벨레스 이글호를 타고 와요. 하이 로사 3층 독이에요.'},
-   {who:'루치아',say:'제가 올라가서 감시할게요. 국장님은 사무실에서 제 영상을 보세요!',award:['감시하다'],set:()=>{f().tail=1}}]},
+   {who:'루치아',say:'국장님! 토셰가 돌아와요. 시벨레스 이글호를 타고 하이 로사 3층 독에 와요.'},
+   {who:'루치아',say:'제가 올라가서 감시할게요. 국장님은 국장실에서 제 영상을 보세요. 국장님 책상 옆 큰 콘솔이요!',award:['감시하다'],set:()=>{f().tail=1}}]},
  medusa:{name:'메두사',zone:'hq',x:18,y:3,dir:'down',look:{hair:'#2A1E18',skin:'#5A3A2A',shirt:'#26232B',pants:'#26232B',style:'bald',cap:'#E6DCC2',lashes:1,lips:'#6A2E2A'},badge:['폭탄'],
-  hide:()=>!f().medusa||!!f().occupied,
+  hide:()=>!f().medusa||!!f().helmet,  // released after the helmet (c027 "you live, you leave"); later only by lnc
   after:'저를 와이니드로 보내지 마세요. 부탁이에요.',
   talk:()=>[
    {say:'이 뼈 헬멧, 기분 나빠요. 거짓말하면 다 보이죠?'},
@@ -1146,18 +1177,18 @@ const NPC={
    {who:'…',say:'헬멧의 불이 초록색이에요. 메두사는 진실을 말했어요.',award:['폭탄'],set:()=>{f().helmet=1}}]},
  /* city */
  zikar:{name:'지카르 타소트',zone:'city',x:13,y:3,dir:'down',look:L_ZIKAR,badge:['변장하다','단서'],
-  hide:()=>!!f().occupied||(!!f().disguised&&!f().sting),  // inside his shop while you wear his face
+  hide:()=>!!f().occupied||(!!f().disguised&&!f().sting),  // gone with the police squad while you wear his face (c024)
   status:()=>{if(!f().lead)return null;if(!b('변장하다'))return 'todo';if(!f().sting)return 'wait';if(!b('단서'))return 'todo'},
   pool:()=>[...Q.zikar,...Q.zikar2],
   script:()=>{
    if(!f().lead)return [{say:'뭐예요? 손님 아니면 가요. 바빠요.'}];
    if(!b('변장하다'))return null;
-   if(!f().sting)return [{say:'저는 안에 숨어 있을게요. 빨리 끝내 주세요!'}];
+   if(!f().sting)return [{say:'저는 경찰하고 같이 안전한 곳에 갈게요. 빨리 끝내 주세요!'}];
    if(b('단서'))return null;
    return [
     {say:'잡았어요? 그 사람들, {일레븐 톡식스|일레븐 톡식스}예요. 무서운 갱이에요.'},
     {who:'테렌스',say:'지카르 씨, 이제 말해요. 최근에 뭘 만들었어요?'},
-    {say:'…드론이요. 작은 {표적 드론|표적 드론}. 토셰라는 남자가 주문했어요.'},
+    {say:'…드론이요. 작은 {표적 드론|표적 드론}. 예전에 토셰라는 남자가 주문했어요.'},
     {say:'토셰는 아주 오래된 총을 써요. 아주 멀리서 쏘는 총이요.'},
     Q.zikar2[0],
     Q.zikar2[1],
@@ -1165,12 +1196,12 @@ const NPC={
   after:'저는 그냥 수리공이에요. 정말이에요.',
   talk:()=>[
    {say:'어서 와요, 지카르의 {안디|안디} 수리 가게예요. 아, 경찰이네요.'},
-   {who:'테렌스',say:'누군가 당신을 납치하려고 해요. 오늘 밤이요.'},
+   {who:'테렌스',say:'누군가 당신을 납치하려고 해요. 지금 오고 있어요. 십 분도 안 남았어요.'},
    {say:'네? 저를요? 왜요?'},
    {who:'테렌스',say:'그래서 제가 지카르 씨가 될 거예요. 이 가면으로요.'},
    Q.zikar[0],
    Q.zikar[1],
-   {say:'저는 안에 숨을게요. 조심하세요!',award:['변장하다'],set:()=>{f().disguised=1}}]},
+   {say:'알았어요. 저는 경찰 아저씨들하고 같이 갈게요. 조심하세요!',award:['변장하다'],set:()=>{f().disguised=1}}]},
  snatch:{name:'납치범',zone:'city',x:10,y:3,dir:'right',look:{hair:'#2A2A2A',skin:'#B9825A',shirt:'#3A3A3A',pants:'#2A2A2A',cap:'#7A1E2A'},
   hide:()=>!f().disguised||!!f().sting,
   status:()=>'todo',
@@ -1191,24 +1222,24 @@ const NPC={
   hide:()=>!!f().occupied,
   pos:()=>b('시위')?[12,10]:[14,11],
   status:()=>!f().sting?null:undefined,
-  after:'{돈키|돈키}는 멈추지 않아요!',
+  get after(){const F=f();return F.liliana?'요즘은 시위가 별로 없어요. 친구들이 많이 잡혀갔어요.':F.boom?'루치아 언니… 너무 슬퍼요.':'{돈키|돈키}는 멈추지 않아요!'},
   talk:()=>[
    {say:'아빠! 여기서 뭐 해요? 일하는 중이에요?'},
-   {say:'우리는 {돈키|돈키}예요. 사람이 우리 미래를 결정해야 돼요!'},
+   {say:'우리는 {돈키|돈키}, 젊은 사람들 모임이에요. 사람이 우리 미래를 결정해야 돼요!'},
    Q.vanilda[0],
    {who:'테렌스',say:'바닐다, 위험해. 곧 경찰이 많이 올 거야.'},
    {say:'아빠도 경찰이잖아요. 걱정하지 마세요.'},
    Q.vanilda[1],
    {say:'알았어요, 길을 열게요. 그래도 아빠, 우리 말이 맞아요!',award:['시위'],set:()=>{f().protest=1}}]},
- pro1:{name:'시위대',zone:'city',x:13,y:11,dir:'up',look:protester('#3A2A22','#C99470','#E8962A','#3A4A5A'),still:1,hide:()=>b('시위'),talk:()=>[{say:'사람이 먼저예요! 사람이 먼저예요!'}]},
- pro2:{name:'시위대',zone:'city',x:15,y:11,dir:'up',look:protester('#C9A64A','#F0C9A4','#F2D54A','#2E3548'),still:1,hide:()=>b('시위'),talk:()=>[{say:'오늘 이 길은 못 지나가요. 미안해요!'}]},
- pro3:{name:'시위대',zone:'city',x:16,y:11,dir:'up',look:protester('#1E1A22','#8A5A3A','#E86D3A','#3B4650'),still:1,hide:()=>b('시위'),talk:()=>[{say:'돈키! 돈키! 해가 뜨는 날까지!'}]},
+ pro1:{name:'돈키',zone:'city',x:13,y:11,dir:'up',look:protester('#3A2A22','#C99470','#E8962A','#3A4A5A'),still:1,hide:()=>b('시위'),talk:()=>[{say:'사람이 먼저예요! 사람이 먼저예요!'}]},
+ pro2:{name:'돈키',zone:'city',x:15,y:11,dir:'up',look:protester('#C9A64A','#F0C9A4','#F2D54A','#2E3548'),still:1,hide:()=>b('시위'),talk:()=>[{say:'오늘 이 길은 못 지나가요. 미안해요!'}]},
+ pro3:{name:'돈키',zone:'city',x:16,y:11,dir:'up',look:protester('#1E1A22','#8A5A3A','#E86D3A','#3B4650'),still:1,hide:()=>b('시위'),talk:()=>[{say:'돈키! 돈키! 해가 뜨는 날까지!'}]},
  jimena:{name:'히메나',zone:'city',x:5,y:10,dir:'up',look:L_JIMENA,badge:['장례식'],
   hide:()=>!f().boom||!!f().occupied,
-  after:'루치아 사진 앞에 꽃이 매일 새로 와요.',
+  after:'루치아 사진 앞에 꽃이 계속 쌓여요.',
   talk:()=>[
    {say:'여보… 루치아 일, 너무 슬퍼요.'},
-   {say:'오늘 광장에서 추모식이 있어요. 내일은 장례식이에요.'},
+   {say:'오늘 광장에서 추모식이 있어요. 도시 사람들이 다 왔어요.'},
    Q.jimena[0],
    {who:'테렌스',say:'루치아는 제가 보냈어요. 제 잘못이에요.'},
    {say:'아니에요. 캡슐을 터뜨린 사람 잘못이에요.'},
@@ -1217,15 +1248,16 @@ const NPC={
  zelinda:{name:'젤린다',zone:'city',x:9,y:8,dir:'left',look:L_ZELINDA,badge:['테러'],
   hide:()=>!f().boom||!!f().occupied,
   status:()=>!b('장례식')?null:undefined,
-  after:'총독님은 겁을 먹었어요. 그래서 더 강하게 나가요.',
+  get after(){return f().liliana?'돈키 시위가 많이 줄었어요. 그래도 총독님은 아직 걱정해요.':'총독님은 겁을 먹었어요. 그래서 더 강하게 나가요.'},
   talk:()=>[
-   {say:'테렌스 국장님. 총독 사무실의 젤린다예요.'},
+   {who:'…',say:'젤린다예요. 후작부인의 큰딸, 핀과 오틸리아의 누나. 총독 사무실에서 일해요.'},
+   {say:'테렌스 국장님, 왔어요?'},
    {say:'이건 사고가 아니에요. 사람들을 겁주려는 공격이에요.'},
    Q.zelinda[0],
    {say:'총독님 명령이에요. 오늘부터 돈키 시위와 갱들을 다 단속해요.'},
    Q.zelinda[1],
    {say:'조사이어스 정당도 조사해요. 저희 동생 남편인데도요.'},
-   {who:'테렌스',say:'메두사는 소노마 거리에 있어요. 우리 팀이 계속 보고 있었어요.',award:['테러'],set:()=>{f().crackdown=1}}]},
+   {who:'테렌스',say:'메두사는 소노마 거리에 있어요. 거리 동쪽 끝이요. 우리 팀이 계속 보고 있었어요.',award:['테러'],set:()=>{f().crackdown=1}}]},
  medusaSt:{name:'메두사',zone:'city',x:27,y:6,dir:'left',look:L_MEDUSA_ST,still:1,
   hide:()=>!f().crackdown||!!f().medusa,
   status:()=>'todo',
@@ -1251,7 +1283,7 @@ const NPC={
  lion1:{name:'각성 사자',zone:'city',x:20,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'칠 톤짜리 사자예요. 눈이 아주 똑똑해 보여요.'},{say:'크르르릉…'}]},
  lion2:{name:'각성 사자',zone:'city',x:22,y:8,dir:'down',look:LION,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'사자가 테렌스의 냄새를 맡아요. 이빨이 손가락만 해요.'}]},
  ghost1:{name:'고스트',zone:'city',x:3,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,
-  talk:()=>[{who:'…',say:'{고스트|고스트}이에요. 키가 3미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'고스트가 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
+  talk:()=>[{who:'…',say:'{고스트|고스트}예요. 키가 삼 미터. 머리가 없어요.'},{who:'…',say:'굽이 세 개인 긴 다리. 뒤쪽 팔 끝의 칼이 파랗게 빛나요.'},{who:'…',say:'고스트가 파란 빛으로 테렌스를 훑어봐요. 그리고 지나가요.'}]},
  ghost2:{name:'고스트',zone:'city',x:24,y:6,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 거리를 지켜요. 지금은 통금이에요.'}]},
  ghost3:{name:'고스트',zone:'city',x:17,y:10,dir:'down',look:GHOST,still:1,hide:()=>!f().occupied,talk:()=>[{who:'…',say:'고스트가 광장을 지켜요. 사람들은 고개를 숙이고 지나가요.'}]},
  /* High Rosa */
@@ -1293,12 +1325,16 @@ const NPC={
    {who:'…',say:'마카이오의 입에서 피가 나요. 말을 못 해요. 옷이 보라색으로 번쩍여요.'},
    {who:'…',say:'큰 손이 테렌스의 머리를 잡아요. 차가운 무언가가 머릿속에 들어와요.'},
    {who:'…',say:'테렌스가 물러나자 마카이오의 머리가 스스로 타 버려요. 아무 비밀도 남지 않게요.'},
-   {who:'테렌스',say:'노이쉬 님… 아버님이… 뉴 피닉스 프로토콜이에요.'},
+   {who:'…',say:'달려 나가면서 테렌스가 통신을 걸어요. 처음 보는 젊은 셀레스철, 마카이오의 아들 노이쉬예요.'},
+   {who:'테렌스 (통신)',say:'노이쉬 님… 아버님이 돌아가셨어요. 이제 당신이 미래예요.'},
    {who:'…',say:'마카이오파라지가, 곤디아에서, 암살당했어요. 테렌스는 아무도 모르게 빠져나가요.',award:['암살'],set:()=>{f().rider=1}}]},
  otylia:{name:'오틸리아',zone:'villa',x:5,y:5,dir:'down',look:{hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'},
   hide:()=>!f().missile,
   status:()=>!f().rescued?'todo':undefined,  // undefined, not null: afterwards the engine shows the review mark when a line is due
   talk:()=>!f().rescued?[
+   {who:'…',say:'글로브캡이 스스로 역까지 달려요. 테렌스는 하프니르로 가는 기차를 타요.'},
+   {who:'…',say:'하프니르. 테렌스의 글로브캡이 불타는 저택 앞에 서요. 오틸리아, 젤린다, 하이안을 태워서 빌라로 와요.'},
+   {who:'…',say:'빌라에서 알잔이 다친 사람들을 치료해요.'},
    {say:'테렌스… 와 줘서 고마워요.'},
    {say:'{고스트|고스트}들이 저를 체포하러 왔어요. 그런데 누군가 고스트들을 쐈어요.'},
    {say:'그리고 하늘에서 {미사일|미사일}이… 집이 다 무너졌어요.'},
@@ -1321,7 +1357,10 @@ const NPC={
    {who:'테렌스',say:'알잔… 몸 조심해. 엄마한테 자주 연락해.'},
    {say:'아빠도요. 바닐다랑 엄마 잘 지켜 주세요.'},
    {who:'테렌스',say:'아빠는 할 일이 있어. 다크 파라다이스 클럽이 지금 비어 있어.'},
-   {who:'테렌스',say:'스탄바8 갱은 다 잡혀갔어. 그 지하에 뭐가 있는 것 같아.',set:()=>{f().club=1}}]:[{say:'아빠, 사랑해요. 꼭 다시 만나요.'}]},
+   {who:'테렌스',say:'스탄바8 갱은 다 잡혀갔어. 그 지하에 뭐가 있는 것 같아. 엄마가 감식을 도와줄 거야.'},
+   {who:'…',say:'바닐다가 방에서 뛰어나와요.'},
+   {who:'바닐다',say:'저도 갈래요! 아빠랑 엄마가 잡히면, 저도 몇 시간 안에 잡혀요.'},
+   {who:'테렌스',say:'…그래, 같이 가자.',set:()=>{f().club=1}}]:[{say:'아빠, 사랑해요. 꼭 다시 만나요.'}]},
  /* Fleesh Diamond */
  barman:{name:'바텐더',zone:'bar',x:4,y:2,dir:'down',look:{hair:'#9A9AA0',skin:'#D7A77E',shirt:'#F1EEE6',pants:'#2A2A30',belt:'#2A2A30',beard:'#9A9AA0'},
   script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];
@@ -1332,7 +1371,7 @@ const NPC={
   after:'두 남자가 바에 들어가요. 하하, 이 농담은 끝이 없어요.',
   talk:()=>[
    {who:'…',say:'두 달 동안 같은 꿈을 꿨어요. 이 바, 플리시 다이아몬드.'},
-   {say:'두 남자가 바에 들어가요.'},
+   {say:'농담 하나 할까요? 두 남자가 바에 들어가요…'},
    {who:'테렌스',say:'…마카이오 님? 죽었잖아요.'},
    {say:'네, 저는 죽었어요. 저는 마카이오의 복사본, "{라이더|라이더}"예요.'},
    {say:'걱정 마요. 당신 머리를 가져가지 않아요. 당신은 계속 당신이에요.'},
@@ -1341,44 +1380,47 @@ const NPC={
    Q.spirit[1],
    {say:'이제 우리 둘이 같이 수사해요. 큰 게임은 아직 안 끝났어요.'},
    {expand:()=>classTime(CLASS,['경찰서','집'])},
-   {who:'…',say:'그리고 2년이 지났어요. 어느 날, 탑 꼭대기 하이 로사에 제국 항모가 붙었어요.',award:['저격'],set:()=>{f().occupied=1}}]},
+   {who:'…',say:'그리고 두 해가 지났어요. 어느 날, 탑 꼭대기 하이 로사에 제국 항모가 붙었어요.',award:['저격'],set:()=>{f().occupied=1}}]},
  /* Dark Paradise basement */
  patch:{name:'리브스톤 바닥',zone:'club',x:9,y:6,dir:'down',still:1,
   get look(){return f().bones?BONES:PATCH},
   status:()=>!f().bones?'todo':null,
   talk:()=>!f().bones?[
+   {who:'…',say:'세 주 동안 클럽을 다 뒤졌어요. 이제 맨 아래 지하층이에요.'},
    {who:'…',say:'바닥 한 곳의 색이 조금 달라요. {리브스톤|리브스톤}이 새로 자란 것 같아요.'},
    {who:'테렌스',say:'바닐다, 뒤로 가.'},
    {who:'…',say:'테렌스가 손바닥을 벽의 작은 혹에 대요. 손바닥의 보라색 선이 빛나요.'},
-   {who:'…',say:'바닥 돌이 부서져요. 세 사람이 손으로 돌을 파내요.',set:()=>{f().bones=1}},
+   {who:'…',say:'바닥 돌이 부서져요. 테렌스, 히메나, 바닐다가 손으로 돌을 파내요.',set:()=>{f().bones=1}},
    {who:'…',say:'그 안에… 사람의 뼈가 있어요. 가슴뼈에 칼자국이 있어요.'},
    {who:'바닐다',say:'아빠… 시체예요?'},
    {who:'테렌스',say:'아주 오래된 시체야. 엄마가 자세히 조사할 거야.'}]:[
    {who:'…',say:'오래된 뼈. 썩은 가죽 재킷 조각이 남아 있어요.'}]},
- jimenaC:{name:'히메나',zone:'club',x:6,y:7,dir:'right',look:L_JIMENA,
+ jimenaC:{name:'히메나',zone:'club',x:8,y:6,dir:'right',look:L_JIMENA,
   status:()=>f().bones&&!f().done?'todo':undefined,
   talk:()=>!f().bones?[{say:'먼지가 많아요. 바닥을 잘 봐요. 갱들은 뭔가를 숨겼어요.'}]:f().done?[{say:'이 증거, 누구한테 보낼 거예요? 조심해요, 여보.'}]:[
    {say:'이 사람, 수십 년 전에 죽었어요. 칼에 가슴을 찔렸어요.'},
-   {say:'뼈를 조금 가져갈게요. DNA 검사를 해요.',give:'뼈 샘플'},
+   {say:'뼈를 조금 가져갈게요. 이 작은 기계로 DNA 검사를 해요. 몇 분 걸려요.',give:'뼈 샘플'},
    {w:'수사',build:['수사는','아직','끝나지','않았어요'],alts:[['아직','수사는','끝나지','않았어요']]},
+   {who:'…',say:'몇 분 뒤, 검사 기계가 "삐" 하고 울려요.'},
    {say:'DNA 검사가 끝났어요. 이 사람은… 기보이 엔포예요.'},
    {who:'테렌스',say:'기보이? 진짜 기보이가 여기에서 죽었어요?'},
    {who:'바닐다',say:'그럼 성실호에 탄 기보이는… 누구예요?'},
    {who:'테렌스',say:'모르겠어. 하지만 꼭 찾을 거야.',set:()=>{f().done=1},finale:1}]},
 };
 
-/* news screen: Wynid interludes (막간) and occupation news, in story order */
-const NEWS_ITEMS=[
+/* 막간: the Wynid interludes, on the floating crystal in the HQ (as 3장 and 7장 show theirs), told as "meanwhile, far away" — never on
+   the public news screen. Flags stay news1–5, so older saves keep what they've seen. */
+const INTERLUDES=[
  {id:1,when:()=>f().bopbeDead,steps:[
-  {who:'뉴스 화면',say:'와이니드 소식이에요. 티라가 왕실 공주가 됐어요.'},
-  {who:'막간',say:'막간 · 유익식. 마르고 뜨거운 사막 행성.'},
-  {who:'막간',say:'우알라나라이언 경이 아들들과 몰래 왔어요. 베켓의 과거를 수사해요.'},
+  {who:'막간',say:'그 무렵, 먼 와이니드. 티라가 왕실 공주가 됐어요.'},
+  {who:'막간',say:'같은 때, 유익식. 마르고 뜨거운 사막 행성이에요.'},
+  {who:'막간',say:'와이니드 귀족 우알라나라이언 경이 아들들과 몰래 왔어요. 베켓의 과거를 수사해요.'},
   {who:'막간',say:'궤도의 배에 작은 나노 기계 구름이 와요. "{슬로볼|슬로볼}"이에요.'},
   {who:'막간',say:'배에 남은 두 아들, 루치오와 파벨이 먹혔어요.'},
   {who:'우알라나라이언',say:'이 공작 조각… 그리고 이 모래… 땅 밑에 뭔가 있어요!'},
   {who:'막간',say:'번쩍. 우알라나라이언은 사라졌어요. 아들 쇼이구의 몸은 누군가 가져갔어요.'}]},
  {id:2,when:()=>f().sting,steps:[
-  {who:'막간',say:'막간 · 와이니드, 가말둠 궁전. 여덟 달 후.'},
+  {who:'막간',say:'여덟 달 뒤, 먼 와이니드의 가말둠 궁전.'},
   {who:'막간',say:'헬레나키오네 여왕이 증기실에 혼자 있어요.'},
   {who:'티라',say:'어머니, 이제 제 차례예요.'},
   {who:'막간',say:'티라가 여왕의 손에 손을 올려요. 여왕의 기억을 억지로 다 가져가요.'},
@@ -1386,55 +1428,63 @@ const NEWS_ITEMS=[
   {who:'막간',say:'여왕은 죽었어요. 티라는 여왕의 기억으로 모든 시험을 통과했어요.'},
   {who:'막간',say:'이제 티라는 "헬레나티라" 여왕이에요. 아버지 베켓은 궁정 장관이 됐어요.'}]},
  {id:3,when:()=>f().tail,steps:[
-  {who:'막간',say:'막간 · 와이니드. 티라가 여왕이 된 지 오 년.'},
+  {who:'막간',say:'그 무렵, 먼 와이니드. 티라가 여왕이 된 지 오 년.'},
   {who:'막간',say:'티라가 수석 아콘 가히지칼더를 쫓아냈어요.'},
-  {who:'막간',say:'새 수석 아콘은 "우알라나쇼이구" 경. 사실은 이운틴데틀레프예요.'},
+  {who:'막간',say:'새 수석 아콘은 "우알라나쇼이구" 경. 사실은 티라 편 셀레스철, 이운틴데틀레프예요.'},
   {who:'막간',say:'그 몸은 쇼이구의 몸이에요. 쇼이구의 기억은 지워졌어요.'},
   {who:'막간',say:'회의가 끝나고, 작은 방. 티라가 우자냐 공주의 머리에 들어가요. 억지로 생각을 바꿔요.'},
   {who:'우자냐',say:'…네, 여왕님. 여왕님 말이 다 맞아요.'}]},
  {id:4,when:()=>f().boom,steps:[
-  {who:'막간',say:'막간 · 바사 궤도 링의 코르토나.'},
+  {who:'막간',say:'그 무렵, 바사 궤도 링의 코르토나.'},
   {who:'우알라나쇼이구',say:'마카이오파라지, 당신은 이제 아콘이 아니에요. 곤디아만 십 년 더 맡아요.'},
   {who:'마카이오파라지',say:'삼백 년 넘게 일했어요. 그런데 이렇게 끝나요?'},
   {who:'막간',say:'다섯 여왕의 회의. 헬레나티라가 말해요.'},
-  {who:'헬레나티라',say:'카포 프로이스를 차지해요. 그리고 십 년 안에 모든 왕실 함대를 켈로완에 모아요.'},
+  {who:'헬레나티라',say:'이웃 성계 카포 프로이스를 차지해요. 그리고 십 년 안에 모든 왕실 함대를 켈로완에 모아요.'},
+  {who:'막간',say:'켈로완은 여제가 사는 행성이에요. 곤디아와 같은 성계에 있어요.'},
   {who:'막간',say:'아무도 몰라요. 이게 누구의 게임인지.'}]},
  {id:5,when:()=>f().occupied,steps:[
-  {who:'막간',say:'막간 · 켈로완 황궁. 캐롤리엔아마이아 여제.'},
+  {who:'막간',say:'그보다 조금 앞서, 켈로완 황궁. 여제 캐롤리엔아마이아.'},
   {who:'우알라나쇼이구',say:'여제님, 와이니드의 아콘이 곤디아에서 암살당했어요.'},
   {who:'캐롤리엔아마이아',say:'와이니드는 자기 아콘도 못 지켜요? 그럼 제가 직접 할게요.'},
   {who:'막간',say:'여제가 아보네발레리오 장군을 보내요. 돌격 항모 일곱 척, 제국 기사, 고스트 오십만.'},
   {who:'막간',say:'사람들은 장군을 "초토화"라고 불러요.'},
-  {who:'뉴스 화면',say:'곤디아 소식. 잘고리토부 가족이 제티안 궁전에서 쫓겨났어요.'}]},
+  {who:'막간',say:'장군이 온 날 아침, 잘고리토부 가족은 제티안 궁전에서 쫓겨났어요.'}]},
+];
+/* news screen: only what was public — the Custodian's bulletins (c028), Josias's illegal broadcast (c029), the YouBustered (c031) */
+const NEWS_ITEMS=[
  {id:6,when:()=>f().general,steps:[
   {who:'뉴스 화면',say:'{관리관|관리관} 사무실 발표: 반란자 수천 명을 체포했어요.'},
   {who:'…',say:'사람들이 역 근처 창고에 갇혀 있어요. 소처럼요.'},
-  {who:'테렌스',say:'저기서 형무 농장으로 가요. 다시는 못 돌아와요…'}]},
- {id:7,when:()=>f().news6,steps:[
-  {who:'뉴스 화면',say:'불법 방송이에요. 밤하늘에 분홍색 점이 떠요. 돌로드예요.'},
-  {who:'조사이어스',say:'곤디아 사람들! 제7조를 위해 모두 멈춰요! {총파업|총파업}이에요!'},
-  {who:'뉴스 화면',say:'조사이어스와 같이 있던 여자, 레오니가 총에 맞아 죽었어요.'},
-  {who:'뉴스 화면',say:'하프니르 속보. 고스트들이 오틸리아를 체포하러 갔어요.'},
-  {who:'뉴스 화면',say:'누군가 고스트들을 저격했어요. 그리고 하늘에서 {미사일|미사일}이 떨어졌어요.'},
-  {who:'뉴스 화면',say:'후작부인과 남편, 며느리 버라이카가 죽었어요.'},
-  {who:'테렌스',say:'또 토셰예요. 살아남은 사람들을 우리 집에 숨겨야 돼요!',set:()=>{f().missile=1}}]},
+  {who:'테렌스',say:'저기서 형무 농장으로 가요. 다시는 못 돌아와요…'},
+  {who:'뉴스 화면',say:'— 방송 끝 —'}]},
+ {id:7,when:()=>f().news6,steps:[  // c029: Dolod's closest approach; the broadcast; Terence learns Ghosts are sent to arrest Otylia, warns Zelinda
+  {who:'…',say:'그날 밤, 떠돌이 행성 돌로드가 곤디아에 제일 가까이 왔어요. 하늘에 분홍색 점이 떠요.'},
+  {who:'뉴스 화면',say:'불법 방송이에요! 고스트들이 사람들을 끌고 가요. 그리고 조사이어스의 목소리.'},
+  {who:'조사이어스',say:'헌법 제7조! 여제님은 모두에게 밥과 집과 돈을 약속했어요.'},
+  {who:'조사이어스',say:'그러니까 아무것도 하지 마세요! 제7조를 위해, {총파업|총파업}이에요!'},
+  {who:'뉴스 화면',say:'— 방송 끝 —'},
+  {who:'…',say:'테렌스가 몰래 장군의 통신을 들어요. 고스트 둘이 하프니르로 오틸리아를 체포하러 가요.'},
+  {who:'테렌스 (통신)',say:'젤린다 님, 고스트들이 가요. 저항하지 마세요. 제가 갈게요!',set:()=>{f().missile=1}}]},
  {id:8,when:()=>f().club,steps:[
   {who:'뉴스 화면',say:'형무 농장이 꽉 찼어요. 관리관이 옛날 무기를 써요.'},
   {who:'뉴스 화면',say:'체포된 사람들의 기억을 {유버스터|유버스터}로 지웠어요. 그리고 가족한테 돌려보내요.'},
   {who:'…',say:'화면 속 사람들이 아기처럼 웃어요. 자기 이름도 몰라요.'},
-  {who:'테렌스',say:'처형보다 나빠요…'}]},
+  {who:'테렌스',say:'처형보다 나빠요…'},
+  {who:'뉴스 화면',say:'— 방송 끝 —'}]},
 ];
 function nextNews(){return NEWS_ITEMS.find(e=>e.when()&&!f()['news'+e.id])}
+function nextInterlude(){return INTERLUDES.find(e=>e.when()&&!f()['news'+e.id])}
+const seen=e=>e.steps.map((s,i)=>i<e.steps.length-1?s:{...s,set:()=>{f()['news'+e.id]=1;if(s.set)s.set()}});  // its flag on the last line
 
-const FOLLOW={name:'바닐다',look:L_VANILDA,when:()=>!!f().occupied&&!f().done,
- talk:()=>[{say:ZID==='club'?'아빠, 여기 냄새가 이상해요. 바닥이 좀 달라 보여요.':f().rescued?'알잔 오빠가 떠나요… 저는 아빠랑 엄마랑 남을 거예요.':'점령군이 시위를 다 막았어요. 이제 저는 아빠를 도울 거예요.'}]};
+const FOLLOW={name:'바닐다',look:L_VANILDA,when:()=>!!f().club&&!f().done,  // from "저도 갈래요!" at the villa (c030) to the end
+ talk:()=>[{say:ZID==='club'?'아빠, 여기 냄새가 이상해요. 바닥이 좀 달라 보여요.':'알잔 오빠가 떠나요… 저는 아빠랑 엄마랑 같이 있을 거예요.'}]};
 
-const INTRO=[
- {who:'테렌스',say:'산타 로사, 곤디아. 성실호가 떠난 지 십이 년이 됐어요.'},
- {who:'테렌스',say:'저는 테렌스. 산타 로사 경찰 특수 작전 국장이에요.'},
- {who:'테렌스',say:'그리고 몰래 와이니드의 아콘, 마카이오파라지 님을 위해 일해요.'},
- {who:'테렌스',say:'어젯밤 디어랙 거리에서 총격전이 있었어요. 다섯 명이 죽었어요.'},
- {who:'테렌스',say:'우리는 봅베라는 남자를 잡았어요. 새 얼굴로 곤디아를 떠나려고 했어요.'}];
+const INTRO=[  // narration, like every other narrated line in this chapter
+ {who:'…',say:'산타 로사, 곤디아. 성실호가 떠난 지 십이 년이 됐어요.'},
+ {who:'…',say:'테렌스는 산타 로사 경찰 특수 작전 국장이에요. 여기는 테렌스의 국장실이에요.'},
+ {who:'…',say:'그리고 테렌스는 몰래 와이니드의 아콘, 마카이오파라지를 위해 일해요.'},
+ {who:'…',say:'어젯밤 디어랙 거리에서 총격전이 있었어요. 봅베를 납치하려던 사람들이 다 죽었어요.'},
+ {who:'…',say:'경찰은 봅베라는 남자를 잡았어요. 새 얼굴로 곤디아를 떠나려고 했어요.'}];
 const DONE=['5장 끝! 진짜 기보이는 수십 년 전에 죽었어요.','그럼 성실호에 탄 "기보이"는 누구일까요?','테렌스는 이 증거를 들고 곧 곤디아를 떠나요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
 
 function questText(){
@@ -1446,9 +1496,9 @@ function questText(){
  if(!b('변장하다'))return '거리 · 지카르의 가게에 가요';
  if(!F.sting)return '거리 · 지카르로 변장하고 기다려요';
  if(!b('단서'))return '거리 · 지카르한테 다시 물어봐요';
+ if(!b('시위'))return '광장 · 돈키 사람들이 길을 막았어요';  // the protest (c024), then Bersche (c026): Lućia's "watch my feed" comes last
  if(!b('감시하다'))return '취조실 · 베르셰를 심문해요';
- if(!b('시위'))return '광장 · 시위대를 지나가요';
-  if(!F.aireel)return ZID==='tower'?'루치아의 영상 · 토셰를 찾아요':'국장실 · 루치아의 영상 콘솔';
+ if(!F.aireel)return ZID==='tower'?'루치아의 영상 · 토셰를 찾아요':'국장실 · 책상 옆 큰 콘솔로 루치아의 영상을 봐요';
  if(!F.capsule)return '루치아의 영상 · 토셰 쪽으로 가요';
  if(!F.boom)return ZID==='tower'?'루치아의 영상 · 캡슐 승강장':'국장실 · 루치아의 통신을 들어요';
  if(!b('폭발'))return '경찰서 · 새 서장을 만나요';
@@ -1459,9 +1509,9 @@ function questText(){
  if(!F.liliana)return '감식실 · 캡슐 역 영상을 봐요';
  if(!F.rider)return '총독 저택 · 마카이오를 만나요';
  if(!b('저격'))return '플리시 다이아몬드 · 꿈속의 바';
- if(!b('점령하다'))return '광장 · 점령군 장군을 만나요';
+ if(!b('점령하다'))return '광장 · 제국 장군을 만나요';
  if(!F.missile)return '경찰서 · 뉴스 화면을 봐요';
- if(!F.rescued)return '하프니르 · 테렌스의 빌라';
+ if(!F.rescued)return ZID==='villa'?'하프니르 · 오틸리아하고 이야기해요':'거리 · 테렌스의 글로브캡을 타요';
  if(!F.club)return '하프니르 · 알잔하고 작별해요';
  if(!F.bones)return '다크 파라다이스 · 지하실을 조사해요';
  return '다크 파라다이스 · 히메나한테 가요';
