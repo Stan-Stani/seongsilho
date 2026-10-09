@@ -685,7 +685,8 @@ const NPC={
    {who:'레스타리',say:'경고! 미사일 아홉 개 접근!'},
    Q.ellie[1],
    {say:'우리 무기로는 못 막아요! 핀은 엔진실에 있어요. 가요!',award:['추격하다','공격하다'],set:()=>{f().ambush=1}}]},
- basyl:{name:'베이질 목사',zone:'lestari',x:17,y:2,dir:'down',look:{hair:'#ECECEC',skin:'#D9A88A',shirt:'#5A3A5E',pants:'#3A2E3A',style:'bald',coat:1},badge:['거짓말하다'],
+ basyl:{name:'베이질 목사',zone:'lestari',x:17,y:2,dir:'down',hide:()=>!!f().bubble,  /* down at Breakerville once the bubble is done (c014): not in two places at once */
+  look:{hair:'#ECECEC',skin:'#D9A88A',shirt:'#5A3A5E',pants:'#3A2E3A',style:'bald',coat:1},badge:['거짓말하다'],
   status:()=>f().captain?undefined:null,
   script:()=>f().captain?null:[{say:'(꿀꺽) 오, 새 얼굴. 선장님 먼저 만나요. 큐폴라에 있어요.'}],
   after:'관문 앞에서는 기도도 많이, 술도 조금. 하하.',
@@ -698,10 +699,12 @@ const NPC={
    {say:'(꿀꺽) 아, 이거요? 이건 물이에요. 진짜예요.'},
    {...Q.basyl[1],who:'…'},
    {say:'하하! 병 가져가요. 선장님한테 드려요.',give:'피의 병',award:['거짓말하다']}]},
- tose1:{name:'토셰',zone:'lestari',x:21,y:5,dir:'left',look:{art:TOSE},
+ tose1:{name:'토셰',zone:'lestari',x:21,y:5,dir:'left',hide:()=>!!f().bubble,  /* down at Breakerville once the bubble is done (c014): not in two places at once */
+  look:{art:TOSE},
   script:()=>f().ambush&&!f().beam?[{say:'내 뒤에 있어요.'}]:null,
   talk:()=>[{say:'…토셰. 경비예요.'},{say:'기보이 씨가 저를 보냈어요. 핀 씨를 지키라고요.'},{say:'제 눈이요? 이 눈은 날 수 있어요. 드론이에요.'},{who:'…',say:'토셰의 툭 튀어나온 눈이 빠져서 윙— 날아가요.'}]},
- grssia1:{name:'그르시아',zone:'lestari',x:13,y:2,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E',lashes:1,lips:'#B8606A'},
+ grssia1:{name:'그르시아',zone:'lestari',x:13,y:2,dir:'down',hide:()=>!!f().bubble,  /* down at Breakerville once the bubble is done (c014): not in two places at once */
+  look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E',lashes:1,lips:'#B8606A'},
   talk:()=>[{say:'저는 그르시아. 엔포 가문 {경비|경비}예요.'},{say:'이치카하고 저는 오래 같이 일했어요. 토셰는 새 사람이에요.'}]},
  ichika1:{name:'이치카',zone:'lestari',x:13,y:4,dir:'right',hide:()=>!!f().bubble,  // takes the spaceplane down to Breakerville once the bubble is done (c014) and dies there
   look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long',lashes:1,lips:'#C8646E'},
@@ -764,7 +767,8 @@ const NPC={
    Q.yoru[2],
    {say:'근데… 배고파요. 남편하고 싸워서 도시락이 없어요.'},
    {say:'오키미살은 버블타운에 있어요. 저는 말 안 할 거예요. 흥.',award:['잔해','인양하다']}]},
- miteris:{name:'미테리스',zone:'bubbletown',x:21,y:4,dir:'left',look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'short',coat:1},badge:['위성','얼음'],
+ miteris:{name:'미테리스',zone:'bubbletown',x:21,y:4,dir:'left',hide:()=>!!f().dug,  /* at Breakerville (miterisB) once the dig is done: not in two places at once */
+  look:{hair:'#6A3A22',skin:'#E0AE86',shirt:'#4A5A3A',pants:'#3A3A30',belt:'#C9A23A',style:'short',coat:1},badge:['위성','얼음'],
   get after(){return f().bubble?'꽉 잡아요. 대기권은 좀 흔들려요.':'버블이 끝나면 내려가요. 요루가 힘내야 돼요.'},
   talk:()=>[
    {say:'저는 미테리스. 우주비행기 조종사예요.'},
