@@ -151,8 +151,9 @@ const Q={ // NPC questions, kept here so review can reuse them
    is lifted and says his flask holds "real water" this time; everyone clapped on reaching Five, Yoru ate all the lunch, Okimi-Sal
    is the cook; Miteris's plane is fuelled, ice on the wings; the resident was born on Five, ships call at the dock often; Ichika's
    night round reaches the tunnel entrance; the guard disliked the smell at first, the sea wind often breaks machines; Tabia signed
-   two contracts (the Flexals, the Daves) and doubts the salt-white cranes; the Daves "signed". Tow (CLASS): Okimi-Sal blames the
-   wreck's weight, not his engine; Tabia's joke about Basyl's "water"; Yoru says he isn't hungry; Ellie feels light at 0.2 g. */
+   two contracts (the Flexals, the Daves) and doubts the salt-white cranes; the Daves "signed". Tow (CLASS): Okimi-Sal says the
+   engines have power to spare (the slow push spares the wreck, c013); Tabia's joke about Basyl's "water"; Yoru says he isn't
+   hungry; Ellie feels light at 0.2 g. */
 const lounge=()=>!f().ambush||(!!f().beam&&!f().bubble),tow=()=>!!f().beam&&!f().bubble,daveOn=()=>!!f().daves&&f().attack!==1,fought=()=>f().attack===2;
 /* in-character review: people use a learned word again, in their own voice and moment (engine: linesFor, reviewPick, sayLine) */
 const REVIEW=[
@@ -160,7 +161,7 @@ const REVIEW=[
  {w:'거짓말하다',by:'basyl',when:()=>!f().gift,ask:'오늘은 아무도 ___ 안 돼요. 여신님이 다 들으세요.',opts:[['거짓말하면',1],['기도하면',0,'하하, 기도는 여신님이 좋아해요! 사실이 아닌 말은 "거짓말하면".'],['설명하면',0,'설명은 잘 알려 주는 거예요. 사실이 아닌 말은 "거짓말하면".']]},
  {w:'식량',by:'basyl',when:lounge,ask:'___ 창고에 술은 없어요. 그래서 이 병이 있죠. 하하.',opts:[['식량',1],['심장',0,'심장은 몸 안에서 뛰어요! 오래 먹을 음식은 "식량".'],['시력',0,'시력은 눈으로 보는 힘이에요. 오래 먹을 음식은 "식량".']]},
  {w:'가속',by:'basyl',when:tow,ask:'육만 톤을 끌고도 ___했어요. 여신님 덕분이에요!',opts:[['가속',1],['가족',0,'하하, 가족은 엄마, 아빠예요. 점점 빨라지는 건 "가속".'],['가구',0,'가구는 침대나 책상이에요. 점점 빨라지는 건 "가속".']]},
- {w:'추격하다',by:'basyl',when:tow,ask:'우리를 ___ 배는 이제 없어요. 여신님, 고맙습니다!',opts:[['추격하던',1],['추천하던',0,'추천하다는 좋은 걸 알려 주는 거예요. 뒤에서 쫓아오던 건 "추격하던".'],['출발하던',0,'출발은 떠나는 거예요. 뒤에서 쫓아오던 건 "추격하던".']]},
+ {w:'추격하다',by:'basyl',when:tow,ask:'우리를 ___ 배는 이제 없을 거예요. 여신님, 고맙습니다!',opts:[['추격하던',1],['추천하던',0,'추천하다는 좋은 걸 알려 주는 거예요. 뒤에서 쫓아오던 건 "추격하던".'],['출발하던',0,'출발은 떠나는 거예요. 뒤에서 쫓아오던 건 "추격하던".']]},
  /* Finn in the engine room, after the beam */
  {w:'가속',by:'finn',ask:'잔해만 없으면 훨씬 빨리 ___할 수 있어요.',opts:[['가속',1],['가족',0,'소리가 비슷해요! 가족은 엄마, 아빠예요. 빨라지는 건 "가속".'],['가구',0,'가구는 침대나 책상이에요. 빨라지는 건 "가속".']]},
  {w:'잔해',by:'finn',ask:'저 ___ 안에 발생기가 있어요. 빨리 보고 싶어요.',opts:[['잔해',1],['잔치',0,'잔치는 파티예요! 부서진 배의 조각은 "잔해".'],['장애',0,'장애는 일을 막는 문제예요. 부서진 배의 조각은 "잔해".']]},
@@ -240,7 +241,7 @@ const REVIEW=[
 /* the 18-day tow to Five, right after the beam: two beats of the trip, said by the Lestari's crew (classTime picks one line each) */
 const CLASS={
  tow1:{say:'첫째 날. 레스타리가 잔해를 끌고 아주 천천히 가요.',lines:[
-  {w:'가속',who:'오키미살',ask:'잔해가 무거워서 ___이 약해요. 제 엔진 잘못 아니에요!',opts:[['가속',1],['가족',0,'가족은 우리 엄마나 요루 같은 사람이에요. 빨라지는 건 "가속".'],['가구',0,'가구는 침대나 책상이에요. 빨라지는 건 "가속".']]},
+  {w:'가속',who:'오키미살',ask:'잔해가 부서질까 봐 천천히 ___해요. 엔진은 아직 힘이 많아요!',opts:[['가속',1],['가족',0,'가족은 우리 엄마나 요루 같은 사람이에요. 빨라지는 건 "가속".'],['가구',0,'가구는 침대나 책상이에요. 빨라지는 건 "가속".']]},
   {w:'추격하다',who:'우조마 선장',ask:'누가 또 ___ 와도 괜찮아요. 이제 이 배는 무기예요.',opts:[['추격해',1],['추천해',0,'추천하다는 좋은 걸 알려 주는 거예요. 뒤에서 쫓아오는 건 "추격해".'],['출발해',0,'출발은 떠나는 거예요. 뒤에서 쫓아오는 건 "추격해".']]},
   {w:'공격하다',who:'엘리',ask:'누가 우리를 ___? 아직도 모르겠어요.',opts:[['공격했을까요',1],['방어했을까요',0,'방어는 막는 거예요. 미사일을 쏜 건 "공격했을까요".'],['구경했을까요',0,'구경은 그냥 보는 거예요. 미사일을 쏜 건 "공격했을까요".']]},
   {w:'거짓말하다',who:'타비아',ask:'목사님 병 안이 물이래요. 하하, 다 ___이에요.',opts:[['거짓말',1],['기억',0,'기억은 머리에 남은 거예요. 술을 물이라고 하면 "거짓말".'],['칭찬',0,'칭찬은 잘했다고 하는 말이에요. 술을 물이라고 하면 "거짓말".']]}]},
@@ -702,7 +703,8 @@ const NPC={
   talk:()=>[{say:'…토셰. 경비예요.'},{say:'기보이 씨가 저를 보냈어요. 핀 씨를 지키라고요.'},{say:'제 눈이요? 이 눈은 날 수 있어요. 드론이에요.'},{who:'…',say:'토셰의 툭 튀어나온 눈이 빠져서 윙— 날아가요.'}]},
  grssia1:{name:'그르시아',zone:'lestari',x:13,y:2,dir:'down',look:{hair:'#5A4A3A',skin:'#C99470',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',cap:'#3E4C5E',lashes:1,lips:'#B8606A'},
   talk:()=>[{say:'저는 그르시아. 엔포 가문 {경비|경비}예요.'},{say:'이치카하고 저는 오래 같이 일했어요. 토셰는 새 사람이에요.'}]},
- ichika1:{name:'이치카',zone:'lestari',x:13,y:4,dir:'right',look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long',lashes:1,lips:'#C8646E'},
+ ichika1:{name:'이치카',zone:'lestari',x:13,y:4,dir:'right',hide:()=>!!f().bubble,  // takes the spaceplane down to Breakerville once the bubble is done (c014) and dies there
+  look:{hair:'#1E1E24',skin:'#EAC4A0',shirt:'#2E3B48',pants:'#2E3B48',belt:'#8A8F99',style:'long',lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'이치카예요. 관문을 지날 때는 꼭 누워요.'},{say:'처음에는 머리가 빙글빙글해요. 하하.'}]},
  finn:{name:'핀',zone:'lestari',x:5,y:10,dir:'left',look:FINN,badge:['가속'],
   hide:()=>!!f().bubble,
