@@ -37,6 +37,8 @@ const DICT={
  '레콜':{k:'옛날 기억을 다시 보게 하는 약. 코로 들이마셔요. 위험해요.',e:'rekaul (memory-replay drug)'},
  '너브잼':{k:'신경을 막아서 몸을 못 움직이게 하는 무기.',e:'nervejam'},
  '셀레스철':{k:'인간보다 강한 종족. 은하를 다스려요.',e:'Celestial'},
+ '우라닉':{k:'생각으로 셀레스철 기계를 움직이는 인간. 핀도 우라닉이에요.',e:'uranic (a gifted human)'},
+ '아콘':{k:'셀레스철 나라를 위해 일하는 귀족. 대사이자 스파이 대장.',e:'archon'},
  '유버스터':{k:'사람의 기억을 아기처럼 다 지우는 기계.',e:'YouBuster (mind-wiper)'},
  '복스록':{k:'켈로완 별에서 제일 가까운 작은 행성. 빨간 들판이 있어요.',e:'Boksrock (a small rust-red world)'},
  '켈로완':{k:'여제가 사는 셀레스철의 왕좌 행성. 8억 명이 살아요.',e:'Kelowan (the throne world)'},
@@ -88,12 +90,11 @@ const Q={ // NPC questions, kept here so review can reuse them
   {who:'…',w:'믿다',ask:'핀은 그 말을 ___ 수 없었어요.',opts:[['믿을',1],['밀',0,'밀다는 손으로 미는 거예요. 진짜라고 생각해요 → "믿을 수 없었어요".'],['입을',0,'입다는 옷을 입는 거예요. 진짜라고 생각 못 해요 → "믿을 수 없었어요".']]},
  ],
  zelinda:[
-  {who:'…',w:'의무',ask:'꼭 해야 하는 일. 그건 ___예요.',opts:[['의무',1],['의견',0,'의견은 내 생각이에요. 꼭 해야 하는 일은 "의무".'],['취미',0,'취미는 좋아서 하는 일이에요. 꼭 해야 하면 "의무".']]},
-  {w:'의무',ask:'후작은 칭호가 아니라 ___예요.',opts:[['의무',1],['의미',0,'소리가 비슷해요! 의미는 뜻이에요. 해야 하는 일 → "의무".']]},
+  {w:'의무',ask:'곤디아 사람들을 지키는 건 제 ___예요.',opts:[['의무',1],['의미',0,'소리가 비슷해요! 의미는 뜻이에요. 꼭 해야 하는 일 → "의무".'],['취미',0,'취미는 좋아서 하는 일이에요. 꼭 해야 하면 "의무".']]},
  ],
  everett:[
-  {who:'…',w:'분노',ask:'아주 크게 화가 난 마음. 그건 ___예요.',opts:[['분노',1],['불안',0,'불안은 걱정되는 마음이에요. 아주 큰 화는 "분노".'],['슬픔',0,'슬픔도 있어요. 그런데 아주 크게 화난 마음은 "분노".']]},
-  {who:'…',w:'복수',ask:'나쁜 일을 한 사람한테 똑같이 갚아요. 그건 ___예요.',opts:[['복수',1],['회복',0,'회복은 다시 건강해지는 거예요. 復은 같아요! 갚는 건 "복수".'],['보수',0,'소리가 비슷해요! 보수는 일하고 받는 돈이에요. 갚는 건 "복수".']]},
+  {who:'…',w:'분노',ask:'아주 크게 화가 난 마음. 그건 ___예요.',opts:[['분노',1],['후회',0,'후회는 지난 일이 아쉬운 마음이에요. 아주 큰 화는 "분노".'],['기대',0,'기대는 좋은 일을 기다리는 마음이에요. 아주 큰 화는 "분노".']]},
+  {who:'…',w:'복수',ask:'나쁜 일을 한 사람한테 똑같이 갚아요. 그건 ___예요.',opts:[['복수',1],['복사',0,'복사는 종이를 똑같이 만드는 거예요. 나쁜 일을 똑같이 갚는 건 "복수".'],['보수',0,'소리가 비슷해요! 보수는 일하고 받는 돈이에요. 갚는 건 "복수".']]},
  ],
  finnLink:[
   {who:'…',w:'복수',ask:'핀은 부모님 때문에 ___하고 싶어요.',opts:[['복수',1],['반납',0,'반납은 빌린 걸 돌려줄 때예요. 똑같이 갚아 주는 건 "복수".']]},
@@ -101,23 +102,21 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  dave1:[
   {who:'…',w:'중력',ask:'물건을 아래로 당기는 힘은 ___이에요.',opts:[['중력',1],['노력',0,'力은 같아요! 노력은 열심히 하는 거예요. 당기는 힘은 "중력".'],['전력',0,'전력은 전기의 힘이에요. 아래로 당기는 힘은 "중력".']]},
-  {who:'…',w:'중력',ask:'달은 ___이 약해서 몸이 가벼워요.',opts:[['중력',1],['무게',0,'무게는 물건이 무거운 정도예요. 달이 당기는 힘 → "중력".']]},
  ],
  bensath:[
-  {who:'…',w:'폭풍',ask:'아주 센 바람과 비. 그건 ___이에요.',opts:[['폭풍',1],['폭발',0,'폭발은 "쾅" 터지는 거예요. 센 바람은 "폭풍".'],['파도',0,'파도는 바다의 물결이에요. 센 바람은 "폭풍".']]},
-  {who:'…',w:'번개',ask:'번쩍! 폭풍 때 하늘에서 치는 빛은 ___예요.',opts:[['번개',1],['천둥',0,'천둥은 "우르릉" 소리예요. 번쩍 빛은 "번개".'],['별',0,'별은 조용히 빛나요. 번쩍 빛은 "번개".']]},
+  {who:'…',w:'폭풍',ask:'아주 센 바람과 비. 그건 ___이에요.',opts:[['폭풍',1],['폭발',0,'폭발은 "쾅" 터지는 거예요. 센 바람은 "폭풍".'],['지진',0,'지진은 땅이 흔들리는 거예요. 센 바람과 비는 "폭풍".']]},
+  {w:'번개',ask:'저기 봐요! 번쩍! 또 ___ 쳐요.',opts:[['번개',1],['천둥',0,'천둥은 "우르릉" 소리예요. 눈으로 보는 번쩍 빛은 "번개".'],['별',0,'별은 조용히 빛나요. 번쩍 치는 빛은 "번개".']]},
  ],
  dave2:[
   {who:'…',w:'갇히다',ask:'강하선이 없어서 못 나가요. 우리는 ___.',opts:[['갇혔어요',1],['닫혔어요',0,'닫히다는 문이 주어예요. 사람이 못 나가면 "갇혔어요".'],['가졌어요',0,'가지다는 물건이 내 거예요. 못 나가면 "갇혔어요".']]},
-  {who:'…',w:'배신자',ask:'친구를 배신한 사람은 ___예요.',opts:[['배신자',1],['목격자',0,'목격자는 일을 직접 본 사람이에요. 배신한 사람은 "배신자".'],['경호원',0,'경호원은 사람을 지켜요. 배신한 사람은 "배신자".']]},
+  {who:'…',w:'배신자',ask:'친구를 버리고 몰래 떠난 사람. 그런 사람은 ___예요.',opts:[['배신자',1],['목격자',0,'목격자는 일을 직접 본 사람이에요. 친구를 버린 사람은 "배신자".'],['포로',0,'포로는 적한테 잡힌 사람이에요. 친구를 버리고 떠난 사람은 "배신자".']]},
  ],
  finnD:[
   {w:'충돌하다',ask:'복스록이 켈로완에 ___ 거예요.',opts:[['충돌할',1],['출발할',0,'출발은 떠나는 거예요. 아주 세게 부딪히면 "충돌할 거예요".'],['충전할',0,'충전은 배터리에 전기를 넣는 거예요. 부딪히면 "충돌할 거예요".']]},
   {who:'…',w:'탈출하다',ask:'갇힌 곳에서 빠져나가요. 그건 ___이에요.',opts:[['탈출',1],['출발',0,'出은 같아요! 그냥 떠나면 출발. 갇힌 곳에서 나가면 "탈출".'],['탈락',0,'탈락은 시합에서 떨어지는 거예요. 빠져나가면 "탈출".']]},
  ],
  pablo:[
-  {w:'목격자',ask:'일이 생길 때 직접 본 사람. 파블로는 ___예요.',opts:[['목격자',1],['범인',0,'범인은 나쁜 일을 한 사람이에요. 직접 본 사람은 "목격자".'],['기자',0,'기자는 뉴스를 쓰는 사람이에요. 직접 본 사람 → "목격자".']]},
-  {who:'…',w:'목격자',ask:'경찰이 ___를 찾아요. "누가 봤어요?"',opts:[['목격자',1],['배신자',0,'배신자는 친구를 배신한 사람이에요. 본 사람은 "목격자".']]},
+  {w:'목격자',ask:'일이 생길 때 직접 본 사람. 파블로는 ___예요.',opts:[['목격자',1],['피해자',0,'피해자는 나쁜 일을 당한 사람이에요. 직접 본 사람은 "목격자".'],['기자',0,'기자는 뉴스를 쓰는 사람이에요. 직접 본 사람 → "목격자".']]},
  ],
  ellie:[
   {w:'잊다',ask:'기보이가 제 기억을 지웠어요. 그래서 그날 밤을 다 ___.',opts:[['잊었어요',1],['잃었어요',0,'잃다는 물건이 없어지는 거예요. 기억이 없어지면 "잊었어요".'],['읽었어요',0,'소리가 비슷해요! 읽다는 책을 읽는 거예요. 기억은 "잊었어요".']]},
@@ -128,12 +127,12 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'탈출하다',ask:'프리깃이 쫓아와서 ___ 수 없는 줄 알았어요.',opts:[['탈출할',1],['탈출한',0,'"수 없다" 앞에는 "-(으)ㄹ"이 와요. → 탈출할 수 없는 줄 알았어요.'],['탈출하는',0,'"수" 앞에는 "-(으)ㄹ"이 와요. → 탈출할 수 없는 줄 알았어요.']]},
  ],
  zelindaC:[
-  {w:'의무',ask:'곤디아 사람들을 지키는 건 내 ___야.',opts:[['의무',1],['복수',0,'복수는 똑같이 갚는 거예요. 지키는 책임은 "의무".']]},
+  {who:'핀',w:'의무',ask:'칭호가 아니라 ___죠.',opts:[['의무',1],['복수',0,'복수는 똑같이 갚는 거예요. 꼭 해야 하는 일은 "의무".'],['의미',0,'소리가 비슷해요! 의미는 뜻이에요. 꼭 해야 하는 일은 "의무".']]},
  ],
  old:[ // earlier chapters' words, no badges (the doctor's review)
   {ask:'토셰는 처음부터 우리를 ___. 거짓말만 했어요.',opts:[['배신했어요',1],['배웠어요',0,'배우다는 공부하는 거예요. 친구를 속였어요 → "배신했어요".']]},
   {ask:'엘리가 너브잼을 ___. 몸을 못 움직였어요.',opts:[['맞았어요',1],['받았어요',0,'선물은 받아요. 공격이나 주사는 "맞아요".']]},
-  {ask:'산소가 없어서 숨을 못 쉬어요. ___할 것 같아요.',opts:[['질식',1],['진실',0,'진실은 진짜 이야기예요. 숨을 못 쉬면 "질식".']]},
+  {ask:'카이발에는 숨 쉴 공기가 없었대요. 헬멧이 없으면 ___했겠네요.',opts:[['질식',1],['진실',0,'진실은 진짜 이야기예요. 숨을 못 쉬면 "질식".']]},
   {ask:'해적들이 숨어서 기다렸어요. ___이었어요!',opts:[['매복',1],['매일',0,'매일은 날마다예요. 숨어서 기다리면 "매복".']]},
   {ask:'사람을 죽인 나쁜 사람을 ___이라고 해요.',opts:[['범인',1],['주인',0,'주인은 물건이나 집을 가진 사람이에요. 나쁜 일을 한 사람은 "범인".']]},
   {ask:'오틸리아는 조사이어스하고 ___. 아이가 둘이에요.',opts:[['결혼했어요',1],['교환했어요',0,'교환은 물건을 바꾸는 거예요. 부부가 됐어요 → "결혼했어요".']]},
@@ -154,9 +153,14 @@ const Q={ // NPC questions, kept here so review can reuse them
    Boksrock (he says "It doesn't matter"), so only Finn speaks of the collision. Everett's children were born after the Diligent left
    (Everett is only engaged in c016), so they meet Finn here for the first time; Laurella met him as a child (c016).
    Gyvoy: Jazon's boat had a lot of ropes; the haggling was fun. The Daves: want to ride the black-sailed boat again; Dolod's lightning
-   was pretty; hungry, looking for the food store. Ellie: Dejean jokes even now. Dejean: a dry joke that they won't hit the Gate.
+   was pretty; hungry, looking for the food store; stranded, a flash that isn't the drop ship coming back. Ellie: Dejean jokes even now.
+   Dejean: a dry joke that they won't hit the Gate. Aljan (Terence's son, a doctor, came on the Polkadav): helps out in the clinic (the
+   book only says the Diligent's medical staff kept the rekaul, c033). Otylia on the deck: her head felt strange at the jump (c035: Finn's
+   "static spark", startled cries across the command center); she believed his promise to come back (c032, "Then he will").
    Timing: ellie/zelinda (truth or zel → jump), gyvoy/bensath (→ launch), bensathD/gyvoyD (→ linked), dave2/finnD (stranded/woke → Dolod
-   is left), daveS (before launch and after woke), the 관측 갑판 people (after jump); `when` pins lines to the reveal or the escape. */
+   is left), daveS (before launch and after woke), the 관측 갑판 people (after jump); `when` pins lines to the reveal or the escape.
+   After the jump Otylia stands on the deck (otyliaC; the quarters' otylia hides), and once everyone has left the base (home) dave1,
+   dave2 and finnD hide, so the end round never has anyone speak from a place they've left. */
 const REVIEW=[ // people use a learned word again, in their own voice (in-character review)
  /* 오틸리아 (주인 숙소, after she tells Finn → the end) */
  {w:'돌아가시다',by:'otylia',ask:'엄마, 아빠가 ___. 미사일이 떨어졌을 때 저도 거기 있었어요.',opts:[['돌아가셨어요',1],['돌아갔어요',0,'돌아가다는 원래 곳으로 가는 거예요. 부모님이 죽으면 높임말 "돌아가셨어요".'],['다녀가셨어요',0,'다녀가다는 잠깐 왔다 가는 거예요. 부모님이 죽으면 "돌아가셨어요".']]},
@@ -169,11 +173,11 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  {w:'세월',by:'otylia',ask:'___이 참 빨라요. 핀만 그대로예요.',opts:[['세월',1],['세상',0,'세상은 사람들이 사는 곳이에요. 흘러간 긴 시간은 "세월".'],['세금',0,'세금은 나라에 내는 돈이에요. 흘러간 시간은 "세월".']]},
  {w:'결혼하다',by:'otylia',pre:['로렐라하고 두샨은 제 아이들이에요.'],ask:'저는 조사이어스하고 ___. 이제 상관없어요.',opts:[['결혼했어요',1],['결정했어요',0,'결정은 고르는 거예요. 부부가 됐으면 "결혼했어요".'],['교환했어요',0,'교환은 물건을 바꾸는 거예요. 부부가 됐으면 "결혼했어요".']]},
  {w:'점령하다',by:'otylia',ask:'제국군이 곤디아를 ___. 하프니르까지요.',opts:[['점령했어요',1],['점검했어요',0,'점검은 기계를 확인하는 거예요. 군대가 땅을 차지하면 "점령했어요".'],['정리했어요',0,'정리는 방을 깨끗하게 하는 거예요. 군대가 땅을 차지하면 "점령했어요".']]},
- /* 레나타 (Gath nurse, beside Otylia all chapter) */
+ /* 레나타 (Gath nurse aboard the Diligent the whole voyage, c022; beside Otylia in the owner's quarters) */
  {w:'믿다',by:'gath',ask:'레나타는 성녀님을 ___. 핀 씨도요.',opts:[['믿어요',1],['밀어요',0,'밀다는 손으로 미는 거예요. 마음으로 따르면 "믿어요".'],['묻어요',0,'묻다는 땅에 넣는 거예요. 마음으로 따르면 "믿어요".']]},
  {w:'축복',by:'gath',ask:'성녀님은 늘 우리한테 ___ 빌어 주셨어요.',opts:[['축복을',1],['축하를',0,'축하는 좋은 일이 생긴 뒤에 해요. 좋은 일이 있기를 빌면 "축복".'],['저주를',0,'저주는 나쁜 일을 비는 거예요! 성녀님은 "축복"을 빌어요.']]},
  {w:'기절하다',by:'gath',ask:'성녀님이 너무 마르셨어요. ___하실까 봐 걱정돼요.',opts:[['기절',1],['기억',0,'기억은 잊지 않는 거예요. 정신을 잃고 쓰러지면 "기절".'],['기대',0,'기대는 좋은 일을 기다리는 거예요. 쓰러지면 "기절".']]},
- {w:'변하다',by:'gath',ask:'성녀님 머리가 하얘요. 많이 ___.',opts:[['변하셨어요',1],['편하셨어요',0,'편하다는 몸이 쉬운 거예요. 전과 달라지면 "변하셨어요".'],['반하셨어요',0,'반하다는 누구를 좋아하게 되는 거예요. 전과 달라지면 "변하셨어요".']]},
+ {w:'변하다',by:'gath',ask:'레나타한테는 몇 달밖에 안 지났는데… 성녀님은 많이 ___.',opts:[['변하셨어요',1],['편하셨어요',0,'편하다는 몸이 쉬운 거예요. 전과 달라지면 "변하셨어요".'],['반하셨어요',0,'반하다는 누구를 좋아하게 되는 거예요. 전과 달라지면 "변하셨어요".']]},
  /* 로렐라 (Otylia's daughter, all chapter) */
  {w:'돌아가시다',by:'laurella',ask:'할머니가 ___ 뒤로 엄마가 잘 안 웃어요.',opts:[['돌아가신',1],['돌아간',0,'돌아가다는 원래 곳으로 가는 거예요. 할머니가 죽으면 높임말 "돌아가신".'],['다녀가신',0,'다녀가다는 잠깐 왔다 가는 거예요. 할머니가 죽으면 "돌아가신".']]},
  {w:'믿다',by:'laurella',ask:'엄마는 삼촌이 꼭 온다고 ___.',opts:[['믿었어요',1],['밀었어요',0,'밀다는 손으로 미는 거예요. 진짜라고 생각하면 "믿었어요".'],['물었어요',0,'묻다는 질문하는 거예요. 꼭 온다고 생각했으면 "믿었어요".']]},
@@ -199,7 +203,7 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  {w:'조종당하다',by:'everett',when:()=>!!f().truth,ask:'핀이 ___ 건 알아요. 이제 기보이한테 화가 나요.',opts:[['조종당한',1],['조종한',0,'"조종한"은 핀이 남을 움직인 거예요. 남이 핀을 움직였으면 "조종당한".'],['조심한',0,'조심하다는 주의하는 거예요. 남이 마음을 움직였으면 "조종당한".']]},
  {w:'죽이다',by:'everett',ask:'그 미사일이 버라이카를 ___.',opts:[['죽였어요',1],['죽었어요',0,'죽다는 스스로 죽는 거예요. 미사일이 그렇게 했으면 "죽였어요".'],['살렸어요',0,'살리다는 죽지 않게 하는 거예요. 반대예요! "죽였어요".']]},
  {w:'거짓말하다',by:'everett',when:()=>!!f().truth,ask:'기보이는 처음부터 우리한테 ___.',opts:[['거짓말했어요',1],['대답했어요',0,'대답은 질문에 말하는 거예요. 사실이 아닌 말을 하면 "거짓말했어요".'],['감사했어요',0,'감사는 고마운 마음이에요. 사실이 아닌 말은 "거짓말했어요".']]},
- {w:'조카',by:'everett',ask:'제 아이들도 핀의 ___예요. 핀을 처음 봐요.',opts:[['조카',1],['이모',0,'이모는 엄마의 자매예요. 형제의 아이는 "조카".'],['손자',0,'손자는 아이의 아이예요. 형제의 아이는 "조카".']]},
+ {w:'조카',by:'everett',ask:'제 아이들은 핀의 ___예요. 애들은 이번에 삼촌을 처음 만났어요.',opts:[['조카',1],['이모',0,'이모는 엄마의 자매예요. 형제의 아이는 "조카".'],['손자',0,'손자는 아이의 아이예요. 형제의 아이는 "조카".']]},
  {w:'약물',by:'everett',ask:'화가 나서 ___ 없이는 못 자요.',opts:[['약물',1],['양말',0,'양말은 발에 신어요. 몸이나 마음을 바꾸는 약은 "약물".'],['선물',0,'선물은 주는 거예요. 잘 때 먹는 약은 "약물".']]},
  {w:'장례식',by:'everett',ask:'버라이카 ___도 못 했어요.',opts:[['장례식',1],['결혼식',0,'결혼식은 결혼할 때 해요. 죽은 사람한테 마지막 인사는 "장례식".'],['입학식',0,'입학식은 학교에 들어갈 때 해요. 마지막 인사는 "장례식".']]},
  {w:'체포하다',by:'everett',ask:'점령군이 수천 명을 ___.',opts:[['체포했어요',1],['체험했어요',0,'체험은 직접 해 보는 거예요. 잡아서 데려가면 "체포했어요".'],['초대했어요',0,'초대는 손님을 부르는 거예요. 잡아서 데려가면 "체포했어요".']]},
@@ -233,7 +237,7 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  {w:'빛나다',by:'dave1',when:()=>!!f().linked&&!f().woke,ask:'전구 ___. 핀 아직 일함.',opts:[['빛남',1],['빚남',0,'빚은 갚는 돈. 빛이 나면 "빛남".'],['빠름',0,'빠르다는 속도. 빛이 나면 "빛남".']]},
  {w:'잔해',by:'dave1',ask:'데이브, 옛날엔 ___ 지켰음.',opts:[['잔해',1],['잔디',0,'잔디는 짧은 풀. 부서진 배 조각은 "잔해".'],['잔치',0,'잔치는 파티. 부서진 배 조각은 "잔해".']]},
  {w:'계단',by:'dave1',ask:'카이발 ___ 길었음. 1킬로미터.',opts:[['계단',1],['계란',0,'계란은 먹는 것. 걸어서 오르는 층층이 길은 "계단".'],['계산',0,'계산은 숫자. 걸어서 오르는 길은 "계단".']]},
- {w:'구름',by:'dave1',ask:'여기 ___ 보라색. 처음 봄.',opts:[['구름',1],['그림',0,'그림은 그리는 것. 하늘에 뜬 건 "구름".'],['구멍',0,'구멍은 뚫린 곳. 하늘에 뜬 건 "구름".']]},
+ {w:'구름',by:'dave1',ask:'여기 ___ 붉음. 처음 봄.',opts:[['구름',1],['그림',0,'그림은 그리는 것. 하늘에 뜬 건 "구름".'],['구멍',0,'구멍은 뚫린 곳. 하늘에 뜬 건 "구름".']]},
  {w:'해적',by:'dave1',ask:'킹스네스트 ___, 거미 탔음.',opts:[['해적',1],['해외',0,'해외는 다른 나라. 배 공격하는 도둑은 "해적".'],['선장',0,'선장은 배의 대장. 배 공격하는 도둑은 "해적".']]},
  /* 벤사스 하사 (폭풍 전망대, until Finn links) */
  {w:'폭풍',by:'bensathD',ask:'___ 속에서 강하선이 많이 흔들렸죠?',opts:[['폭풍',1],['폭탄',0,'폭탄은 터지는 무기예요. 아주 센 바람은 "폭풍".'],['폭포',0,'폭포는 떨어지는 물이에요. 아주 센 바람은 "폭풍".']]},
@@ -247,7 +251,7 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  /* 데이브 (격납고, stranded → Dolod is left) */
  {w:'갇히다',by:'dave2',when:()=>!f().woke,ask:'격납고 문 열림. 그래도 ___.',opts:[['갇혔음',1],['닫혔음',0,'문은 열림. 사람이 못 나가면 "갇혔음".'],['같았음',0,'같다는 똑같은 것. 못 나가면 "갇혔음".']]},
  {w:'배신자',by:'dave2',ask:'벤사스, 같이 싸웠음. 그런데 ___였음.',opts:[['배신자',1],['목격자',0,'목격자는 본 사람. 우리 버린 사람은 "배신자".'],['의사',0,'의사는 고치는 사람. 우리 버린 사람은 "배신자".']]},
- {w:'번개',by:'dave2',ask:'___ 쳐도 강하선 안 옴.',opts:[['번개',1],['베개',0,'베개는 자는 것. 하늘의 번쩍 빛은 "번개".']]},
+ {w:'번개',by:'dave2',when:()=>!f().woke,ask:'번쩍. 강하선? 아님. 그냥 ___.',opts:[['번개',1],['베개',0,'베개는 자는 것. 하늘의 번쩍 빛은 "번개".']]},
  {w:'거미',by:'dave2',ask:'여기 ___줄 없음. 좋음.',opts:[['거미',1],['개미',0,'개미는 줄 안 만듦. 줄 치는 건 "거미".'],['거위',0,'거위는 꽥꽥 새. 줄 치는 건 "거미".']]},
  {w:'굴',by:'dave2',ask:'잔해에는 ___ 많았음. 여기는 복도.',opts:[['굴',1],['꿀',0,'꿀은 달콤한 것. 길고 좁은 구멍 길은 "굴".'],['귤',0,'귤은 과일. 구멍 길은 "굴".']]},
  {w:'경호원',by:'dave2',ask:'데이브, 핀 ___. 계속.',opts:[['경호원',1],['경찰관',0,'경찰관은 범인 잡는 사람. 옆에서 지키는 건 "경호원".']]},
@@ -268,7 +272,7 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  {w:'배신자',by:'pablo',when:()=>!!f().truth,ask:'기보이 씨는 늘 웃었어요. 그런데 ___였어요.',opts:[['배신자',1],['목격자',0,'목격자는 파블로예요! 우리를 배신한 사람은 "배신자".'],['의사',0,'의사는 아픈 사람을 고쳐요. 배신한 사람은 "배신자".']]},
  {w:'증거',by:'pablo',when:()=>!!f().truth,ask:'파블로 말하고 엘리 씨 기억. 그게 ___예요.',opts:[['증거',1],['의자',0,'의자는 앉는 거예요. 누가 했는지 보여 주는 건 "증거".']]},
  {w:'고장 나다',by:'pablo',ask:'필터가 또 ___. 파블로가 고칠 거예요.',opts:[['고장 났어요',1],['고생했어요',0,'고생은 힘들게 일하는 거예요. 기계가 안 움직이면 "고장 났어요".'],['고향 갔어요',0,'고향은 태어난 곳이에요. 기계가 안 움직이면 "고장 났어요".']]},
- {w:'산소',by:'pablo',ask:'___가 없으면 숨을 못 쉬어요. 그래서 파블로는 성실호를 고쳐요.',opts:[['산소',1],['사과',0,'사과는 먹는 과일이에요. 숨 쉴 때 필요한 건 "산소".'],['소금',0,'소금은 짠 거예요. 숨 쉴 때 필요한 건 "산소".']]},
+ {w:'산소',by:'pablo',ask:'___가 없으면 숨을 못 쉬어요. 그래서 파블로는 성실호를 고쳐요.',opts:[['산소',1],['사과',0,'사과는 먹는 과일이에요. 숨 쉴 때 필요한 건 "산소".'],['소리',0,'소리는 귀로 듣는 거예요. 숨 쉴 때 필요한 건 "산소".']]},
  {w:'약속하다',by:'pablo',ask:'곤디아에서 성 오틸리아님이 파블로한테 ___. 이제 안전하다고요.',opts:[['약속하셨어요',1],['약혼하셨어요',0,'약혼은 결혼하기로 하는 거예요! 꼭 그렇게 하겠다고 말하면 "약속하셨어요".'],['예약하셨어요',0,'예약은 자리를 미리 잡는 거예요. 꼭 그렇게 하겠다고 말하면 "약속하셨어요".']]},
  {w:'설치하다',by:'pablo',ask:'파블로가 새 필터를 ___. 이제 물이 잘 흘러요.',opts:[['설치했어요',1],['설거지했어요',0,'설거지는 그릇을 씻는 거예요. 기계를 제자리에 달면 "설치했어요".'],['설명했어요',0,'설명은 말로 알려 주는 거예요. 기계를 달면 "설치했어요".']]},
  /* 엘리 (침실, after she remembers → the jump; red alert) */
@@ -306,6 +310,9 @@ const REVIEW=[ // people use a learned word again, in their own voice (in-charac
  {w:'도착하다',by:'dejeanC',ask:'관문에 ___. 그런데 쉴 시간은 없어요.',opts:[['도착했어요',1],['출발했어요',0,'출발은 떠나는 거예요. 여기 왔으면 "도착했어요".'],['도망갔어요',0,'도망은 피해서 가는 거예요. 여기 왔으면 "도착했어요".']]},
  {w:'가속',by:'dejeanC',ask:'이렇게 빠른 ___은 처음 해 봐요.',opts:[['가속',1],['가족',0,'가족은 엄마, 아빠예요. 점점 빨라지는 건 "가속".'],['가방',0,'가방은 물건을 넣고 다녀요. 점점 빨라지는 건 "가속".']]},
  {w:'감시하다',by:'dejeanC',ask:'센서로 뒤를 계속 ___ 있어요.',opts:[['감시하고',1],['감사하고',0,'감사는 고마운 마음이에요. 몰래 계속 지켜보면 "감시하고".'],['감상하고',0,'감상은 음악이나 그림을 즐기는 거예요. 계속 지켜보면 "감시하고".']]},
+ /* 오틸리아 (관측 갑판, after the jump; she leaves the owner's quarters then) */
+ {w:'돌아가시다',by:'otyliaC',ask:'엄마, 아빠가 미사일 공격으로 ___ 곳을 이제 떠나요.',opts:[['돌아가신',1],['돌아간',0,'돌아가다는 원래 곳으로 가는 거예요. 부모님이 죽으면 높임말 "돌아가신".'],['다녀가신',0,'다녀가다는 잠깐 왔다 가는 거예요. 부모님이 죽으면 "돌아가신".']]},
+ {w:'믿다',by:'otyliaC',ask:'핀이 꼭 돌아온다고 했을 때, 저는 그 말을 ___.',opts:[['믿었어요',1],['밀었어요',0,'밀다는 손으로 미는 거예요. 진짜라고 생각하면 "믿었어요".'],['입었어요',0,'입다는 옷을 입는 거예요. 진짜라고 생각하면 "믿었어요".']]},
  /* 젤린다 (관측 갑판, after the last talk) */
  {w:'의무',by:'zelindaC',ask:'관문 너머에서도 제 ___는 안 끝나요.',opts:[['의무',1],['의미',0,'의미는 뜻이에요. 꼭 해야 하는 일은 "의무".'],['취미',0,'취미는 좋아서 하는 일이에요. 꼭 해야 하는 일은 "의무".']]},
  {w:'변하다',by:'zelindaC',ask:'곤디아는 많이 ___. 그래도 제 집이에요.',opts:[['변했어요',1],['편했어요',0,'편하다는 몸이 쉬운 거예요. 전과 달라지면 "변했어요".'],['반했어요',0,'반하다는 누구를 좋아하게 되는 거예요. 전과 달라지면 "변했어요".']]},
@@ -341,7 +348,7 @@ const anchorShip=()=>spr('anchor',64,48,d=>{ // the 120 m tri-delta anchor ship,
  for(let y=2;y<=40;y++){const w=Math.round((y-2)/38*18);d(33,y,w,1,'#A9B1B9')}
  d(32,8,1,32,'#7E878F');d(23,30,19,1,'#8E979F');d(18,37,29,1,'#8E979F');d(30,11,5,3,'#47D6C2');d(31,11,2,1,'#BFF5EA');
  d(13,17,1,2,'#47D6C2');d(51,17,1,2,'#47D6C2');d(25,41,4,2,'#FFB86A');d(35,41,4,2,'#FFB86A');d(8,46,4,1,'#FFB86A');d(52,46,4,1,'#FFB86A')});
-/* Dolod's storm: banded purple-orange layers that drift and braid, with lightning */
+/* Dolod's storm: banded rust-to-salmon layers that drift and braid, with lightning (Dolod is a salmon-pink point from Gondiar, c029) */
 const STORM=['#2E2228','#43303A','#5A3A40','#7A4A4E','#9A5E5A','#B87468','#D08A78','#B87468','#9A5E5A','#7A4A4E','#5A3A40'];
 function storm(X,Y,x,y,t,x0,y0,w,h){
  for(let i=x0;i<x0+w;i+=2)for(let j=y0;j<y0+h;j+=2){const wx=x*16+i,wy=y*16+j;
@@ -552,7 +559,8 @@ const ZONES={
    's':'빨간 소파예요. 아주 푹신해요.',
    'B':'큰 침대예요. 보라색 이불이 있어요.',
    'k':'진료실 침대예요. 작은 초록 불이 깜빡여요.'},
-  npcs:['otylia','gath','laurella','zelinda','everett','finn','ellie','pablo','holo1','aljan','dejean','gyvoy','bensath','daveS']},
+  greet:()=>f().ride==='anchor'?'rideA':null,  // the anchor-ship flight back (the rides, below NPC)
+  npcs:['otylia','gath','laurella','zelinda','everett','finn','ellie','pablo','holo1','aljan','dejean','gyvoy','bensath','daveS','rideA']},
  dolod:{name:'돌로드 · 엔진 기지',reg:'DOLOD · ARCHIMEDES ENGINE',slow:1.6,
   legend:{'S':{tile:'storm'},'d':{tile:'stormDoor'},'#':{tile:'fossil'},'w':{tile:'stormWin'},'.':{tile:'sfloor',walk:1},'P':{tile:'pad',walk:1},
    'X':{tile:'craft'},'e':{tile:'petal'},'U':{tile:'bulb'},'C':{tile:'cone'},'A':{tile:'tri'},'R':{tile:'ramp',walk:1}},
@@ -592,7 +600,8 @@ const ZONES={
    'U':()=>f().woke?'전구가 조용해요. 핀의 명령이 끝났어요.':f().linked?'전구가 부드러운 청록색으로 빛나요.':'투명한 전구예요. 원뿔 꼭대기에 있어요.',
    'C':'하얀 원뿔이에요. 아주 매끈해요.',
    'A':()=>f().woke?'앵커선이에요. 노란 불이 깜빡여요.':'앵커선이에요. 세모 날개가 세 개예요.'},
-  npcs:['dave1','dave2','bensathD','finnD','gyvoyD','holo2']},
+  greet:()=>f().ride==='drop'?'rideD':null,  // the drop-ship flight down
+  npcs:['dave1','dave2','bensathD','finnD','gyvoyD','holo2','rideD']},
  capo:{name:'카포 프로이스 관문',reg:'CAPO FROIS INGRESS GATE',gate:{cx:12*16,cy:3*16+20,R:44},
   legend:{'#':{tile:'swall'},'G':{tile:'gateView'},'l':{tile:'rail'},'.':{tile:'sdeck',walk:1},'s':{tile:'sofa'},'c':{tile:'alertCon'},'O':{tile:'airlock',walk:1}},
   map:[
@@ -616,18 +625,19 @@ const ZONES={
    'l':['유리 난간이에요. 차갑고 깨끗해요.','난간에 손자국이 조금 있어요.'],
    's':'빨간 소파예요. 여기서 관문이 잘 보여요.',
    'c':'콘솔이 조용해요. 파란 숫자만 깜빡여요.'},
-  npcs:['zelindaC','finnC','ellieC','dejeanC','holo3']},
+  npcs:['zelindaC','otyliaC','finnC','ellieC','dejeanC','holo3']},
 };
 
 /* ---------- scenes ---------- */
 const LINK=()=>[
  {say:'접속할게요. 엔진이 저한테 말을 걸어요.'},
  {who:'…',say:'핀이 투명한 전구에 손을 대요. 청록색 빛이 켜져요.'},
- {say:'원래 계획은 돌로드를 별에 떨어뜨리는 거였어요.'},
+ {say:'원래 계획은 돌로드를 멀리 보내거나 별에 떨어뜨리는 거였어요.'},
  {who:'기보이',say:'핀 엔진이에요. 핀 마음대로 해요.'},
  {say:'아니… 여제가 곤디아를 점령했어요. 우리 부모님도…'},
  Q.finnLink[1],
- {say:'{복스록|복스록}을 {켈로완|켈로완}으로 보낼 거예요.'},
+ {say:'작은 행성 {복스록|복스록}을 움직일 거예요.'},
+ {say:'여제가 사는 행성, {켈로완|켈로완}으로요.'},
  {say:'그들에게 {대가를 치르게|대가를 치르다} 할 거예요.'},
  Q.finnLink[0],
  {who:'…',say:'우르릉! 기지가 흔들려요. {앵커선|앵커선}들이 하늘로 날아가요.'},
@@ -646,12 +656,13 @@ const JUMP=()=>[
  {who:'성실호',say:'…카포 프로이스 관문 도착.'},
  {say:'살았어요. 관측 갑판에 가서 봐요.'}];
 
+const OTYLIA={hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'};
 const NPC={
  /* ===== 성실호 · act 1 ===== */
- otylia:{name:'오틸리아',zone:'ship',x:3,y:3,dir:'down',look:{hair:'#C8BFA8',skin:'#F0C9A4',shirt:'#5A4A6A',pants:'#3D3550',style:'long',lashes:1,lips:'#B06A70'},badge:['돌아가시다','믿다'],
+ otylia:{name:'오틸리아',zone:'ship',x:3,y:3,dir:'down',look:OTYLIA,badge:['돌아가시다','믿다'],hide:()=>!!f().jump,
   after:'엄마는 끝까지 우리를 지키셨어요. 저는 그걸 믿어요.',
   talk:()=>[
-   {say:'와 줘서 고마워요. 저는 오틸리아예요. 핀의 쌍둥이예요.'},
+   {say:'아, 성실호 승무원이에요? 저는 오틸리아, 핀의 쌍둥이예요.'},
    {say:'핀, 넌 아직 젊구나. 나는 이렇게 늙었는데.'},
    {say:'핀… 할 말이 있어. 내 기억을 보여 줄게.'},
    {who:'기억',say:'하프니르. {고스트|고스트}들이 오틸리아를 잡으러 와요.'},
@@ -662,36 +673,36 @@ const NPC={
    {who:'핀',say:'아니야… 그럴 리가 없어.'},
    Q.otylia[1],
    {who:'핀',say:'다 살아 계신 줄 알았어. 집에 가면 만날 줄 알았어.'},
-   {say:'젤린다 언니하고 에버렛 오빠도 여기 있어요. 같이 얘기해요.',award:['돌아가시다','믿다'],set:()=>{f().met=1}}]},
+   {say:'핀, 젤린다 언니하고 에버렛 오빠도 여기 있어. 같이 얘기하자.',award:['돌아가시다','믿다'],set:()=>{f().met=1}}]},
  gath:{name:'레나타',zone:'ship',x:2,y:3,dir:'right',look:{art:gath('#E6E1D4','#C9C2B0','#D2533F','#7A4A32')},
-  talk:()=>[{say:'{성녀|성녀} 오틸리아님이 오셨어요!'},{say:'레나타는 간호사예요. 오틸리아님이 너무 마르셨어요.'},{say:'오틸리아님은 곤디아에서 개스를 지켜 주셨어요. 이제 우리가 지켜요.'}]},
+  talk:()=>[{say:'{성녀|성녀} 오틸리아님이 오셨어요!'},{say:'레나타는 간호사예요. 오틸리아님이 너무 마르셨어요.'},{say:'오틸리아님은 곤디아에서 우리 개스를 지켜 주셨어요. 이제 우리가 지켜요.'}]},
  laurella:{name:'로렐라',zone:'ship',x:10,y:2,dir:'down',look:{hair:'#4A3426',skin:'#EBC09C',shirt:'#5A7A9A',pants:'#3A3A48',style:'long',lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'저는 오틸리아 딸 로렐라예요.'},{say:'할머니, 할아버지 장례식도 못 했어요.'},{say:'곤디아는 점령당했어요. 이제 집에 못 가요.'}]},
  zelinda:{name:'젤린다',zone:'ship',x:8,y:3,dir:'down',look:ZELINDA,badge:['의무'],hide:()=>!!f().jump,
   status:()=>!f().met?null:undefined,
   script:()=>!f().met?[{say:'…'},{say:'오틸리아가 먼저 핀한테 말할 거예요.'}]:null,
-  after:'후작은 칭호가 아니에요. 의무예요.',
+  after:'엄마는 언제나 곤디아 사람들을 지키셨어요. 이제 제 차례예요.',
   talk:()=>[
-   {say:'저는 젤린다예요. 이제 제가 {후작|후작}이에요.'},
+   {say:'아, 성실호 승무원이에요? 저는 젤린다, 핀의 누나예요.'},
+   {say:'이제 제가 {후작|후작}이에요.'},
    {who:'에버렛',say:'후작? 그 {칭호|칭호}가 무슨 소용이야!'},
-   {say:'이건 칭호가 아니라 의무예요.'},
+   {say:'후작은 칭호만이 아니에요. 곤디아 사람들을 꼭 지켜야 돼요.'},
    Q.zelinda[0],
-   {say:'곤디아 사람들을 지키는 게 제 일이에요.'},
-   Q.zelinda[1],
-   {who:'핀',say:'우리한테는 돌로드를 멈출 방법이 있어요.'},
-   {say:'…어떻게요? 에버렛하고도 얘기해 봐요.',award:['의무'],set:()=>{f().zel=1}}]},
+   {who:'핀',say:'누나, 우리는 돌로드가 별 궤도에 못 들어가게 할 수 있어요.'},
+   {say:'…정말? 어떻게? 에버렛 생각도 들어 보자.',award:['의무'],set:()=>{f().zel=1}}]},
  everett:{name:'에버렛',zone:'ship',x:9,y:5,dir:'left',look:{hair:'#6A4A2E',beard:'#5A3E28',skin:'#E3B48C',shirt:'#3A3A44',pants:'#2A2A30'},badge:['복수','분노'],
   status:()=>!f().zel?null:undefined,
   script:()=>!f().zel?[{say:'…'},{say:'지금은 말하고 싶지 않아요.'}]:null,
   after:'저는 복수를 원해요. 그게 틀렸어요?',
   talk:()=>[
-   {say:'저는 에버렛이에요. 제 아내 버라이카도 그 미사일에 죽었어요.'},
+   {say:'승무원이군요. 저는 에버렛, 핀의 형이에요.'},
+   {say:'제 아내 버라이카도 그 미사일에 죽었어요.'},
    {say:'아이들은 엄마를 잃었어요. 저는 화가 나서 잠을 못 자요.'},
    Q.everett[0],
    {say:'그들이 우리 가족을 죽였어요. 똑같이 갚아 줘야 돼요.'},
    Q.everett[1],
-   {who:'핀',say:'엔진으로 돌로드를 별에 떨어뜨릴 수 있어요.'},
-   {say:'하게 해!'},
+   {who:'핀',say:'엔진을 끄면 돌로드는 우리 별을 그냥 지나가요. 철 비도 없어요.'},
+   {say:'그렇게 해!'},
    {who:'핀',say:'좋아요. 돌로드로 가요. 격납고에서 출발해요.',award:['복수','분노'],set:()=>{f().plan=1}}]},
  finn:{name:'핀',zone:'ship',x:6,y:4,dir:'down',look:FINN,
   pos:()=>{const F=f();return !F.plan?[6,4]:!F.launch?[25,14]:!F.truth?[16,4]:[8,11]},
@@ -701,7 +712,7 @@ const NPC={
    if(!F.met)return [{say:'오틸리아… 얼굴이 많이 변했어요.'},{say:'삼십일 년이 지났대요. 저한테는 몇 달인데요.'}];
    if(!F.plan)return [{say:'엄마, 아빠… 아직 믿을 수 없어요.'}];
    if(!F.launch){if(!hasItem('우주복'))return [{say:'선장님한테 우주복을 받아요. 돌로드는 위험해요.'}];
-    return [{say:'준비됐어요? 돌로드 엔진 기지로 가요.'},{who:'기보이',say:'아스테리아 여신님, 지켜 주세요!'},{who:'엘리 (통신)',say:'핀, 꼭 돌아와요. 약속해요.'},{say:'강하선에 타요!',set:()=>{f().launch=1}}]}
+    return [{say:'그냥 지나가게 두면 셀레스철이 돌로드를 다시 궤도에 넣을지도 몰라요.'},{say:'그래서 돌로드를 별에 떨어뜨릴 거예요.'},{say:'준비됐어요? 돌로드 엔진 기지로 가요.'},{who:'기보이',say:'아스테리아 여신님, 지켜 주세요!'},{who:'엘리 (통신)',say:'핀, 꼭 돌아와요. 약속해요.'},{say:'강하선에 타요!',set:()=>{f().launch=1}}]}
    if(!F.truth)return [{say:'엘리가 할 말이 있대요. 그런데 얼굴이 하얘요.'}];
    return [{say:'엘리 말이 맞아요. 저는 조종당했어요.'},{say:'그래도 복스록은 제가 보냈어요. 그건 잊지 않을 거예요.'}]},
   talk:()=>[]},
@@ -716,15 +727,17 @@ const NPC={
    {say:'파블로 말을 듣고 {레콜|레콜}을 마셨어요. 그날 밤을 다시 봤어요.'},
    {who:'기억',say:'핀이 손바닥을 위로 내밀고 있어요. 기보이의 손바닥이 그 위에 있어요.'},
    {who:'기억',say:'기보이 손바닥에서 보라색 선이 빛나요.'},
-   {who:'기억',say:'제가 소리를 질렀어요. 그리고 {너브잼|너브잼}을 맞았어요.'},
+   {who:'기억',say:'기보이가 다른 팔을 저한테 돌려요.'},
+   {who:'기억',say:'저는 소리를 질러요.'},
+   {who:'기억',say:'{너브잼|너브잼}이에요! 몸이 하나도 안 움직여요.'},
    {who:'기억 속 기보이',say:'핀의 부모님 일로 화를 조금 더 키우는 중이야.'},
    {who:'기억 속 기보이',say:'너희 인간들은 몇십 년이나 원망하지. 참 쓸모 있어.'},
    {who:'기억 속 기보이',say:'(엘리의 머리를 잡고) 나쁜 기억은 아래로. 안녕~'},
    Q.ellie[0],
-   {say:'기보이는 {셀레스철|셀레스철}이에요! 진짜 기보이가 아니에요.'},
+   {say:'기보이는 인간이 아니라 {셀레스철|셀레스철}이에요! 가짜 기보이예요.'},
    Q.ellie[1],
    {who:'핀',say:'그럼 제 분노도… 그 손이 만든 거예요?'},
-   {say:'네. 핀은 기보이한테 조종당했어요.'},
+   {say:'네. 기보이 손이 그 화를 더 키웠어요.'},
    Q.ellie[2],
    {w:'조종당하다',build:['핀은','기보이한테','조종당했어요']},
    {who:'오틸리아 (통신)',say:'핀, 우리는 너를 믿어.'},
@@ -741,22 +754,25 @@ const NPC={
    {say:'그다음에 엘리 씨 비명을 들었어요.'},
    Q.pablo[0],
    {say:'엘리 씨는 아무것도 기억 못 했어요. 그래서 파블로가 말했어요.'},
-   Q.pablo[1],
    {say:'엘리 씨가 레콜을 썼어요. 지금 침실에 있어요.',award:['목격자'],set:()=>{f().witness=1}}]},
  holo1:{name:'막간',zone:'ship',x:20,y:4,dir:'down',still:1,look:{art:HOLO_TE},
   status:()=>f().i1?null:'todo',
-  script:()=>[
-   {who:'막간',say:'같은 시간, 곤디아. 테렌스가 셀레스철 배 아이아쿠스에 타요.'},
+  script:()=>f().i1?[{who:'막간',say:'프리즘이 희미하게 빛나요. 이미 본 이야기예요.'}]:[
+   {who:'막간',say:'같은 시간, 곤디아. 테렌스는 아직 산타 로사에 숨어 있어요.'},
    {who:'테렌스',say:'진짜 기보이는 수십 년 전에 죽었어요. 시체를 찾았어요.'},
    {who:'마카이오 (라이더)',say:'그럼 성실호에 있는 기보이는 누구지?'},
    {who:'테렌스',say:'모르겠어요. 하지만 좋은 사람은 아니에요.'},
-   {who:'테렌스',say:'이 정보를 올로모하고 사디아한테 보냈어요.'},
-   {who:'노이쉬 (통신)',say:'아사히이리나가 당신을 찾았어요. 아이아쿠스를 타고 빨리 떠나요!',set:()=>{f().i1=1}}],
+   {who:'테렌스',say:'이 정보를 다른 나라 {아콘|아콘} 올로모하고 사디아한테도 보냈어요.'},
+   {who:'막간',say:'그때 통신이 와요. 마카이오의 아들, 노이쉬예요.'},
+   {who:'노이쉬 (통신)',say:'와이니드 아콘이 테렌스 씨를 찾아냈어요. 빨리 떠나요!'},
+   {who:'노이쉬 (통신)',say:'아버지 배, 아이아쿠스를 타요.'},
+   {who:'막간',say:'테렌스는 아이아쿠스를 타고 곤디아를 떠나요.',set:()=>{f().i1=1}}],
   talk:()=>[]},
  aljan:{name:'알잔 선생님',zone:'ship',x:14,y:11,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#F1F1EC',pants:'#3C4A5C',coat:1},
-  script:()=>{const q=Q.old[Math.random()*Q.old.length|0];
-   const vial=hasItem('레콜 병')?[{say:'그 레콜 병, 저한테 줘요. 진료실 금고에 다시 넣을게요.',take:['레콜 병']}]:[];
-   return [...vial,{say:'저는 의사 알잔이에요. 피곤해 보여요.'},{say:'옛날 일을 기억해요? 머리 운동해요.'},{...q,old:1},{say:'잘했어요. 물 많이 마셔요.'}]},
+  script:()=>{const q=Q.old[Math.random()*Q.old.length|0],first=!(state.met||[]).includes('aljan');  // the engine marks him met after this talk opens
+   const vial=hasItem('레콜 병')?[{say:'그 레콜 병, 저한테 줘요. 진료실 금고에 다시 넣을게요.'},{who:'…',say:'레콜 병을 알잔 선생님한테 줘요.',take:['레콜 병']}]:[];
+   const hi=first?[{say:'저는 알잔, 테렌스의 아들이에요. 의사예요.'},{say:'폴카다브를 타고 같이 왔어요. 지금은 진료실 일을 도와요.'}]:[];
+   return [...vial,...hi,{say:'피곤해 보여요. 옛날 일, 기억해요? 머리 운동해요.'},{...q,old:1},{say:'잘했어요. 물 많이 마셔요.'}]},
   talk:()=>[]},
  dejean:{name:'드장 선장',zone:'ship',x:19,y:14,dir:'up',look:DEJEAN,
   pos:()=>f().woke?[5,10]:[19,14],hide:()=>!!f().jump,
@@ -777,25 +793,24 @@ const NPC={
   pos:()=>f().woke?[19,12]:[26,12],hide:()=>!!(f().launch&&!f().woke),
   talk:()=>f().woke?[{say:'탈출했음.'},{say:'배고픔.'}]:[{say:'데이브.'},{say:'돌로드. 같이 감.'}]},
  /* ===== 돌로드 엔진 기지 ===== */
- dave1:{name:'데이브',zone:'dolod',x:9,y:4,dir:'down',look:{art:DAVE1},badge:['중력'],
+ dave1:{name:'데이브',zone:'dolod',x:9,y:4,dir:'down',look:{art:DAVE1},badge:['중력'],hide:()=>!!f().home,  // home: everyone has left the base (the Daves are on 성실호 as daveS)
   after:'무거움. 그래도 괜찮음.',
   talk:()=>[
    {say:'데이브.'},
-   {say:'여기 중력 2.5배. 몸 무거움.'},
+   {say:'여기 몸 무거움. 2.5배.'},
    Q.dave1[0],
    {say:'천천히 걸어. 넘어지면 아픔.'},
-   Q.dave1[1],
    {say:'핀은 안쪽. 꽃 방.',award:['중력']}]},
- dave2:{name:'데이브',zone:'dolod',x:11,y:6,dir:'left',look:{art:DAVE2},badge:['갇히다','배신자'],
+ dave2:{name:'데이브',zone:'dolod',x:11,y:6,dir:'left',look:{art:DAVE2},badge:['갇히다','배신자'],hide:()=>!!f().home,
   status:()=>!f().linked?null:undefined,
   script:()=>!f().linked?[{say:'…'},{say:'기다림. 핀 잘하길.'}]:null,
   after:'배신자는 잊지 않음.',
   talk:()=>[
    {say:'강하선 없음. 기보이 없음. 벤사스 없음.'},
    {who:'…',say:'격납고 문이 열려 있어요. 강하선은 없어요.'},
-   {say:'네 시간 기다림. 안 옴. 우리, 갇혔음.'},
+   {say:'네 시간 기다림. 안 옴. 우리, 못 나감.'},
    Q.dave2[0],
-   {say:'기보이, 벤사스. 배신자.'},
+   {say:'기보이, 벤사스. 우리 버리고 감. 몰래.'},
    Q.dave2[1],
    {say:'물. 핀 나오면 줘.',give:'물병',award:['갇히다','배신자'],set:()=>{f().stranded=1}}]},
  bensathD:{name:'벤사스 하사',zone:'dolod',x:18,y:4,dir:'up',look:BENSATH,badge:['폭풍','번개'],hide:()=>!!f().linked,
@@ -808,7 +823,7 @@ const NPC={
    Q.bensath[1],
    {say:'기지가 조용해요. 너무 조용해요.'},
    {say:'핀은 꽃 방에 있어요. 기보이 씨도 같이요.',award:['폭풍','번개']}]},
- finnD:{name:'핀',zone:'dolod',x:13,y:13,dir:'up',still:1,badge:['충돌하다','탈출하다'],
+ finnD:{name:'핀',zone:'dolod',x:13,y:13,dir:'up',still:1,badge:['충돌하다','탈출하다'],hide:()=>!!f().home,
   look:FINN,
   status:()=>{const F=f();if(!F.linked)return got('중력')&&got('폭풍')?'todo':'wait';if(!F.stranded)return null;if(!F.woke)return hasItem('물병')?'todo':null},
   script:()=>{const F=f();
@@ -820,7 +835,7 @@ const NPC={
   talk:()=>[
    {who:'…',say:'핀이 전구에서 손을 떼요. 물을 마셔요.',take:['물병']},
    {say:'강하선이 없어요? 기보이가… 우리를 두고 갔어요?'},
-   {say:'기지 컴퓨터에 다른 사람이 접속했어요. 벤사스도 우라닉이었어요!'},
+   {say:'기지 컴퓨터에 다른 사람이 접속했어요. 벤사스도 저처럼 {우라닉|우라닉}이었어요!'},
    {say:'제가 엔진한테 시킨 일… 이제 무서워요.'},
    {say:'복스록이 켈로완으로 날아가요. 8억 명이 사는 곳이에요.'},
    Q.finnD[0],
@@ -834,13 +849,14 @@ const NPC={
   talk:()=>[{say:'접속은 핀이 해요. 저는 그냥 구경해요.'},{say:'핀, 천천히요. 서두르지 마요.'}]},
  holo2:{name:'막간',zone:'dolod',x:4,y:12,dir:'down',still:1,look:{art:HOLO_TH},
   status:()=>f().linked&&!f().i2?'todo':null,
-  script:()=>!f().linked?[{who:'막간',say:'프리즘이 희미하게 빛나요. 아직이에요.'}]:[
-   {who:'막간',say:'멀리 와이니드 함대. 거대한 전함 드라카이나이.'},
+  script:()=>!f().linked?[{who:'막간',say:'프리즘이 희미하게 빛나요. 아직이에요.'}]:f().i2?[{who:'막간',say:'프리즘이 희미하게 빛나요. 이미 본 이야기예요.'}]:[
+   {who:'막간',say:'멀리 티라 여왕의 와이니드 함대. 제일 큰 전함은 드라카이나이예요.'},
    {who:'티라',say:'함대는 멈춰요. 우리는 그냥 지켜볼 거예요.'},
    {who:'막간',say:'돌로드 궤도. 긴 줄이 구름 속으로 내려와요. {스카이훅|스카이훅}이에요.'},
    {who:'막간',say:'기보이하고 벤사스가 반물질 통에 묶여서 올라가요.'},
    {who:'토셰',say:'보스, 대단해요. 배짱이 아주 두둑해요.'},
-   {who:'티라',say:'(아버지에게) 다곤 삼촌이 핀을 두고 떠났어요. 계획대로예요.',set:()=>{f().i2=1}}],
+   {who:'티라',say:'(아버지 베켓에게) 다곤 삼촌, 그러니까 "기보이"가 핀을 두고 떠났어요.'},
+   {who:'티라',say:'모두 계획대로예요.',set:()=>{f().i2=1}}],
   talk:()=>[]},
  /* ===== 카포 프로이스 관문 ===== */
  zelindaC:{name:'젤린다',zone:'capo',x:12,y:6,dir:'up',look:ZELINDA,badge:['의무'],
@@ -851,11 +867,14 @@ const NPC={
    return [
     {say:'곤디아에서 아주 멀리 왔어요.'},
     {who:'핀',say:'미안해요, 누나. 다 제 잘못이에요.'},
-    {who:'오틸리아 (통신)',say:'언니는 후작이 아니야. 곤디아에 빚진 거 없어.'},
-    {say:'아니, 나는 후작이야. 언젠가 돌아가야 돼.'},
+    {who:'오틸리아',say:'언니는 이제 후작이 아니야. 곤디아에 빚진 거 없어.'},
+    {say:'아니, 나는 후작이야. 그냥 칭호가 아니야.'},
     Q.zelindaC[0],
-    {who:'핀',say:'아이고, 이제 누나가 둘이네.'},
+    {say:'맞아. 언젠가 돌아가야 돼.'},
     {who:'핀',say:'제가 도울게요. 엄마도 그걸 바라셨을 거예요.'},
+    {who:'핀',say:'앵커선은 우리가 가져가요. 잘 팔면 큰돈이에요.'},
+    {who:'오틸리아',say:'누구한테? 나쁜 사람한테?'},
+    {who:'핀',say:'아이고… 오틸리아까지. 이제 누나가 둘이네.'},
     {who:'막간',say:'같은 시간, 아르카디아의 달. 배 한 척이 조용히 돌로드를 떠나요.'},
     {who:'조사이어스 (아르카디아의 달)',say:'이제 연설은 안 해요. 그 통 안에 뭐가 있어요?'},
     {who:'기보이 (아르카디아의 달)',say:'폭탄. 아주 많은 폭탄.'},
@@ -864,6 +883,8 @@ const NPC={
     {who:'…',say:'아르카디아의 달이 어둠 속으로 사라져요.',finale:1}]},
   after:'언젠가 돌아갈 거예요. 그게 제 의무예요.',
   talk:()=>[]},
+ otyliaC:{name:'오틸리아',zone:'capo',x:10,y:6,dir:'up',look:OTYLIA,
+  talk:()=>[{say:'방금 머리가 이상했어요. 여기가 카포 프로이스 관문이래요.'},{say:'관문 너머로 가요. 저도 찬성이에요.'}]},
  finnC:{name:'핀',zone:'capo',x:9,y:6,dir:'up',look:FINN,
   talk:()=>[{say:'카포 프로이스로 가는 관문이에요. 건너가면 관문이 다섯 개 더 있어요.'},{say:'제가 한 일을 잊지 않을 거예요.'}]},
  ellieC:{name:'엘리',zone:'capo',x:15,y:6,dir:'up',look:ELLIE,
@@ -873,23 +894,41 @@ const NPC={
  holo3:{name:'막간',zone:'capo',x:19,y:8,dir:'down',still:1,look:{art:HOLO_TH},
   status:()=>f().i4?null:'todo',
   script:()=>{const F=f();
+   if(F.i4)return [{who:'막간',say:'프리즘이 희미하게 빛나요. 이미 본 이야기예요.'}];
    if(!F.i3)return [
-    {who:'막간',say:'드라카이나이. 티라가 화면을 봐요. 성실호가 사라졌어요.'},
+    {who:'막간',say:'티라의 전함 드라카이나이. 티라가 화면을 봐요. 성실호가 사라졌어요.'},
     {who:'티라',say:'1만 G? 인간이 어떻게 그걸 해?'},
-    {who:'스테토스티에리',say:'엔진 힘으로 ZPZ를 켰어요. 아주 똑똑해요.'},
+    {who:'데이터 관리자',say:'엔진 힘으로 ZPZ를 켰어요. 아주 똑똑해요.'},
     {who:'티라',say:'성실호를 부숴. 포로는 필요 없어.'},
-    {who:'막간',say:'올로모와 사디아는 서로 욕을 하다가 손을 잡아요.'},
+    {who:'막간',say:'다른 나라 아콘 올로모와 사디아도 쫓아와요.'},
+    {who:'막간',say:'둘은 서로 욕을 하다가 손을 잡아요.'},
     {who:'올로모',say:'좋아. 같이 쫓자. 카포 프로이스로!',set:()=>{f().i3=1}}];
    return [
     {who:'막간',say:'켈로완. 복스록이 삼 주 뒤에 이 행성에 충돌해요.'},
     {who:'막간',say:'여제 캐롤리엔아마이아가 탈출선으로 뛰어가요.'},
-    {who:'막간',say:'숨어 있던 {케스트럴 스프라이트|케스트럴 스프라이트}들이 탈출선에 붙어요.'},
+    {who:'막간',say:'하늘에 아주 작은 파괴 기계들이 숨어 있었어요.'},
+    {who:'막간',say:'{케스트럴 스프라이트|케스트럴 스프라이트}예요. 탈출선에 붙어요.'},
     {who:'막간',say:'탈출선의 반물질이 터져요. 여제가 죽었어요.'},
     {who:'티라',say:'어머. 하나 끝, 셋 남았어요.'},
-    {who:'티라',say:'다음은 케프리 할머니가 돌아오실 차례예요.'},
+    {who:'티라',say:'이제 쫓겨난 켈로완의 진짜 여왕, 케프리 할머니가 돌아오실 거예요.'},
     {who:'목소리',say:'멍청한 아이.',set:()=>{f().i4=1}}]},
   talk:()=>[]},
 };
+/* the rides: stepping onto the drop-ship ramp (after the launch) or into the anchor ship (after Finn wakes) sets f().ride (onStep);
+   on arrival a narrator nobody sees (look:null, the zone's greet) tells the flight, so it isn't a silent cut (as 3장/4장/6장's rides).
+   It clears the flag in script, not with set:, so a ride isn't counted as a story beat. Leaving the base sets f().home: the people
+   down there (dave1, dave2, finnD) are gone from it, so the end round never has them speak from Dolod.
+   Book: the drop ship cast off from the hangar and flew to Dolod for hours (three g, c032–c033), then down through the storm bands,
+   Finn shoving it through the winds, to a vast dark oval whose broad doors on its spine hinged up for it (c033); the anchor ship, a
+   120 m tri-delta, crammed, at four g for about a day, backed into the Diligent's largest hangar because it would never fit (c034). */
+const RIDE={'ship:22,13':['drop',()=>!!f().launch&&!f().woke],'dolod:23,14':['anchor',()=>!!f().woke]};
+const RIDE_SAY={
+ drop:['강하선이 성실호를 떠나요. 몇 시간 동안 돌로드로 날아가요.','폭풍 속을 흔들리면서 내려가요. 어두운 엔진 기지의 지붕 문이 열려요.'],
+ anchor:['앵커선이 기지를 떠나요. 안은 아주 좁고, 몸이 아주 무거워요.','하루 뒤, 드디어 성실호예요. 앵커선이 너무 길어서 격납고에 뒤로 들어가요.']};
+const rider=(zone,leg,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>f().ride!==leg,
+ script:()=>{f().ride=0;return RIDE_SAY[leg].map(say=>({who:'…',say}))},talk:()=>[]});
+NPC.rideD=rider('dolod','drop',6,6);NPC.rideA=rider('ship','anchor',22,15);
+const onStep=()=>{const r=RIDE[ZID+':'+state.x+','+state.y];if(r&&r[1]()){f().ride=r[0];if(r[0]==='anchor')f().home=1}};
 const FOLLOW=null;
 
 const INTRO=[{who:'오틸리아 (통신)',say:'핀, 도와줘. 제발.'},{who:'성실호',say:'폴카다브 도킹 완료.'},
@@ -911,5 +950,5 @@ function questText(){
  if(!F.i4)return ZID==='capo'?(F.i3?'관측 갑판 · 프리즘을 한 번 더 봐요':'관측 갑판 · 막간 프리즘을 봐요'):'지휘 통제실 · 관측 갑판으로 가요';
  return '관측 갑판 · 젤린다한테 가요';
 }
-return {WORDS,DICT,CONFUSE,BANK,Q,REVIEW,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES:T7};
+return {WORDS,DICT,CONFUSE,BANK,Q,REVIEW,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,onStep,TILES:T7};
 }});
