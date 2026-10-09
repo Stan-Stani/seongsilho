@@ -103,7 +103,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  mique:[
   {w:'담',ask:'우리는 그 ___을 넘어서 들어가요.',opts:[['담',1],['답',0,'답은 질문에 하는 말이에요. 넘어가는 벽은 "담".'],['땀',0,'땀은 더울 때 몸에서 나는 물이에요. 넘어가는 벽은 "담".']]},
-  {w:'침입하다',ask:'일단 담 안에 ___, 그다음은 제가 앞장서요.',opts:[['침입하면',1],['입학하면',0,'입학은 학교에 들어가는 거예요. 허락 없이 들어가요 → "침입하면".'],['초대하면',0,'초대는 오라고 부르는 거예요. 허락 없이 들어가요 → "침입하면".']]},
+  {w:'침입하다',ask:'일단 담 안에 ___, 거기서도 제가 앞장서요.',opts:[['침입하면',1],['입학하면',0,'입학은 학교에 들어가는 거예요. 허락 없이 들어가요 → "침입하면".'],['초대하면',0,'초대는 오라고 부르는 거예요. 허락 없이 들어가요 → "침입하면".']]},
  ],
  pandiana:[
   {w:'먼지',ask:'옛날 공기가 반짝이는 ___가 됐어요.',opts:[['먼지',1],['먼저',0,'먼저는 "제일 처음에"예요. 작은 가루는 "먼지".'],['편지',0,'편지는 쓰는 거예요. 작은 가루는 "먼지".']]},
@@ -236,8 +236,8 @@ const REVIEW=[
  {w:'전멸',by:'ellieB',ask:'무전으로 다 들었어요. 폼키 팀이 ___했어요.',opts:[['전멸',1],['전부',0,'전부는 "모두"라는 뜻이에요. 한 명도 안 남았어요 → "전멸".'],['절반',0,'절반은 반이에요. 한 명도 안 남았어요 → "전멸".']]},
  {w:'발자국',by:'ellieB',ask:'카메라로 봤어요. 다들 미크 ___만 따라갔죠.',opts:[['발자국',1],['발가락',0,'발가락은 발 끝의 다섯 개예요. 땅에 남은 발 모양은 "발자국".'],['발표',0,'발표는 사람들 앞에서 말하는 거예요. 땅에 남은 발 모양은 "발자국".']]},
  {w:'공격하다',by:'ellieB',ask:'고스트가 ___할 때 저는 탱크 안에만 있었어요.',opts:[['공격',1],['공부',0,'하하, 고스트는 공부 안 해요. 먼저 쏘는 건 "공격".'],['공사',0,'공사는 건물을 짓는 일이에요. 먼저 쏘는 건 "공격".']]},
- {w:'침입하다',by:'ellieB',ask:'탱크에만 있으라고요? 결국 저도 ___했네요.',opts:[['침입',1],['입학',0,'입학은 학교에 들어가는 거예요. 허락 없이 들어왔어요 → "침입".'],['침대',0,'하하, 침대는 자는 곳이에요. 허락 없이 들어왔어요 → "침입".']]},  // "Good job I was here to think of this, huh?" (c018)
- {w:'질식하다',by:'ellieB',ask:'물린 구멍으로 공기가 새면 ___. 다행히 막혔어요.',opts:[['질식해요',1],['질문해요',0,'질문은 물어보는 거예요. 숨을 못 쉬어요 → "질식해요".'],['식사해요',0,'식사는 밥 먹는 거예요. 숨을 못 쉬어요 → "질식해요".']]},  // her armor had "several blotches of sealant" on her legs (c018)
+ {w:'침입하다',by:'ellieB',ask:'탱크에만 있으라고 했죠? 결국 저도 ___했네요.',opts:[['침입',1],['입학',0,'입학은 학교에 들어가는 거예요. 허락 없이 들어왔어요 → "침입".'],['침대',0,'하하, 침대는 자는 곳이에요. 허락 없이 들어왔어요 → "침입".']]},  // "Good job I was here to think of this, huh?" (c018)
+ {w:'질식하다',by:'ellieB',ask:'물린 곳으로 공기가 새면 ___. 다행히 막혔어요.',opts:[['질식해요',1],['질문해요',0,'질문은 물어보는 거예요. 숨을 못 쉬어요 → "질식해요".'],['식사해요',0,'식사는 밥 먹는 거예요. 숨을 못 쉬어요 → "질식해요".']]},  // her armor had "several blotches of sealant" on her legs (c018)
  /* Elsbeth at the tower door, from her lesson until the stairs */
  {w:'물리다',by:'elsB',ask:'세이버스톤한테 ___ 건 처음이에요. 다시는 싫어요.',opts:[['물린',1],['문',0,'"{문|물다} 건"은 내가 {문|물다} 거예요! 이빨에 당했어요 → "물린".'],['먼',0,'멀다는 거리가 먼 거예요. 이빨에 당했어요 → "물린".']]},
  {w:'질식하다',by:'elsB',ask:'우주복이 구멍을 안 막았으면 ___ 거예요.',opts:[['질식했을',1],['질문했을',0,'질문은 물어보는 거예요. 숨을 못 쉬었을 거예요 → "질식했을".'],['식사했을',0,'식사는 밥 먹는 거예요. 숨을 못 쉬었을 거예요 → "질식했을".']]},
@@ -274,8 +274,8 @@ const REVIEW=[
    three-D shadows"; "all the bacteria had died at the same time"; "less tectonic desolation and more ordinary terrain". Mique's lines
    are his old review lines, said here while he is alive. */
 const CLASS={
- ride1:{say:'몇 시간째 굳은 용암 밭이에요. 탱크가 덜컹덜컹 흔들려요.',lines:[
-  {w:'용암',who:'엘리',ask:'바닥이 다 굳은 ___이에요? 계속 흔들려요.',opts:[['용암',1],['용감',0,'용감은 무섭지 않은 마음이에요. 굳은 뜨거운 돌은 "용암".'],['요금',0,'요금은 내는 돈이에요. 굳은 뜨거운 돌은 "용암".']]},
+ ride1:{say:'몇 시간째 검은 돌 밭이에요. 탱크가 덜컹덜컹 흔들려요.',lines:[
+  {w:'용암',who:'엘리',ask:'바닥이 다 굳은 ___이에요? 계속 흔들려요.',opts:[['용암',1],['용감',0,'용감은 무섭지 않은 마음이에요. 녹았다가 굳은 돌은 "용암".'],['요금',0,'요금은 내는 돈이에요. 녹았다가 굳은 돌은 "용암".']]},
   {w:'화산',who:'핀',ask:'저 멀리 ___이 연기를 뿜어요. 수십 킬로미터 높이로요.',opts:[['화산',1],['화장',0,'화장은 얼굴에 하는 거예요. 연기를 뿜는 산은 "화산".'],['하산',0,'하산은 산에서 내려오는 거예요. 연기를 뿜는 산은 "화산".']]},
   {w:'우주복',who:'벤사스 하사',ask:'이 ___ 입고는 똑바로 서지도 못해요.',opts:[['우주복',1],['우주선',0,'우주선은 타는 거예요. 입는 옷은 "우주복".'],['운동복',0,'운동복은 가벼워요! 무거운 옷은 "우주복".']]},
   {w:'담',who:'미크 오독스',ask:'___만 넘으면 그다음은 제 일이에요.',opts:[['담',1],['답',0,'답은 질문에 하는 말이에요. 넘어가는 벽은 "담".'],['땀',0,'땀은 더울 때 몸에서 나는 물이에요. 넘어가는 벽은 "담".']]},
@@ -838,12 +838,12 @@ const NPC={
     {say:'옛날 지구의 방주? 그건 위험해요.'},
     {say:'3년 전에 {마라 야마|마라 야마} 함대가 왔어요. 지금 데 베리아 궤도에 있어요.'},
     {say:'조심해서 가요. 책임은 당신들한테 있어요.'},
-    {who:'…',say:'보이크안이 멀어져요. 홀로그램이 꺼졌어요.',set:()=>{f().holoOff=1}},
-    {who:'기보이',say:'거기서 연료를 넣고 있을 거예요.'},
+    {who:'…',say:'보이크안이 멀어져요. 홀로그램이 꺼졌어요.',set:()=>{f().holoOff=1;f().warned=1}},  // warned here, not on the last line: the Woiykan hides now, so a talk cut short (B) must not leave the warning unset
+    {who:'기보이',say:'데 베리아에서 연료를 넣고 있을 거예요.'},
     {who:'핀',say:'마라 야마는 방주를 노려요. 사람을 잡아가요.'},
     {who:'핀',say:'몇십 년 동안 살려 두고, 그 사람의 기억을 봐요.'},
     {who:'드장 선장',say:'…좋아요. 이 성계에서는 5주만 있어요.'},
-    {who:'드장 선장',say:'카이발 땅에서는 5일이에요. 5일이 지나면 무조건 떠나요.',set:()=>{f().warned=1}}]}},
+    {who:'드장 선장',say:'카이발 땅에서는 5일이에요. 5일이 지나면 무조건 떠나요.'}]}},
  gyvoy:{name:'기보이',zone:'ship',x:9,y:7,dir:'left',look:GYVOY,hide:()=>!!f().boarded&&!f().done,
   talk:()=>f().warned?[{say:'마라 야마가 오기 전에 끝내야 돼요.'},{say:'이번 일의 대장은 저예요. 걱정 마세요.'}]
    :[{say:'아스테리아 여신님, 감사합니다! 첫 점프 성공!'},{say:'이번 일은 제가 대장이에요. 잘 부탁해요.'}]},
@@ -930,8 +930,8 @@ const NPC={
  /* ---- Kajval surface ---- */
  pandiana:{name:'판디아나',zone:'plain',x:12,y:4,dir:'down',look:PAN_H,badge:['먼지'],
   status:()=>{if(!state.badges.includes('먼지'))return hasItem('핵 폭약')?'todo':null},
-  hide:()=>!!f().climbed||!!f().prints,  // she goes over the wall before you (c018)
-  script:()=>!hasItem('핵 폭약')&&!f().breach?[{say:'판디아나예요. 폭약은 어디 있어요?'}]:null,
+  hide:()=>(!!f().climbed||!!f().prints)&&state.badges.includes('먼지'),  // she goes over the wall before you (c018); not before she has taught 먼지 (a talk cut short after the blast)
+  script:()=>!hasItem('핵 폭약')&&!f().charges?[{say:'판디아나예요. 폭약은 어디 있어요?'}]:null,
   after:'해자에 오래 서 있지 마세요. 가라앉아요.',
   talk:()=>[
    {say:'판디아나예요. 탱크 안에서 17시간 앉아 있었어요. 다리가 아파요.'},
@@ -1119,7 +1119,7 @@ const FOLLOW={name:'엘리',look:ELLIE_H,when:()=>!!f().bitten&&!f().done,
 
 const INTRO=[{who:'성실호',say:'프레임 해제. 관문 통과 완료.'},{who:'성실호',say:'성실호의 첫 번째 관문 점프예요.'},{who:'성실호',say:'현재 위치: 호아 퀸주 성계.'}];
 /* the ending plays over black (the drop ship has left the hangar). Pandiana: last seen leading two of her team up the slope against the
-   Ghosts; she isn't named among the twelve at the causeway, and her fate is never told (c018), so the list says only that. */
+   Ghosts; the book never names the twelve at the causeway or tells her fate (c018), so the list says only that. */
 const DONE=[{say:'4장 끝! 드롭십이 카이발을 떠나서 성실호로 날아가요.',black:1},'미크, 에두살, 폼키 팀, 벤사스 팀 몇 명은 돌아오지 못했어요.',
  '판디아나는 고스트를 막으러 간 뒤로 다시 보지 못했어요.','핀, 엘리, 기보이, 데이브 두 명, 벤사스 하사, 그리고 당신도 살아서 돌아왔어요.',
  '엘스베스도 같이 와서 성실호 승무원이 됐어요.',{expand:()=>wrapUp()},'일지에서 단어를 다시 볼 수 있어요.'];
