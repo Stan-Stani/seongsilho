@@ -98,7 +98,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  gyvoy2:[
   {w:'출발하다',ask:'연료가 있으면 언제든지 ___할 수 있어요.',opts:[['출발',1],['발견',0,'발견은 처음 찾는 거예요. 연료로 떠나는 건 "출발".'],['반납',0,'반납은 책을 돌려줄 때예요. 떠나는 건 "출발".']]},
-  {w:'출발하다',ask:'하이 로사에서는 매일 큰 배들이 ___해요. 곤디아 음식을 싣고요.',opts:[['출발',1],['연습',0,'배는 연습 안 해요! 떠나요 → "출발".']]},
+  {w:'출발하다',ask:'하이 로사에서는 매일 큰 배들이 ___해요. 곤디아 식량을 싣고요.',opts:[['출발',1],['연습',0,'배는 연습 안 해요! 떠나요 → "출발".']]},
  ],
  lina:[
   {w:'관측하다',ask:'과학자가 망원경으로 별을 보고 재요. 별을 ___해요.',opts:[['관측',1],['관중',0,'관중은 경기장에서 보는 사람이에요. 觀은 같아요! 과학자가 보는 건 "관측".'],['청소',0,'별은 청소 못 해요. 너무 멀어요! 보고 재는 건 "관측".']]},
@@ -127,7 +127,7 @@ const Q={ // NPC questions, kept here so review can reuse them
    top of the orbital tower; Octain is nearly 100; Dejean stays captain under owner Finn; Josias stays for Hafnir; no ZPZ generator yet.
    Gyvoy is already the impostor: kept to a trader's curiosity, no hints beyond the chapter's own.
    Invented (small, harmless): Ellie can't sleep in on arrival day, is bored while the ship sits docked at High Rosa (c012: "only just
-   docked at High Rosa"; High Rosa is on the geostationary georing, c006), thinks Finn will like the map;
+   docked at High Rosa"; High Rosa encircles the tower's anchor asteroid, c006; towers reach geostationary orbit, linked by the georing, c002), thinks Finn will like the map;
    Dejean's arm still works fine, a pile of work since arrival, she leaves oxygen to Or, Octain fixed it sooner than his "one month"
    (his month is for making the part aboard; c009's "rebuild those in a month" is about the banned entropy drive, so not used); Or credits her plants for
    the 98% oxygen (the bridge screen) and her vegetables will go along; Octain is the best at engine repair and can be called at night;
