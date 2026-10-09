@@ -3724,7 +3724,7 @@ const NPC={
    {who:'…',say:'발밑이 흔들려요. 아래에서 뭔가 올라와요. 원숭이 같은 {고스트|고스트}예요!'},
    Q.dave[1],
    {say:'고스트. 쉬워요. 그래도 뛰어요.',award:['계단'],set:()=>{f().chase=1}}]},
- dave2:{name:'데이브 (2)',zone:'tower',x:12,y:20,dir:'left',look:DAVE,pos:()=>f().mined?[10,6]:[12,20],
+ dave2:{name:'데이브 (2)',zone:'tower',x:12,y:20,dir:'left',look:DAVE,pos:()=>f().mined?[6,6]:[12,20],
   talk:()=>f().mined?[{say:'봤죠? 쉬워요.'}]:[{say:'데이브.'},{say:'고스트. 쉬워요.'}]},
  ghost1:{name:'고스트',zone:'tower',x:5,y:21,dir:'up',look:{get art(){return (f().mined?GHOST_DEAD:GHOST).art}},
   pos:ghostPos(2,[5,21],[13,12]),hide:()=>!f().chase,
