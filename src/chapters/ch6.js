@@ -157,7 +157,8 @@ const CLASS={
 /* in-character review: people use a learned word again in their own voice, while they're around (engine: linesFor, reviewPick).
    Who can ask, and when (every line stays true for that whole time):
    성실호 — 드장 (before the drop: !argue; home again: argue), 엘리 (before the briefing only: earlier words), 우에미주발리 and 기보이 (home).
-   마이탈포트 — 코아 (until the ride), 케크 and 니에바스 (until the factory is found, and again on the way home).
+   마이탈포트 — 코아 (until the ride), 케크 and 니에바스 (until the factory is found, and again on the way home;
+   their snack jokes only before the massacre).
    나소 — 에탄 (after he walks out; again on the way home), 제이즌 (hired → found). 배 — 에이든 (until found, and after the massacre),
    코아 and 카이젠 (until found), 제이즌 (after the massacre). 공장 — from found until you leave it; 카이젠 and 딜런 only before the ambush.
    핀 teaches 어지럽다 but never reviews (he hides as he teaches it, then follows you), so others review it; 복종하다's teacher is the swarm.
@@ -198,13 +199,13 @@ const REVIEW=[
  {w:'구름',by:'kech',ask:'부우웅… 저는 흰 ___ 사이로 나는 게 좋아요.',opts:[['구름',1],['그림',0,'그림은 그리는 거예요. 하늘의 하얀 것은 "구름".'],['구멍',0,'구멍은 뚫린 곳이에요. 하늘의 하얀 것은 "구름".']]},
  {w:'산소',by:'kech',ask:'여기는 ___가 충분해요. 숨 크게 쉬어요, 친구!',opts:[['산소',1],['산수',0,'산수는 숫자 공부예요. 숨 쉴 때 필요한 건 "산소".'],['소금',0,'소금은 짠 거예요. 숨 쉴 때 필요한 건 "산소".']]},
  {w:'가속',by:'kech',when:()=>!f().found,ask:'___은 제가 코아보다 좋아요. 진짜예요!',opts:[['가속',1],['가족',0,'가족은 엄마, 아빠 같은 사람들이에요. 점점 빨라지는 건 "가속".'],['가방',0,'가방은 물건을 넣는 거예요. 점점 빨라지는 건 "가속".']]},
- {w:'수사',by:'kech',ask:'누가 제 간식을 먹었어요! 지금 ___ 중이에요.',opts:[['수사',1],['수업',0,'수업은 학교에서 해요. 범인을 찾는 일은 "수사".'],['수술',0,'수술은 병원에서 해요. 범인을 찾는 일은 "수사".']]},
+ {w:'수사',by:'kech',when:()=>!f().massacre,ask:'누가 제 간식을 먹었어요! 지금 ___ 중이에요.',opts:[['수사',1],['수업',0,'수업은 학교에서 해요. 범인을 찾는 일은 "수사".'],['수술',0,'수술은 병원에서 해요. 범인을 찾는 일은 "수사".']]},
  {w:'어지럽다',by:'nievas',ask:'저는 아무리 빙글빙글 돌아도 안 ___! 하하.',opts:[['어지러워요',1],['어려워요',0,'어렵다는 문제가 힘들 때예요. 머리가 빙글빙글 → "어지러워요".'],['더러워요',0,'더럽다는 깨끗하지 않은 거예요. 머리가 빙글빙글 → "어지러워요".']]},
  {w:'흥정하다',by:'nievas',ask:'제이즌하고 배 값을 ___했어요? 그 사람은 싸게 안 해 줘요!',opts:[['흥정',1],['흥분',0,'흥분은 마음이 뜨거워지는 거예요. 값을 두고 말하는 건 "흥정".'],['공부',0,'공부는 책으로 배우는 거예요. 값을 두고 말하는 건 "흥정".']]},
  {w:'빛나다',by:'nievas',ask:'제 케크 등이 제일 예쁘게 ___! 무지갯빛이에요.',opts:[['빛나요',1],['빚나요',0,'빚은 갚아야 하는 돈이에요! 빛이 나면 "빛나요".'],['빨라요',0,'빠르다는 속도예요. 반짝반짝하면 "빛나요".']]},
  {w:'우주선',by:'nievas',ask:'성실호는 아주 큰 ___이래요. 저도 보고 싶어요!',opts:[['우주선',1],['우체국',0,'우체국은 편지를 보내는 곳이에요. 우주를 나는 배는 "우주선".'],['우주인',0,'우주인은 우주에 가는 사람이에요. 우주를 나는 배는 "우주선".']]},
  {w:'지도',by:'nievas',ask:'저는 ___ 없이도 길을 다 알아요. 여기가 제 하늘이에요!',opts:[['지도',1],['지구',0,'지구는 행성이에요. 길을 그린 그림은 "지도".'],['지갑',0,'지갑은 돈을 넣는 거예요. 길을 그린 그림은 "지도".']]},
- {w:'범인',by:'nievas',ask:'케크 간식 ___이요? 저는 아니에요, 하하!',opts:[['범인',1],['번호',0,'번호는 숫자예요. 나쁜 일을 한 사람은 "범인".'],['버스',0,'버스는 타는 거예요. 나쁜 일을 한 사람은 "범인".']]},
+ {w:'범인',by:'nievas',when:()=>!f().massacre,ask:'케크 간식 ___이요? 저는 아니에요, 하하!',opts:[['범인',1],['번호',0,'번호는 숫자예요. 나쁜 일을 한 사람은 "범인".'],['버스',0,'버스는 타는 거예요. 나쁜 일을 한 사람은 "범인".']]},
  /* 나소 — 에탄 선장 (after he walks out), 제이즌 선장 (after the deal, until the factory is found) */
  {w:'해적',by:'ettan',ask:'저는 ___ 배를 만나기 싫어요. 가족이 기다려요.',opts:[['해적',1],['해외',0,'해외는 다른 나라예요. 배를 공격하는 사람은 "해적".'],['해산물',0,'해산물은 바다 음식이에요. 배를 공격하는 사람은 "해적".']]},
  {w:'매복',by:'ettan',ask:'까만 구름 뒤는 ___하기 딱 좋은 곳이에요.',opts:[['매복',1],['행복',0,'행복은 기쁜 마음이에요. 숨어서 기다리는 건 "매복".'],['매번',0,'매번은 "할 때마다"예요. 숨어서 기다리는 건 "매복".']]},
