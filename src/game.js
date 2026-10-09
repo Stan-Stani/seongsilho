@@ -4,5 +4,5 @@ var GAME={prefix:'seongsilho',title:'성실호',log:'항해 일지',
 
  /* spaced review: due again after 2 story beats or 5 minutes, then 5 beats or 20 minutes; later levels are hours and days, and one
     shared record lets later chapters bring earlier words back (people's lines, the 신호 단말기 and the last round of each chapter) */
- srs:{gap:[0,5*60e3,20*60e3,4*3600e3,24*3600e3,3*24*3600e3],beats:[0,2,5],shared:1},
+ srs:{start:1,gap:[0,5*60e3,20*60e3,4*3600e3,24*3600e3,3*24*3600e3],beats:[0,2,5],shared:1},
  player:{hair:'#2A2F4A',skin:'#F1C9A5',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A'}};
