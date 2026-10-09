@@ -7201,7 +7201,7 @@ return {WORDS,DICT,CONFUSE,BANK,Q,REVIEW,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,quest
 <script>
 /* Settings for the shared engine (walk-engine): this game's names, storage prefix and default player. */
 var GAME={prefix:'seongsilho',title:'성실호',log:'항해 일지',
- term:{carry:'지난 항해에서 배운 말도 다시 나와요.',wrap:'이번 장에서 배운 말, 한 번 더 떠올려요.',name:'신호 단말기',empty:'신호 없음. 아직 일지가 비어 있어요.',idle:'새 신호가 없어요.',next:'다음 신호',due:(n,k)=>`신호가 왔어요. 단어 ${n}개가 기다려요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'신호 끝. 다음에 또 와요.'},
+ term:{allWords:n=>[`단어 ${n}개를 다 모았어요!`,'복습할수록 ★가 늘어나요. 사람들도, 신호 단말기도 물어봐요.'],carry:'지난 항해에서 배운 말도 다시 나와요.',wrap:'이번 장에서 배운 말, 한 번 더 떠올려요.',name:'신호 단말기',empty:'신호 없음. 아직 일지가 비어 있어요.',idle:'새 신호가 없어요.',next:'다음 신호',due:(n,k)=>`신호가 왔어요. 단어 ${n}개가 기다려요.`+(k<n?` 이번에는 ${k}개만 해요.`:''),end:'신호 끝. 다음에 또 와요.'},
 
  /* spaced review: due again after 2 story beats or 5 minutes, then 5 beats or 20 minutes; later levels are hours and days, and one
     shared record lets later chapters bring earlier words back (people's lines, the 신호 단말기 and the last round of each chapter) */
@@ -7209,7 +7209,7 @@ var GAME={prefix:'seongsilho',title:'성실호',log:'항해 일지',
  player:{hair:'#2A2F4A',skin:'#F1C9A5',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A'}};
 </script>
 <script>
-/* GENERATED from walk-engine/engine.js (aff7b40) — do not edit here; edit walk-engine and run its sync.sh. */
+/* GENERATED from walk-engine/engine.js (ecd39cb) — do not edit here; edit walk-engine and run its sync.sh. */
 /* =====================================================================
    Engine: tiles, movement, zones, dialogue, spaced review, speech, saving.
    ===================================================================== */
@@ -7284,8 +7284,11 @@ function classTime(CLASS,parts){
 }
 function wrapUp(){
  const bank=w=>(C.BANK||[]).filter(q=>q.w===w&&!q.scene&&!q.gram);
- const qs=C.WORDS.filter(w=>has(w)&&lv(w).b<3&&bank(w).length).sort((a,b)=>lv(a).b-lv(b).b).slice(0,4)
-  .map(w=>{const b=bank(w);return {...b[Math.random()*b.length|0],who:'…',review:true}});
+ const said=w=>(C.REVIEW||[]).filter(r=>r.w===w&&r.who!=='나'),pick=a=>a[Math.random()*a.length|0];
+ const nameOf=r=>{const b=[].concat(r.by)[0];return (C.NPC[b]&&C.NPC[b].name)||b};
+ const line=w=>{const R=said(w);if(R.length){const h=R.filter(r=>!unheard(r)),r=pick(h.length?h:R),q={...r,who:nameOf(r),review:true};delete q.by;delete q.pre;delete q.when;return q}  // what someone in this chapter said with it (heard first), under their name
+  const b=bank(w);return b.length?{...pick(b),who:'…',review:true}:null};
+ const qs=C.WORDS.filter(w=>has(w)&&lv(w).b<3&&(said(w).length||bank(w).length)).sort((a,b)=>lv(a).b-lv(b).b).slice(0,4).map(line);
  carryDue().slice(0,Math.max(0,4-qs.length)).forEach(w=>{const q=carryQ(w);if(q)qs.push({...q,who:'…',review:true})});
  return qs.length?[{who:'…',say:TERM.wrap},...qs]:[];
 }
