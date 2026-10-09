@@ -156,7 +156,8 @@ const Q={ // NPC questions, kept here so review can reuse them
    bigger (only until the Liliana find); Aljan's med school has many stairs, a broken-down train made him late, he means to marry
    Laurella some day, Terence smiles less since the funeral; Maria José put new cameras in the interrogation room, has bomb checks at
    the tower capsules; it rained on the funeral day; the governor's office lights stay on at night; Medusa finds the helmet too tight;
-   the dream bar's glasses don't break; the sea breeze smells of salt and the children have just fallen asleep; Haian packs the food.
+   the dream bar's glasses don't break; the sea breeze smells of salt and the children have just fallen asleep; Haian packs the food;
+   Jimena saw the blast on the news.
    Everything else is canon or the chapter's own story: Lućia's team has an informant inside Eleven Toxix (c024); Zikar hid while
    Terence wore his face (c024: he left with the ATD squad); Maria José turns down Terence's help and wants his intel shared with the
    force (c026); the blast threw the capsule wreckage out into space, kilometres below High Rosa, seen on a georing feed, not from the
@@ -168,7 +169,8 @@ const Q={ // NPC questions, kept here so review can reuse them
    of petty criminals, c032); the Jalgori-Tobus are thrown out of the Zetian Palace the morning the general arrives (c028); the
    marchioness and her husband were on the back terrace when the missile hit (c029); the marchioness blessed Finn on leaving (c016);
    Finn explored the Fridale islands with Otylia as a youth (c006); Otylia: "He'll be back soon. He will!" (c029; waiting at the Gate
-   is decided only aboard the Polkadav, c030); Everett raged, Aljan sedated him (c030); Hafnir's station, then the train to Santa Rosa
+   is decided only aboard the Polkadav, c030); Everett raged, Aljan sedated him (c030: only after the decision to leave, so those
+   lines wait for `rescued`); Hafnir's station, then the train to Santa Rosa
    (c030; the maglev, c029; "the new arrow train", c016, 3장's 화살 열차); Toše planted the capsule bomb (c026, c027); the police seal
    on the club (c030); Stanvar8 all arrested (c029, c030). */
 const REVIEW=[ // in-character review: people use a learned word again, in their own voice and moment (engine: linesFor/reviewPick)
@@ -248,7 +250,7 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'죽이다',by:'spirit',ask:'토셰가 저를 ___. 그래도 저는 아직 여기 있어요.',opts:[['죽였어요',1],['죽었어요',0,'"죽다"는 제가 한 거예요. 토셰가 한 일은 "죽였어요".'],['주웠어요',0,'줍다는 바닥의 물건을 드는 거예요. 토셰가 한 일은 "죽였어요".']]},
  {w:'위험',by:'spirit',ask:'토셰는 아주 ___한 사람이에요. 혼자 쫓지 마요.',opts:[['위험',1],['위생',0,'위생은 깨끗하게 하는 거예요. 다칠 수 있으면 "위험".'],['유명',0,'유명하다는 모두 아는 거예요. 다칠 수 있으면 "위험".']]},
  {w:'행성',by:'spirit',ask:'곤디아는 생각보다 아름다운 ___이었어요.',opts:[['행성',1],['행사',0,'행사는 축제나 파티예요. 별 주위를 도는 큰 공은 "행성".'],['행복',0,'행복은 기쁜 마음이에요. 별 주위를 도는 큰 공은 "행성".']]},
- {w:'구르다',by:'spirit',ask:'꿈에서는 잔이 바닥에 ___ 안 깨져요. 재밌죠?',opts:[['굴러도',1],['그려도',0,'그리다는 그림이에요. 잔이 빙글빙글 바닥을 가면 "굴러도".'],['구워도',0,'굽다는 고기를 익히는 거예요. 잔이 빙글빙글 가면 "굴러도".']]},
+ {w:'구르다',by:'spirit',ask:'꿈에서는 잔이 탁자에서 ___떨어져도 안 깨져요. 재밌죠?',opts:[['굴러',1],['그려',0,'그리다는 그림이에요. 잔이 빙글빙글 돌면서 떨어지면 "굴러떨어져요".'],['구워',0,'굽다는 고기를 익히는 거예요. 잔이 빙글빙글 돌면서 떨어지면 "굴러떨어져요".']]},
  {w:'시체',by:'spirit',when:()=>!!f().done,ask:'그 ___는 수십 년 동안 바닥 밑에 있었어요.',opts:[['시체',1],['시청',0,'시청은 시장님이 일하는 곳이에요. 죽은 사람의 몸은 "시체".'],['시합',0,'시합은 경기예요. 죽은 사람의 몸은 "시체".']]},
  /* 아보네발레리오 장군 in the square (after 점령하다, to the end) */
  {w:'점령하다',by:'general',ask:'이 행성을 ___ 건 쉬웠어요. 인간은 약해요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대로 땅을 차지하면 "점령한".']]},
@@ -271,14 +273,14 @@ const REVIEW=[ // in-character review: people use a learned word again, in their
  {w:'축복',by:'zelindaS',ask:'엄마는 떠나는 핀을 ___해 줬어요. 사랑한다고요.',opts:[['축복',1],['축구',0,'축구는 공 차는 운동이에요. 좋은 일을 비는 마음은 "축복".'],['축제',0,'축제는 큰 잔치예요. 좋은 일을 비는 마음은 "축복".']]},
  {w:'암살',by:'zelindaS',ask:'아콘 ___ 뒤로 모든 게 나빠졌어요.',opts:[['암살',1],['암산',0,'암산은 머리로 하는 계산이에요. 몰래 죽이면 "암살".'],['안심',0,'안심은 걱정이 없는 거예요. 지금은 아니에요. 몰래 죽이면 "암살".']]},
  {w:'점령하다',by:'zelindaS',ask:'군대가 도시를 ___ 날, 우리는 궁전에서 쫓겨났어요.',opts:[['점령한',1],['정리한',0,'정리는 방을 치우는 거예요. 군대가 땅을 차지하면 "점령한".']]},
- {w:'화산',by:'haian',ask:'처남이 ___처럼 화를 냈어요. 그래서 알잔이 약을 줬어요.',opts:[['화산',1],['화분',0,'화분은 꽃을 심는 거예요. 불이 터지는 산은 "화산".'],['화살',0,'화살은 활로 쏘는 거예요. 불이 터지는 산은 "화산".']]},
+ {w:'화산',by:'haian',when:()=>!!f().rescued,ask:'처남이 ___처럼 화를 냈어요. 그래서 알잔이 약을 줬어요.',opts:[['화산',1],['화분',0,'화분은 꽃을 심는 거예요. 불이 터지는 산은 "화산".'],['화살',0,'화살은 활로 쏘는 거예요. 불이 터지는 산은 "화산".']]},
  {w:'파도',by:'haian',ask:'오늘 밤은 ___도 조용해요. 아이들이 이제 잠들었어요.',opts:[['파도',1],['포도',0,'포도는 과일이에요. 바다에서 밀려오는 물결은 "파도".'],['파티',0,'파티는 즐거운 모임이에요. 바다의 물결은 "파도".']]},
  {w:'소금',by:'haian',ask:'바닷바람에서 짠 ___ 냄새가 나요.',opts:[['소금',1],['소리',0,'소리는 귀로 듣는 거예요. 짠 바다 냄새는 "소금".'],['소문',0,'소문은 사람들이 하는 말이에요. 짠 건 "소금".']]},
  {w:'식량',by:'haian',when:()=>!!f().rescued,ask:'폴카다브호에 실을 ___은 제가 가져갈게요.',opts:[['식량',1],['식당',0,'식당은 밥 먹는 곳이에요. 오래 먹을 음식은 "식량".']]},
  {w:'기차역',by:'haian',when:()=>!!f().rescued,ask:'하프니르 ___에서 화살 열차를 타요.',opts:[['기차역',1],['공항',0,'공항은 비행기를 타는 곳이에요. 열차를 타는 곳은 "기차역".']]},
  {w:'산소',by:'aljanS',ask:'연기를 많이 마신 사람은 ___가 필요해요.',opts:[['산소',1],['상자',0,'상자는 물건을 넣는 거예요. 숨 쉴 때 필요한 건 "산소".']]},
  {w:'얼음',by:'aljanS',ask:'화상에는 ___ 말고 시원한 물을 써요.',opts:[['얼음',1],['얼굴',0,'얼굴은 눈, 코, 입이 있는 곳이에요. 차갑고 딱딱한 물은 "얼음".'],['어른',0,'어른은 다 큰 사람이에요. 차갑고 딱딱한 물은 "얼음".']]},
- {w:'약물',by:'aljanS',ask:'에버렛 아저씨한테 제가 ___을 줬어요. 이제 좀 조용해요.',opts:[['약물',1],['약국',0,'약국은 약을 사는 곳이에요. 제가 준 건 "약물".'],['약속',0,'약속은 꼭 하겠다는 말이에요. 제가 준 건 "약물".']]},
+ {w:'약물',by:'aljanS',when:()=>!!f().rescued,ask:'에버렛 아저씨한테 제가 ___을 줬어요. 이제 좀 조용해요.',opts:[['약물',1],['약국',0,'약국은 약을 사는 곳이에요. 제가 준 건 "약물".'],['약속',0,'약속은 꼭 하겠다는 말이에요. 제가 준 건 "약물".']]},
  {w:'우주선',by:'aljanS',when:()=>!!f().club,ask:'폴카다브호는 작은 ___이에요. 그래도 다 탈 수 있어요.',opts:[['우주선',1],['우주복',0,'우주복은 입는 옷이에요. 타는 건 "우주선".'],['우체국',0,'우체국은 편지를 보내는 곳이에요. 우주를 나는 배는 "우주선".']]},
  {w:'약속하다',by:'aljanS',when:()=>!!f().club,ask:'아빠, ___. 꼭 다시 만나요.',opts:[['약속해요',1],['약혼해요',0,'약혼하다는 결혼하기로 약속하는 거예요! 아빠하고는 그냥 "약속해요".'],['예약해요',0,'예약은 자리를 미리 잡는 거예요. 꼭 하겠다고 말하면 "약속해요".']]},
  /* 히메나 in the club basement (after the DNA result) */
