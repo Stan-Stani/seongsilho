@@ -21,7 +21,8 @@
  {talk:'daveS'},
  {talk:'finn'},
  {check:()=>state.f.launch,msg:'launched'},
- {walkTo:['dolod',5,6],then:'07-dolod-hangar'},
+ {walkTo:['dolod',5,6]},{intro:1,shot:'07-drop-ride'},{pause:300,shot:'07b-dolod-hangar'},  // the flight down is told on arrival
+ {check:()=>ZID==='dolod'&&!state.f.ride,msg:'the flight down was told'},
  {talk:'finnD'},
  {talk:'dave1',wrong:true},
  {talk:'dave2'},
@@ -36,7 +37,8 @@
  {talk:'finnD',shotBuild:'12-build'},
  {check:()=>state.f.woke&&!state.items.includes('물병'),msg:'Finn awake'},
  {walkTo:['dolod',22,15],then:'13-anchor-hangar'},
- {walkTo:['ship',22,14],then:'14-ship-accel'},
+ {walkTo:['ship',22,14]},{intro:1,shot:'14-anchor-ride'},{pause:300,shot:'14b-ship-accel'},  // the flight back is told on arrival
+ {check:()=>ZID==='ship'&&state.f.home&&!state.f.ride,msg:'the flight back was told'},
  {talk:'ellie'},
  {talk:'pablo',wrong:true},
  {talk:'ellie',wrong:true,shotSay:{text:'안녕~',name:'15-memory'}},
@@ -49,6 +51,7 @@
  {walkTo:['capo',11,8],then:'17-capo-gate'},
  {talk:'zelindaC'},
  {talk:'finnC'},
+ {talk:'otyliaC'},
  {talk:'ellieC'},
  {talk:'dejeanC'},
  {talk:'holo3'},
