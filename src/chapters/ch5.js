@@ -849,7 +849,7 @@ const ZONES={
    'e':()=>f().bopbeDead?null:'취조실 문이에요. 루치아만 들어가요. 봅베가 국장님 얼굴을 보면 안 돼요.',
    'L':['감식 장비예요. 함부로 만지면 안 돼요.','하얀 책상이 아주 깨끗해요. 약 냄새가 나요.'],
    'p':'화분이에요. 누가 매일 물을 줘요.'},
-  npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','maria','feed']},
+  npcs:['lucia','luciaCell','bopbe','bersche','medusa','lab','news','interlude','maria','feed']},
  city:{name:'산타 로사',reg:'SANTA ROSA · GONDIAR',outdoor:1,
   legend:{'L':{tile:'bld'},'H':{tile:'bld'},'Z':{tile:'bld'},'F':{tile:'bld'},'K':{tile:'bld'},'D':{tile:'cityDoor',walk:1},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
    'r':{tile:'road',walk:1},'v':{tile:'vroad',walk:1},'j':{tile:'jaca'},'h':{tile:'holo'},'q':{tile:'qix'},'m':{tile:'memo'},'n':{tile:'bench'},'M':{tile:'manWall'},'G':{tile:'manGate',walk:1},
