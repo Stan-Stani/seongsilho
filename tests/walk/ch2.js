@@ -30,6 +30,9 @@
  {check:()=>state.items.includes('도시락'),msg:'lunch'},
  {talk:'yoru'},
  {check:()=>state.f.bubble,msg:'bubble finished'},
+ // the spaceplane door: arriving at Breakerville, Miteris's descent beat plays as the zone's greeting (standing still, so walkTo the landing tile)
+ {walkTo:['breakerville',23,16]},{intro:1},
+ {check:()=>state.f.landed,msg:'descent narrated, Miteris back to orbit'},
  {walkTo:['breakerville',20,13],then:'09-breakerville'},
  {talk:'davrux'},
  {talk:'tabia'},
@@ -57,6 +60,8 @@
  {talk:'davrux2'},
  {talk:'finnW',shotBefore:'17-network-node'},
  {check:()=>state.f.attack===2,msg:'ghosts beaten'},
+ {talk:'grssia'},  // she sees Toše come out of the wreck (he is hidden until then)
+ {check:()=>state.f.toseOut,msg:'Toše out of the wreck'},
  {talk:'tose',shotSay:{text:'고스트 수류탄이',name:'18-tose-lie'}},
  {check:()=>state.f.lie,msg:'Toše lied'},
  {talk:'davrux2'},
