@@ -89,7 +89,8 @@ window.__play=async function(steps){
  async function talk(k,opts={}){
   const n=C.NPC[k];check(!!n,'no npc '+k);await goZone(n.zone);
   const [nx,ny]=npcPos(n);
-  if(!await reach((x,y)=>Math.abs(x-nx)+Math.abs(y-ny)===1&&!warpAt(x,y),k))return;
+  const across=(x,y)=>((x===nx&&Math.abs(y-ny)===2)||(y===ny&&Math.abs(x-nx)===2))&&!!(Z.legend[at((x+nx)/2,(y+ny)/2)]||{}).over;  // across a counter (an `over` tile), as a player can talk
+  if(!await reach((x,y)=>(Math.abs(x-nx)+Math.abs(y-ny)===1||across(x,y))&&!warpAt(x,y),k))return;
   await face(dirTo(nx,ny));
   log(`== ${n.name} [${C.questText()}]`);
   check($('btnA').classList.contains('ready'),'A button should glow facing '+k);
