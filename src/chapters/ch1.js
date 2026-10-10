@@ -43,7 +43,7 @@ const DICT={
  '쌍둥이':{k:'같은 날 같이 태어난 두 사람.',e:'twins'},
  '기관장':{k:'배에서 엔진을 책임지는 사람.',e:'chief engineer'},
  '제국 기사':{k:'셀레스철 여왕의 큰 갑옷 군인.',e:'Imperial Knight'},
- '도장':{k:'① 가라테 하는 곳 ② 종이에 찍는 이름 표시.',e:'① dojo ② stamp'},
+ '도장':{k:'종이에 쾅 찍는 표시. 이름이나 허락을 보여 줘요.',e:'stamp'},
 };
 /* sounds-alike / looks-alike words, used when a listening question is built */
 const CONFUSE={'선장':['선생','사장'],'궤도':['기도','도로'],'연료':['연체료','연습'],'관측하다':['관중','관심'],'행성':['항상','학생'],'산소':['상소','산수'],'위험':['위협','시험'],'지도':['기도','지구'],'탐험':['시험','모험'],'식량':['시력','심장'],'출발하다':['출근하다','발견하다'],'발견하다':['발표하다','출발하다'],'도착하다':['도전하다','착하다'],'수리하다':['수업하다','요리하다'],'고장 나다':['고향','고생하다'],'우주선':['우주인','우체국']};
@@ -71,11 +71,11 @@ const BANK=[
 const Q={ // NPC questions, kept here so review can reuse them
  ellie:[
   {w:'도착하다',ask:'우리 배가 곤디아에 ___.',opts:[['도착했어요',1],['출발했어요',0,'출발은 떠나는 거예요. 우리는 지금 여기에 왔어요 → "도착했어요".'],['돌아갔어요',0,'돌아가다는 원래 곳으로 가는 거예요. 우리는 처음 왔어요 → "도착했어요".']]},
-  {w:'궤도',ask:'행성 주위를 빙글빙글 도는 길은 뭐예요?',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 우주에서 도는 길은 "궤도".'],['도장',0,'도장은 가라테 하는 곳이에요! 도는 길은 "궤도".']]},
+  {w:'궤도',ask:'행성 주위를 빙글빙글 도는 길은 뭐예요?',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 우주에서 도는 길은 "궤도".'],['도장',0,'도장은 종이에 쾅 찍는 거예요! 도는 길은 "궤도".']]},
  ],
  dejean:[
   {w:'선장',ask:'배에서 제일 높은 사람은 ___이에요.',opts:[['선장',1],['승무원',0,'승무원은 배에서 일하는 사람이에요. 제일 높은 사람은 "선장".'],['심판',0,'심판은 시합에서 결정하는 사람이에요. 배는 "선장".']]},
-  {w:'우주선',ask:'우주를 나는 배는 ___이에요.',opts:[['우주선',1],['비행선',0,'비행선은 큰 풍선처럼 하늘에 떠서 나는 배예요. 우주를 나는 배는 "우주선". 船 = 배!']]},
+  {w:'우주선',ask:'별과 별 사이를 나는 배는 ___이에요.',opts:[['우주선',1],['비행선',0,'비행선은 큰 풍선처럼 하늘에 떠서 나는 배예요. 별 사이를 나는 배는 "우주선". 船 = 배!']]},
  ],
  engine:[
   {w:'고장 나다',ask:'엔진이 안 움직여요. 엔진이 ___.',opts:[['고장 났어요',1],['고쳤어요',0,'고치면 다시 움직여요. 지금은 안 움직여요 → "고장 났어요".'],['지었어요',0,'짓다는 집이나 밥을 만들 때예요. 엔진은 "고장 났어요".']]},
@@ -83,7 +83,7 @@ const Q={ // NPC questions, kept here so review can reuse them
  ],
  andy:[
   {w:'수리하다',ask:'"기계를 고쳐요"를 딱딱하게 말하면? 기계를 ___해요.',opts:[['수리',1],['회복',0,'회복은 사람이나 동물이 다시 건강해지는 거예요. 기계는 "수리".'],['개선',0,'개선은 더 좋게 만드는 거예요. 고장 난 걸 고치는 건 "수리".']]},
-  {w:'수리하다',ask:'저는 매일 기계를 ___.',opts:[['수리해요',1],['수리돼요',0,'제가 직접 해요 → "수리해요". "수리돼요"는 기계가 주어일 때예요.']]},
+  {w:'수리하다',ask:'이 배는 낡아서, 저는 매일 뭔가를 ___.',opts:[['수리해요',1],['수리돼요',0,'제가 직접 해요 → "수리해요". "수리돼요"는 물건이 주어일 때예요.']]},
  ],
  or:[
   {w:'산소',ask:'식물은 우리한테 ___를 줘요. 숨 쉴 때 필요해요.',opts:[['산소',1],['상태',0,'상태는 지금 건강, 기분이에요. 숨 쉴 때 필요한 건 "산소".'],['산수',0,'산수는 숫자 공부예요! 숨 쉴 때 필요한 건 "산소".']]},
@@ -112,11 +112,11 @@ const Q={ // NPC questions, kept here so review can reuse them
   {w:'지도',ask:'새로운 곳에 가면 길을 몰라요. 그래서 ___부터 봐요.',opts:[['지도',1],['사전',0,'사전은 단어를 찾을 때 봐요. 길은 "지도".'],['지구',0,'지구는 아주 먼 행성이에요. 地는 같아요! 길을 그린 건 "지도".']]},
   {w:'탐험',ask:'아무도 안 간 곳에 가 보는 걸 ___이라고 해요.',opts:[['탐험',1],['여행',0,'여행도 좋아요! 그런데 아무도 안 간 위험한 곳은 "탐험".'],['구경',0,'구경은 안전하게 보는 거예요. 아무도 안 간 곳 → "탐험".']]},
  ],
- cafe:[ // old words from 단어 마을, no badges
-  {ask:'포켓몬이 아파요. 포켓몬 ___가 안 좋아요.',opts:[['상태',1],['상대',0,'소리가 비슷해요! 상대는 같이 싸우는 사람. 건강은 "상태".']]},
-  {ask:'시합에서 제 ___는 아주 강해요.',opts:[['상대',1],['상태',0,'상태는 건강이나 기분이에요. 같이 싸우는 사람은 "상대".']]},
+ cafe:[ // old words from 단어 마을 (상태 · 상대 · 돌려주다 · 짖다 · 짓다 · 연체료), no badges; sentences set in Santa Rosa (police dogs: c005)
+  {ask:'어제 손님이 너무 많았어요. 오늘은 몸 ___가 안 좋아요.',opts:[['상태',1],['상대',0,'소리가 비슷해요! 상대는 같이 겨루는 사람. 몸이 어떤지는 "상태".']]},
+  {ask:'내일 공원에서 달리기 시합을 해요. 제 ___는 경찰관이에요. 빨라요!',opts:[['상대',1],['상태',0,'상태는 건강이나 기분이에요. 같이 겨루는 사람은 "상대".']]},
   {ask:'빌린 책을 친구한테 ___.',opts:[['돌려줬어요',1],['돌아갔어요',0,'돌아가다는 내가 가는 거예요. 물건을 주는 건 "돌려주다".'],['돌아줬어요',0,'"돌아주다"는 없어요. "돌려줬어요"!']]},
-  {ask:'강아지가 멍멍 ___.',opts:[['짖어요',1],['지어요',0,'짓다는 집이나 밥을 만들 때예요. 강아지는 "짖어요".']]},
+  {ask:'경찰서 개들이 멍멍 ___. 오늘은 좀 시끄러워요.',opts:[['짖어요',1],['지어요',0,'짓다는 집이나 밥을 만들 때예요. 개는 "짖어요".']]},
   {ask:'내년에 집을 ___ 거예요.',opts:[['지을',1],['질',0,'"질 거예요"는 지다(시합에서 지다)예요. 짓다 → "지을 거예요".']]},
   {ask:'도서관에 책을 늦게 반납했어요. ___를 내야 돼요.',opts:[['연체료',1],['연료',0,'연료는 엔진이 먹어요! 늦게 반납하면 "연체료".']]},
  ],
@@ -127,14 +127,19 @@ const Q={ // NPC questions, kept here so review can reuse them
    top of the orbital tower; Octain is nearly 100; Dejean stays captain under owner Finn; Josias stays for Hafnir; no ZPZ generator yet.
    Gyvoy is already the impostor: kept to a trader's curiosity, no hints beyond the chapter's own.
    Invented (small, harmless): Ellie can't sleep in on arrival day, is bored while the ship sits docked at High Rosa (c012: "only just
-   docked at High Rosa"; High Rosa encircles the tower's anchor asteroid, c006; towers reach geostationary orbit, linked by the georing, c002), thinks Finn will like the map;
-   Dejean's arm still works fine, a pile of work since arrival, she leaves oxygen to Or, Octain fixed it sooner than his "one month"
-   (his month is for making the part aboard; c009's "rebuild those in a month" is about the banned entropy drive, so not used); Or credits her plants for
+   docked at High Rosa"; High Rosa encircles the tower's anchor asteroid, c006; towers reach geostationary orbit, linked by the georing, c002), calls Josias's map (once you have it) a pilot's treasure;
+   Dejean's arm still works fine, a pile of work since arrival, she leaves oxygen to Or, Octain fixed it sooner than the month a part made
+   aboard would take (his month is for making the part aboard; c009's "rebuild those in a month" is about the banned entropy drive, so not used); Or credits her plants for
    the 98% oxygen (the bridge screen) and her vegetables will go along; Octain is the best at engine repair and can be called at night;
    customs seized someone's dangerous knife yesterday, many ships arrived today; Gyvoy would buy the navigation map and asks when the
    ship leaves; Lina never tires of the nebula, hopes to discover a star, draws sky maps, is afraid of far exploration; the miner reached
    High Rosa yesterday (first time at Gondiar) and will buy food supplies (Gondiar has plenty, c005); Josias calls it a good deal
    (c009 "Best deal") and Dejean a good captain; the marchioness sighs about Finn's ship. Audit: notes/audit-review-ch1.md.
+   Completionist round (notes/fixes-ch1-completionist.md): Josias slept through the flight in suspension (c003, c006) and the voyage was
+   ~500 years ship time, 40,000 outside (c003, c009, c013); Ellie was born aboard and grew up in interstellar space, Kinnox was the first
+   planet orbit, everyone at the observation windows, and she helped plot the deceleration (c006); the Knights wrecked the banned drive as a
+   condition of settling (c006, c009); Otylia is "that idiot's twin" and Finn says "Otylia" warningly (c006); Santa Rosa police patrol
+   with Awakened dogs (c005). Invented: the screens after the repair, Or guessing his seeds became fuel, the café's race and sore day.
    Times: the ship stays docked at High Rosa all chapter (even after the finale). Octain only talks after the repair (his script until
    then); Dejean's finale script runs between the repair and the end; Finn hides once he has taught (no lines). */
 // people reuse learned words in their own voice: asked when the word is due, else said once as ordinary talk
@@ -142,11 +147,13 @@ const REVIEW=[
  // 엘리: the cabin, all chapter
  {w:'도착하다',by:'ellie',ask:'곤디아에 ___ 날인데 늦잠도 못 자요!',opts:[['도착한',1],['출발한',0,'출발은 떠나는 거예요. 우리는 오늘 왔어요 → "도착한" 날!'],['착한',0,'착하다는 마음이 좋은 거예요. 하하. 여기 온 날은 "도착한" 날.']]},
  {w:'궤도',by:'ellie',ask:'하이 로사에 붙어서 ___만 도니까 심심해요. 빨리 날고 싶어요!',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 배가 도는 길은 "궤도".'],['기도',0,'기도는 신한테 하는 말이에요. 도는 길은 "궤도".']]},
+ {w:'궤도',by:'ellie',ask:'조종사는 ___ 계산을 잘해야 돼요. 저는 제일 잘해요!',opts:[['궤도',1],['기도',0,'기도는 계산 못 해요. 하하. 배가 도는 길은 "궤도".'],['도로',0,'도로는 땅 위의 길이에요. 우주에서 계산하는 길은 "궤도".']]},
+ {w:'궤도',by:'ellie',ask:'처음 행성 ___에 들어간 날, 다 같이 창밖만 봤어요.',opts:[['궤도',1],['도로',0,'도로는 차가 다니는 길이에요. 행성 주위를 도는 길은 "궤도".'],['기도',0,'기도는 신한테 하는 말이에요. 도는 길은 "궤도".']]},
  {w:'우주선',by:'ellie',ask:'저는 이 ___에서 태어났어요. 진짜예요!',opts:[['우주선',1],['우체국',0,'하하, 우체국에서 태어났어요? 아니에요. 이 배, "우주선"이에요.'],['비행선',0,'비행선은 하늘에 뜨는 풍선 배예요. 이 배는 "우주선".']]},
  {w:'선장',by:'ellie',ask:'배에서는 ___님 말을 꼭 들어요. 저도… 거의요.',opts:[['선장',1],['선생',0,'선생님은 학교에 있어요. 배에서는 "선장"님!'],['심판',0,'심판은 시합에서 결정하는 사람이에요. 배에서 제일 높은 사람은 "선장"님.']]},
  {w:'고장 나다',by:'ellie',when:()=>!f().fixed,ask:'엔진실 기계가 ___ 배가 너무 조용해요.',opts:[['고장 나서',1],['고쳐서',0,'고쳤으면 시끄럽겠죠! 조용한 건 "고장 나서".'],['출발해서',0,'엔진실은 아무 데도 안 가요. 망가져서 조용해요 → "고장 나서".']]},
- {w:'행성',by:'ellie',ask:'아누샤 전에는 ___에 가 본 적이 없었어요. 배에서만 살았어요.',opts:[['행성',1],['우주선',0,'우주선에서는 태어났어요! 아누샤 같은 큰 땅은 "행성".'],['학생',0,'학생은 공부하는 사람이에요. 아누샤는 "행성".']]},
- {w:'지도',by:'ellie',ask:'할아버지 ___, 잘 챙겨요. 핀이 좋아할 거예요.',opts:[['지도',1],['지구',0,'지구는 아주 먼 행성이에요! 할아버지가 준 건 "지도".'],['기도',0,'기도는 말로 하는 거예요. 길이 그려진 건 "지도".']]},
+ {w:'행성',by:'ellie',ask:'저는 배에서 태어나서 배에서 컸어요. 그래서 ___이 아직도 신기해요.',opts:[['행성',1],['우주선',0,'우주선에서 컸으니까 우주선은 안 신기해요! 신기한 건 큰 땅, "행성".'],['학생',0,'학생은 공부하는 사람이에요. 큰 땅은 "행성".']]},
+ {w:'지도',by:'ellie',when:()=>hasItem('성실호 항해 지도'),ask:'할아버지 항해 ___네요! 조종사한테는 보물이에요.',opts:[['지도',1],['지구',0,'지구는 아주 먼 행성이에요! 길이 그려진 건 "지도".'],['기도',0,'기도는 말로 하는 거예요. 길이 그려진 건 "지도".']]},
  // 드장 선장: the bridge; her finale script talks between the repair and the end
  {w:'선장',by:'dejean',ask:'핀 씨가 주인이지만, 배에서는 제가 ___이에요.',opts:[['선장',1],['승객',0,'승객은 배를 타고 가는 손님이에요. 배를 책임지는 사람은 "선장".'],['선생',0,'선생님은 학교에 있어요. 배에서 제일 높은 사람은 "선장".']]},
  {w:'우주선',by:'dejean',ask:'이 ___은 저보다 나이가 훨씬 많아요. 그래도 여기까지 왔어요.',opts:[['우주선',1],['비행선',0,'비행선은 하늘에 뜨는 풍선 배예요. 우리 배는 우주를 나는 "우주선".'],['우체국',0,'우체국이 여기까지 와요? 이 배는 "우주선"이에요.']]},
@@ -154,7 +161,7 @@ const REVIEW=[
  {w:'산소',by:'dejean',ask:'___ 걱정은 없어요. 오르가 있으니까요.',opts:[['산소',1],['연료',0,'연료는 엔진이 먹어요. 오르의 채소가 만드는 건 "산소".'],['산수',0,'산수는 숫자 공부예요. 숨 쉬는 공기는 "산소".']]},
  {w:'고장 나다',by:'dejean',when:()=>!f().fixed,ask:'엔진실 기계는 ___ 제 팔은 멀쩡해요. 웃기죠?',opts:[['고장 났는데',1],['고쳤는데',0,'엔진실은 아직 못 고쳤어요. 망가졌으니까 "고장 났는데".'],['출발했는데',0,'엔진실은 아무 데도 안 가요. 망가졌어요 → "고장 났는데".']]},
  {w:'수리하다',by:'dejean',when:()=>!f().fixed,ask:'부품하고 연료만 있으면 기관장이 ___할 수 있어요.',opts:[['수리',1],['회복',0,'회복은 사람이 다시 건강해지는 거예요. 엔진은 "수리".'],['구경',0,'구경만 하면 안 고쳐져요. 고치는 건 "수리".']]},
- {w:'수리하다',by:'dejean',when:()=>!!f().done,ask:'한 달 걸린다더니, 기관장이 금방 ___했네요.',opts:[['수리',1],['회복',0,'회복은 사람이 나을 때예요. 엔진은 "수리".'],['구경',0,'구경은 보기만 하는 거예요. 고쳤으니까 "수리".']]},
+ {w:'수리하다',by:'dejean',when:()=>!!f().done,ask:'부품을 배에서 만들면 한 달이래요. 그런데 금방 ___했네요.',opts:[['수리',1],['회복',0,'회복은 사람이 나을 때예요. 엔진은 "수리".'],['구경',0,'구경은 보기만 하는 거예요. 고쳤으니까 "수리".']]},
  {w:'출발하다',by:'dejean',when:()=>!!f().done,ask:'이제 언제든 ___할 수 있어요. 관문만 빼고요.',opts:[['출발',1],['반납',0,'반납은 빌린 걸 돌려주는 거예요. 떠나는 건 "출발".'],['연습',0,'연습은 여러 번 해 보는 거예요. 떠나는 건 "출발".']]},
  // 오르: the hydroponics bay, all chapter
  {w:'산소',by:'or',ask:'___ 98%예요. 제 채소들이 일 잘하죠?',opts:[['산소',1],['연료',0,'연료는 엔진이 먹어요. 채소가 만드는 건 "산소".'],['산수',0,'하하, 산수는 숫자 공부예요. 채소가 만드는 건 "산소".']]},
@@ -174,10 +181,11 @@ const REVIEW=[
  // 기보이: his stall, after the trade
  {w:'연료',by:'gyvoy',ask:'엔진 ___ 또 필요하면 와요. 지구 물건이면 돼요!',opts:[['연료',1],['음료',0,'하하! 엔진은 음료 안 마셔요. 엔진 밥은 "연료".'],['연체료',0,'연체료는 책을 늦게 내는 돈이에요. 하하. 엔진은 "연료".']]},
  {w:'출발하다',by:'gyvoy',ask:'성실호는 언제 또 ___해요? 저한테만 살짝 말해요.',opts:[['출발',1],['반납',0,'반납은 빌린 걸 돌려줄 때예요. 배가 떠나는 건 "출발".'],['연습',0,'하하, 배가 연습을 해요? 떠나는 건 "출발".']]},
+ {w:'관측하다',by:'gyvoy',ask:'별을 ___하면 돈이 돼요? 리나한테 물어봐야겠어요.',opts:[['관측',1],['청소',0,'별은 청소 못 해요. 너무 멀어요! 보고 재는 건 "관측".'],['반납',0,'반납은 빌린 걸 돌려주는 거예요. 별은 안 빌렸어요! 보고 재는 건 "관측".']]},
  {w:'관측하다',by:'gyvoy',ask:'리나는 하루 종일 성운만 ___해요. 저는 손님만 봐요!',opts:[['관측',1],['관중',0,'관중은 경기를 보는 사람이에요. 리나는 과학자라서 "관측".'],['관세',0,'관세는 세관에 내는 돈이에요. 하하. 성운을 재는 건 "관측".']]},
  {w:'지도',by:'gyvoy',ask:'그 항해 ___, 팔 생각 없어요? 값 잘 쳐 줄게요.',opts:[['지도',1],['지구',0,'지구를 팔아요? 하하, 너무 커요. 길이 그려진 건 "지도".'],['기도',0,'기도는 못 팔아요. 여신님이 화내요! 길을 그린 건 "지도".']]},
  // 천문학자 리나: the georing windows
- {w:'관측하다',by:'lina',ask:'성운 ___은 하루 종일 해도 안 지겨워요.',opts:[['관측',1],['관중',0,'관중은 경기를 보는 사람이에요. 성운을 재는 건 "관측".'],['관세',0,'관세는 세관에 내는 돈이에요. 성운을 재는 건 "관측".']]},
+ {w:'관측하다',by:'lina',ask:'성운 ___은 하루 종일 해도 안 지겨워요.',opts:[['관측',1],['관중',0,'관중은 경기를 보는 사람이에요. 성운을 재는 건 "관측".'],['관심',0,'관심은 마음이에요. 하는 일이 아니에요. 성운을 보고 재는 건 "관측".']]},
  {w:'행성',by:'lina',ask:'곤디아는 지구보다 네 배 넓은 ___이에요.',opts:[['행성',1],['성운',0,'성운은 우주의 빛 구름이에요. 곤디아는 땅이 있는 "행성".'],['학생',0,'학생은 공부하는 사람이에요. 곤디아는 "행성".']]},
  {w:'궤도',by:'lina',ask:'하이 로사는 ___에 있는 도시예요. 탑 꼭대기요.',opts:[['궤도',1],['도로',0,'도로는 땅 위의 길이에요. 하이 로사는 하늘 위, "궤도"에 있어요.'],['기도',0,'기도는 신한테 하는 말이에요. 도는 길은 "궤도".']]},
  {w:'발견하다',by:'lina',ask:'언젠가 새 별을 ___하고 싶어요. 제 이름으로요!',opts:[['발견',1],['결정',0,'결정은 고르는 거예요. 처음 찾는 건 "발견".'],['연습',0,'별은 연습 못 해요! 처음 찾는 건 "발견".']]},
@@ -196,10 +204,10 @@ const REVIEW=[
  {w:'우주선',by:'josias',ask:'그 ___, 한때 제 거였어요. 좋은 거래였죠.',opts:[['우주선',1],['우체국',0,'우체국은 제 게 아니었어요. 하하. 성실호는 "우주선".'],['우주인',0,'우주인은 사람이에요. 거래 못 해요. 성실호는 "우주선".']]},
  {w:'선장',by:'josias',ask:'드장은 좋은 ___이에요. 배를 잘 지켜요.',opts:[['선장',1],['선생',0,'선생님은 학교에 있어요. 배를 지키는 사람은 "선장".'],['손님',0,'드장은 손님이 아니에요. 배를 지키는 사람은 "선장".']]},
  // 오틸리아: by the pond, all chapter (no badge, so these can be the first thing she says)
- {w:'행성',by:'otylia',ask:'제 쌍둥이 핀은 곤디아가 지겹대요. 이렇게 큰 ___인데요!',opts:[['행성',1],['도시',0,'산타 로사는 도시, 곤디아는 큰 "행성"이에요!'],['학생',0,'학생? 하하, 곤디아는 사람이 아니에요. "행성"이에요.']]},
+ {w:'행성',by:'otylia',ask:'핀, 곤디아가 지겹다고? 이렇게 큰 ___인데!',opts:[['행성',1],['성운',0,'성운은 우주의 빛 구름이에요. 곤디아는 큰 "행성"이에요!'],['학생',0,'학생? 하하, 곤디아는 사람이 아니에요. "행성"이에요.']]},
  {w:'위험',by:'otylia',ask:'핀이 또 ___한 짓 하면 저한테 바로 말해요.',opts:[['위험',1],['안전',0,'안전한 짓은 걱정 안 해요. 걱정되는 건 "위험"한 짓!'],['조용',0,'핀이 조용한 짓을? 하하, 그럼 좋죠. 걱정되는 건 "위험"한 짓.']]},
  {w:'우주선',by:'otylia',ask:'우리 엄마는 핀의 ___ 얘기만 나오면 한숨이에요.',opts:[['우주선',1],['우체국',0,'우체국 얘기에 한숨을 왜 쉬어요? 핀이 받은 건 "우주선".'],['우유',0,'우유는 마시는 거예요. 핀이 땅을 주고 받은 건 "우주선".']]},
- {w:'고장 나다',by:'otylia',when:()=>!f().fixed,ask:'핀 배가 벌써 ___? 정말 낡은 배예요.',opts:[['고장 났어요',1],['고쳤어요',0,'고쳤으면 좋은 소식이죠! 낡아서 망가졌으면 "고장 났어요".'],['지었어요',0,'짓다는 집이나 밥이에요. 배가 망가지면 "고장 났어요".']]},
+ {w:'고장 나다',by:'otylia',when:()=>!f().fixed&&hasItem('부품'),ask:'그 상자, 성실호 부품이야, 핀? 배가 벌써 ___?',opts:[['고장 났어',1],['고쳤어',0,'고쳤으면 부품이 왜 필요해요? 망가졌으면 "고장 났어".'],['지었어',0,'짓다는 집이나 밥이에요. 배가 망가지면 "고장 났어".']]},
 ];
 
 const ITEMS={'지구 씨앗 상자':'지구에서 가져온 씨앗이에요. 여기서는 아주 귀해요.','연료통':'헬륨3 연료가 들어 있어요.','부품':'엔진에 들어가는 은색 부품.','성실호 항해 지도':'조사이어스가 준 지도. 태양계에서 여기까지 온 길이 그려져 있어요.','세관 도장':'하이 로사 세관 도장. 쾅!'};
@@ -230,7 +238,8 @@ const ZONES={
   rooms:[[1,1,4,5,'성실호 · 선실'],[6,1,17,5,'성실호 · 함교'],[19,1,22,5,'성실호 · 수경 재배실'],[1,6,22,8,'성실호 · 복도'],[1,9,10,14,'성실호 · 엔진실'],[17,9,22,14,'성실호 · 에어록']],
   dark:()=>!f().fixed?[1,9,10,14]:null,
   warps:{'18,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'},'19,15':{to:'dock',x:2,y:13,dir:'up',lock:()=>!f().needParts&&'에어록이 잠겼어요. 아직 나갈 때가 아니에요.'}},
-  spots:{'7,1':'창밖에 성운이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".','10,2':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."','6,2':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'},
+  spots:{'7,1':'창밖에 성운이 가득해요. 아래에는 초록색 행성이 있어요.','3,1':'벙커 침대예요. 아직 따뜻해요.','1,1':'엘리의 침대. 책이 한 권 있어요. 제목은 "지구의 마지막 날".',get '10,2'(){const F=f();return F.done?'함교 화면: "보조 엔진 상태: 정상. ZPZ 발생기: 없음."':F.fixed?'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 정상."':'함교 화면: "하이 로사 도킹 완료. 보조 엔진 상태: 고장."'},
+   get '6,2'(){return f().fixed?'함교 화면: "산소 98% · 식량 충분 · 연료 보충 완료"':'함교 화면: "산소 98% · 식량 충분 · 연료 3%"'}},  // the canister went in at the repair
   things:{'#':['오래된 벽이에요. 고친 자국이 많아요.','차가운 쇠벽이에요. 웅웅 소리가 나요.'],
    'w':x=>x>=9&&x<=13?'아래에 초록색, 금색 땅이 보여요.':'창밖에 성운이 빛나요. 아주 조용해요.',
    'c':['화면에 숫자가 빠르게 지나가요.','버튼이 아주 많아요. 함부로 누르면 안 돼요.'],
@@ -260,10 +269,12 @@ const ZONES={
   warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
   spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아누샤 광산"이라고 쓰여 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
   things:{'#':['하이 로사의 벽이에요. 철골이 많아요.','벽의 파란 불이 천천히 깜빡여요.'],
-   'W':['창밖에 곤디아가 아주 크게 보여요.','창밖에 성운이 가득해요. 별은 잘 안 보여요.'],
+   'W':(x,y)=>{const P=ZONES.dock.planet,inP=(px,py)=>(px-P.cx)**2+(py-P.cy-170)**2<P.r*P.r,n=[[0,0],[16,0],[0,16],[16,16]].filter(([a,b])=>inP(x*16+a,y*16+b)).length;
+    return n===4?'창밖에 곤디아가 아주 크게 보여요.':n?'창밖에 곤디아하고 성운이 같이 보여요.':'창밖에 성운이 가득해요. 별은 잘 안 보여요.'},
    'k':['나무 상자예요. 아주 무거워요.','상자에 숫자가 잔뜩 쓰여 있어요.'],
-   's':['노점이에요. 반짝이는 물건이 많아요.','노점 지붕이 줄무늬예요.']},
-  npcs:['customs','gyvoy','lina','trader']},
+   's':(x,y)=>y===4?'노점 지붕이 줄무늬예요.':'노점 물건이에요. 빨간 상자, 파란 병… 다 반짝여요.'},
+  greet:()=>f().ride==='up'?'rideD':null,  // the capsule ride up (the rides, below NPC)
+  npcs:['customs','gyvoy','lina','trader','rideD']},
  city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',
   legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'stationHill'},'=':{tile:'rails',walk:1},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
   map:[
@@ -292,15 +303,17 @@ const ZONES={
    'C':['카페 창문에 케이크가 보여요.','줄무늬 차양이 예뻐요.'],
    '~':['연못에 작은 물고기가 있어요.','물이 맑아요. 하늘이 비쳐요.'],
    'O':'수정 탑이 햇빛에 반짝여요.','I':'거대한 탑이 하늘로 올라가요. 끝이 안 보여요.','n':'나무 벤치예요. 앉아서 쉬고 싶어요.'},
-  npcs:['terence','josias','otylia','cafe']},
+  greet:()=>f().ride==='down'?'rideC':null,  // the capsule ride down
+  npcs:['terence','josias','otylia','cafe','rideC']},
 };
 
 const NPC={
  ellie:{name:'엘리',zone:'ship',x:3,y:3,dir:'left',look:{hair:'#2A2220',skin:'#E8B892',shirt:'#E4E1D6',pants:'#3B4650',belt:'#E8962A',style:'bob',lashes:1,lips:'#C8646E'},badge:['도착하다','궤도'],
-  after:'창밖을 봐요. 우리 배도 하이 로사도 궤도에 있어요!',
+  get after(){const F=f();if(F.hello&&!F.hi)return [{say:'할아버지 인사를 전해 줘서 고마워요!'},{say:'할아버지는 요즘 늘 바빠요. 하프니르 일 때문에요.',set:()=>{f().hi=1}}];  // once, after 조사이어스 asked you
+   return F.fixed?'엔진 소리 들려요? 배가 다시 살아났어요!':'우리 배도 하이 로사도 궤도에 있어요. 신기하죠?'},
   talk:()=>[
    {say:'일어나요! 드디어 왔어요!'},
-   {say:'아주 오래 날아서 여기까지 왔어요. 저기 초록색 행성, 곤디아예요.'},
+   {say:'아주 오래 날아서 여기까지 왔어요. 이 아래 초록색 행성이 곤디아예요.'},
    {say:'저는 이 배 조종사예요. 제일 잘 날아요!'},
    Q.ellie[0],
    {say:'이제 배는 하이 로사에 붙어서 곤디아 주위를 돌아요.'},
@@ -329,13 +342,14 @@ const NPC={
   talk:()=>[
    {say:'아, 우리 승무원이군요! 반가워요. 저는 핀이에요. 이제 이 배 주인이에요.'},
    {say:'제 땅 하프니르를 주고 이 배를 받았어요. 우리 엄마는 처음에 안 된다고 했어요.'},
-   {say:'셀레스철 {제국 기사|제국 기사}들이 금지된 엔트로피 엔진을 망가뜨렸어요. 그건 괜찮아요.'},
+   {say:'{제국 기사|제국 기사}들이 와서 금지된 엔진을 부쉈어요.'},
+   {say:'그건 괜찮아요. 그 엔진이 있으면 곤디아에 못 살아요.'},
    {say:'그런데 배가 너무 낡았어요. 엔진실 기계가 멈췄어요.'},
    Q.engine[0],
    Q.engine[1],
    {say:'{엔진실|엔진실}은 복도 아래예요. 옥테인 {기관장|기관장}이 있어요. 같이 가요!',award:['고장 나다'],set:()=>{f().metOwner=1;f().finn=1}}]},
  or:{name:'오르',zone:'ship',x:20,y:4,dir:'down',look:{hair:'#5B6B3A',skin:'#D7A77E',shirt:'#5E8C4A',pants:'#3E4A33'},badge:['산소','식량'],
-  after:'식물이 산소를 만들어요. 그래서 여기 공기가 제일 좋아요.',
+  get after(){return f().fixed?'엔진이 다시 돌아요! 제 씨앗이 연료가 됐네요. 하하.':hasItem('연료통')?'연료통이네요! 제 씨앗하고 바꿨어요? 잘했어요!':'식물이 산소를 만들어요. 그래서 여기 공기가 제일 좋아요.'},
   talk:()=>[
    {say:'어서 와요. 여기는 {수경 재배실|수경 재배실}이에요. 흙 없이 채소를 키워요.'},
    Q.or[0],
@@ -376,8 +390,8 @@ const NPC={
    {say:'정지! 하이 로사 {세관|세관}이에요. 성실호에서 왔어요?'},
    Q.customs[0],
    Q.customs[1],
-   {say:'좋아요. 도장을 찍어 줄게요. 쾅!',give:'세관 도장'},
-   {say:'가라테 {도장|도장} 말고요. 이 도장이에요. 들어가세요.',award:['위험'],set:()=>{f().customs=1}}]},
+   {say:'좋아요. {도장|도장}을 찍어 줄게요. 쾅!',give:'세관 도장'},
+   {say:'이제 들어가도 돼요. 하이 로사에 오신 걸 환영해요.',award:['위험'],set:()=>{f().customs=1}}]},
  gyvoy:{name:'기보이',zone:'dock',x:13,y:4,dir:'left',look:{hair:'#2A1E1A',skin:'#B9825A',shirt:'#6A2E52',pants:'#4B3A2E',coat:1},badge:['연료','출발하다'],
   status:()=>{
    if(!state.badges.includes('연료'))return 'todo';
@@ -389,13 +403,14 @@ const NPC={
    if(state.badges.includes('출발하다'))return null;
    if(!hasItem('지구 씨앗 상자'))return [{say:'연료통? 공짜는 없어요. 지구 물건 있어요? 지구 물건은 아주 비싸요!'}];
    return [
-    {say:'오! 지구 씨앗이에요? 사만 년 날아온 지구 씨앗! 아주 귀해요!',take:['지구 씨앗 상자']},
+    {say:'오! 지구 씨앗이에요? 아주 귀해요!',take:['지구 씨앗 상자']},
+    {say:'배 안에서는 오백 년, 밖에서는 사만 년 날아온 씨앗이에요!'},
     Q.gyvoy2[0],
-    Q.gyvoy2[1],
     {say:'거래 끝! 연료통 받아요.',give:'연료통'},
+    Q.gyvoy2[1],
     {say:'출발 전에 꼭 기도해요. 아스테리아 여신님, 지켜 주세요!',award:['출발하다']}];
   },
-  after:'아스테리아 여신님 감사합니다! 제 손바닥은 보지 마세요. 하하.',
+  after:'아스테리아 여신님 감사합니다! 오늘은 장사가 잘돼요.',
   talk:()=>[
    {say:'아스테리아 여신님 감사합니다! 손님이다!'},
    {say:'저는 기보이예요. 트래블러예요. 뭐든지 팔아요.'},
@@ -420,20 +435,36 @@ const NPC={
    Q.terence[1],
    {say:'상자에 "성실호"라고 쓰여 있어요. 성실호 거죠? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
  josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',coat:1},badge:['지도','탐험'],
-  after:'엘리한테 인사 전해 줘요. 제 손녀의 손녀의… 아주 먼 후손이에요.',
+  after:'엘리는 제 손녀의 손녀의… 아주 먼 후손이에요. 저는 오는 동안 거의 잠만 잤거든요.',
   talk:()=>[
    {say:'오, 성실호 승무원이죠? 저는 조사이어스예요. 옛날에 그 배 주인이었어요.'},
    {say:'이제 성실호는 핀 거예요. 저는 곤디아에 남아요. 하프니르에 우리 사람들 집을 지어야 돼요.'},
    Q.explore[0],
    Q.explore[1],
    {who:'…',w:'탐험',build:['핀이','성실호로','탐험을','떠나요'],alts:[['핀이','탐험을','성실호로','떠나요'],['성실호로','핀이','탐험을','떠나요'],['성실호로','탐험을','핀이','떠나요'],['탐험을','핀이','성실호로','떠나요'],['탐험을','성실호로','핀이','떠나요']]},
-   {say:'이 항해 지도, 저는 이제 필요 없어요. '+(f().finn?'핀하고 같이 봐요.':'핀한테 가져가요.'),give:'성실호 항해 지도',award:['지도','탐험']}]},
+   {say:'이 항해 지도, 저는 이제 필요 없어요. '+(f().finn?'핀하고 같이 봐요.':'핀한테 가져가요.'),give:'성실호 항해 지도',award:['지도','탐험']},
+   {say:'엘리한테 인사 전해 줘요.',set:()=>{f().hello=1}}]},
  otylia:{name:'오틸리아',zone:'city',x:21,y:12,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1,lashes:1,lips:'#C8646E'},
-  talk:()=>[{say:'안녕하세요. 저는 오틸리아예요. 핀의 {쌍둥이|쌍둥이}예요.'},{say:'핀이 땅을 주고 낡은 우주선을 받았어요. 정말 핀다워요.'},{say:'핀은 항상 탐험 얘기만 해요. 잘 부탁해요.'}]},
+  talk:()=>[{say:'핀! …아, 안녕하세요. 저는 오틸리아예요. 이 바보랑 {쌍둥이|쌍둥이}예요.'},{say:'땅을 주고 낡은 우주선을 받았지? 정말 너다워, 핀.'},
+   {who:'핀',say:'오틸리아, 그만해.'},{say:'하하. 우리 핀, 잘 부탁해요. 항상 탐험 얘기만 해요.'}],
+  again:'또 왔어요? 우리 핀, 말 잘 들어요?'},
  cafe:{name:'카페 사장님',zone:'city',x:19,y:7,dir:'down',look:{hair:'#A0A0A0',skin:'#E8B892',shirt:'#5A3A2A',pants:'#2E2A28'},
   script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 오세요! 커피 한 잔 하면서 옛날 단어 연습해요.'},{...q,old:1},{say:'또 오세요. 커피는 공짜예요.'}]},
   talk:()=>[]},
 };
+/* the rides: stepping onto the lift (dock) or the tower pad (city) the first time each way sets f().ride (onStep); on arrival a narrator
+   nobody sees (look:null, the zone's greet) says the trip, so the ride isn't a silent cut (as 3장's capsule). It clears the flag in
+   script, not with set:, so a ride isn't counted as a story beat. Book: the capsule down the tower, its observation lounge with a
+   floor-to-ceiling clear wall, Gondiar's vast continents and white cloud below (c006); Santa Rosa dropping away on the way up (c030). */
+const RIDE={'dock:20,4':['down',()=>!f().rodeDown],'dock:21,4':['down',()=>!f().rodeDown],'city:11,2':['up',()=>!f().rodeUp]};
+const RIDE_SAY={
+ down:['궤도 엘리베이터 캡슐이 탑을 따라 곤디아로 내려가요.','큰 유리창으로 넓은 땅하고 하얀 구름이 보여요. 한참 뒤에 산타 로사에 도착해요.'],
+ up:['캡슐이 탑을 따라 올라가요. 산타 로사가 점점 작아져요.','다시 하이 로사예요.']};
+const rider=(zone,leg,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>f().ride!==leg,
+ script:()=>{f()[leg==='down'?'rodeDown':'rodeUp']=1;f().ride=0;return RIDE_SAY[leg].map(say=>({who:'…',say}))},talk:()=>[]});
+NPC.rideC=rider('city','down',11,4);NPC.rideD=rider('dock','up',20,6);
+const onStep=()=>{const r=RIDE[ZID+':'+state.x+','+state.y];if(r&&r[1]())f().ride=r[0]};
+
 const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f().fixed?'엔진 소리 들려요? 가슴이 뛰어요!':ZID==='city'?'여기는 제 고향이에요. 예쁘지만 좀 {지겨워요|지겹다}.':'엔진을 고치면 이 배가 다시 살아나요!'}]};
 
 const INTRO=[{who:'성실호',say:'삐— 삐— 하이 로사 도킹 완료.'},{who:'성실호',say:'승무원 여러분, 일어나세요.'}];
@@ -474,7 +505,7 @@ const TILES={
 
 function questText(){
  const F=f(),b=w=>state.badges.includes(w);
- if(F.done)return '1장 끝 · 일지에서 복습해요';
+ if(F.done)return typeof dueWords==='function'&&dueWords().length?'1장 끝 · 일지에서 복습해요':'1장 끝 · 메뉴에서 2장으로 가요';  // the 일지 only when something is due
  if(!b('도착하다'))return '선실 · 엘리하고 이야기해요';
  if(!b('선장'))return '함교 · 선장님한테 인사해요';
  if(!F.metOwner)return '함교 · 배 주인 핀을 찾아요';
@@ -485,5 +516,5 @@ function questText(){
  if(hasItem('부품')&&hasItem('연료통'))return '엔진실 · 기관장님한테 가져가요';
  return `${hasItem('연료통')?'산타 로사':'하이 로사'} · 연료통 ${fu} · 부품 ${p}`;
 }
-return {WORDS,DICT,CONFUSE,BANK,Q,REVIEW,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,TILES};
+return {WORDS,DICT,CONFUSE,BANK,Q,REVIEW,ITEMS,ZONES,NPC,FOLLOW,INTRO,DONE,questText,onStep,TILES};
 }});
