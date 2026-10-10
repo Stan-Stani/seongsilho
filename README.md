@@ -15,7 +15,7 @@ Seven chapters follow the arkship *Diligent*; you walk, talk to people, answer q
 - 112 words across 7 chapters, each chapter with its own save; spaced review at the signal terminals
 - Tap any Korean word for a simple Korean definition; English is behind the **?** button
 - Korean speech on devices that have a Korean voice
-- Runs on the shared [walk engine](https://github.com/Stan-Stani/walk-engine) with 형제, 방과 후 and 단어 마을
+- Runs on the shared [walk engine](https://github.com/Stan-Stani/walk-engine) with 형제, 점심 방송 and 단어 마을
 
 A fan-made learning tool. It contains no text from the novel, and the book itself is not included.
 
