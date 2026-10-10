@@ -16,11 +16,17 @@
  {talk:'trader'},
  {talk:'gyvoy'},
  {check:()=>state.items.includes('연료통'),msg:'fuel for seeds'},
+ // the first capsule ride each way narrates on arrival (zone greet), so walk one hop and finish that line first
+ {walkTo:['city',11,3]},{intro:1,shot:'06b-capsule-down'},
  {talk:'terence',shotBefore:'07-city'},
  {talk:'josias',wrong:true,shotBuild:'08-sentence-build'},
  {talk:'otylia'},
  {talk:'cafe',wrong:true},
  {check:()=>state.badges.length===C.WORDS.length,msg:'all words collected'},
+ {walkTo:['dock',20,5]},{intro:1,shot:'08b-capsule-up'},
+ {check:()=>!state.f.ride&&state.f.rodeDown&&state.f.rodeUp,msg:'the ride lines are done'},
+ {talk:'ellie'},  // 조사이어스 asked you to greet her: she answers once
+ {check:()=>state.f.hi,msg:'Ellie heard the greeting'},
  {talk:'andy'},
  {check:()=>state.f.fixed,msg:'engine fixed'},
  {walkTo:['ship',8,13],then:'09-engine-room-lit'},
