@@ -16400,5 +16400,37 @@
 "숙제": {
 "e": "homework",
 "k": "학교에서 내 주는, 집에서 하는 공부."
+},
+"갈림길": {
+"e": "fork (in a road), junction",
+"k": "길이 두 개로 나뉘는 곳."
+},
+"단말기": {
+"e": "terminal (device)",
+"k": "화면이 있어서 정보를 보고 쓰는 기계."
+},
+"선명하다": {
+"e": "to be clear, vivid, sharp",
+"k": "아주 또렷하고 분명해요."
+},
+"작동": {
+"e": "operation, working (of a machine)",
+"k": "기계가 움직이고 일하는 것. 작동하다."
+},
+"콕": {
+"e": "(a quick) jab, poke",
+"k": "뾰족한 것으로 작게 한 번 찌르는 모양."
+},
+"트럭": {
+"e": "truck",
+"k": "짐을 싣고 다니는 큰 차."
+},
+"착륙장": {
+"e": "landing pad, landing field",
+"k": "비행기가 내리고 뜨는 곳."
+},
+"교대": {
+"e": "shift, taking turns",
+"k": "일을 순서대로 바꿔 가면서 하는 것. 교대로 일해요."
 }
 }

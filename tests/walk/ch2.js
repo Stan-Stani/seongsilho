@@ -12,8 +12,9 @@
  {talk:'finn'},
  {talk:'uzoma'},
  {check:()=>state.f.gift&&!state.items.includes('피의 병'),msg:'gift of passage fired into the Gate'},
+ // the empty 구명 침대 is the Gate: strapped in for the entry frame and the frame dream (the interlude), lying down for the exit
  {talk:'dream',shotSay:{text:'방주 한 척이',name:'04-frame-dream'}},
- {check:()=>state.f.dream,msg:'interlude seen'},
+ {check:()=>state.f.dream&&C.questText().includes('엘리'),msg:'through the Gate (frame + dream), goal: Ellie'},
  {inspect:['lestari',4,2]},
  {talk:'ellie',wrong:true},
  {check:()=>petOn()&&!npcAt(9,4),msg:'Ellie follows'},
@@ -32,7 +33,7 @@
  {check:()=>state.f.bubble,msg:'bubble finished'},
  // the spaceplane door: arriving at Breakerville, Miteris's descent beat plays as the zone's greeting (standing still, so walkTo the landing tile)
  {walkTo:['breakerville',23,16]},{intro:1},
- {check:()=>state.f.landed,msg:'descent narrated, Miteris back to orbit'},
+ {check:()=>state.f.landed&&C.ZONES.breakerville.legend.P.walk,msg:'descent narrated, Miteris back to orbit (the pad is empty)'},
  {walkTo:['breakerville',20,13],then:'09-breakerville'},
  {talk:'davrux'},
  {talk:'tabia'},
@@ -70,7 +71,7 @@
  {talk:'dave'},{talk:'dave2'},{talk:'ghost2'},
  {check:()=>state.badges.length===C.WORDS.length,msg:'all words collected'},
  {talk:'davrux2'},
- {check:()=>state.f.dug,msg:'generator dug out'},
+ {check:()=>state.f.dug&&!C.ZONES.breakerville.legend.P.walk,msg:'generator dug out, the spaceplane is back down'},
  {talk:'miterisB'},
  {talk:'finnW',shotBefore:'20-zpz-generator'},
  {check:()=>state.f.done,msg:'chapter done'},
