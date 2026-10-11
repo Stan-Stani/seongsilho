@@ -562,7 +562,7 @@ const ZONES={
    'S':(x,y)=>vary(x,y,f().home?['화면 가득 성운 빛이에요. 별은 거의 안 보여요.','보라색 성운이 화면에 퍼져 있어요.']:['화면에 하얀 별 두 개가 아주 밝아요.','화면 가운데에 투명한 공이 떠 있어요.']),
    'c':['콘솔이에요. 작은 불빛이 깜빡여요.','콘솔 화면의 숫자가 천천히 바뀌어요.']},
   npcs:['dejean','uemi','ellieS','gyShip','otylia']},
- mytal:{name:'마이탈포트 · 철골 기둥',reg:'MYTALPORT · KINGSNEST',sky:SKY_UP,
+ mytal:{name:'마이탈포트 · 철골 기둥',get reg(){return (f().home?'MEMORY · ':'')+'MYTALPORT · KINGSNEST'},sky:SKY_UP,
   legend:{'P':{tile:'port'},'H':{tile:'airlock',walk:1},'~':{tile:'sky6'},'X':{tile:'truss'},'=':{tile:'girder',walk:1},'p':{tile:'gplate',walk:1},
    'a':{tile:'airplant'},'K':{tile:'ovarKoa'},'J':{tile:'ovarKech'},'r':{tile:'boarding',walk:1}},
   map:[
@@ -595,7 +595,7 @@ const ZONES={
    'K':()=>f().massacre?'빈 자리예요. 코아는 이제 없어요.':f().ride?'빈 자리예요. 코아는 나소로 떠났어요.':'코아의 큰 몸이에요. 까만 등에 무지갯빛이 돌아요.',
    'J':'케크의 큰 몸이에요. 까만 등이 반짝여요.'},
   npcs:['gyM','finnSick','dylan','koaM','kech','nievas']},
- nassau:{name:'나소 · 오크리프',reg:'NASSAU OAKREEF',sky:['#EDF6F1','#DCEFE5','#C6E5D5','#AFDAC4','#98CEB2','#82C1A0','#6DB28F','#5AA27F'],
+ nassau:{name:'나소 · 오크리프',get reg(){return (f().home?'MEMORY · ':'')+'NASSAU OAKREEF'},sky:['#EDF6F1','#DCEFE5','#C6E5D5','#AFDAC4','#98CEB2','#82C1A0','#6DB28F','#5AA27F'],
   legend:{'~':{tile:'sky6'},'b':{tile:'bark',walk:1},'s':{tile:'spoke',walk:1},'Y':{tile:'honey'},'H':{tile:'hut'},'h':{tile:'hut'},'m':{tile:'mat',walk:1},
    't':{tile:'jtable',over:1},'f':{tile:'fanleaf'},'a':{tile:'airplant'},'J':{tile:'ovarGen'},'r':{tile:'perch',walk:1},'D':{tile:'gangplank',walk:1},'g':{tile:'rigging'},'S':{tile:'sail'}},
   map:[
@@ -637,7 +637,7 @@ const ZONES={
    'J':()=>f().ambush?'오바르 착륙 자리예요. 지금은 비어 있어요.':'오바르가 쉬는 착륙 자리예요. 옆에서 마이탈포트로 가요.',
    't':'탁자 위에 과일 주스 잔이 있어요.'},
   npcs:['ettan','jazon','cafe']},
- boat:{name:'실버 클라우드스피어 · 갑판',reg:'SILVER CLOUDSPEAR',get sky(){return f().argue?SKY_UP:['#5E9C88','#4E8A78','#3F7868','#326658','#26544A','#1C433C','#13332F','#0C2422']},  // home: the boat has flown back up to Mytalport
+ boat:{name:'실버 클라우드스피어 · 갑판',get reg(){return (f().home?'MEMORY · ':'')+'SILVER CLOUDSPEAR'},get sky(){return f().argue?SKY_UP:['#5E9C88','#4E8A78','#3F7868','#326658','#26544A','#1C433C','#13332F','#0C2422']},  // home: the boat has flown back up to Mytalport
   legend:{'~':{tile:'sky6'},'K':{tile:'ovarKoa'},'L':{tile:'ovarKaizen'},'R':{tile:'rail'},'r':{tile:'boarding',walk:1},'.':{tile:'plank',walk:1},'S':{tile:'sail'},
    's':{tile:'rigging'},'N':{tile:'netcaster'},'h':{tile:'hammock'},'M':{tile:'mast'},'c':{tile:'coil'},'g':{tile:'gear'},'T':{tile:'terminal'},'b':{tile:'barrel'},
    'D':{tile:'gangplank',walk:1},'F':{tile:'nacelle'}},
@@ -678,7 +678,7 @@ const ZONES={
    'b':'나무 통이에요. 달콤한 냄새가 나요.',
    'F':'배 아래 팬이 빙글빙글 돌아요.'},
   npcs:['ayden','rylee','uemiB','jazonB','ellieB','dylanB','koaB','kaizenB']},
- factory:{name:'공장 · 에어콤부 터널',reg:'ENGINE FACTORY · DEEP',sky:['#0F2420','#0B1A18','#081311','#060D0C'],
+ factory:{name:'공장 · 에어콤부 터널',get reg(){return (f().home?'MEMORY · ':'')+'ENGINE FACTORY · DEEP'},sky:['#0F2420','#0B1A18','#081311','#060D0C'],
   legend:{'~':{tile:'sky6'},'O':{tile:'mouth',walk:1},'k':{tile:'kelp'},',':{tile:'tfloor',walk:1},'V':{tile:'crystal'},'c':{tile:'cfloor',walk:1},'u':{tile:'wwall'},
    'e':{tile:'speck',walk:1},'i':{tile:'dent'},'G':{tile:'gantry'},'h':{tile:'hall',walk:1},'b':{tile:'bulb'},'E':{tile:'engineX'},'x':{tile:'ghost'},'v':{tile:'smoke'},
    'n':{tile:'web'},'K':{tile:'ovarKoa'},'L':{tile:'ovarKaizen'},'Z':{tile:'groz'}},
@@ -1093,7 +1093,12 @@ const onStep=()=>{const leg=RIDE6[ZID+':'+state.x+','+state.y];if(leg)f().transi
 const ride6=(zone,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>!f().transit,
  script:()=>{const leg=f().transit;f().transit=0;
   // Revisits are navigation, rather than another flight with a dead Koa. The boat returns to Mytalport in c022.
-  const L=leg==='ashore'?[
+  // Home again (three Gates away), going down is a flashback: you remember 킹스네스트, and come back to the present.
+  const L=f().home&&leg==='drop'?[
+   {say:'눈을 감고 킹스네스트를 떠올려요.',black:1},{say:'기억 속의 마이탈포트예요. 철골 아래로 구름이 끝없이 펼쳐져요.',black:0}
+  ]:f().home&&leg==='aboard'?[
+   {say:'기억이 흐려져요. 다시 지금으로 돌아와요.',black:1},{say:'성실호 지휘 통제실이에요. 고향 성계예요.',black:0}
+  ]:leg==='ashore'?[
    {say:f().argue?'배에서 내려 마이탈포트의 철골로 건너가요.':'코아를 타고 배에서 나소로 돌아가요.',black:1},
    {say:f().argue?'마이탈포트의 오바르 정류장이에요.':'나소의 큰 갈대 집 앞이에요.',black:0}
   ]:leg==='boat'&&f().ambush?[
@@ -1120,7 +1125,7 @@ const DONE=['6장 끝! 핀의 머릿속에 엔진 운영 체제가 있어요.','
 
 function questText(){
  const F=f(),b=has6;
- if(F.done)return '6장 끝 · 일지에서 복습해요';
+ if(F.done)return ZID!=='ship'?'기억 속 킹스네스트 · 마이탈포트에서 성실호로 돌아가요':'6장 끝 · 일지에서 복습해요';
  if(!F.briefed)return '성실호 · 우에미주발리하고 이야기해요';
  if(!F.gotBox)return '마이탈포트 · 기보이를 찾아요';
  if(!F.finnOk)return '마이탈포트 · 오른쪽 끝의 핀한테 가요';
