@@ -875,13 +875,13 @@ NPC.dave1.look={art:DAVE};NPC.dave2.look={art:DAVE};
    (c016), Hafnir 900 km east of Santa Rosa (c003). The narrator hides once its lines are taken (cleared in script, not with a set:,
    so a ride isn't counted as a story beat by spaced review). */
 const RIDE={'ship:27,5':'down','round:3,16':'up','round:24,16':'out',...Object.fromEntries([6,7,8,9,10,11].map(x=>['hafnir:'+x+',1','back']))};
-const RIDE_SAY={
- down:['캡슐이 탑을 따라 곤디아로 내려가요. 창밖에 하얀 구름이 보여요.','산타 로사예요. 총독 저택은 탑 근처에 있어요.'],
- up:['캡슐이 탑을 따라 하이 로사로 올라가요. 다시 성실호예요.'],
- out:['하얀 화살 열차가 동쪽으로 달려요.','두 시간 뒤, 바닷가 도시 하프니르에 도착했어요.'],
- back:['화살 열차를 타고 두 시간, 다시 산타 로사예요.']};
+const RIDE_SAY={  // told over black (the lift drawn on it, GAME.scenes); a line that says where you are brings the room back
+ down:[{say:'캡슐이 탑을 따라 곤디아로 내려가요. 창밖에 하얀 구름이 보여요.',black:1,scene:'liftDownQuick'},{say:'산타 로사예요. 총독 저택은 탑 근처에 있어요.',black:0}],
+ up:[{say:'캡슐이 탑을 따라 하이 로사로 올라가요. 다시 성실호예요.',black:1,scene:'liftUpQuick'}],
+ out:[{say:'하얀 화살 열차가 동쪽으로 달려요.',black:1},{say:'두 시간 뒤, 바닷가 도시 하프니르에 도착했어요.',black:0}],
+ back:[{say:'화살 열차를 타고 두 시간, 다시 산타 로사예요.',black:1}]};
 const rider=(zone,legs,x,y,pos)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,pos,status:()=>null,hide:()=>!legs.includes(f().ride),
- script:()=>{const L=RIDE_SAY[f().ride]||[];f().ride=0;return L.map(say=>({who:'…',say}))},talk:()=>[]});
+ script:()=>{const L=RIDE_SAY[f().ride]||[];f().ride=0;return L.map(l=>({who:'…',...l}))},talk:()=>[]});
 NPC.rideS=rider('ship',['up'],25,5,()=>[25,5]);
 NPC.rideR=rider('round',['down','back'],3,14,()=>f().ride==='back'?[24,14]:[3,14]);
 NPC.rideH=rider('hafnir',['out'],8,3,()=>[8,3]);

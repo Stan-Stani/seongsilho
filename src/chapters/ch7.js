@@ -922,11 +922,11 @@ const NPC={
    Finn shoving it through the winds, to a vast dark oval whose broad doors on its spine hinged up for it (c033); the anchor ship, a
    120 m tri-delta, crammed, at four g for about a day, backed into the Diligent's largest hangar because it would never fit (c034). */
 const RIDE={'ship:22,13':['drop',()=>!!f().launch&&!f().woke],'dolod:23,14':['anchor',()=>!!f().woke]};
-const RIDE_SAY={
- drop:['강하선이 성실호를 떠나요. 몇 시간 동안 돌로드로 날아가요.','폭풍 속을 흔들리면서 내려가요. 어두운 엔진 기지의 지붕 문이 열려요.'],
- anchor:['앵커선이 기지를 떠나요. 안은 아주 좁고, 몸이 아주 무거워요.','하루 뒤, 드디어 성실호예요. 앵커선이 너무 길어서 격납고에 뒤로 들어가요.']};
+const RIDE_SAY={  // told over black; a line that says where you are brings the room back
+ drop:[{say:'강하선이 성실호를 떠나요. 몇 시간 동안 돌로드로 날아가요.',black:1},'폭풍 속을 흔들리면서 내려가요. 어두운 엔진 기지의 지붕 문이 열려요.'],
+ anchor:[{say:'앵커선이 기지를 떠나요. 안은 아주 좁고, 몸이 아주 무거워요.',black:1},{say:'하루 뒤, 드디어 성실호예요. 앵커선이 너무 길어서 격납고에 뒤로 들어가요.',black:0}]};
 const rider=(zone,leg,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>f().ride!==leg,
- script:()=>{f().ride=0;return RIDE_SAY[leg].map(say=>({who:'…',say}))},talk:()=>[]});
+ script:()=>{f().ride=0;return RIDE_SAY[leg].map(l=>typeof l==='string'?{who:'…',say:l}:{who:'…',...l})},talk:()=>[]});
 NPC.rideD=rider('dolod','drop',6,6);NPC.rideA=rider('ship','anchor',22,15);
 const onStep=()=>{const r=RIDE[ZID+':'+state.x+','+state.y];if(r&&r[1]()){f().ride=r[0];if(r[0]==='anchor')f().home=1}};
 const FOLLOW=null;

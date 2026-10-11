@@ -25,7 +25,7 @@
  {check:()=>ZID==='ship'&&!state.f.ride,msg:'declining the capsule stays aboard'},
  {walkTo:['ship',26,5]},{walkTo:['ship',27,5]},{pause:1200},
  {check:()=>{const b=choiceBtns().find(b=>b.textContent==='네, 타요');b?.click();return !!b},msg:'tap yes to board the downward capsule'},
- {pause:800},{intro:1,shot:'08b-capsule-down'},
+ {pause:3000,shot:'08b-capsule-down'},{intro:1},
  {talk:'guard',shotBefore:'08-roundhouse'},
  {talk:'zelinda'},
  {talk:'josias',wrong:true},
