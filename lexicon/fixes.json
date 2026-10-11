@@ -1,5 +1,7 @@
 {
  "_note": "eojeol → lemmas, for words the analyzer reads wrong (extract.py applies these last)",
+ "수정이": ["수정"],
+ "전과": ["전"],
  "빠를": ["빠르다"],
  "이음매를": ["이음매"],
  "이어": ["잇다"],
