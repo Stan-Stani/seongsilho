@@ -457,11 +457,11 @@ const NPC={
    script, not with set:, so a ride isn't counted as a story beat. Book: the capsule down the tower, its observation lounge with a
    floor-to-ceiling clear wall, Gondiar's vast continents and white cloud below (c006); Santa Rosa dropping away on the way up (c030). */
 const RIDE={'dock:20,4':['down',()=>!f().rodeDown],'dock:21,4':['down',()=>!f().rodeDown],'city:11,2':['up',()=>!f().rodeUp]};
-const RIDE_SAY={
- down:['궤도 엘리베이터 캡슐이 탑을 따라 곤디아로 내려가요.','큰 유리창으로 넓은 땅하고 하얀 구름이 보여요. 한참 뒤에 산타 로사에 도착해요.'],
- up:['캡슐이 탑을 따라 올라가요. 산타 로사가 점점 작아져요.','다시 하이 로사예요.']};
+const RIDE_SAY={  // told over black with the ride drawn on it (GAME.scenes, game.js); the way up ends back in the dock
+ down:[{say:'궤도 엘리베이터 캡슐이 탑을 따라 곤디아로 내려가요.',black:1,scene:'liftDown'},{say:'큰 유리창으로 넓은 땅하고 하얀 구름이 보여요. 한참 뒤에 산타 로사에 도착해요.'}],
+ up:[{say:'캡슐이 탑을 따라 올라가요. 산타 로사가 점점 작아져요.',black:1,scene:'liftUp'},{say:'다시 하이 로사예요.',black:0}]};
 const rider=(zone,leg,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>f().ride!==leg,
- script:()=>{f()[leg==='down'?'rodeDown':'rodeUp']=1;f().ride=0;return RIDE_SAY[leg].map(say=>({who:'…',say}))},talk:()=>[]});
+ script:()=>{f()[leg==='down'?'rodeDown':'rodeUp']=1;f().ride=0;return RIDE_SAY[leg].map(l=>({who:'…',...l}))},talk:()=>[]});
 NPC.rideC=rider('city','down',11,4);NPC.rideD=rider('dock','up',20,6);
 const onStep=()=>{const r=RIDE[ZID+':'+state.x+','+state.y];if(r&&r[1]())f().ride=r[0]};
 

@@ -17,13 +17,13 @@
  {talk:'gyvoy'},
  {check:()=>state.items.includes('연료통'),msg:'fuel for seeds'},
  // the first capsule ride each way narrates on arrival (zone greet), so walk one hop and finish that line first
- {walkTo:['city',11,3]},{intro:1,shot:'06b-capsule-down'},
+ {walkTo:['city',11,3]},{pause:1500,shot:'06a-capsule-space'},{pause:3000,shot:'06b-capsule-clouds'},{pause:4000,shot:'06c-capsule-land'},{intro:1},
  {talk:'terence',shotBefore:'07-city'},
  {talk:'josias',wrong:true,shotBuild:'08-sentence-build'},
  {talk:'otylia'},
  {talk:'cafe',wrong:true},
  {check:()=>state.badges.length===C.WORDS.length,msg:'all words collected'},
- {walkTo:['dock',20,5]},{intro:1,shot:'08b-capsule-up'},
+ {walkTo:['dock',20,5]},{pause:3500,shot:'08b-capsule-up'},{intro:1},
  {check:()=>!state.f.ride&&state.f.rodeDown&&state.f.rodeUp,msg:'the ride lines are done'},
  {talk:'ellie'},  // 조사이어스 asked you to greet her: she answers once
  {check:()=>state.f.hi,msg:'Ellie heard the greeting'},
@@ -44,4 +44,10 @@
  {reviewTour:Object.keys(C.ZONES)},
  // …and with nothing due, people with a line you haven't heard say it as plain talk (the word filled in, ungraded)
  {hearTour:Object.keys(C.ZONES)},
+ // debug: 한 단계 뒤로 in the 일지 loads the save from before the last talk that moved the story
+ {check:()=>{$('dbgBtn').click();$('logBtn').click();return debugOn&&!$('backBtn').hidden&&!$('backBtn').disabled},msg:'디버그 shows 한 단계 뒤로 in the 일지'},
+ {pause:300,shot:'13-back-button'},
+ {check:()=>{const L=backList(),e=JSON.parse(L[L.length-1].s);$('backBtn').click();
+   return backList().length===L.length-1&&JSON.stringify(state.f)===JSON.stringify(e.f)&&String(state.items)===String(e.items)&&state.zone===e.zone&&$('panel').hidden},msg:'한 단계 뒤로 restores the save from before the last story talk'},
+ {pause:900,shot:'13b-stepped-back'},
 ]
