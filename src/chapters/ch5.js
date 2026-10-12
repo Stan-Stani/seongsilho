@@ -734,6 +734,15 @@ const TT={
   r(X,Y,16,16,'#3F7A4A');const h=hash(x,y);r(X+1,Y+2,9,8,'#2F6A3E');r(X+2,Y+3,5,3,'#4E9A5A');r(X+7,Y+7,8,8,'#2F6A3E');r(X+8,Y+8,4,3,'#4E9A5A');if(h<50)r(X+h%10+2,Y+11,2,2,'#5DB866');
   const e='#D2C4A6',l='#F2EAD8';if(!isM(at(x,y-1))){r(X,Y,16,4,e);r(X,Y,16,1,l);r(X+3,Y+1,2,2,'#3A404C');r(X+11,Y+1,2,2,'#3A404C');r(X,Y+4,16,1,'#2A4A30')}if(!isM(at(x-1,y))){r(X,Y,4,16,e);r(X,Y,1,16,l)}if(!isM(at(x+1,y))){r(X+12,Y,4,16,e);r(X+15,Y,1,16,'#B8AA8C')}},
  manGate:(X,Y,x,y)=>{TILES.stone(X,Y,x,y);r(X,Y,16,3,'#E8C860');r(X,Y+1,16,1,'#F7E08A');for(let i=1;i<16;i+=3)r(X+i,Y+3,1,13,'#C9A23A');r(X,Y+8,16,1,'#C9A23A');r(X+7,Y+6,2,4,'#F7E08A')},
+ /* warehouses and rail yards round the tower's hill (c006: rail depots and warehouses ring it); the same tiles as 1장's city */
+ shed:(X,Y,x,y,t)=>{const W=c=>c==='W';if(W(at(x,y+1))){r(X,Y,16,16,'#7E848C');for(let i=1;i<16;i+=3)r(X+i,Y,1,16,'#6E747C');if(!W(at(x,y-1)))r(X,Y,16,2,'#9AA0A8');return}
+  r(X,Y,16,16,'#9AA0A8');for(let i=1;i<16;i+=3)r(X+i,Y,1,16,'#8A9098');r(X,Y+14,16,2,'#6E747C');
+  if(x%2===(x<14?1:0)){r(X+2,Y+4,12,10,OL);r(X+3,Y+5,10,9,'#C9A23A');for(let j=6;j<14;j+=2)r(X+3,Y+j,10,1,'#A8862A')}else{r(X+4,Y+3,8,3,OL);r(X+5,Y+4,6,1,'#F2F0EA');r(X+5,Y+5,(x*3)%6+1,1,'#F2F0EA')}},
+ yard:(X,Y,x,y,t)=>{r(X,Y,16,16,'#8E8576');const h=hash(x,y);if(h<50)r(X+h%14,Y+(h>>2)%14,1,1,'#7A7264');for(let i=1;i<16;i+=4)r(X+i,Y+3,2,10,'#6E5A44');
+  r(X,Y+5,16,1,'#5A6068');r(X,Y+4,16,1,'#B9C1C9');r(X,Y+10,16,1,'#5A6068');r(X,Y+9,16,1,'#B9C1C9');
+  const car=(px,c)=>{g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();r(px,Y+2,30,11,OL);r(px+1,Y+3,28,9,c);r(px+1,Y+3,28,1,'rgba(255,255,255,.3)');for(let i=5;i<28;i+=6)r(px+i,Y+4,1,7,'rgba(0,0,0,.18)');g.restore()};
+  if(y===16){const len=6*32,span=MW*16+len+64,head=(t*0.02)%span-len;for(let k=0;k<6;k++){const px=head+k*32-x*16;if(px>-31&&px<16)car(X+px,['#9A4A3A','#4A5A6E','#B5653A','#5E7A5A','#9A4A3A','#7A6A8A'][k])}}
+  else if(h%4===0){r(X+1,Y+2,14,11,OL);r(X+2,Y+3,12,9,['#4A5A6E','#B5653A','#9A4A3A'][h%3]);r(X+2,Y+3,12,1,'rgba(255,255,255,.3)');r(X+7,Y+4,1,7,'rgba(0,0,0,.18)')}},
  tower:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A404C');r(X,Y,16,1,'#4E5666');if(at(x,y-1)!=='A'){r(X,Y,16,4,'#5A6274');r(X,Y,16,1,'#7A8494')}r(X+(x%2?14:1),Y+5,1,10,'#2E343E');
   if(x===14||x===15){r(X+(x===14?13:0),Y,3,16,'#1A1E26');r(X+(x===14?13:2),Y,1,16,'#2E343E')}
   if((x+y)%4===0)r(X+7,Y+8,2,2,Math.floor(t/500+x)%3?'#D2533F':'#5A1A1A');if(y===17)r(X,Y+12,16,4,'#2A2F38')},
@@ -863,7 +872,7 @@ const ZONES={
  city:{name:'산타 로사',reg:'SANTA ROSA · GONDIAR',outdoor:1,
   legend:{'L':{tile:'bld'},'H':{tile:'bld'},'Z':{tile:'bld'},'F':{tile:'bld'},'K':{tile:'bld'},'D':{tile:'cityDoor',walk:1},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
    'r':{tile:'road',walk:1},'v':{tile:'vroad',walk:1},'j':{tile:'jaca'},'h':{tile:'holo'},'q':{tile:'qix'},'m':{tile:'memo'},'n':{tile:'bench'},'M':{tile:'manWall'},'G':{tile:'manGate',walk:1},
-   'A':{tile:'tower'},'E':{tile:'lift'},'C':{tile:'car',walk:1}},
+   'A':{tile:'tower'},'E':{tile:'lift'},'C':{tile:'car',walk:1},'W':{tile:'shed'},'=':{tile:'yard'}},
   map:[
 "LLHHHHHHHLLZZZZZLLFFFFFLLKKKKL",
 "LLHHHHHHHLLZZZZZLLFFFFFLLKKKKL",
@@ -878,11 +887,11 @@ const ZONES={
 "j.........j..vvvv...j...MMGMMj",
 "j............vvvv,,,,,,,,,,,,j",
 "jjjjjjjjjjjjjvvvvjjjjjjjjjjjjj",
-"j..........,,,,,,,,..........j",
-"j...j......,,,EE,,,......j...j",
-"j.........AAAAAAAAAA.........j",
-"j...j.....AAAAAAAAAA.....j...j",
-"jjjjjjjjjjAAAAAAAAAAjjjjjjjjjj"],
+"WWWW.......,,,,,,,,.......WWWW",
+"WWWW.......,,,EE,,,.......WWWW",
+"==========AAAAAAAAAA==========",
+"==========AAAAAAAAAA==========",
+"==========AAAAAAAAAA=========="],
   rooms:[[0,0,29,6,'산타 로사 · 디어랙 거리'],[24,4,29,6,'산타 로사 · 소노마 거리'],[0,7,23,11,'산타 로사 · 광장'],[24,7,29,11,'산타 로사 · 총독 저택 앞'],[0,12,29,17,'산타 로사 · 탑 언덕']],
   warps:{
    '5,2':{to:'hq',x:10,y:11,dir:'up'},
@@ -909,6 +918,8 @@ const ZONES={
    'F':['플리시 다이아몬드 바. 창문 불빛이 따뜻해요.','바 안에서 잔 부딪치는 소리가 들려요.'],
    'K':(x,y)=>f().club?'클럽이 비어 있어요. 네온만 혼자 깜빡여요.':f().occupied?'다크 파라다이스 클럽. 문이 굳게 잠겨 있어요.':vary(x,y,['다크 파라다이스 클럽. 분홍 네온이 지지직거려요.','클럽 안에서 음악이 쿵쿵 울려요.']),
    'M':['높은 리브스톤 담이에요. 위에 센서가 줄지어 있어요.','담 너머로 정원의 나무가 보여요.'],
+   'W':['큰 창고예요. 기차가 실어 온 짐이 가득해요.','창고 문에 숫자가 크게 쓰여 있어요.'],
+   '=':['기차 선로가 탑 언덕을 빙 둘러요.','화물 열차가 천천히 지나가요.','선로 너머에도 창고가 끝없이 있어요.'],
    'n':['벤치예요. 빵 부스러기가 조금 있어요.','벤치에 앉으면 광장이 다 보여요.'],
    'm':(x,y)=>f().occupied?'꽃밭이에요. 나무에 검은 리본이 아직 남아 있어요.':vary(x,y,f().boom?['꽃과 촛불이 가득해요. 사람들이 조용히 울어요.','촛불 옆에 손으로 쓴 편지가 있어요.']:['꽃밭이에요. 노란 꽃, 분홍 꽃, 하얀 꽃.','꽃밭 위로 나비가 날아요.'])},
   npcs:['zikar','snatch','aljan','vanilda','pro1','pro2','pro3','jimena','zelinda','medusaSt','general','lion1','lion2','ghost1','ghost2','ghost3']},

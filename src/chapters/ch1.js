@@ -266,7 +266,7 @@ const ZONES={
 "#......................#",
 "#AA#####################"],
   planet:{cx:12*16,cy:-70,r:150},base:'plate',
-  warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:11,y:3,dir:'down'},'21,4':{to:'city',x:11,y:3,dir:'down'}},
+  warps:{'1,14':{to:'ship',x:18,y:14,dir:'up'},'2,14':{to:'ship',x:18,y:14,dir:'up'},'20,4':{to:'city',x:13,y:13,dir:'up'},'21,4':{to:'city',x:13,y:13,dir:'up'}},
   spots:{'6,1':'창밖에 곤디아가 보여요. 초록색, 금색 땅이에요.','16,1':'성실호가 보여요. 아주 길고 오래된 배예요.','2,4':'상자에 "아누샤 광산"이라고 쓰여 있어요.','14,10':'상자 안에서 "삐빅" 소리가 나요… 무서워요.'},
   things:{'#':['하이 로사의 벽이에요. 철골이 많아요.','벽의 파란 불이 천천히 깜빡여요.'],
    'W':(x,y)=>{const P=ZONES.dock.planet,inP=(px,py)=>(px-P.cx)**2+(py-P.cy-170)**2<P.r*P.r,n=[[0,0],[16,0],[0,16],[16,16]].filter(([a,b])=>inP(x*16+a,y*16+b)).length;
@@ -275,34 +275,51 @@ const ZONES={
    's':(x,y)=>y===4?'노점 지붕이 줄무늬예요.':'노점 물건이에요. 빨간 상자, 파란 병… 다 반짝여요.'},
   greet:()=>f().ride==='up'?'rideD':null,  // the capsule ride up (the rides, below NPC)
   npcs:['customs','gyvoy','lina','trader','rideD']},
- city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',
-  legend:{'T':{tile:'tree'},'.':{tile:'lawn',walk:1},',':{tile:'stone',walk:1},'O':{tile:'dome'},'I':{tile:'stationHill'},'=':{tile:'rails',walk:1},'E':{tile:'lift',walk:1},'P':{tile:'police'},'C':{tile:'cafe'},'*':{tile:'flowers',walk:1},'~':{tile:'pond'},'n':{tile:'bench'}},
+ /* Santa Rosa (c006): cream-colored livestone blocks with shops at ground level, jacarandas down the avenues (holo-ads in the trees,
+    c005), skyway cable cars overhead, globecabs; the orbital tower comes down on a tall hill, a hive of caverns ringed by rail
+    depots and warehouses. Same streets and tiles as 5장's city. */
+ city:{name:'산타 로사 · 곤디아',reg:'SANTA ROSA · GONDIAR',outdoor:1,
+  legend:{'L':{tile:'bld'},'P':{tile:'bld'},'C':{tile:'bld'},'S':{tile:'bld'},'D':{tile:'cityDoor'},',':{tile:'stone',walk:1},'.':{tile:'lawn',walk:1},
+   'r':{tile:'road',walk:1},'v':{tile:'vroad',walk:1},'j':{tile:'jaca'},'h':{tile:'holo'},'m':{tile:'bed'},'n':{tile:'bench'},'c':{tile:'cab'},
+   'W':{tile:'shed'},'=':{tile:'yard'},'A':{tile:'tower'},'E':{tile:'lift',walk:1}},
   map:[
-"TTTTTTTTTTTTTTTTTTTTTTTTTT",
-"T.OO...===III===....OO...T",
-"T.OO...===IEI===....OO...T",
-"T.........,,,............T",
-"T.PPPPP...,,,....CCCCC...T",
-"T.PPPPP...,,,....CCCCC...T",
-"T.PPPPP...,,,....CCCCC...T",
-"T....,....,,,......,.....T",
-"T....,,,,,,,,,,,,,,,.....T",
-"T..........,,............T",
-"T.**.......,,.....~~~~...T",
-"T.**...n...,,.....~~~~...T",
-"T..........,,.......n....T",
-"T...TT.....,,......TT....T",
-"T...TT.....,,......TT....T",
-"T........................T",
-"TTTTTTTTTTTTTTTTTTTTTTTTTT"],
-  outdoor:1,
-  warps:{'11,2':{to:'dock',x:20,y:5,dir:'down'}},
-  spots:{'3,6':'경찰서예요. "산타 로사 경찰"이라고 쓰여 있어요.','18,6':'카페예요. 커피 냄새가 나요.','2,1':'수정 탑이에요. 꼭대기가 둥근 돔이에요.','20,1':'수정 탑이에요. 햇빛이 반짝반짝해요.','10,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.','12,1':'궤도 엘리베이터 탑. 하늘 끝까지 올라가요.'},
-  things:{'T':['큰 나무예요. 그늘이 시원해요.','나뭇잎 사이에서 광고 홀로그램이 반짝여요.','새가 짹짹 울어요.'],
-   'P':['경찰서 벽이에요. 창문이 깨끗해요.','경찰서 안에서 전화 소리가 나요.'],
+"LLLPPPPPLLLLCCCCCLLSSSSSLLLL",
+"LLLPPPPPLLLLCCCCCLLSSSSSLLLL",
+"LLLPPDPPLLLLCCDCCLLSSDSSLLLL",
+",j,,,,,,,,j,,,,,,,j,,,c,,j,,",
+"rrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+"rrrrrrrrrrrrrrrrrrrrrrrrrrrr",
+",,,,,,,,,,,,vvvv,,,,,,,,,,,,",
+"j..h...mmm..vvvv..mmm...h..j",
+"j...........vvvv...........j",
+"j.n,,,,,,,,,vvvv,,,,,,,,,n.j",
+"j.....j.....vvvv.....j.....j",
+"j...........vvvv...........j",
+"jjjjjjjjjjjjvvvvjjjjjjjjjjjj",
+"WWWW.......,,,,,,.......WWWW",
+"WWWW.......,,EE,,.......WWWW",
+"=========AAAAAAAAAA=========",
+"=========AAAAAAAAAA=========",
+"=========AAAAAAAAAA========="],
+  rooms:[[0,0,27,6,'산타 로사 · 큰길'],[0,7,27,12,'산타 로사 · 광장'],[0,13,27,17,'산타 로사 · 탑 언덕']],
+  warps:{'13,14':{to:'dock',x:20,y:5,dir:'down'},'14,14':{to:'dock',x:20,y:5,dir:'down'}},
+  spots:{'4,2':'경찰서예요. "산타 로사 경찰"이라고 쓰여 있어요.','5,2':'경찰서 문이에요. 안에서 전화 소리가 나요.',
+   '13,2':'카페예요. 커피 냄새가 나요.','14,2':'카페 문이에요. 문에 "어서 오세요"라고 쓰여 있어요.','21,2':'과일 가게 문이에요. 문이 활짝 열려 있어요.',
+   '3,7':'홀로그램 광고: "탑 캡슐을 타고 하이 로사에 가요!"','24,7':'홀로그램 광고: "새 글로브캡! 더 조용하고 더 빨라요."',
+   '13,15':'산타 로사 탑. 하늘 끝, 하이 로사까지 올라가요.','14,15':'산타 로사 탑. 하늘 끝, 하이 로사까지 올라가요.'},
+  things:{
+   'L':['크림색 리브스톤 건물이에요.','창문 안에서 누가 커튼을 쳐요.','건물 위로 케이블카 줄이 지나가요.'],
+   'P':['산타 로사 경찰서 건물. 파란 띠가 둘러 있어요.','경찰서 창문. 안에서 형사들이 바빠요.'],
    'C':['카페 창문에 케이크가 보여요.','줄무늬 차양이 예뻐요.'],
-   '~':['연못에 작은 물고기가 있어요.','물이 맑아요. 하늘이 비쳐요.'],
-   'O':'수정 탑이 햇빛에 반짝여요.','I':'거대한 탑이 하늘로 올라가요. 끝이 안 보여요.','n':'나무 벤치예요. 앉아서 쉬고 싶어요.'},
+   'S':['과일 가게예요. 과일이 반짝반짝해요.','가게 앞에 과일 상자가 쌓여 있어요.'],
+   'j':(x,y)=>vary(x,y,['자카란다 나무. 보라색 꽃이 가득해요.','보라색 꽃잎이 바람에 떨어져요.','나무 사이에 작은 홀로그램 광고가 있어요.']),
+   'h':'홀로그램 광고판이에요. 글자가 반짝반짝해요.',
+   'm':['꽃밭이에요. 노란 꽃, 분홍 꽃, 하얀 꽃.','꽃밭 위로 나비가 날아요.'],
+   'n':['벤치예요. 앉으면 광장이 다 보여요.','벤치에 빵 부스러기가 조금 있어요.'],
+   'c':'글로브캡이에요. 둥근 차가 스스로 운전해요.',
+   'W':['큰 창고예요. 기차가 실어 온 짐이 가득해요.','창고 문에 숫자가 크게 쓰여 있어요.'],
+   '=':['기차 선로가 탑 언덕을 빙 둘러요.','화물 열차가 천천히 지나가요.','선로 너머에도 창고가 끝없이 있어요.'],
+   'A':(x,y)=>x===13||x===14?'검은 탑이 하늘 끝까지 곧게 올라가요.':vary(x,y,['산타 로사 탑의 아래쪽. 아주 큰 금속 벽이에요.','탑에서 낮게 웅웅 소리가 나요.'])},
   greet:()=>f().ride==='down'?'rideC':null,  // the capsule ride down
   npcs:['terence','josias','otylia','cafe','rideC']},
 };
@@ -426,7 +443,7 @@ const NPC={
    {say:'저기 엘리베이터를 타면 곤디아까지 내려가요. {궤도 엘리베이터|궤도 엘리베이터}예요.',award:['관측하다','행성']}]},
  trader:{name:'광부',zone:'dock',x:16,y:12,dir:'left',look:{hair:'#3A2A22',skin:'#C48E66',shirt:'#7C6A4A',pants:'#3A3530',cap:'#B5653A'},
   talk:()=>[{say:'저는 아누샤 광산에서 왔어요. 중력이 세서 몸이 늘 무거워요.'},{say:'곤디아는 초록색이죠? 부러워요.'}]},
- terence:{name:'테렌스 형사',zone:'city',x:4,y:7,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40',coat:1},badge:['발견하다'],
+ terence:{name:'테렌스 형사',zone:'city',x:6,y:3,dir:'down',look:{hair:'#5A3E2A',skin:'#E0AE86',shirt:'#9C8358',pants:'#3A3A40',coat:1},badge:['발견하다'],
   after:'도둑은 아직 못 찾았어요. 찾으면 연락할게요.',
   talk:()=>[
    {say:'흠. 성실호 사람이죠? 저는 테렌스 형사예요.'},
@@ -434,7 +451,7 @@ const NPC={
    Q.terence[0],
    Q.terence[1],
    {say:'상자에 "성실호"라고 쓰여 있어요. 성실호 거죠? 가져가요. 잘 지켜요!',give:'부품',award:['발견하다']}]},
- josias:{name:'조사이어스',zone:'city',x:8,y:11,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',coat:1},badge:['지도','탐험'],
+ josias:{name:'조사이어스',zone:'city',x:7,y:9,dir:'right',look:{beard:'#3E2A1E',hair:'#4A3426',skin:'#E3B48C',shirt:'#6E4A8A',pants:'#2A2433',coat:1},badge:['지도','탐험'],
   after:'엘리는 제 손녀의 손녀의… 아주 먼 후손이에요. 저는 오는 동안 거의 잠만 잤거든요.',
   talk:()=>[
    {say:'오, 성실호 승무원이죠? 저는 조사이어스예요. 옛날에 그 배 주인이었어요.'},
@@ -444,11 +461,11 @@ const NPC={
    {who:'…',w:'탐험',build:['핀이','성실호로','탐험을','떠나요'],alts:[['핀이','탐험을','성실호로','떠나요'],['성실호로','핀이','탐험을','떠나요'],['성실호로','탐험을','핀이','떠나요'],['탐험을','핀이','성실호로','떠나요'],['탐험을','성실호로','핀이','떠나요']]},
    {say:'이 항해 지도, 저는 이제 필요 없어요. '+(f().finn?'핀하고 같이 봐요.':'핀한테 가져가요.'),give:'성실호 항해 지도',award:['지도','탐험']},
    {say:'엘리한테 인사 전해 줘요.',set:()=>{f().hello=1}}]},
- otylia:{name:'오틸리아',zone:'city',x:21,y:12,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1,lashes:1,lips:'#C8646E'},
+ otylia:{name:'오틸리아',zone:'city',x:20,y:9,dir:'left',look:{hair:'#E8CC7A',skin:'#F0C9A4',shirt:'#C25B7A',pants:'#3D3550',long:1,lashes:1,lips:'#C8646E'},
   talk:()=>[{say:'핀! …아, 안녕하세요. 저는 오틸리아예요. 이 바보랑 {쌍둥이|쌍둥이}예요.'},{say:'땅을 주고 낡은 우주선을 받았지? 정말 너다워, 핀.'},
    {who:'핀',say:'오틸리아, 그만해.'},{say:'하하. 우리 핀, 잘 부탁해요. 항상 탐험 얘기만 해요.'}],
   again:'또 왔어요? 우리 핀, 말 잘 들어요?'},
- cafe:{name:'카페 사장님',zone:'city',x:19,y:7,dir:'down',look:{hair:'#A0A0A0',skin:'#E8B892',shirt:'#5A3A2A',pants:'#2E2A28'},
+ cafe:{name:'카페 사장님',zone:'city',x:15,y:3,dir:'down',look:{hair:'#A0A0A0',skin:'#E8B892',shirt:'#5A3A2A',pants:'#2E2A28'},
   script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 오세요! 커피 한 잔 하면서 옛날 단어 연습해요.'},{...q,old:1},{say:'또 오세요. 커피는 공짜예요.'}]},
   talk:()=>[]},
 };
@@ -456,13 +473,13 @@ const NPC={
    nobody sees (look:null, the zone's greet) says the trip, so the ride isn't a silent cut (as 3장's capsule). It clears the flag in
    script, not with set:, so a ride isn't counted as a story beat. Book: the capsule down the tower, its observation lounge with a
    floor-to-ceiling clear wall, Gondiar's vast continents and white cloud below (c006); Santa Rosa dropping away on the way up (c030). */
-const RIDE={'dock:20,4':['down',()=>!f().rodeDown],'dock:21,4':['down',()=>!f().rodeDown],'city:11,2':['up',()=>!f().rodeUp]};
+const RIDE={'dock:20,4':['down',()=>!f().rodeDown],'dock:21,4':['down',()=>!f().rodeDown],'city:13,14':['up',()=>!f().rodeUp],'city:14,14':['up',()=>!f().rodeUp]};
 const RIDE_SAY={  // told over black with the ride drawn on it (GAME.scenes, game.js); the way up ends back in the dock
  down:[{say:'궤도 엘리베이터 캡슐이 탑을 따라 곤디아로 내려가요.',black:1,scene:'liftDown'},{say:'큰 유리창으로 넓은 땅하고 하얀 구름이 보여요. 한참 뒤에 산타 로사에 도착해요.'}],
  up:[{say:'캡슐이 탑을 따라 올라가요. 산타 로사가 점점 작아져요.',black:1,scene:'liftUp'},{say:'다시 하이 로사예요.',black:0}]};
 const rider=(zone,leg,x,y)=>({name:'…',zone,x,y,dir:'down',look:null,still:1,status:()=>null,hide:()=>f().ride!==leg,
  script:()=>{f()[leg==='down'?'rodeDown':'rodeUp']=1;f().ride=0;return RIDE_SAY[leg].map(l=>({who:'…',...l}))},talk:()=>[]});
-NPC.rideC=rider('city','down',11,4);NPC.rideD=rider('dock','up',20,6);
+NPC.rideC=rider('city','down',13,12);NPC.rideD=rider('dock','up',20,6);
 const onStep=()=>{const r=RIDE[ZID+':'+state.x+','+state.y];if(r&&r[1]())f().ride=r[0]};
 
 const FOLLOW={name:'핀',look:NPC.finn.look,when:()=>!!f().finn,talk:()=>[{say:f().fixed?'엔진 소리 들려요? 가슴이 뛰어요!':ZID==='city'?'여기는 제 고향이에요. 예쁘지만 좀 {지겨워요|지겹다}.':'엔진을 고치면 이 배가 다시 살아나요!'}]};
@@ -476,7 +493,67 @@ function nebula(X,Y,x,y,t,depth){r(X,Y,16,16,'#140D20');const ox=CAM.x*depth,oy=
  for(let j=0;j<16;j+=2)for(let i=0;i<16;i+=2){const gx=x*16+i-ox,gy=y*16+j-oy,v=Math.sin(gx/23+gy/31)+.6*Math.sin(gx/11-gy/17)+.3*Math.sin(gy/7+gx/41);
   if(v>1.2)r(X+i,Y+j,2,2,'#8E5C8C');else if(v>.6)r(X+i,Y+j,2,2,'#5E3C72');else if(v>-.1)r(X+i,Y+j,2,2,'#36244C')}
  if((hash(x,y)+Math.floor(t/900))%23===0)r(X+(hash(y,x)%14)+1,Y+(hash(x+1,y)%12)+2,1,1,'#D8C8E8')}
-const TILES={
+/* --- Santa Rosa streets (the same tiles as 5장's city) --- */
+const OL='#1B1E2B';
+const vary=(x,y,a)=>a[(x*7+y*13)%a.length];
+function stone(X,Y,x,y){r(X,Y,16,16,'#E5D2B5');r(X,Y+7,16,1,'#D2BD9C');r(X+((y%2)?4:11),Y,1,7,'#D2BD9C');r(X+((y%2)?10:2),Y+8,1,8,'#D2BD9C')}  // the engine's stone (TILES here is this chapter's own)
+function asphalt(X,Y,x,y){r(X,Y,16,16,'#5B5F69');const h=hash(x,y);r(X+(h%13)+1,Y+(h%11)+2,1,1,'#686C76');r(X+((h*5)%13)+1,Y+((h*3)%13)+1,1,1,'#50545E')}
+function ground(X,Y,x,y){const n=[at(x-1,y),at(x+1,y),at(x,y-1),at(x,y+1)];if(n.includes(','))stone(X,Y,x,y);else lawn(X,Y,x,y)}
+const isB=c=>c!=null&&'LPCSD'.includes(c);
+function skyway(X,Y,x,t){ // a cable car gliding over the rooftops
+ r(X,Y+3,16,1,'#5D646D');const span=MW*16+48,gx=(t*0.025)%span-24,lx=gx-x*16;
+ if(lx>-14&&lx<16){g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();r(X+lx+5,Y+3,1,3,'#3E4550');r(X+lx,Y+6,12,7,OL);r(X+lx+1,Y+7,10,5,'#E8962A');r(X+lx+2,Y+8,3,2,'#CFE3F5');r(X+lx+7,Y+8,3,2,'#CFE3F5');g.restore()}
+}
+function roof(X,Y,x,y,t,base,edge){r(X,Y,16,16,base);if(!isB(at(x,y-1)))r(X,Y,16,2,edge);if(!isB(at(x-1,y)))r(X,Y,1,16,edge);if(!isB(at(x+1,y)))r(X+15,Y,1,16,edge);
+ const h=hash(x,y);if(h<25)r(X+3+h%8,Y+6,4,3,edge);if(h>80){r(X+9,Y+9,3,3,'#8A93A0');r(X+9,Y+9,3,1,'#B9C1C9')}if(y===0)skyway(X,Y,x,t)}
+function facadeBase(X,Y,col,dark){r(X,Y,16,16,col);r(X,Y,16,1,dark);r(X,Y+14,16,2,dark)}
+function win(X,Y,a,b,w,h,lit,t,seed){r(X+a-1,Y+b-1,w+2,h+2,OL);r(X+a,Y+b,w,h,lit?'#FFC46B':'#4F6B80');r(X+a,Y+b,w,1,lit?'#FFE2A8':'#7F9BB0');if(!lit&&((Math.floor(t/2500)+seed)%7===0))r(X+a+1,Y+b+1,1,h-2,'#CFE3F5')}
+function awning(X,Y,a,b){for(let i=0;i<16;i+=4){r(X+i,Y+1,2,4,a);r(X+i+2,Y+1,2,4,b)}for(let i=0;i<16;i+=2)r(X+i+1,Y+5,1,1,i%4?b:a)}
+const BUILD={
+ L:{roof:['#E2D6BC','#CDBF9E'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#EDE3CC','#D9CDB2');r(X,Y+7,16,1,'#DCCFB2');win(X,Y,5,3,6,8,hash(x,y)<30,t,x)}},
+ P:{roof:['#C9CED6','#9AA3B0'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#EDE3CC','#D9CDB2');r(X,Y+1,16,3,'#2F5DA8');r(X,Y+1,16,1,'#5A86CC');
+  if(x===4){r(X+3,Y+5,10,9,OL);r(X+4,Y+6,8,7,'#2F5DA8');r(X+7,Y+7,2,5,'#F2C230');r(X+5,Y+9,6,1,'#F2C230')}else win(X,Y,4,6,8,6,false,t,x)}},
+ C:{roof:['#D9B0A6','#B88A80'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#F1E2D2','#D8C2AA');awning(X,Y,'#B85A5A','#F4EDE4');
+  if(x===13){r(X+3,Y+7,10,7,OL);r(X+4,Y+8,8,5,'#6B3E26');r(X+6,Y+9,4,3,'#F4EDE4');r(X+10,Y+10,1,1,'#F4EDE4');const s=Math.floor(t/600)%3;r(X+7,Y+7-s,1,1,'#F4EDE4');r(X+8,Y+6-s,1,1,'#F4EDE4')}
+  else{win(X,Y,3,8,10,5,true,t,x);r(X+5,Y+11,3,2,'#E86D8A');r(X+5,Y+10,3,1,'#F4EDE4');r(X+9,Y+11,2,2,'#8A5030')}}},
+ S:{roof:['#B8C4A8','#94A084'],face:(X,Y,x,y,t)=>{facadeBase(X,Y,'#EDE3CC','#D9CDB2');awning(X,Y,'#3F8F4A','#E8F0D8');
+  r(X+1,Y+10,14,4,'#8A6A4A');r(X+1,Y+10,14,1,'#A8845A');const h=hash(x,y);
+  [[2,'#E8962A'],[5,'#D2533F'],[8,'#F2D154'],[11,'#5DB866']].forEach(([a,c],i)=>{r(X+a,Y+8,3,2,c);r(X+a+((h+i)%2),Y+8,1,1,'#FFFFFF')});win(X,Y,4,3,8,2,false,t,x)}},
+};
+const DOORS={P:(X,Y)=>{r(X+3,Y+4,10,12,OL);r(X+4,Y+5,8,11,'#A8D4E6');r(X+8,Y+5,1,11,'#5D667A');r(X+5,Y+6,1,5,'#E4F4FA')},
+ C:(X,Y)=>{r(X+3,Y+6,10,10,OL);r(X+4,Y+7,8,9,'#8A5030');r(X+5,Y+8,6,4,'#FFC46B');r(X+10,Y+12,1,2,'#F2C230')},
+ S:(X,Y)=>{r(X+3,Y+6,10,10,OL);r(X+4,Y+7,8,9,'#3A2E26');r(X+5,Y+12,6,3,'#8A6A4A');r(X+6,Y+11,2,1,'#E8962A');r(X+9,Y+11,2,1,'#5DB866')}};
+const SR={
+ bld:(X,Y,x,y,t)=>{const c=at(x,y),B=BUILD[c];if(!isB(at(x,y+1)))B.face(X,Y,x,y,t);else roof(X,Y,x,y,t,B.roof[0],B.roof[1])},
+ cityDoor:(X,Y,x,y,t)=>{const c=at(x-1,y);BUILD[c].face(X,Y,x,y,t);DOORS[c](X,Y)},
+ road:(X,Y,x,y)=>{asphalt(X,Y,x,y);const gap=at(x,6)==='v'||at(x-1,6)==='v';if(at(x,y+1)==='r'&&x%2===0&&!gap)r(X+3,Y+15,10,1,'#E8E2C8');if(at(x,y-1)==='r'&&x%2===0&&!gap)r(X+3,Y,10,1,'#E8E2C8')},
+ vroad:(X,Y,x,y)=>{asphalt(X,Y,x,y);if(y%2===0){if(x===13)r(X+15,Y+3,1,9,'#E8E2C8');if(x===14)r(X,Y+3,1,9,'#E8E2C8')}
+  if(at(x,y-1)===','||at(x,y-1)==='r'){for(let i=1;i<16;i+=4)r(X+i,Y+1,2,4,'#E8E2C8')}},
+ jaca:(X,Y,x,y,t)=>{ground(X,Y,x,y);r(X+6,Y+10,4,6,'#5A3E2E');r(X+7,Y+10,1,6,'#6E4E3A');r(X+2,Y+1,12,10,'#8E6CC8');r(X+1,Y+3,14,6,'#8E6CC8');r(X+3,Y+9,10,2,'#6C4FA0');
+  const h=hash(x,y);r(X+4,Y+2,4,3,'#B596E6');r(X+3+h%6,Y+5,2,2,'#B596E6');r(X+9,Y+3,2,1,'#D8C4F4');r(X+5+h%4,Y+7,1,1,'#D8C4F4');
+  if(h%7===0){const on=(Math.floor(t/350)+h)%6;if(on){r(X+9,Y+4,5,4,'#2A6AA8');r(X+10,Y+5,3,1,'#9FE8F0');r(X+10,Y+6,2,1,'#E8962A')}}},
+ holo:(X,Y,x,y,t)=>{ground(X,Y,x,y);r(X+7,Y+8,2,8,'#6E7680');r(X+5,Y+14,6,2,'#4A5260');const p=Math.sin(t/300)*.5+.5;
+  g.fillStyle=`rgba(80,200,240,${.45+p*.4})`;g.fillRect(X+1,Y+0,14,9);const k=Math.floor(t/1400)%3;r(X+3,Y+2,10,1,'#FFFFFF');r(X+3,Y+4,[6,9,4][k],1,'#FFE2A8');r(X+3,Y+6,[8,5,10][k],1,'#E8962A')},
+ bed:(X,Y,x,y)=>{stone(X,Y,x,y);r(X,Y+2,16,13,'#C9BC9C');r(X,Y+2,16,1,'#E2D6BC');r(X+1,Y+4,14,10,'#6E5A44');r(X+2,Y+5,12,8,'#4F8A4A');
+  [[3,6,'#E86D8A'],[9,7,'#F7D154'],[6,10,'#FFFFFF'],[12,10,'#B596E6']].forEach(([a,c,col])=>r(X+a+(hash(x,y)%2),Y+c,2,2,col))},
+ /* a globecab: the round self-driving cab (c005) */
+ cab:(X,Y,x,y,t)=>{stone(X,Y,x,y);g.fillStyle=OL;g.beginPath();g.arc(X+8,Y+8,7,0,7);g.fill();g.fillStyle='#F2F0EA';g.beginPath();g.arc(X+8,Y+8,6,0,7);g.fill();
+  r(X+3,Y+5,10,4,'#2A6AA8');r(X+4,Y+5,3,1,'#9FE8F0');r(X+2,Y+11,12,1,'#D8D2C4');r(X+3,Y+14,3,2,'#1A1A1A');r(X+10,Y+14,3,2,'#1A1A1A');r(X+7,Y+2,2,1,Math.floor(t/800)%2?'#5DD07A':'#2E6E3E')},
+ /* warehouses round the station hill (c006) */
+ shed:(X,Y,x,y,t)=>{const W=c=>c==='W';if(W(at(x,y+1))){r(X,Y,16,16,'#7E848C');for(let i=1;i<16;i+=3)r(X+i,Y,1,16,'#6E747C');if(!W(at(x,y-1)))r(X,Y,16,2,'#9AA0A8');return}
+  r(X,Y,16,16,'#9AA0A8');for(let i=1;i<16;i+=3)r(X+i,Y,1,16,'#8A9098');r(X,Y+14,16,2,'#6E747C');
+  if(x%2===(x<14?1:0)){r(X+2,Y+4,12,10,OL);r(X+3,Y+5,10,9,'#C9A23A');for(let j=6;j<14;j+=2)r(X+3,Y+j,10,1,'#A8862A')}else{r(X+4,Y+3,8,3,OL);r(X+5,Y+4,6,1,'#F2F0EA');r(X+5,Y+5,(x*3)%6+1,1,'#F2F0EA')}},
+ /* the rail yards: tracks round the hill, a freight train sliding through on the middle line */
+ yard:(X,Y,x,y,t)=>{r(X,Y,16,16,'#8E8576');const h=hash(x,y);if(h<50)r(X+h%14,Y+(h>>2)%14,1,1,'#7A7264');for(let i=1;i<16;i+=4)r(X+i,Y+3,2,10,'#6E5A44');
+  r(X,Y+5,16,1,'#5A6068');r(X,Y+4,16,1,'#B9C1C9');r(X,Y+10,16,1,'#5A6068');r(X,Y+9,16,1,'#B9C1C9');
+  const car=(px,c)=>{g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();r(px,Y+2,30,11,OL);r(px+1,Y+3,28,9,c);r(px+1,Y+3,28,1,'rgba(255,255,255,.3)');for(let i=5;i<28;i+=6)r(px+i,Y+4,1,7,'rgba(0,0,0,.18)');g.restore()};
+  if(y===16){const len=6*32,span=MW*16+len+64,head=(t*0.02)%span-len;for(let k=0;k<6;k++){const px=head+k*32-x*16;if(px>-31&&px<16)car(X+px,['#9A4A3A','#4A5A6E','#B5653A','#5E7A5A','#9A4A3A','#7A6A8A'][k])}}
+  else if(h%4===0){r(X+1,Y+2,14,11,OL);r(X+2,Y+3,12,9,['#4A5A6E','#B5653A','#9A4A3A'][h%3]);r(X+2,Y+3,12,1,'rgba(255,255,255,.3)');r(X+7,Y+4,1,7,'rgba(0,0,0,.18)')}},
+ tower:(X,Y,x,y,t)=>{r(X,Y,16,16,'#3A404C');r(X,Y,16,1,'#4E5666');if(at(x,y-1)!=='A'){r(X,Y,16,4,'#5A6274');r(X,Y,16,1,'#7A8494')}r(X+(x%2?14:1),Y+5,1,10,'#2E343E');
+  if(x===13||x===14){r(X+(x===13?13:0),Y,3,16,'#1A1E26');r(X+(x===13?13:2),Y,1,16,'#2E343E')}
+  if((x+y)%4===0)r(X+7,Y+8,2,2,Math.floor(t/500+x)%3?'#D2533F':'#5A1A1A');if(y===17)r(X,Y+12,16,4,'#2A2F38')},
+};
+const TILES={...SR,
  nebWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.35);r(X,Y,16,2,'#868C84');r(X,Y+14,16,2,'#ABB0A6');if(x%3===0)r(X,Y,1,16,'#6F756E');if(x>=9&&x<=13){const c=['#3E8E6A','#4E9E6E','#C9A64A'];r(X,Y+9,16,5,c[(x)%3]);r(X,Y+9,16,1,'#9FD7E8')}},
  nebPlanetWin:(X,Y,x,y,t)=>{nebula(X,Y,x,y,t,.15);const P=Z.planet;
   g.save();g.beginPath();g.rect(X,Y,16,16);g.clip();

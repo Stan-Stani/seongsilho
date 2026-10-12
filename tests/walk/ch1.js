@@ -17,7 +17,8 @@
  {talk:'gyvoy'},
  {check:()=>state.items.includes('연료통'),msg:'fuel for seeds'},
  // the first capsule ride each way narrates on arrival (zone greet), so walk one hop and finish that line first
- {walkTo:['city',11,3]},{pause:1500,shot:'06a-capsule-space'},{pause:3000,shot:'06b-capsule-clouds'},{pause:4000,shot:'06c-capsule-land'},{intro:1},
+ {walkTo:['city',13,13]},{pause:1500,shot:'06a-capsule-space'},{pause:3000,shot:'06b-capsule-clouds'},{pause:4000,shot:'06c-capsule-land'},{intro:1},
+ {inspect:['city',7,15],shot:'07a-rail-yard'},  // the tower's hill, ringed by rail yards (c006)
  {talk:'terence',shotBefore:'07-city'},
  {talk:'josias',wrong:true,shotBuild:'08-sentence-build'},
  {talk:'otylia'},
