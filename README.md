@@ -12,7 +12,8 @@ Seven chapters follow the arkship *Diligent*; you walk, talk to people, answer q
 | <img src="docs/img/4-bubbletown.png" width="240" alt="Bubbletown in the Five"> | <img src="docs/img/5-saberstones.png" width="240" alt="The saberstones on Kajval"> | <img src="docs/img/6-mytalport.png" width="240" alt="Mytalport"> |
 | 2장 · Bubbletown | 4장 · Kajval | 6장 · Mytalport |
 
-- 112 words across 7 chapters, each chapter with its own save; spaced review at the signal terminals
+- 112 words across 7 chapters, each chapter with its own save; spaced review in the story (when a word is due, someone asks it in
+  a line of their own scene; earlier chapters' words come back the same way) and at the signal terminals
 - Tap any Korean word for a simple Korean definition; English is behind the **?** button
 - Korean speech on devices that have a Korean voice
 - Runs on the shared [walk engine](https://github.com/Stan-Stani/walk-engine) with 형제, 점심 방송 and 단어 마을
