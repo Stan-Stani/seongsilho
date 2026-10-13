@@ -23,6 +23,7 @@ Plays on a phone. Dislikes on-screen instruction text — the game should explai
 - `python3 build.py && node tests/validate.mjs` (maps, warps, NPCs, words, questions, glosses, no word taught twice).
 - `node tests/play.mjs chN` plays the chapter with real key presses in headless Chrome (400px phone viewport),
   following `tests/walk/chN.js`; saves screenshots + log to `tests/shots/chN/`. Must end with `ERRORS: none`.
+  `--fast` (`node tests/play.mjs chN --fast`) plays the same at 3× with only the end screenshot: the quick check after an engine change; the full-speed run (screenshots) is for chapter work.
 - Only one playtest runs at a time (lock in play.mjs); never run more than 2 agents that playtest in parallel —
   6 parallel Chrome runs froze this 7 GB machine (2026-10-01).
 - Publish only audited chapters: `python3 build.py --chapters ch1,ch3,…`.
