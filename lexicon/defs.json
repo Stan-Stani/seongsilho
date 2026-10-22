@@ -718,8 +718,8 @@
 "k": "찾아보는 것."
 },
 "겁": {
-"e": "fear",
-"k": "무서운 마음."
+"e": "fear (겁이 나다, 겁을 먹다 = to get scared)",
+"k": "무서운 마음. 겁을 먹어요 = 무서워져요."
 },
 "겁나는얼굴": {
 "e": "Scary Face (move)",
@@ -2385,8 +2385,8 @@
 },
 "끼": null,
 "끼다": {
-"e": "to put on (gloves)",
-"k": "손이나 몸에 넣어 입어요."
+"e": "to put on (gloves, a ring)",
+"k": "손이나 손가락에 넣어요. 장갑이나 반지를 껴요."
 },
 "끼우다": {
 "e": "to wedge in, insert",
@@ -2413,8 +2413,8 @@
 "k": "하나가 여러 개로 갈라져요."
 },
 "나다": {
-"e": "to occur, break (down)",
-"k": "생겨요. 일어나요."
+"e": "to come out (a sound, smell, sweat, light); to grow; to happen; (고장 나다) to break down; (화가/겁이 나다) to get angry/scared",
+"k": "나와요, 생겨요. 소리가 나요 · 냄새가 나요 · 땀이 나요 · 밭에서 나요 · 고장 났어요 · 화가 나요."
 },
 "나라": {
 "e": "country",
@@ -2643,8 +2643,8 @@
 "k": "올해 다음 해."
 },
 "내다": {
-"e": "to pay; to put out",
-"k": "돈을 줘요. · 밖으로 보여요."
+"e": "to pay; to put out; to make (a hole, a sound); (화를 내다) to get angry",
+"k": "돈을 줘요 · 밖으로 보여요 · 구멍이나 소리를 만들어요 · 화를 내요 = 화난 마음을 보여요."
 },
 "내던지다": {
 "e": "to throw away, give up",
@@ -2764,8 +2764,8 @@
 "k": "안으로 들어가게 해요."
 },
 "네": {
-"e": "four (before units); yes",
-"k": "넷. 개, 명 앞에서 써요. · 예"
+"e": "four (before units) · yes · your (= 너의)",
+"k": "넷. 개, 명 앞에서 써요 · 예 · 너의 (네 누나 = 너의 누나)"
 },
 "네모": {
 "e": "square",
@@ -3545,8 +3545,8 @@
 "k": "갑자기 위에서 덮어 눌러요."
 },
 "데": {
-"k": "꾸미는 말 뒤에서 '곳'이라는 뜻. 다친 데, 갈 데.",
-"e": "place, spot (bound noun)"
+"k": "꾸미는 말 뒤에서 '곳'이나 '일'이라는 뜻. 다친 데, 갈 데, 가는 데 걸려요.",
+"e": "place, spot; (for) doing (bound noun)"
 },
 "데굴데굴": {
 "e": "rolling",
@@ -4059,8 +4059,8 @@
 "e": "plural suffix (-s)"
 },
 "들다": {
-"k": "① 손으로 잡거나 위로 올려요. 손 들어요! ② 안에 있어요. 물이 들어 있어요. ③ 잠이 들어요. 약이 잘 들어요.",
-"e": "to hold, lift, raise; be inside; fall (asleep); (medicine) work"
+"k": "① 손으로 잡거나 위로 올려요. 손 들어요! ② 안에 있어요. 물이 들어 있어요. ③ 잠이 들어요. 약이 잘 들어요. ④ 모임에 들어가요.",
+"e": "to hold, lift, raise; be inside; fall (asleep); (medicine) work; to join (a group)"
 },
 "들락날락": {
 "e": "in and out",
@@ -5927,8 +5927,8 @@
 "k": "글자 아래쪽 자음이에요."
 },
 "발": {
-"e": "foot; depart (發)",
-"k": "다리 끝 부분이에요. · '떠나다'의 뜻"
+"e": "foot · (counter) shot · depart (發)",
+"k": "다리 끝 부분이에요 · 총알을 세는 말 (한 발) · '떠나다'의 뜻"
 },
 "발가락": {
 "e": "toe",
@@ -6124,8 +6124,8 @@
 "k": "밭에서 하는 일."
 },
 "배": {
-"e": "ship; pear; belly",
-"k": "물이나 우주를 다니는 탈것 · 과일 · 몸"
+"e": "ship; belly; times (네 배 = four times); pear",
+"k": "물이나 우주를 다니는 탈것 · 가슴 아래 몸 (배가 고파요) · 몇 배: 그만큼 더 많아요 (두 배 = 2×) · 과일"
 },
 "배경": {
 "e": "background",
@@ -6530,8 +6530,8 @@
 "k": "다른 곳으로 가게 해요."
 },
 "보다": {
-"e": "to see; look",
-"k": "눈으로 알아요."
+"e": "to see, look; (-아/어 보다) to try; (-(으)ㄹ까 봐) for fear that",
+"k": "눈으로 알아요 · \"-아/어 보다\": 한번 해요 (가 봐요) · \"-(으)ㄹ까 봐\": 그렇게 될까 걱정돼서."
 },
 "보답": {
 "e": "repayment, reward",
@@ -7755,8 +7755,8 @@
 },
 "서": null,
 "서다": {
-"e": "to stand",
-"k": "발로 몸을 세우고 있어요."
+"e": "to stand; (a vehicle) to stop",
+"k": "발로 몸을 세우고 있어요 · 차나 기차가 멈춰요."
 },
 "서두르다": {
 "e": "to hurry",
@@ -8133,8 +8133,8 @@
 "k": "우편으로 보내는 물건 꾸러미."
 },
 "속": {
-"e": "inside",
-"k": "안쪽."
+"e": "inside; (one's) stomach (속이 안 좋다 = to feel sick)",
+"k": "안쪽 · 배 안 (속이 안 좋아요 = 토할 것 같아요)."
 },
 "속도": {
 "e": "speed",
@@ -8991,8 +8991,8 @@
 "k": "빨리 잘 자라는 모양."
 },
 "쓰다": {
-"e": "to use · to write · to wear on the head or face",
-"k": "사용해요 · 글을 적어요 · 모자나 헬멧, 가면을 머리나 얼굴에 걸쳐요."
+"e": "to use; to spend (money) · to write · to wear on the head or face",
+"k": "사용해요, 돈을 내요 · 글을 적어요 · 모자나 헬멧, 가면을 머리나 얼굴에 걸쳐요."
 },
 "쓰러뜨리다": {
 "e": "to knock down",
@@ -10621,8 +10621,8 @@
 },
 "울": null,
 "울다": {
-"e": "to cry",
-"k": "슬프거나 아파서 눈물을 흘려요."
+"e": "to cry; (an animal) to call",
+"k": "슬프거나 아파서 눈물을 흘려요 · 동물이 소리를 내요."
 },
 "울리다": {
 "e": "to ring, echo; make cry",
@@ -13713,8 +13713,8 @@
 },
 "치는": null,
 "치다": {
-"e": "to hit or clap · lightning strikes · to set up a net · to value",
-"k": "때리거나 박수를 쳐요 · 번개가 번쩍해요 · 그물이나 줄을 펼쳐 놓아요 · 값을 정해 줘요."
+"e": "to hit or clap · lightning strikes · to set up (a net) or draw (a curtain) · to value",
+"k": "때리거나 박수를 쳐요 · 번개가 번쩍해요 · 그물이나 줄, 커튼을 펼쳐 놓아요 · 값을 정해 줘요."
 },
 "치료": {
 "e": "treatment, cure",
@@ -14143,8 +14143,8 @@
 "k": "엔진 공장이 있는 거대한 투명 공이에요."
 },
 "타다": {
-"e": "to ride · to burn",
-"k": "차나 배에 올라서 가요 · 불이 붙어 없어져요."
+"e": "to ride · to burn · to climb (along a wall or rope)",
+"k": "차나 배에 올라서 가요 · 불이 붙어 없어져요 · 벽이나 줄을 잡고 올라가거나 내려가요."
 },
 "타비아": {
 "e": "Tabia — character name",
@@ -16661,5 +16661,21 @@
 "저격수": {
 "k": "멀리 숨어서 총으로 사람을 쏘는 사람이에요.",
 "e": "sniper"
+},
+"그어지다": {
+"e": "to be drawn (a line)",
+"k": "줄이 그려져 있어요. (긋다: 줄을 그려요)"
+},
+"제자리": {
+"e": "its own place, where it belongs",
+"k": "원래 있던 자리, 있어야 하는 자리."
+},
+"마다": {
+"e": "every, each (밤마다 = every night)",
+"k": "하나하나 다. 날마다 = 매일."
+},
+"-(으)ㄴ 적이 있다": {
+"e": "to have ever done (experience)",
+"k": "전에 그런 일이 있었어요. 망가진 적이 없어요 = 한 번도 안 망가졌어요."
 }
 }

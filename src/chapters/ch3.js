@@ -697,7 +697,7 @@ const NPC={
   again:()=>[{say:f().done?'관문으로 가요. 보안, 우리 일.':f().zpz?'발생기 설치 끝. 여기를 지켜요.':'성실호 보안. 우리가 지켜요.'}],
   talk:()=>[{say:'데이브.'},{say:'저쪽도 데이브.'},{say:'보안. 우리 일.'}]},
  dave2:{name:'데이브',zone:'ship',x:27,y:2,dir:'down',look:{art:null},pos:()=>[27,2],status:()=>null,
-  again:()=>[{say:f().done?'다음은 카이발. 내려갈 때 지켜요.':f().zpz?'다시 날 수 있어요. 우리도 같이 가요.':'여기서는 보안 일. 저쪽 데이브도 같이.'}],
+  again:()=>[{say:f().done?'다음은 카이발. 내려갈 때 지켜요.':f().zpz?'다시 {날|날다(하늘)} 수 있어요. 우리도 같이 가요.':'여기서는 보안 일. 저쪽 데이브도 같이.'}],
   talk:()=>[{say:'…'},{say:'여기는 바다가 없어요. 아쉬워요.'}]},
  nglon:{name:'응글론',zone:'ship',x:20,y:13,dir:'left',look:{hair:'#1E1E24',skin:'#8A5A3A',shirt:'#5E8C4A',pants:'#3E4A33',cap:'#7AA65A'},
   status:()=>!f().nglon&&f().finn?'todo':null,
