@@ -858,7 +858,7 @@ const NPC={
    {say:'오바르 둘도 같이 가요. 코아하고 카이젠.',award:['흥정하다'],set:()=>{f().hired=1}},
    {say:'제 배는 나소 동쪽 끝에서 기다려요. 거기서 봐요!'}]},
  cafe:{name:'주스 가게 이카리안',zone:'nassau',x:18,y:7,dir:'down',look:icar('#D2A882','#6B3A2A','#C25B7A',1),
-  script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 와요! 과일 주스 한 잔 해요. 조금 세요!'},{...q,old:1},{say:'또 와요. 주스 마시면서 옛날 단어 공부해요.'}]},
+  script:()=>{const q=Q.cafe[Math.random()*Q.cafe.length|0];return [{say:'어서 와요! 과일 주스 한 잔 해요. 조금 세요!'},{...q,old:1},{say:'또 와요. 주스 마시면서 배운 단어 공부해요.'}]},
   talk:()=>[]},
  /* 실버 클라우드스피어 */
  ayden:{name:'에이든',zone:'boat',x:7,y:10,dir:'down',look:{hair:'#6B4A2A',skin:'#D9A57E',shirt:'#8A6A3A',pants:'#3E3A30',cap:'#5A4A30'},badge:['돛','밧줄'],
