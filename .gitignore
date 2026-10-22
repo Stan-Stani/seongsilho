@@ -3,3 +3,4 @@ claude-export/
 tests/shots/
 src/lexicon-missing.txt
 src/lexicon-empty.txt
+src/lines-todo.json
